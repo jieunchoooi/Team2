@@ -249,3 +249,25 @@ th {
 td button {
   margin-right: 8px;
 }
+
+/* 메뉴 섹션 구분 */
+.menu-section h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2573ff;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+.menu-section {
+  margin-bottom: 25px;
+  border-top: 1px solid #e6e9f5;
+  padding-top: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 10px;
+  color: #1e1f22;
+  font-size: 1.3rem;
+  text-align: center;
+}

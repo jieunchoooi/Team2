@@ -37,9 +37,26 @@ public class AdminController {
 		return "admin/adminClassList";
 	}	
 	
+	@GetMapping("/adminMemberList")
+	public String adminMemberList() {
+		System.out.println("MemberAdminControllerController adminMemberList()");
+		
+		return "admin/adminMemberList";
+	}	
 	
+	@GetMapping("/adminTeacherList")
+	public String adminTeacherList() {
+		System.out.println("MemberAdminControllerController adminTeacherList()");
+		
+		return "admin/adminTeacherList";
+	}	
 	
-	
+	@GetMapping("/adminWithdrawList")
+	public String adminWithdrawList() {
+		System.out.println("MemberAdminControllerController adminWithdrawList()");
+		
+		return "admin/adminWithdrawList";
+	}	
 	
 	
 	

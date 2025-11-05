@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>카테고리 편집 | Hobee Admin</title>
+<title>탈퇴 회원 목록 | Hobee Admin</title>
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/adminCommon.css">
 </head>
 <body>
@@ -16,34 +16,29 @@
 
 <main class="main-content">
   <div class="main-header">
-    <h1>카테고리 관리</h1>
+    <h1>탈퇴 회원 목록</h1>
   </div>
 
-  <div class="form-container">
-    <div class="form-group">
-      <label>카테고리명 추가</label>
-      <input type="text" placeholder="새 카테고리 입력">
-      <button class="btn" style="margin-top:10px;">추가</button>
-    </div>
-  </div>
-
-  <div class="table-container" style="margin-top:30px;">
+  <div class="table-container">
     <table>
       <thead>
         <tr>
           <th>번호</th>
-          <th>카테고리명</th>
-          <th>관리</th>
+          <th>이름</th>
+          <th>아이디</th>
+          <th>이메일</th>
+          <th>탈퇴일</th>
+          <th>비고</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>1</td>
-          <td>공예</td>
-          <td>
-            <button class="btn">수정</button>
-            <button class="btn btn-delete">삭제</button>
-          </td>
+          <td>이탈퇴</td>
+          <td>leave123</td>
+          <td>leave@example.com</td>
+          <td>2025-09-15</td>
+          <td>본인 요청 탈퇴</td>
         </tr>
       </tbody>
     </table>
