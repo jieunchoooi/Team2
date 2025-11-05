@@ -298,21 +298,10 @@ main {
 
 <!-- 메인 콘텐츠 -->
 <main>
-  <!-- 왼쪽 사이드바 -->
-  <aside class="sidebar">
-    <h2></h2>
-    <div class="menu">
-      <div class="menu-item" onclick="location.href='mypage.jsp'">🏠 <span>MY 홈</span></div>
-      <div class="menu-item" onclick="location.href='resume.jsp'">📄 <span>내 강의실</span></div>
-      <div class="menu-item" onclick="location.href='scrap.jsp'">⭐ <span>스크랩 / 관심</span></div>
-      <div class="menu-item" onclick="location.href='offer.jsp'">💌 <span>내가 쓴 리뷰</span></div>
-      <div class="menu-item" onclick="location.href='benefit.jsp'">💳 <span>결제 내역</span></div>
-      <!-- ✅ 현재 페이지 -->
-      <div class="menu-item active" onclick="location.href='memberEdit.jsp'">👤 <span>회원정보 수정</span></div>
-    </div>
-    <button class="logout-btn" onclick="logout()">로그아웃</button>
-  </aside>
 
+
+<!-- 좌측 사이드바 -->
+<jsp:include page="../include/memberSidebar.jsp"></jsp:include>
   <!-- 오른쪽 정보 수정 폼 -->
   <form action="${pageContext.request.contextPath}/member/update" method="post">
   <section class="main-content">

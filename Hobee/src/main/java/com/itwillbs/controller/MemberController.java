@@ -56,8 +56,33 @@ public class MemberController {
 		return "redirect:/admin/class-manager/adminCategory";
 	}	
 	
+	@GetMapping("/my_classroom")
+	public String my_classroom() {
+		System.out.println("MemberController my_classroom()");
+		
+		return "member/my_classroom";
+	}	
 	
+	@GetMapping("/scrap")
+	public String scrap() {
+		System.out.println("MemberController scrap()");
+		
+		return "member/scrap";
+	}	
 	
+	@GetMapping("/review")
+	public String review() {
+		System.out.println("MemberController review()");
+		
+		return "member/review";
+	}	
+	
+	@GetMapping("/payment")
+	public String payment() {
+		System.out.println("MemberController payment()");
+		
+		return "member/payment";
+	}	
 	
 	
 	
