@@ -28,6 +28,25 @@
            onclick="location.href='${pageContext.request.contextPath}/admin/adminWithdrawList'">🚫 <span>탈퇴 회원</span></div>
     </div>
   </div>
+  
+    <!-- 결제 관리 -->
+  <div class="menu-section" style="margin-top:30px;">
+    <h3>💳 결제 관리</h3>
+    <div class="menu">
+      <div class="menu-item ${page eq 'paymentList' ? 'active' : ''}" 
+           onclick="location.href='${pageContext.request.contextPath}/admin/adminPaymentList'">💰 <span>결제 내역 관리</span></div>
+    </div>
+  </div>
+
+  <!-- 커뮤니티 관리 -->
+  <div class="menu-section" style="margin-top:30px;">
+    <h3>🗨️ 커뮤니티 관리</h3>
+    <div class="menu">
+      <div class="menu-item ${page eq 'boardList' ? 'active' : ''}" 
+           onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'">📋 <span>게시판 목록</span></div>
+    </div>
+  </div>
+  
 
   <button class="logout-btn" onclick="logout()">로그아웃</button>
 </aside>
