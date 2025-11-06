@@ -15,9 +15,9 @@ public class BoardController {
 	@Inject
 	private BoardService boardService;
 
-	@RequestMapping (value="/write")
-	public String write() {
-		System.out.println("BoradController write()");
+	@RequestMapping (value="/comunityWrite")
+	public String comunitywrite() {
+		System.out.println("BoradController comunityWrite()");
 		return "board/comunityWrite";
 	}
 	
