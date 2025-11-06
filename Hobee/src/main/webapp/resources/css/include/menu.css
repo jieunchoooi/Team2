@@ -1,4 +1,8 @@
 @charset "UTF-8";
+
+/* ===============================
+   ✅ 기본 헤더 스타일
+   =============================== */
 header {
 	background: #fff;
 	box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -68,26 +72,44 @@ nav a:hover {
 	background: #eef5ff;
 }
 
-/* ==============================
-   ✅ 수정된 메가 드롭다운 부분
-   ============================== */
+/* ===============================
+   ✅ 메가 드롭다운 (깜빡임 해결 버전)
+   =============================== */
 .mega-dropdown {
 	position: relative;
 }
 
+/* 드롭다운 전체 컨테이너 */
+.mega-dropdown > a {
+	position: relative;
+	z-index: 2;
+}
+
+/* hover 깜빡임 방지용 확장 영역 */
+.mega-dropdown::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 100%;
+	height: 15px; /* hover 유지용 간격 */
+	background: transparent;
+}
+
+/* 드롭다운 콘텐츠 */
 .mega-content {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
 	position: absolute;
-	top: calc(100% + 10px); /* 살짝 아래로 간격 */
+	top: calc(100% + 8px);
 	left: 50%;
 	transform: translateX(-20%);
 	background: #fff;
 	box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 	border-radius: 12px;
 	padding: 30px 40px;
-	z-index: 9999;
+	z-index: 1;
 	white-space: nowrap;
 	min-width: 900px;
 	max-width: calc(100vw - 40px);
@@ -95,18 +117,20 @@ nav a:hover {
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
-	transition: opacity 0.2s ease, visibility 0.2s ease;
+	transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
 }
 
-/* hover 시 자연스럽게 등장 */
+/* hover 시 부드럽게 등장 */
 .mega-dropdown:hover .mega-content {
 	opacity: 1;
 	visibility: visible;
 	pointer-events: auto;
+	transform: translateX(-20%) translateY(5px);
 }
 
-/* ============================== */
-
+/* ===============================
+   ✅ 드롭다운 내부 컬럼
+   =============================== */
 .mega-column {
 	flex: 1;
 	min-width: 200px;
