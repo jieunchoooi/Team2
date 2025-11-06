@@ -5,16 +5,28 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 목록 | Hobee Admin</title>
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/adminCommon.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminMemberList.css">
+
 </head>
 <body>
-<header>
-  <h1>Hobee 관리자</h1>
-</header>
 
+
+<!-- header -->
+<jsp:include page="../include/header.jsp"></jsp:include>
 <jsp:include page="../include/adminSidebar.jsp"></jsp:include>
-
 <main class="main-content">
+<div class="filter-container">
+  <div class="search-box">
+    <input type="text" placeholder="이름, 아이디, 이메일로 검색...">
+    <button>검색</button>
+  </div>
+  <select class="filter-select">
+    <option>전체 회원</option>
+    <option>최근 가입</option>
+    <option>활성 회원</option>
+  </select>
+</div>
   <div class="main-header">
     <h1>회원 목록</h1>
   </div>

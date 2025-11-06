@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+/* 전체 레이아웃 구조 (왼쪽 사이드바 + 오른쪽 콘텐츠) */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 60px 20px;
+  background: #f9fafc;
+}
+
+/* ============================
+   ✅ 사이드바 스타일
+   ============================ */
+.sidebar {
+  width: 240px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: sticky;
+  top: 100px; /* 스크롤 시 고정 */
+  height: fit-content;
+}
+
+.sidebar h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2573ff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 메뉴 공통 */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, transform 0.1s;
+}
+
+.menu-item:hover {
+  background: #eef5ff;
+  color: #2573ff;
+  transform: translateX(3px);
+}
+
+/* 현재 활성화된 메뉴 */
+.menu-item.active {
+  background: #2573ff;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37,115,255,0.2);
+}
+
+/* 이모지와 텍스트 정렬 */
+.menu-item span {
+  flex: 1;
+}
+
+/* 로그아웃 버튼 */
+.logout-btn {
+  margin-top: 30px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #f5f6fa;
+  color: #888;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.logout-btn:hover {
+  background: #ffecec;
+  color: #ff3b3b;
+}
+
+/* ============================
+   ✅ 반응형 (모바일 대응)
+   ============================ */
+@media (m

@@ -5,20 +5,33 @@
 <head>
 <meta charset="UTF-8">
 <title>강사 목록 | Hobee Admin</title>
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/adminCommon.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminTeacherList.css">
 </head>
 <body>
-<header>
-  <h1>Hobee 관리자</h1>
-</header>
-
+<!-- header -->
+<jsp:include page="../include/header.jsp"></jsp:include>
 <jsp:include page="../include/adminSidebar.jsp"></jsp:include>
-
 <main class="main-content">
   <div class="main-header">
     <h1>강사 목록</h1>
   </div>
-
+  
+  <div class="stats-container">
+    <div class="stat-card">
+      <h3>총 강사 수</h3>
+      <div class="stat-number">48</div>
+    </div>
+    <div class="stat-card orange">
+      <h3>총 클래스 수</h3>
+      <div class="stat-number">156</div>
+    </div>
+    <div class="stat-card green">
+      <h3>활성 강사</h3>
+      <div class="stat-number">45</div>
+    </div>
+  </div>
+  
   <div class="table-container">
     <table>
       <thead>

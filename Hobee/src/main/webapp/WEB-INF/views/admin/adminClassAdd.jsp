@@ -5,15 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>클래스 등록 | Hobee Admin</title>
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/adminCommon.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminClassadd.css">
+
 </head>
 <body>
-<header>
-  <h1>Hobee 관리자</h1>
-</header>
 
+<!-- header -->
+
+<jsp:include page="../include/header.jsp"></jsp:include>
 <jsp:include page="../include/adminSidebar.jsp"></jsp:include>
-
 <main class="main-content">
   <div class="main-header">
     <h1>클래스 등록</h1>
