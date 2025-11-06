@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/menu.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/include/menu.css">
 </head>
 <body>
 
