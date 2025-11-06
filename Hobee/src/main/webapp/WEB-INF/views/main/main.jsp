@@ -9,6 +9,7 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap"
 	rel="stylesheet">
+
 <style>
 * {
 	margin: 0;
@@ -25,145 +26,6 @@ body {
 	min-height: 100vh;
 }
 
-header {
-	background: #fff;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-	padding: 16px 40px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	position: relative;
-	z-index: 100;
-}
-
-header h1 {
-	color: #2573ff;
-	font-size: 1.5rem;
-	font-weight: 700;
-}
-
-header h1 a {
-	text-decoration: none;
-	color: inherit;
-}
-
-nav {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 100%;
-}
-
-.nav-left {
-	display: flex;
-	align-items: center;
-	gap: 20px;
-	margin-left: 25px;
-}
-
-.nav-right {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-}
-
-nav a {
-	text-decoration: none;
-	color: #333;
-	font-weight: 500;
-	padding: 6px 10px;
-	border-radius: 10px;
-	transition: background 0.2s;
-}
-
-nav a:hover {
-	background: #eef5ff;
-	color: #2573ff;
-}
-
-.auth-link {
-	font-size: 0.85rem;
-	color: #888;
-	padding: 4px 8px;
-	border-radius: 8px;
-	transition: color 0.2s, background 0.2s;
-}
-
-.auth-link:hover {
-	color: #2573ff;
-	background: #eef5ff;
-}
-
-/* ==============================
-   ✅ 수정된 메가 드롭다운 부분
-   ============================== */
-.mega-dropdown {
-	position: relative;
-}
-
-.mega-content {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	position: absolute;
-	top: calc(100% + 10px); /* 살짝 아래로 간격 */
-	left: 50%;
-	transform: translateX(-20%);
-	background: #fff;
-	box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-	border-radius: 12px;
-	padding: 30px 40px;
-	z-index: 9999;
-	white-space: nowrap;
-	min-width: 900px;
-	max-width: calc(100vw - 40px);
-	overflow-x: auto;
-	opacity: 0;
-	visibility: hidden;
-	pointer-events: none;
-	transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-/* hover 시 자연스럽게 등장 */
-.mega-dropdown:hover .mega-content {
-	opacity: 1;
-	visibility: visible;
-	pointer-events: auto;
-}
-
-/* ============================== */
-
-.mega-column {
-	flex: 1;
-	min-width: 200px;
-}
-
-.mega-column h3 {
-	color: #2573ff;
-	margin-bottom: 12px;
-	font-size: 1rem;
-}
-
-.mega-column ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
-.mega-column ul li {
-	margin-bottom: 8px;
-}
-
-.mega-column ul li a {
-	text-decoration: none;
-	color: #333;
-	font-size: 0.95rem;
-	transition: color 0.2s;
-}
-
-.mega-column ul li a:hover {
-	color: #2573ff;
-}
 
 /* 메인 컨텐츠 */
 main {
@@ -306,51 +168,9 @@ footer {
 </head>
 <body>
 
-<header>
-	<h1><a href="${pageContext.request.contextPath }/main/main">Hobee</a></h1>
-	<nav>
-		<div class="nav-left">
-			<div class="mega-dropdown">
-				<a href="${pageContext.request.contextPath }/main/main">카테고리 ▾</a>
-				<div class="mega-content">
-					<div class="mega-column">
-						<h3>예체능</h3>
-						<ul>
-							<li><a href="${pageContext.request.contextPath }/category/drawingList">디지털 드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">공예</a></li>
-						</ul>
-					</div>
-					<div class="mega-column">
-						<h3>IT</h3>
-						<ul>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">AI 스킬업</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">프로그래밍</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">데이터사이언스</a></li>
-						</ul>
-					</div>
-					<div class="mega-column">
-						<h3>외국어</h3>
-						<ul>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">영어</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">외국어 시험</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">제2 외국어</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<a href="${pageContext.request.contextPath }/board/write">커뮤니티</a>
-			<a href="${pageContext.request.contextPath }/recommend/recoList">베스트 & 추천강의</a>
-		</div>
+<!-- header -->
+<jsp:include page="../include/menu.jsp"></jsp:include>
 
-		<div class="nav-right">
-			<a href="#" class="auth-link">로그인</a>
-			<a href="#" class="auth-link">회원가입</a>
-		    <a href="${pageContext.request.contextPath }/member/mypage" class="auth-link">마이페이지</a>
-			<a href="${pageContext.request.contextPath }/admin/adminCategry" class="auth-link">관리자</a>
-		</div>
-	</nav>
-</header>
 
 <main>
 	<h2>당신의 취미, 더 깊게 즐기세요 🎨</h2>
