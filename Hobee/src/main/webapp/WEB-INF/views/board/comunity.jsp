@@ -25,27 +25,6 @@ body {
   flex-direction: column;
 }
 
-/* header */
-header {
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  padding: 12px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-header h1 {color: var(--primary); font-size: 1.3rem; cursor: pointer;}
-nav a {
-  margin-left: 15px;
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  font-size: 0.9rem;
-  padding: 5px 8px;
-  border-radius: 6px;
-}
-nav a:hover {background: var(--hover-bg); color: var(--primary);}
-
 /* main layout */
 main {
   flex: 1;
@@ -138,6 +117,32 @@ tbody tr:hover {background: var(--hover-bg);}
 .tag.정보공유 {background: #36b37e;}
 .tag.잡담 {background: #868e96;}
 
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+.pagination button {
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.pagination span {
+  font-size: 0.9rem;
+  color: #333;
+}
+
 /* 사이드바 */
 .sidebar {
   flex: 1;
@@ -183,15 +188,8 @@ footer {
 </head>
 <body>
 
-<header>
-  <h1 onclick="location.href='index.html'">Hobee</h1>
-  <nav>
-    <a href="#">홈</a>
-    <a href="#">강의</a>
-    <a href="#" style="color: var(--primary); font-weight:600;">커뮤니티</a>
-    <a href="#">로그인</a>
-  </nav>
-</header>
+<!-- header -->
+<jsp:include page="../include/header.jsp"></jsp:include>
 
 <main>
   <section class="board-section">
@@ -221,6 +219,13 @@ footer {
       </thead>
       <tbody id="boardList"></tbody>
     </table>
+
+    <div class="pagination">
+      <button id="prevBtn" onclick="changePage(-1)">← 이전</button>
+      <span id="pageInfo">1 / 1</span>
+      <button id="nextBtn" onclick="changePage(1)">다음 →</button>
+    </div>
+
   </section>
 
   <aside class="sidebar">
@@ -235,6 +240,7 @@ footer {
 // 로그인 상태 (임시)
 let isLoggedIn = true;
 
+// 게시글 데이터 (10개)
 const posts = [
   {category: "예체능", tag: "후기", title: "드로잉 클래스 완전 강추!", author: "아트초보", date: "10-28", views: 132, likes: 12},
   {category: "예체능", tag: "질문", title: "아이패드 브러시 추천 좀 해주세요!", author: "홍길동", date: "10-27", views: 95, likes: 8},
@@ -242,26 +248,39 @@ const posts = [
   {category: "IT", tag: "잡담", title: "코딩하다 멘붕왔을 때 극복법ㅋㅋ", author: "이자바", date: "10-24", views: 211, likes: 17},
   {category: "외국어", tag: "후기", title: "영어 회화 수업 후기 공유!", author: "Jane", date: "10-26", views: 77, likes: 6},
   {category: "외국어", tag: "질문", title: "스페인어 공부법 조언 부탁드려요!", author: "Carlos", date: "10-20", views: 42, likes: 4},
+  {category: "예체능", tag: "정보공유", title: "수채화 물감 브랜드 비교", author: "수채사랑", date: "10-22", views: 110, likes: 10},
+  {category: "IT", tag: "후기", title: "스프링 부트 처음 배우기 후기", author: "박개발", date: "10-21", views: 200, likes: 15},
+  {category: "외국어", tag: "잡담", title: "토익 공부 진짜 하기 싫어요ㅠㅠ", author: "스터디러", date: "10-19", views: 66, likes: 5},
+  {category: "IT", tag: "질문", title: "SQL 조인 잘 이해가 안돼요", author: "DB초보", date: "10-18", views: 120, likes: 9},
 ];
 
 let currentCategory = "예체능";
+let currentPage = 1;
+const postsPerPage = 10;
 
 function renderBoard() {
   const tbody = document.getElementById("boardList");
   const filtered = posts.filter(p => p.category === currentCategory);
-  tbody.innerHTML = filtered.map((p, i) => `
+  const totalPages = Math.ceil(filtered.length / postsPerPage);
+  const start = (currentPage - 1) * postsPerPage;
+  const end = start + postsPerPage;
+  const currentPosts = filtered.slice(start, end);
+
+  tbody.innerHTML = currentPosts.map((p, i) => `
     <tr onclick="viewPost(${i})">
       <td><span class="tag ${p.tag}">${p.tag}</span></td>
       <td>${p.title}</td>
       <td>${p.author}</td>
       <td>${p.date}</td>
       <td>${p.views}</td>
-    <td>
-     <span style="color:#f66; margin-left:4px;">❤</span>
-    ${p.likes}
-    </td>
+      <td><span style="color:#f66;">❤</span> ${p.likes}</td>
     </tr>
   `).join('');
+
+  // 페이지 표시
+  document.getElementById("pageInfo").textContent = `${currentPage} / ${totalPages}`;
+  document.getElementById("prevBtn").disabled = currentPage === 1;
+  document.getElementById("nextBtn").disabled = currentPage === totalPages;
 }
 
 function renderPopular() {
@@ -277,8 +296,14 @@ function changeCategory(category) {
   document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
   currentCategory = category;
+  currentPage = 1;
   renderBoard();
   renderPopular();
+}
+
+function changePage(direction) {
+  currentPage += direction;
+  renderBoard();
 }
 
 function createPost() {
@@ -291,7 +316,6 @@ function createPost() {
 }
 
 function viewPost(index) {
-  // 실제 구현에서는 게시글 상세 페이지로 이동
   alert(`게시글 상세 페이지로 이동: ${posts[index].title}`);
 }
 

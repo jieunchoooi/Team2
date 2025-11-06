@@ -30,6 +30,18 @@ public class BoardController {
 		return "redirect:/board/comunity";
 	}
 	
+	@RequestMapping (value="/comunity")
+	public String comunity() {
+		System.out.println("BoradController comunity()");
+		return "board/comunity";
+	}
+	
+	@RequestMapping (value="/comunityContent")
+	public String comunityContent() {
+		System.out.println("BoradController comunityContent()");
+		return "board/comunityContent";
+	}
+	
 	
 	
 	

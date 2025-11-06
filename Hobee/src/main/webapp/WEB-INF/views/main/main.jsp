@@ -14,7 +14,7 @@
 <body>
 
 <!-- header -->
-<jsp:include page="../include/menu.jsp"></jsp:include>
+<jsp:include page="../include/header.jsp"></jsp:include>
 
 <main>
 	<h2>당신의 취미, 더 깊게 즐기세요 🎨</h2>
