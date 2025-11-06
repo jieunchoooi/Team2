@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>취미 온라인 클래스 - HobbyPrep</title>
+<title>취미 온라인 클래스 - Hobee</title>
 <link
 	href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap"
 	rel="stylesheet">
@@ -42,6 +42,7 @@ header h1 {
 	font-weight: 700;
 }
 
+/* h1 안의 a태그 밑줄 제거 + 색상 상속 */
 header h1 a {
 	text-decoration: none;
 	color: inherit;
@@ -94,21 +95,16 @@ nav a:hover {
 	background: #eef5ff;
 }
 
-/* ==============================
-   ✅ 수정된 메가 드롭다운 부분
-   ============================== */
 .mega-dropdown {
 	position: relative;
 }
 
 .mega-content {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
+	display: none;
 	position: absolute;
-	top: calc(100% + 10px); /* 살짝 아래로 간격 */
+	top: 100%;
 	left: 50%;
-	transform: translateX(-20%);
+	transform: translateX(-20%) translateY(22px);
 	background: #fff;
 	box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 	border-radius: 12px;
@@ -118,20 +114,13 @@ nav a:hover {
 	min-width: 900px;
 	max-width: calc(100vw - 40px);
 	overflow-x: auto;
-	opacity: 0;
-	visibility: hidden;
-	pointer-events: none;
-	transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
-/* hover 시 자연스럽게 등장 */
 .mega-dropdown:hover .mega-content {
-	opacity: 1;
-	visibility: visible;
-	pointer-events: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
 }
-
-/* ============================== */
 
 .mega-column {
 	flex: 1;
@@ -206,11 +195,12 @@ main p {
 	transform: translateY(-2px);
 }
 
-/* 강의 카드 섹션 */
+/* 🔥 강의 카드 슬라이드 섹션 */
 .course-section {
 	width: 100%;
 	max-width: 1200px;
 	margin: 60px auto;
+	overflow: hidden;
 }
 
 .course-section h3 {
@@ -222,20 +212,28 @@ main p {
 	color: #222;
 }
 
-.course-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	gap: 24px;
+.course-slider {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.course-row {
+	display: flex;
+	gap: 20px;
+	transition: transform 1s ease;
 }
 
 .course-card {
+	flex: 0 0 calc(20% - 20px);
 	background: #fff;
 	border-radius: 16px;
 	box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 	overflow: hidden;
+	text-align: left;
 	transition: transform 0.2s, box-shadow 0.2s;
 	cursor: pointer;
-	text-align: left;
+	min-width: 200px;
 }
 
 .course-card:hover {
@@ -263,12 +261,6 @@ main p {
 .course-price {
 	color: #2573ff;
 	font-weight: 700;
-}
-
-.course-price del {
-	color: #aaa;
-	margin-right: 8px;
-	font-weight: 400;
 }
 
 /* 검색폼 스타일 */
@@ -307,125 +299,74 @@ footer {
 <body>
 
 <header>
-	<h1><a href="${pageContext.request.contextPath }/main/main">Hobee</a></h1>
+	<h1><a href="/">Hobee</a></h1>
 	<nav>
 		<div class="nav-left">
 			<div class="mega-dropdown">
-				<a href="${pageContext.request.contextPath }/main/main">카테고리 ▾</a>
+				<a href="#">카테고리 ▾</a>
 				<div class="mega-content">
 					<div class="mega-column">
 						<h3>예체능</h3>
 						<ul>
-							<li><a href="${pageContext.request.contextPath }/category/drawingList">디지털 드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">공예</a></li>
+							<li><a href="#">디지털 드로잉</a></li>
+							<li><a href="#">드로잉</a></li>
+							<li><a href="#">공예</a></li>
 						</ul>
 					</div>
 					<div class="mega-column">
 						<h3>IT</h3>
 						<ul>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">AI 스킬업</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">프로그래밍</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">데이터사이언스</a></li>
+							<li><a href="#">AI 스킬업</a></li>
+							<li><a href="#">프로그래밍</a></li>
+							<li><a href="#">데이터사이언스</a></li>
 						</ul>
 					</div>
 					<div class="mega-column">
 						<h3>외국어</h3>
 						<ul>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">영어</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">외국어 시험</a></li>
-							<li><a href="${pageContext.request.contextPath }/category/lecture">제2 외국어</a></li>
+							<li><a href="#">영어</a></li>
+							<li><a href="#">외국어 시험</a></li>
+							<li><a href="#">제2 외국어</a></li>
 						</ul>
 					</div>
 				</div>
 			</div>
-			<a href="${pageContext.request.contextPath }/board/write">커뮤니티</a>
-			<a href="${pageContext.request.contextPath }/recommend/recoList">베스트 & 추천강의</a>
+			<a href="#">홈</a>
+			<a href="#">강의</a>
 		</div>
 
 		<div class="nav-right">
 			<a href="#" class="auth-link">로그인</a>
 			<a href="#" class="auth-link">회원가입</a>
-		    <a href="${pageContext.request.contextPath }/member/mypage" class="auth-link">마이페이지</a>
-			<a href="${pageContext.request.contextPath }/admin/adminCategry" class="auth-link">관리자</a>
 		</div>
 	</nav>
 </header>
 
 <main>
-	<h2>당신의 취미, 더 깊게 즐기세요 🎨</h2>
-	<p>다양한 취미 강의로 나만의 여가를 만들어보세요.</p>
+	<h2>디지털 드로잉 페이지 🎨</h2>
 
 	<form class="search-form" onsubmit="searchLecture(event)">
 		<input type="text" id="searchInput" placeholder="강의를 검색해보세요" />
 		<button type="submit" class="btn">검색</button>
 	</form>
 
+	<!-- 🔥 강의 슬라이드 섹션 -->
 	<section class="course-section">
 		<h3>인기 강의 🔥</h3>
-		<div class="course-grid">
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=1" class="course-thumb" alt="강의1">
-				<div class="course-info">
-					<div class="course-title">드로잉 기초 클래스</div>
-					<div class="course-price">₩49,000</div>
+		<div class="course-slider" id="courseSlider">
+			<% for (int r = 0; r < 4; r++) { %>
+			<div class="course-row">
+				<% for (int i = 1; i <= 5; i++) { %>
+				<div class="course-card">
+					<img src="https://picsum.photos/400/250?random=<%= (r*5+i) %>" class="course-thumb" alt="강의<%= (r*5+i) %>">
+					<div class="course-info">
+						<div class="course-title">강의 제목 <%= (r*5+i) %></div>
+						<div class="course-price">₩<%= (40000 + (r*5+i)*1000) %></div>
+					</div>
 				</div>
+				<% } %>
 			</div>
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=2" class="course-thumb" alt="강의2">
-				<div class="course-info">
-					<div class="course-title">파이썬으로 배우는 코딩</div>
-					<div class="course-price">₩69,000</div>
-				</div>
-			</div>
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=3" class="course-thumb" alt="강의3">
-				<div class="course-info">
-					<div class="course-title">영어 회화 마스터</div>
-					<div class="course-price">₩59,000</div>
-				</div>
-			</div>
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=4" class="course-thumb" alt="강의4">
-				<div class="course-info">
-					<div class="course-title">공예로 힐링하기</div>
-					<div class="course-price">₩55,000</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="course-section">
-		<h3>할인 중인 강의 💸</h3>
-		<div class="course-grid">
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=5" class="course-thumb" alt="강의5">
-				<div class="course-info">
-					<div class="course-title">캘리그라피 디자인</div>
-					<div class="course-price"><del>₩60,000</del> ₩42,000</div>
-				</div>
-			</div>
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=6" class="course-thumb" alt="강의6">
-				<div class="course-info">
-					<div class="course-title">웹 퍼블리싱 완성반</div>
-					<div class="course-price"><del>₩80,000</del> ₩56,000</div>
-				</div>
-			</div>
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=7" class="course-thumb" alt="강의7">
-				<div class="course-info">
-					<div class="course-title">기초 일본어 회화</div>
-					<div class="course-price"><del>₩65,000</del> ₩45,000</div>
-				</div>
-			</div>
-			<div class="course-card">
-				<img src="https://picsum.photos/400/250?random=8" class="course-thumb" alt="강의8">
-				<div class="course-info">
-					<div class="course-title">도예 취미 클래스</div>
-					<div class="course-price"><del>₩70,000</del> ₩49,000</div>
-				</div>
-			</div>
+			<% } %>
 		</div>
 	</section>
 </main>
@@ -440,9 +381,20 @@ function searchLecture(event) {
 	}
 	window.location.href = '/search?query=' + encodeURIComponent(query);
 }
+
+// 🔥 2초마다 한 줄씩 슬라이드
+let currentIndex = 0;
+const rows = document.querySelectorAll(".course-row");
+function slideRows() {
+	rows.forEach((row, i) => {
+		const offset = (i - currentIndex) * 100;
+		row.style.transform = `translateY(${offset}%)`;
+	});
+	currentIndex = (currentIndex + 1) % rows.length;
+}
+setInterval(slideRows, 2000);
 </script>
 
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
-
 </body>
 </html>
