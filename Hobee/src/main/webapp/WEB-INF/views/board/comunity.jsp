@@ -203,7 +203,8 @@ footer {
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="게시글 검색...">
       </div>
-      <button class="write-btn" onclick="createPost()">글쓰기</button>
+<!--       <button class="write-btn" onclick="createPost()">글쓰기</button> -->
+      <a href="${pageContext.request.contextPath}/board/comunityWrite" class="write-btn">글쓰기</a>
     </div>
 
     <table>
@@ -238,91 +239,91 @@ footer {
 
 <script>
 // 로그인 상태 (임시)
-let isLoggedIn = true;
+// let isLoggedIn = true;
 
 // 게시글 데이터 (10개)
-const posts = [
-  {category: "예체능", tag: "후기", title: "드로잉 클래스 완전 강추!", author: "아트초보", date: "10-28", views: 132, likes: 12},
-  {category: "예체능", tag: "질문", title: "아이패드 브러시 추천 좀 해주세요!", author: "홍길동", date: "10-27", views: 95, likes: 8},
-  {category: "IT", tag: "정보공유", title: "입문자 추천 강의 모음", author: "코딩러버", date: "10-25", views: 184, likes: 23},
-  {category: "IT", tag: "잡담", title: "코딩하다 멘붕왔을 때 극복법ㅋㅋ", author: "이자바", date: "10-24", views: 211, likes: 17},
-  {category: "외국어", tag: "후기", title: "영어 회화 수업 후기 공유!", author: "Jane", date: "10-26", views: 77, likes: 6},
-  {category: "외국어", tag: "질문", title: "스페인어 공부법 조언 부탁드려요!", author: "Carlos", date: "10-20", views: 42, likes: 4},
-  {category: "예체능", tag: "정보공유", title: "수채화 물감 브랜드 비교", author: "수채사랑", date: "10-22", views: 110, likes: 10},
-  {category: "IT", tag: "후기", title: "스프링 부트 처음 배우기 후기", author: "박개발", date: "10-21", views: 200, likes: 15},
-  {category: "외국어", tag: "잡담", title: "토익 공부 진짜 하기 싫어요ㅠㅠ", author: "스터디러", date: "10-19", views: 66, likes: 5},
-  {category: "IT", tag: "질문", title: "SQL 조인 잘 이해가 안돼요", author: "DB초보", date: "10-18", views: 120, likes: 9},
-];
+// const posts = [
+//   {category: "예체능", tag: "후기", title: "드로잉 클래스 완전 강추!", author: "아트초보", date: "10-28", views: 132, likes: 12},
+//   {category: "예체능", tag: "질문", title: "아이패드 브러시 추천 좀 해주세요!", author: "홍길동", date: "10-27", views: 95, likes: 8},
+//   {category: "IT", tag: "정보공유", title: "입문자 추천 강의 모음", author: "코딩러버", date: "10-25", views: 184, likes: 23},
+//   {category: "IT", tag: "잡담", title: "코딩하다 멘붕왔을 때 극복법ㅋㅋ", author: "이자바", date: "10-24", views: 211, likes: 17},
+//   {category: "외국어", tag: "후기", title: "영어 회화 수업 후기 공유!", author: "Jane", date: "10-26", views: 77, likes: 6},
+//   {category: "외국어", tag: "질문", title: "스페인어 공부법 조언 부탁드려요!", author: "Carlos", date: "10-20", views: 42, likes: 4},
+//   {category: "예체능", tag: "정보공유", title: "수채화 물감 브랜드 비교", author: "수채사랑", date: "10-22", views: 110, likes: 10},
+//   {category: "IT", tag: "후기", title: "스프링 부트 처음 배우기 후기", author: "박개발", date: "10-21", views: 200, likes: 15},
+//   {category: "외국어", tag: "잡담", title: "토익 공부 진짜 하기 싫어요ㅠㅠ", author: "스터디러", date: "10-19", views: 66, likes: 5},
+//   {category: "IT", tag: "질문", title: "SQL 조인 잘 이해가 안돼요", author: "DB초보", date: "10-18", views: 120, likes: 9},
+// ];
 
-let currentCategory = "예체능";
-let currentPage = 1;
-const postsPerPage = 10;
+// let currentCategory = "예체능";
+// let currentPage = 1;
+// const postsPerPage = 10;
 
-function renderBoard() {
-  const tbody = document.getElementById("boardList");
-  const filtered = posts.filter(p => p.category === currentCategory);
-  const totalPages = Math.ceil(filtered.length / postsPerPage);
-  const start = (currentPage - 1) * postsPerPage;
-  const end = start + postsPerPage;
-  const currentPosts = filtered.slice(start, end);
+// function renderBoard() {
+//   const tbody = document.getElementById("boardList");
+//   const filtered = posts.filter(p => p.category === currentCategory);
+//   const totalPages = Math.ceil(filtered.length / postsPerPage);
+//   const start = (currentPage - 1) * postsPerPage;
+//   const end = start + postsPerPage;
+//   const currentPosts = filtered.slice(start, end);
 
-  tbody.innerHTML = currentPosts.map((p, i) => `
-    <tr onclick="viewPost(${i})">
-      <td><span class="tag ${p.tag}">${p.tag}</span></td>
-      <td>${p.title}</td>
-      <td>${p.author}</td>
-      <td>${p.date}</td>
-      <td>${p.views}</td>
-      <td><span style="color:#f66;">❤</span> ${p.likes}</td>
-    </tr>
-  `).join('');
+//   tbody.innerHTML = currentPosts.map((p, i) => `
+//     <tr onclick="viewPost(${i})">
+//       <td><span class="tag ${p.tag}">${p.tag}</span></td>
+//       <td>${p.title}</td>
+//       <td>${p.author}</td>
+//       <td>${p.date}</td>
+//       <td>${p.views}</td>
+//       <td><span style="color:#f66;">❤</span> ${p.likes}</td>
+//     </tr>
+//   `).join('');
 
-  // 페이지 표시
-  document.getElementById("pageInfo").textContent = `${currentPage} / ${totalPages}`;
-  document.getElementById("prevBtn").disabled = currentPage === 1;
-  document.getElementById("nextBtn").disabled = currentPage === totalPages;
-}
+//   // 페이지 표시
+//   document.getElementById("pageInfo").textContent = `${currentPage} / ${totalPages}`;
+//   document.getElementById("prevBtn").disabled = currentPage === 1;
+//   document.getElementById("nextBtn").disabled = currentPage === totalPages;
+// }
 
-function renderPopular() {
-  const sidebar = document.getElementById("popularList");
-  const popular = posts
-    .filter(p => p.category === currentCategory)
-    .sort((a, b) => b.views - a.views)
-    .slice(0, 5);
-  sidebar.innerHTML = popular.map(p => `<li><a href="#">[${p.tag}] ${p.title}</a></li>`).join('');
-}
+// function renderPopular() {
+//   const sidebar = document.getElementById("popularList");
+//   const popular = posts
+//     .filter(p => p.category === currentCategory)
+//     .sort((a, b) => b.views - a.views)
+//     .slice(0, 5);
+//   sidebar.innerHTML = popular.map(p => `<li><a href="#">[${p.tag}] ${p.title}</a></li>`).join('');
+// }
 
-function changeCategory(category) {
-  document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  currentCategory = category;
-  currentPage = 1;
-  renderBoard();
-  renderPopular();
-}
+// function changeCategory(category) {
+//   document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+//   event.target.classList.add('active');
+//   currentCategory = category;
+//   currentPage = 1;
+//   renderBoard();
+//   renderPopular();
+// }
 
-function changePage(direction) {
-  currentPage += direction;
-  renderBoard();
-}
+// function changePage(direction) {
+//   currentPage += direction;
+//   renderBoard();
+// }
 
 function createPost() {
-  if (!isLoggedIn) {
-    alert("로그인한 사용자만 글을 작성할 수 있습니다.");
-    location.href = "login.html";
-    return;
-  }
-  location.href = "community_write.html";
+//   if (!isLoggedIn) {
+//     alert("로그인한 사용자만 글을 작성할 수 있습니다.");
+//     location.href = "login.html";
+//     return;
+//   }
+  location.href = "communityWrite.jsp";
 }
 
-function viewPost(index) {
-  alert(`게시글 상세 페이지로 이동: ${posts[index].title}`);
-}
+// function viewPost(index) {
+//   alert(`게시글 상세 페이지로 이동: ${posts[index].title}`);
+// }
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderBoard();
-  renderPopular();
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   renderBoard();
+//   renderPopular();
+// });
 </script>
 
 </body>
