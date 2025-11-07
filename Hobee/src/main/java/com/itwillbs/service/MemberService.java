@@ -13,9 +13,15 @@ public class MemberService {
 	@Inject
 	private MemberMapper memberMapper;
 	
-	public void updateMember(UserVO userVO) {
-		System.out.println("MemberService updatemember()");
-		memberMapper.updateMember(userVO);
+	public void updateProMember(UserVO userVO) {
+		System.out.println("MemberService updateProMember()");
+		memberMapper.updateProMember(userVO);
+	}
+
+	public UserVO updateMember(String user_id) {
+		System.out.println("MemberService updateMember()");
+		
+		return memberMapper.updateMember(user_id);
 	}
 
 }

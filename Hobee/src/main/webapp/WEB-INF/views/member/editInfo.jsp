@@ -32,7 +32,7 @@
       <div class="profile-box">
         <div class="profile-pic">🐵</div>
         <div class="profile-info">
-          <p>${UserVO.User_name	}</p>
+          <p>${user.user_name}</p>
           <p>hong123</p>
         </div>
       </div>
@@ -48,27 +48,27 @@
 
       <div class="form-group">
         <label for="userId" >아이디</label>
-        <input type="text" name="User_id" id="User_id" value="${sessionScope.id }" readonly>
+        <input type="text" name="User_id" id="user_id" value="${user.user_id }" readonly>
       </div>
 
       <div class="form-group">
         <label for="password">비밀번호</label>
-        <input type="password" name="User_password" id="User_password" placeholder="새 비밀번호 입력">
+        <input type="password" name="user_password" id="user_password" placeholder="새 비밀번호 입력">
       </div>
 
       <div class="form-group">
         <label for="nickname">닉네임</label>
-        <input type="text" id="user_name" name="user_name" value="${UserVO.User_name}">
+        <input type="text" id="user_name" name="user_name" value="${user.user_name}">
       </div>
 
       <div class="form-group">
         <label for="phone">휴대폰 번호</label>
-        <input type="tel" id="User_phone" value="${UserVO.User_phone}">
+        <input type="tel" id="user_phone" name="user_phone" value="${user.user_phone}">
       </div>
 
       <div class="form-group">
         <label for="email">이메일</label>
-        <input type="email" id="user_email" value="${UserVO.User_email}">
+        <input type="email" id="user_email" name="user_email" value="${user.user_email}">
       </div>
 
       <button class="btn" id="submitBtn">정보 수정</button>

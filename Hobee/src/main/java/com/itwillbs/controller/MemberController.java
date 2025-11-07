@@ -8,10 +8,12 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.domain.UserVO;
@@ -39,8 +41,17 @@ public class MemberController {
 	
 	// 회원수정
 	@GetMapping("/editInfo")
-	public String editInfo() {
+	public String editInfo(Model model) {
 		System.out.println("MemberController editInfo()");
+		String user_id = "aaa1";
+		UserVO user = memberService.updateMember(user_id);
+		   if (user == null) {
+		        System.out.println("⚠ user is null (DB 조회 실패)");
+		    } else {
+		        System.out.println("✅ DB 조회 성공: " + user);
+		    }
+
+		model.addAttribute("user",user);
 		
 		return "member/editInfo"; 
 	}
@@ -49,6 +60,9 @@ public class MemberController {
 	@GetMapping("/my_classroom")
 	public String my_classroom() {
 		System.out.println("MemberController my_classroom()");
+		
+		
+		
 		
 		return "member/my_classroom";  
 	}
@@ -92,7 +106,7 @@ public class MemberController {
 		userVO.setUser_name("User_name");
 		userVO.setUser_email("UserVO.User_email");
 		
-		memberService.updateMember(userVO);
+		memberService.updateProMember(userVO);
 		
 		return "redirect:/member/mypage";   
 	}

@@ -4,6 +4,9 @@ import com.itwillbs.domain.UserVO;
 
 public interface MemberMapper {
 
-	void updateMember(UserVO userVO);
+	public void updateProMember(UserVO userVO);
+
+	public UserVO updateMember(String user_id);
+	
 
 }
