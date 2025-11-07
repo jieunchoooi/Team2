@@ -38,6 +38,26 @@ main {
   align-items: start;
 }
 
+/* ✅ 검색창 */
+.search-bar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+.search-bar input {
+  width: 100%;
+  max-width: 350px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-bar input:focus {
+  border-color: var(--primary);
+}
+
 /* 추천 카드 */
 .recommend-section {
   background: #fff;
@@ -60,7 +80,7 @@ main {
 }
 .recommend-card {
   flex: 1;
-  min-width: 280px;
+  min-width: 250px;
   background: var(--bg);
   border-radius: 12px;
   padding: 14px 16px;
@@ -83,11 +103,18 @@ main {
   color: #888;
 }
 
+/* ✅ 카테고리 + 글쓰기 버튼 */
+.category-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
 /* 카테고리 탭 */
 .category-tabs {
   display: flex;
   gap: 10px;
-  margin-bottom: 25px;
 }
 .category-tab {
   border: 1px solid var(--border);
@@ -110,25 +137,7 @@ main {
   border-color: var(--primary);
 }
 
-/* 검색/글쓰기 */
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-.search-box input {
-  border: 1px solid var(--border);
-  border-radius: 25px;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  width: 250px;
-  outline: none;
-  transition: 0.2s;
-}
-.search-box input:focus {
-  border-color: var(--primary);
-}
+/* 글쓰기 버튼 */
 .write-btn {
   background: var(--primary);
   color: #fff;
@@ -144,7 +153,7 @@ main {
   background: #1e53d8;
 }
 
-/* 게시글 */
+/* 게시글 리스트 */
 .board-list {
   display: flex;
   flex-direction: column;
@@ -154,7 +163,7 @@ main {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 12px 16px; /* ✅ 높이 줄임 */
+  padding: 12px 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   transition: all 0.2s ease;
   cursor: pointer;
@@ -272,8 +281,13 @@ main {
 
 <main>
   <div class="layout">
-    <!-- 왼쪽: 본문 -->
+    <!-- 왼쪽 본문 -->
     <div>
+      <!-- ✅ 검색창 -->
+      <div class="search-bar">
+        <input type="text" placeholder="게시글 검색...">
+      </div>
+
       <!-- ✅ 이런 글은 어때요 -->
       <div class="recommend-section">
         <h2>이런 글은 어때요? 👀</h2>
@@ -285,18 +299,13 @@ main {
         </div>
       </div>
 
-      <!-- 카테고리 탭 -->
-      <div class="category-tabs">
-        <div class="category-tab active">전체</div>
-        <div class="category-tab">예체능</div>
-        <div class="category-tab">IT</div>
-        <div class="category-tab">외국어</div>
-      </div>
-
-      <!-- 검색/글쓰기 -->
-      <div class="top-bar">
-        <div class="search-box">
-          <input type="text" placeholder="게시글 검색...">
+      <!-- ✅ 카테고리 탭 + 글쓰기 버튼 -->
+      <div class="category-topbar">
+        <div class="category-tabs">
+          <div class="category-tab active">전체</div>
+          <div class="category-tab">예체능</div>
+          <div class="category-tab">IT</div>
+          <div class="category-tab">외국어</div>
         </div>
         <a href="${pageContext.request.contextPath}/board/comunityWrite" class="write-btn">글쓰기 ✏️</a>
       </div>
@@ -331,15 +340,15 @@ main {
 
       <!-- ✅ 페이지네이션 -->
       <div class="pagination">
+        <a href="#">이전</a>
         <a href="#" class="active">1</a>
         <a href="#">2</a>
         <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
+        <a href="#">다음</a>
       </div>
     </div>
 
-    <!-- ✅ 오른쪽: 인기글 -->
+    <!-- ✅ 오른쪽 인기글 -->
     <div class="popular-section">
       <h3>🔥 인기글 TOP 10</h3>
       <div class="popular-list">
