@@ -1,8 +1,11 @@
 package com.itwillbs.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwillbs.domain.CommunityVO;
@@ -31,8 +34,12 @@ public class CommunityController {
 	}
 	
 	@RequestMapping (value="/comunityList")
-	public String comunity() {
+	public String comunityList(Model model) {
 		System.out.println("CommunityController comunityList()");
+		
+		List<CommunityVO> communityList = communityService.comunityList();
+		model.addAttribute("communityList", communityList);
+		
 		return "board/comunityList";
 	}
 	

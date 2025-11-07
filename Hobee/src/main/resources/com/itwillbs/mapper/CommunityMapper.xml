@@ -13,6 +13,10 @@
 			insert into community_content (title,content)	
 			values(#{title},#{content})					
 		</insert>
+		
+		<select id="comunityList" resultType="com.itwillbs.domain.CommunityVO">
+		   	select * from community_content
+		</select>
    
 <!--    <select id="loginMember" resultType="com.itwillbs.domain.MemberVO"> -->
 <!--    	select * from members -->

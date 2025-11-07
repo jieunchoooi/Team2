@@ -1,5 +1,7 @@
 package com.itwillbs.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.domain.CommunityVO;
@@ -8,5 +10,7 @@ import com.itwillbs.domain.CommunityVO;
 public interface CommunityMapper {
 
 	public void writeCommunity(CommunityVO communityVO);
+
+	public List<CommunityVO> comunityList();
 
 }
