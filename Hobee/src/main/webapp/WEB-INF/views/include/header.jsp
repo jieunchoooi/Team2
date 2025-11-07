@@ -19,7 +19,7 @@
 					<div class="mega-column">
 						<h3>예체능</h3>
 						<ul>
-							<li><a href="${pageContext.request.contextPath }/category/drawingList">디지털 드로잉</a></li>
+							<li><a href="${pageContext.request.contextPath }/category/lectureList">디지털 드로잉</a></li>
 							<li><a href="${pageContext.request.contextPath }/category/drawingList">드로잉</a></li>
 							<li><a href="${pageContext.request.contextPath }/category/drawingList">공예</a></li>
 						</ul>

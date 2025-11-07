@@ -23,8 +23,9 @@ public class UserVO {
     private int points;          // 🔹 보유 포인트
     private String user_file; // 사진 경로 마이페이지에서만 활용
     private String created_at;
-    private String updated_at;
-
+    private String updated_sat;
+    
+    
     // 결제 관련 보조 필드
     private int used_points;
     private int saved_points;

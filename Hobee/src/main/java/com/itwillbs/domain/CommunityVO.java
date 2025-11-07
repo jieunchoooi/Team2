@@ -8,10 +8,11 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class BoardVO {
+public class CommunityVO {
 	
 	private String title;
 	private String content;
+	private String author;
 	
 	
 

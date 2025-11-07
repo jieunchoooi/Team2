@@ -213,27 +213,28 @@ footer {
     <table>
       <thead>
         <tr>
-          <th style="width:12%">말머리</th>
+<!--           <th style="width:12%">말머리</th> -->
           <th style="width:42%">제목</th>
           <th style="width:12%">작성자</th>
-          <th style="width:12%">날짜</th>
-          <th style="width:10%">조회</th>
-          <th style="width:10%">좋아요</th>
+<!--           <th style="width:12%">날짜</th> -->
+<!--           <th style="width:10%">조회</th> -->
+<!--           <th style="width:10%">좋아요</th> -->
         </tr>
       </thead>
 <!--       <tbody id="boardList"></tbody> -->
 	   <tbody id="boardList">
         <c:choose>
-          <c:when test="${not empty boardList}">
-            <c:forEach var="community_content" items="${boardList}">
+          <c:when test="${not empty communityList}">
+            <c:forEach var="communityList" items="${communityList}">
 <%--               <tr onclick="viewPost(${community_content.id})"> --%>
+				<tr>
 <%--                 <td><span class="tag ${community_content.tag}">${community_content.tag}</span></td> --%>
-                <td>${community_content.title}</td>
-<%--                 <td>${community_content.author}</td> --%>
+                <td>${communityList.title}</td>
+                <td>${community_content.author}</td>
 <%--                 <td><fmt:formatDate value="${community_content.createDate}" pattern="MM-dd" /></td> --%>
 <%--                 <td>${community_content.views}</td> --%>
 <%--                 <td><span style="color:#f66;">❤</span> ${community_content.likes}</td> --%>
-<!--               </tr> -->
+              </tr>
             </c:forEach>
           </c:when>
           <c:otherwise>

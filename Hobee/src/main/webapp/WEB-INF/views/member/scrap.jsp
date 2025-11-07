@@ -5,19 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>스크랩 / 관심 | Hobee</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypageCommon.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/scrap.css">
 </head>
 <body>
 
-<header>
-  <h1><a href="${pageContext.request.contextPath }/main/main">Hobee</a></h1>
-  <nav>
-    <a href="${pageContext.request.contextPath }/main/main">홈</a>
-    <a href="${pageContext.request.contextPath }/category/list">카테고리</a>
-    <a href="${pageContext.request.contextPath }/mypage/mypage">마이페이지</a>
-    <a href="${pageContext.request.contextPath }/member/logout" onclick="logout()">로그아웃</a>
-  </nav>
-</header>
+<!-- header -->
+<jsp:include page="../include/header.jsp"></jsp:include>
 
 <!-- 좌측 사이드바 -->
 <jsp:include page="../include/memberSidebar.jsp"></jsp:include>
