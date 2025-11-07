@@ -25,8 +25,8 @@
     <div class="profile-box">
       <div class="profile-pic">🐵</div>
       <div class="profile-info">
-        <p>홍길동</p>
-        <p>hong123</p>
+        <p>${user.user_name}</p>
+        <p>${user.user_email}</p>
       </div>
     </div>
     <h1>마이페이지</h1>

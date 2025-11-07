@@ -29,13 +29,21 @@ public class MemberController {
 	
 	// 업로드 경로
 	@Resource(name = "uploadPath")
-	private String uploadPath = "src/main/webapp/resources/img/user_picture";
+	private String uploadPath;
 	
 	// 마이페이지
 	@GetMapping("/mypage")
-	public String mypage() {
+	public String mypage(Model model) {
 		System.out.println("MemberController mypage()");
-		
+		String user_id = "aaa1";
+		UserVO user = memberService.insertMember(user_id);
+		   if (user == null) {
+		        System.out.println("⚠ user is null (DB 조회 실패)");
+		    } else {
+		        System.out.println("✅ DB 조회 성공: " + user);
+		    }
+
+		model.addAttribute("user",user);
 		return "member/mypage";  
 	}
 	
@@ -44,7 +52,7 @@ public class MemberController {
 	public String editInfo(Model model) {
 		System.out.println("MemberController editInfo()");
 		String user_id = "aaa1";
-		UserVO user = memberService.updateMember(user_id);
+		UserVO user = memberService.insertMember(user_id);
 		   if (user == null) {
 		        System.out.println("⚠ user is null (DB 조회 실패)");
 		    } else {
@@ -56,6 +64,27 @@ public class MemberController {
 		return "member/editInfo"; 
 	}
 	
+	@PostMapping("/updatePro")
+	public String updatePro(HttpServletRequest request, MultipartFile user_picture) throws Exception {
+		System.out.println("MemberController updatePro()");
+		
+		UUID uuid = UUID.randomUUID();
+		String filename = uuid.toString() + "_" + user_picture.getOriginalFilename();
+		
+		FileCopyUtils.copy(user_picture.getBytes(),new File(uploadPath, filename));
+		
+		UserVO userVO = new UserVO();
+		userVO.setUser_password("user_password");
+		userVO.setUser_phone("user_phone");
+		userVO.setUser_name("user_name");
+		userVO.setUser_email("user_email");
+		userVO.setUser_address("user_address");
+		
+		memberService.updateProMember(userVO);
+		
+		return "redirect:/member/mypage";   
+	}
+
 	// 내 강의실
 	@GetMapping("/my_classroom")
 	public String my_classroom() {
@@ -91,25 +120,6 @@ public class MemberController {
 		return "member/scrap";  
 	}
 	
-	@PostMapping("/updatePro")
-	public String updatePro(HttpServletRequest request, MultipartFile file ) throws Exception {
-		System.out.println("MemberController updatePro()");
-		
-		UUID uuid = UUID.randomUUID();
-		String filename = uuid.toString() + "_" + file.getOriginalFilename();
-		
-		FileCopyUtils.copy(file.getBytes(),new File(uploadPath, filename));
-		
-		UserVO userVO = new UserVO();
-		userVO.setUser_password("User_password");
-		userVO.setUser_phone("User_password");
-		userVO.setUser_name("User_name");
-		userVO.setUser_email("UserVO.User_email");
-		
-		memberService.updateProMember(userVO);
-		
-		return "redirect:/member/mypage";   
-	}
 	
 	
 	

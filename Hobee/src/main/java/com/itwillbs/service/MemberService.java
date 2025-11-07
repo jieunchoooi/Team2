@@ -18,10 +18,10 @@ public class MemberService {
 		memberMapper.updateProMember(userVO);
 	}
 
-	public UserVO updateMember(String user_id) {
-		System.out.println("MemberService updateMember()");
+	public UserVO insertMember(String user_id) {
+		System.out.println("MemberService insertMember()");
 		
-		return memberMapper.updateMember(user_id);
+		return memberMapper.insertMember(user_id);
 	}
 
 }

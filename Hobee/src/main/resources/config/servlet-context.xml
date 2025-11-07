@@ -34,6 +34,6 @@
 <!-- 	서버 업로드 할 물리적 경로 
 	D:\workspace_sts\SpringProject2\src\main\webapp\resources\upload -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="D:\\workspace_sts\\SpringProject2\\src\\main\\webapp\\resources\\upload"></beans:constructor-arg>
+		<beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\img\\user_picture"></beans:constructor-arg>
 	</beans:bean>
 </beans:beans>

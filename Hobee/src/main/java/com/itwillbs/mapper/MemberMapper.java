@@ -6,7 +6,7 @@ public interface MemberMapper {
 
 	public void updateProMember(UserVO userVO);
 
-	public UserVO updateMember(String user_id);
+	public UserVO insertMember(String user_id);
 	
 
 }

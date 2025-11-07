@@ -9,13 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/editlnfo.css">
-<script type="text/javascript">
-	$(function(){
-		$('#submitBtn').click(function(){
-			
-		}
-	
-</script>
+
 
 </head>
 <body>
@@ -30,10 +24,10 @@
   <section class="main-content">
     <div class="main-header">
       <div class="profile-box">
-        <div class="profile-pic">🐵</div>
+        <div class="profile-pic">${user.user_file}</div>
         <div class="profile-info">
           <p>${user.user_name}</p>
-          <p>hong123</p>
+          <p>${user.user_email}</p>
         </div>
       </div>
       <h1>회원정보 수정</h1>
@@ -57,8 +51,8 @@
       </div>
 
       <div class="form-group">
-        <label for="nickname">닉네임</label>
-        <input type="text" id="user_name" name="user_name" value="${user.user_name}">
+        <label for="adress">주소</label>
+        <input type="text" id="user_address" name="user_address" value="${user.user_address}">
       </div>
 
       <div class="form-group">
