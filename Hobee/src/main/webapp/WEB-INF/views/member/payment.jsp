@@ -20,7 +20,7 @@
 </header>
 
 <!-- 좌측 사이드바 -->
-<jsp:include page="../include/memberSidebar.jsp"></jsp:include>
+<jsp:include page="../include/userSidebar.jsp"></jsp:include>
 
 <main class="main-content">
   <div class="main-header">

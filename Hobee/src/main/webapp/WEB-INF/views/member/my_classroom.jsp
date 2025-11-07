@@ -22,7 +22,7 @@
 
 
 <!-- 좌측 사이드바 -->
-<jsp:include page="../include/memberSidebar.jsp"></jsp:include>
+<jsp:include page="../include/userSidebar.jsp"></jsp:include>
 
 <!-- 메인 콘텐츠 -->
 <main class="main-content">

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원정보 수정 | Hobee</title>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/memberSidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/userSidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/editInfo.css">
 
 <script type="text/javascript">
@@ -29,7 +29,7 @@
 <jsp:include page="../include/header.jsp"></jsp:include>
 
 <!-- 좌측 사이드바 -->
-<jsp:include page="../include/memberSidebar.jsp"></jsp:include>
+<jsp:include page="../include/userSidebar.jsp"></jsp:include>
 
 <!-- 메인 콘텐츠 -->
 <main>
