@@ -7,10 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/category/*")
 public class CategoryController {
 	
-	@RequestMapping(value="/drawingList")
+	@RequestMapping(value="/lectureList")
+	public String drawingList() {
+		System.out.println("CategoryController lectureList()");
+		return "category/lectureList";
+	}
+	
+	@RequestMapping(value="/lecture")
 	public String lecture() {
 		System.out.println("CategoryController lecture()");
-		return "category/drawingList";
+		return "category/lecture";
 	}
 	
 	
