@@ -188,12 +188,19 @@ footer {
 		<div class="course-slider" id="courseSlider">
 			<% for (int r = 0; r < 4; r++) { %>
 			<div class="course-row">
-				<% for (int i = 1; i <= 5; i++) { %>
+				<% for (int i = 1; i <= 5; i++) { 
+					int lectureId = (r * 5 + i); // 강의 고유 ID
+				%>
 				<div class="course-card">
-					<img src="https://picsum.photos/400/250?random=<%= (r*5+i) %>" class="course-thumb" alt="강의<%= (r*5+i) %>">
+<%-- 					<a href="lecture.jsp?lectureId=<%= lectureId %>"> --%>
+					<a href="${pageContext.request.contextPath }/category/lecture">
+						<img src="https://picsum.photos/400/250?random=<%= lectureId %>" 
+						     class="course-thumb" 
+						     alt="강의<%= lectureId %>">
+					</a>
 					<div class="course-info">
-						<div class="course-title">강의 제목 <%= (r*5+i) %></div>
-						<div class="course-price">₩<%= (40000 + (r*5+i)*1000) %></div>
+						<div class="course-title">강의 제목 <%= lectureId %></div>
+						<div class="course-price">₩<%= (40000 + lectureId * 1000) %></div>
 					</div>
 				</div>
 				<% } %>
@@ -201,6 +208,7 @@ footer {
 			<% } %>
 		</div>
 	</section>
+
 </main>
 
 <script>
