@@ -8,7 +8,7 @@
 <title>회원정보 수정 | Hobee</title>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/editInfo.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/editlnfo.css">
 
 <script type="text/javascript">
 	$(function(){
