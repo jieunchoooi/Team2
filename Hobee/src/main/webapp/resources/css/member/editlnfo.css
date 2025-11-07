@@ -1,174 +1,390 @@
 @charset "UTF-8";
 
-/* ====== 전체 기본 ====== */
-body {
+/* ===============================
+   ✅ 전역 스타일
+   =============================== */
+* {
   margin: 0;
-  font-family: 'Pretendard', sans-serif;
-  background-color: #f5f7fb;
-  color: #333;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ====== 전체 레이아웃 ====== */
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* ===============================
+   ✅ 메인 레이아웃
+   =============================== */
 main {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 40px 60px;
-  gap: 60px;
-  box-sizing: border-box;
+  margin-left: 240px;
+  padding-top: 80px; /* 헤더 높이만큼 패딩 */
+  min-height: 100vh;
 }
 
-/* ====== 메인 콘텐츠 영역 ====== */
+/* ===============================
+   ✅ 메인 컨텐츠 영역
+   =============================== */
 .main-content {
-  flex: 1;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   padding: 40px 60px;
-  box-sizing: border-box;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* ====== 상단 프로필 헤더 ====== */
+/* ===============================
+   ✅ 메인 헤더
+   =============================== */
 .main-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid #f0f3fa;
-  padding-bottom: 20px;
   margin-bottom: 40px;
 }
 
+/* ===============================
+   ✅ 프로필 박스
+   =============================== */
 .profile-box {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 24px 28px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
 }
 
-.profile-pic {
-  width: 60px;
-  height: 60px;
-  background-color: #eef3ff;
+.profile-box:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.profile-box .profile-pic {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #2573ff 0%, #1e40af 100%);
   border-radius: 50%;
-  font-size: 1.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 40px;
+  box-shadow: 0 4px 12px rgba(37, 115, 255, 0.3);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .profile-info p:first-child {
+  font-size: 22px;
   font-weight: 700;
-  font-size: 1.1rem;
+  color: #111827;
 }
 
 .profile-info p:last-child {
-  color: #888;
-  font-size: 0.9rem;
+  font-size: 15px;
+  color: #6b7280;
+  font-weight: 500;
 }
 
+/* ===============================
+   ✅ 페이지 타이틀
+   =============================== */
 .main-header h1 {
-  font-size: 1.4rem;
+  font-size: 32px;
   font-weight: 700;
-  color: #2573ff;
+  color: #111827;
+  margin-top: 10px;
 }
 
-/* ====== 폼 영역 ====== */
+/* ===============================
+   ✅ 폼 컨테이너
+   =============================== */
 .form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 500px;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
 }
 
-/* 프로필 이미지 수정 */
+/* ===============================
+   ✅ 프로필 편집 영역
+   =============================== */
 .profile-edit {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #f3f4f6;
 }
 
+.profile-edit .profile-pic {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #2573ff 0%, #1e40af 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  box-shadow: 0 4px 16px rgba(37, 115, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.profile-edit .profile-pic:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(37, 115, 255, 0.4);
+}
+
+/* ===============================
+   ✅ 파일 입력 (숨김)
+   =============================== */
 .file-input {
   display: none;
 }
 
 .file-input-label {
-  background: #eef4ff;
+  padding: 10px 24px;
+  background-color: #eef5ff;
   color: #2573ff;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border: 2px solid #2573ff;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
 }
 
 .file-input-label:hover {
-  background: #dbe7ff;
+  background-color: #2573ff;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 115, 255, 0.3);
 }
 
-/* ====== 입력 폼 공통 ====== */
+/* ===============================
+   ✅ 폼 그룹
+   =============================== */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  margin-bottom: 24px;
 }
 
 .form-group label {
+  display: block;
+  font-size: 14px;
   font-weight: 600;
-  color: #333;
+  color: #374151;
+  margin-bottom: 8px;
 }
 
 .form-group input {
-  padding: 10px 14px;
-  border: 1px solid #d4d9e2;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #111827;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
 }
 
 .form-group input:focus {
   outline: none;
   border-color: #2573ff;
+  box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
 }
 
-/* ====== 버튼 ====== */
+.form-group input:read-only {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* ===============================
+   ✅ 버튼 스타일
+   =============================== */
 .btn {
-  margin-top: 20px;
-  background-color: #2573ff;
-  color: white;
+  width: 100%;
+  padding: 16px;
   border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: all 0.3s ease;
+  margin-top: 12px;
 }
 
-.btn:hover {
-  background-color: #1d63e0;
-  transform: scale(1.02);
+.btn:first-of-type {
+  background-color: #2573ff;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 115, 255, 0.3);
 }
 
-/* 탈퇴 버튼 */
+.btn:first-of-type:hover {
+  background-color: #1e40af;
+  box-shadow: 0 6px 16px rgba(37, 115, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn:first-of-type:active {
+  transform: translateY(0);
+}
+
+/* ===============================
+   ✅ 회원 탈퇴 버튼
+   =============================== */
 .btn-delete {
-  background-color: #f64e60;
-  margin-top: 10px;
+  background-color: #ffffff;
+  color: #ef4444;
+  border: 2px solid #ef4444;
+  margin-top: 16px;
 }
 
 .btn-delete:hover {
-  background-color: #d13b4d;
+  background-color: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  transform: translateY(-2px);
 }
 
-/* ====== 반응형 ====== */
-@media (max-width: 1024px) {
+.btn-delete:active {
+  transform: translateY(0);
+}
+
+/* ===============================
+   ✅ 반응형 디자인
+   =============================== */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 30px 40px;
+  }
+}
+
+@media (max-width: 768px) {
   main {
+    margin-left: 200px;
+    padding-top: 75px; /* 헤더 높이만큼 패딩 */
+  }
+  
+  .main-content {
+    padding: 24px 20px;
+  }
+  
+  .profile-box {
+    padding: 20px 24px;
+    gap: 16px;
+  }
+  
+  .profile-box .profile-pic {
+    width: 70px;
+    height: 70px;
+    font-size: 35px;
+  }
+  
+  .profile-info p:first-child {
+    font-size: 20px;
+  }
+  
+  .profile-info p:last-child {
+    font-size: 14px;
+  }
+  
+  .main-header h1 {
+    font-size: 28px;
+  }
+  
+  .form-container {
+    padding: 30px 24px;
+  }
+  
+  .profile-edit .profile-pic {
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+  }
+  
+  .form-group input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  
+  .btn {
+    padding: 14px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    margin-left: 180px;
+    padding-top: 70px; /* 헤더 높이만큼 패딩 */
+  }
+  
+  .main-content {
+    padding: 20px 16px;
+  }
+  
+  .profile-box {
     flex-direction: column;
-    align-items: center;
+    text-align: center;
     padding: 20px;
   }
-
-  .main-content {
-    width: 100%;
-    padding: 30px;
+  
+  .profile-box .profile-pic {
+    width: 65px;
+    height: 65px;
+    font-size: 32px;
+  }
+  
+  .profile-info p:first-child {
+    font-size: 18px;
+  }
+  
+  .profile-info p:last-child {
+    font-size: 13px;
+  }
+  
+  .main-header h1 {
+    font-size: 24px;
+  }
+  
+  .form-container {
+    padding: 24px 20px;
+  }
+  
+  .profile-edit .profile-pic {
+    width: 90px;
+    height: 90px;
+    font-size: 45px;
+  }
+  
+  .file-input-label {
+    padding: 9px 20px;
+    font-size: 13px;
+  }
+  
+  .form-group label {
+    font-size: 13px;
+  }
+  
+  .form-group input {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .btn {
+    padding: 13px;
+    font-size: 14px;
   }
 }
