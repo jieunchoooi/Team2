@@ -30,10 +30,10 @@ public class BoardController {
 		return "redirect:/board/comunity";
 	}
 	
-	@RequestMapping (value="/comunity")
+	@RequestMapping (value="/comunityList")
 	public String comunity() {
-		System.out.println("BoradController comunity()");
-		return "board/comunity";
+		System.out.println("BoradController comunityList()");
+		return "board/comunityList";
 	}
 	
 	@RequestMapping (value="/comunityContent")

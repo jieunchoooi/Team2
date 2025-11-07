@@ -42,7 +42,7 @@
 					</div>
 				</div>
 			</div>
-			<a href="${pageContext.request.contextPath }/board/comunity">커뮤니티</a>
+			<a href="${pageContext.request.contextPath }/board/comunityList">커뮤니티</a>
 			<a href="${pageContext.request.contextPath }/recommend/recoList">베스트 & 추천강의</a>
 		</div>
 
