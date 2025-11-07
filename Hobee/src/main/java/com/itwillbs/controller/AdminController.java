@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwillbs.service.AdminService;
-import com.itwillbs.service.MemberService;
+import com.itwillbs.service.UserService;
 
 @Controller
 @RequestMapping("/admin/*")
