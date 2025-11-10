@@ -93,6 +93,13 @@ main {
   gap: 14px;
   flex-wrap: wrap;
 }
+
+.recommend-cards a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit;         /* 글자색 유지 */
+  display: block;         /* 카드 전체 영역 클릭 가능 */
+}
+
 .recommend-card {
   flex: 1;
   min-width: 250px;
@@ -309,10 +316,26 @@ main {
       <div class="recommend-section">
         <h2>이런 글은 어때요? 👀</h2>
         <div class="recommend-cards">
-          <div class="recommend-card"><div class="title">신입 개발자 포트폴리오 정리 꿀팁</div><div class="meta">조회 1,204</div></div>
-          <div class="recommend-card"><div class="title">요즘 뜨는 자격증 TOP 3</div><div class="meta">조회 893</div></div>
-          <div class="recommend-card"><div class="title">개발자 면접에서 자주 나오는 질문 모음</div><div class="meta">조회 2,013</div></div>
-          <div class="recommend-card"><div class="title">경력직 이직 면접 질문 모음</div><div class="meta">조회 7,017</div></div>
+         <a href="${pageContext.request.contextPath}/board/comunityContent" class="recommend-card">
+		   <div class="title">신입 개발자 포트폴리오 정리 꿀팁</div>
+		   <div class="meta">조회 1,204</div>
+		 </a>
+		
+		 <a href="${pageContext.request.contextPath}/board/comunityContent" class="recommend-card">
+		   <div class="title">요즘 뜨는 자격증 TOP 3</div>
+		   <div class="meta">조회 893</div>
+	 	 </a>
+		
+		 <a href="${pageContext.request.contextPath}/board/comunityContent" class="recommend-card">
+		   <div class="title">개발자 면접에서 자주 나오는 질문 모음</div>
+		   <div class="meta">조회 2,013</div>
+		 </a>
+		
+		 <a href="${pageContext.request.contextPath}/board/comunityContent" class="recommend-card">
+		   <div class="title">경력직 이직 면접 질문 모음</div>
+		   <div class="meta">조회 7,017</div>
+		 </a>
+
         </div>
       </div>
 
