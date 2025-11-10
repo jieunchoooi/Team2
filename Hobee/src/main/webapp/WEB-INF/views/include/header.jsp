@@ -14,10 +14,10 @@
 	<nav>
 		<div class="nav-left">
 			<div class="mega-dropdown">
-				<a href="${pageContext.request.contextPath }/main/main">카테고리 ▾</a>
+				<a href="#">카테고리 ▾</a>
 				<div class="mega-content">
 					<div class="mega-column">
-						<h3>예체능</h3>
+						<h3>ART</h3>
 						<ul>
 							<li><a href="${pageContext.request.contextPath }/category/lectureList">디지털 드로잉</a></li>
 							<li><a href="${pageContext.request.contextPath }/category/drawingList">드로잉</a></li>
