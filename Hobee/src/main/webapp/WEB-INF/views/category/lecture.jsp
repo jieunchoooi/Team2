@@ -22,9 +22,24 @@ body { background: var(--bg); color: var(--text-color); display: flex; flex-dire
 
 main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap: 30px; max-width: 1400px; margin: 0 auto; width: 100%; align-items: flex-start; }
 
-.detail-content { flex: 1; max-width: 900px; overflow-y: auto; }
+.detail-content {
+  flex: 1;
+  max-width: 900px;
+  /* overflow-y: auto;  제거 */
+}
 
-.tab-menu { display: flex; gap: 30px; margin-bottom: 30px; position: sticky; top: 0; background: var(--bg); z-index: 10; padding-bottom: 10px; }
+.tab-menu {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
+  padding-bottom: 10px;
+  
+}
+
 .tab-item { padding: 12px 5px; font-size: 1.05rem; font-weight: 600; color: #888; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
 .tab-item.active { color: #222; border-bottom-color: #222; }
 .tab-item:hover { color: #222; }
@@ -101,7 +116,8 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     <div class="tab-menu">
       <div class="tab-item active">강의 소개</div>
       <div class="tab-item">커리큘럼</div>
-      <div class="tab-item">추천</div>
+      <div class="tab-item">강사의 다른강의</div>
+      <div class="tab-item">비슷한 강의 추천</div>
     </div>
 
     <img class="course-thumbnail" src="https://images.squarespace-cdn.com/content/v1/63d40fe2cbd65e16cb8098b6/7da763b6-1122-4c6f-9bfd-2c9c278dff10/image-asset%2B%2831%29.jpeg" alt="디지털 드로잉 클래스" />
@@ -193,7 +209,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
     <!-- 강사의 다른 강의 -->
     <div class="instructor-section">
-      <h3>강사의 다른 강의</h3>
+      <h3>강사의 다른강의</h3>
       <div class="lecture-grid">
         <% for(int i=1; i<=4; i++){ %>
         <div class="lecture-card">
@@ -248,8 +264,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       </div>
 
       <div class="action-icons">
-        <div class="action-icon"><i class="far fa-heart"></i><span>준비물</span></div>
-        <div class="action-icon"><i class="far fa-play-circle"></i><span>미리보기</span></div>
+        <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div>
         <div class="action-icon"><i class="far fa-bookmark"></i><span>46513</span></div>
         <div class="action-icon"><i class="far fa-share-square"></i><span>공유</span></div>
         <div class="action-icon"><i class="fas fa-gift"></i><span>구매</span></div>
@@ -259,5 +274,35 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 </main>
 
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
+
+<script>
+  // 탭 클릭 시 스크롤 이동
+  const tabs = document.querySelectorAll('.tab-item');
+  const curriculumSection = document.querySelector('.curriculum-section');
+  const instructorSection = document.querySelector('.instructor-section');
+  const similarSection = document.querySelector('.similar-section');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // 모든 탭 active 제거
+      tabs.forEach(t => t.classList.remove('active'));
+      // 클릭한 탭만 active
+      tab.classList.add('active');
+
+      // 각 섹션으로 스크롤 이동
+      if(tab.textContent.includes('커리큘럼')){
+        curriculumSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if(tab.textContent.includes('다른강의')){
+        instructorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if(tab.textContent.includes('추천')){
+        similarSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if(tab.textContent.includes('강의 소개')){
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+
 </body>
 </html>
