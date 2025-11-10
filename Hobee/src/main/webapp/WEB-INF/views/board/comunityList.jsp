@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>커뮤니티</title>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 :root {
   --primary: #2963f6;
@@ -40,23 +42,36 @@ main {
 
 /* ✅ 검색창 */
 .search-bar {
+  position: relative;
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 20px;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 25px;
 }
+
+.search-bar i {
+  position: absolute;
+  left: 15px;
+  color: #888;
+  font-size: 1rem;
+  color: #2963f6;
+}
+
 .search-bar input {
   width: 100%;
-  max-width: 350px;
-  padding: 10px 14px;
+  padding: 10px 14px 10px 40px; /* 왼쪽에 아이콘 자리 확보 */
   border: 1px solid var(--border);
   border-radius: 22px;
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s;
+  background-color: #fff;
+  box-sizing: border-box;
 }
 .search-bar input:focus {
   border-color: var(--primary);
 }
+
 
 /* 추천 카드 */
 .recommend-section {
@@ -284,9 +299,11 @@ main {
     <!-- 왼쪽 본문 -->
     <div>
       <!-- ✅ 검색창 -->
-      <div class="search-bar">
-        <input type="text" placeholder="게시글 검색...">
-      </div>
+		<div class="search-bar">
+		  <i class="fa-solid fa-magnifying-glass"></i>
+		  <input type="text" placeholder="게시글 검색...">
+		</div>
+
 
       <!-- ✅ 이런 글은 어때요 -->
       <div class="recommend-section">
