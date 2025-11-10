@@ -204,15 +204,8 @@ footer {
 </head>
 <body>
 
-<header>
-  <h1 onclick="location.href='index.html'">Hobee</h1>
-  <nav>
-    <a href="#">홈</a>
-    <a href="#">강의</a>
-    <a href="#">커뮤니티</a>
-    <a href="#">로그인</a>
-  </nav>
-</header>
+<!-- header -->
+<jsp:include page="../include/header.jsp"></jsp:include>
 
 <main>
   <div class="detail-container">

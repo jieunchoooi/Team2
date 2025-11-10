@@ -183,6 +183,8 @@ footer {
 	margin-top: 60px;
 }
 </style>
+
+
 </head>
 <body>
 
@@ -192,20 +194,20 @@ footer {
 <main>
 	<!-- 왼쪽 사이드 메뉴 -->
 	<aside class="sidebar">
-		<h4>라이프스타일</h4>
-		<ul>
-			<li class="active">전체</li>
-			<li>디지털드로잉</li>
-			<li>드로잉</li>
-			<li>공예</li>
-			<li>AI 스킬업</li>
-			<li>프로그래밍</li>
-			<li>데이터사이언스</li>
-			<li>영어</li>
-			<li>제2외국어</li>
-			<li>외국어 시험</li>
-		</ul>
+	  <ul>
+	    <li class="active" data-category="전체">전체</li>
+	    <li data-category="디지털드로잉">디지털드로잉</li>
+	    <li data-category="드로잉">드로잉</li>
+	    <li data-category="공예">공예</li>
+	    <li data-category="AI 스킬업">AI 스킬업</li>
+	    <li data-category="프로그래밍">프로그래밍</li>
+	    <li data-category="데이터사이언스">데이터사이언스</li>
+	    <li data-category="영어">영어</li>
+	    <li data-category="제2외국어">제2외국어</li>
+	    <li data-category="외국어 시험">외국어 시험</li>
+	  </ul>
 	</aside>
+
 
 	<!-- 메인 콘텐츠 -->
 	<section class="content">
@@ -216,14 +218,14 @@ footer {
 
 		<!-- 🔹 디지털드로잉 Top 10 -->
 		<div class="section">
-			<h3>디지털드로잉 Top 10</h3>
-				<div class="top10-grid">
+			<h3 id="top10-title">디지털드로잉 Top 10</h3>
+				<div class="top10-grid" id="top10-grid">
 				    <% for (int i = 1; i <= 3; i++) { %>
 				        <a href="${pageContext.request.contextPath}/category/lecture" style="text-decoration: none; color: inherit;">
 				            <div class="card">
-				                <img src="https://picsum.photos/400/250?random=<%= i %>" alt="명상<%= i %>">
+				                <img src="https://picsum.photos/400/250?random=<%= i %>" alt="강의<%= i %>">
 				                <div class="card-body">
-				                    <div class="card-title">디지털드로잉 클래스 <%= i %></div>
+				                    <div class="card-title category-title">디지털드로잉 강의 <%= i %></div>
 				                    <div class="card-price">₩<%= (45000 + i * 1000) %></div>
 				                </div>
 				            </div>
@@ -234,14 +236,14 @@ footer {
 
 		<!-- 🔹 전체 클래스 -->
 		<div class="section">
-			<h3>전체 클래스</h3>
-				<div class="all-grid">
+			<h3 id="all-title">전체 강의</h3>
+				<div class="all-grid" id="all-grid">
 				    <% for (int i = 11; i <= 25; i++) { %>
 				        <a href="${pageContext.request.contextPath}/category/lecture" style="text-decoration: none; color: inherit;">
 				            <div class="card">
-				                <img src="https://picsum.photos/400/250?random=<%= i %>" alt="명상<%= i %>">
+				                <img src="https://picsum.photos/400/250?random=<%= i %>" alt="강의<%= i %>">
 				                <div class="card-body">
-				                    <div class="card-title">디지털드로잉 명상 <%= i %></div>
+				                    <div class="card-title category-title">디지털드로잉 강의 <%= i %></div>
 				                    <div class="card-price">₩<%= (35000 + i * 900) %></div>
 				                </div>
 				            </div>
@@ -253,6 +255,60 @@ footer {
 </main>
 
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
+
+<script>
+// ✅ 페이지 로드 시 localStorage에 저장된 카테고리 불러오기
+window.addEventListener("DOMContentLoaded", () => {
+    const savedCategory = localStorage.getItem("selectedCategory");
+    if (savedCategory) {
+        applyCategory(savedCategory);
+        // 저장된 active 표시
+        document.querySelectorAll('.sidebar li').forEach(li => {
+            li.classList.toggle("active", li.getAttribute("data-category") === savedCategory);
+        });
+    }
+});
+
+// ✅ 카테고리 클릭 이벤트 등록
+document.querySelectorAll('.sidebar li').forEach(item => {
+    item.addEventListener('click', function() {
+        // active 클래스 변경
+        document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+        this.classList.add('active');
+
+        // 선택된 카테고리 이름 가져오기
+        const categoryName = this.getAttribute('data-category');
+
+        // localStorage에 저장
+        localStorage.setItem("selectedCategory", categoryName);
+
+        // 카테고리 적용
+        applyCategory(categoryName);
+
+        // 🔹 1초 뒤 새로고침
+        setTimeout(() => {
+            location.reload();
+        }, 100);
+    });
+});
+
+// ✅ 카테고리별 텍스트 변경 함수
+function applyCategory(categoryName) {
+    // Top 10 제목 변경
+    document.getElementById('top10-title').textContent = categoryName + ' Top 10';
+    
+    // 전체 클래스 제목 변경
+    document.getElementById('all-title').textContent =
+        categoryName === '전체' ? '전체 강의' : categoryName + ' 강의';
+    
+    // 카드 제목 변경
+    document.querySelectorAll('.category-title').forEach((title, index) => {
+        title.textContent = categoryName + ' 강의 ' + (index + 1);
+    });
+}
+</script>
+
+
 
 </body>
 </html>

@@ -220,20 +220,9 @@ footer {
 </head>
 <body>
 
-<header>
-  <h1 onclick="location.href='index.html'">Hobee</h1>
-  <nav>
-    <div class="nav-left">
-      <a href="index.html">홈</a>
-      <a href="#">강의</a>
-      <a href="community.html" style="color: var(--primary); font-weight:600;">커뮤니티</a>
-    </div>
-    <div class="nav-right">
-      <a href="#" class="auth-link">로그인</a>
-      <a href="#" class="auth-link">회원가입</a>
-    </div>
-  </nav>
-</header>
+<!-- header -->
+<jsp:include page="../include/header.jsp"></jsp:include>
+
 
 <main>
   <div class="write-container">
