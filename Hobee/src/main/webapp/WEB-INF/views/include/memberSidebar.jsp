@@ -14,7 +14,7 @@
     <div class="menu-item ${page eq 'payment' ? 'active' : ''}" 
          onclick="location.href='${pageContext.request.contextPath}/member/payment'">💳 <span>결제 내역</span></div>
     <div class="menu-item ${page eq 'edit' ? 'active' : ''}" 
-         onclick="location.href='${pageContext.request.contextPath}/member/editInfo'">👤 <span>회원정보 수정</span></div>
+         onclick="location.href='${pageContext.request.contextPath}/member/updatePassWord'">👤 <span>회원정보 수정</span></div>
   </div>
 
   <button class="logout-btn" onclick="logout()">로그아웃</button>

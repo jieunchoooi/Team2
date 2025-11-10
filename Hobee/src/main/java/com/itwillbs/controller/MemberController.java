@@ -158,11 +158,36 @@ public class MemberController {
 		return "member/scrap";  
 	}
 	
+	// 회원정보수정 들어가기전 비밀번호 확인
+	@GetMapping("/updatePassWord") 
+	public String updatePassWord(Model model) {
+		System.out.println("MemberController updatePassWord()");
+		String user_id = "aaa1";
+		UserVO user = memberService.insertMember(user_id);
+		
+		model.addAttribute("user", user);
+		return "member/updatePassWord";  
+	}
+	
+	@PostMapping("/updatePasswordPro")
+	public String updatePasswordPro(@RequestParam("user_id") String user_id,
+								    @RequestParam("user_password") String user_password, Model model) {
+		System.out.println("MemberController updatePasswordPro()");
+		
+		user_id = "aaa1";
+		UserVO user = memberService.insertMember(user_id);
+		
+		if(user != null && user.getUser_password().equals(user_password)) {
+			// 비번 일치
+			return "redirect:/member/editInfo";
+		}else {	
+	        return "member/msg";
+		}
+		
+	}
 	
 	
-	
-	
-	
+
 	
 	
 	

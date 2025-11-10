@@ -24,7 +24,8 @@
     <div class="main-header">
       <div class="profile-box">
         <div class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;"> 
-        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;">
+        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}"  
+     			 alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <div class="profile-info">
           <p>${user.user_name}</p>
@@ -47,7 +48,8 @@
       </div>
       <div class="form-group">
         <label for="password">비밀번호</label>
-        <input type="password" name="user_password" id="user_password" placeholder="새 비밀번호 입력">
+        <input type="password" name="user_password" id="user_password" value="${user.user_password}">
+        <span id="checkPassword"></span>
       </div>
       <div class="form-group">
         <label for="adress">주소</label>
@@ -56,10 +58,12 @@
       <div class="form-group">
         <label for="phone">휴대폰 번호</label>
         <input type="tel" id="user_phone" name="user_phone" value="${user.user_phone}">
+        <span id="checkphone"></span>
       </div>
       <div class="form-group">
         <label for="email">이메일</label>
         <input type="email" id="user_email" name="user_email" value="${user.user_email}">
+        <span id="checkemail"></span>
       </div>
       <button type="submit" class="btn" id="submitBtn">정보 수정</button>
       
@@ -70,7 +74,7 @@
 </main>
 
 <script>
-// ✅ 파일 선택 시 미리보기 (이 부분이 빠져있었음!)
+// ✅ 파일 선택 시 미리보기 
 document.getElementById('profilePic').addEventListener('change', function(e) {
     const file = e.target.files[0];
     
@@ -96,44 +100,77 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
         
         reader.readAsDataURL(file);
     }
-
+});
 // ✅ Controller에서 돌아온 후 성공 메시지 (JSTL 사용)
 <c:if test="${not empty updateSuccess}">
     alert('회원정보가 수정되었습니다.');
-    // 새로고침
-    location.href = '${pageContext.request.contextPath}/member/editInfo';
+
 </c:if>
 
 // ✅ 폼 제출 전 확인
-document.getElementById('updateForm').addEventListener('submit', function(e) {
-    const phone = document.getElementById('user_phone').value.trim();
-    const email = document.getElementById('user_email').value.trim();
-    
-    if (!phone) {
-        e.preventDefault();
-        alert('휴대폰 번호를 입력해주세요.');
-        document.getElementById('user_phone').focus();
-        return false;
-    }
-    
-    if (!email) {
-        e.preventDefault();
-        alert('이메일을 입력해주세요.');
-        document.getElementById('user_email').focus();
-        return false;
-    }
-    
-    // 확인 메시지
-    if (!confirm('회원정보를 수정하시겠습니까?')) {
-        e.preventDefault();
-        return false;
-    }
-});
 
+    let user_phone = document.querySelector('user_phone');
+    let user_email = document.querySelector('user_email');
+    let user_password = document.querySelector("#user_password");
+    let checkPassword = document.querySelector("#checkPassword");
+    let checkphone = document.querySelector("#checkphone");
+    let checkemail = document.querySelector("#checkemail");
+    let submitBtn = document.querySelector("#submitBtn");
+    
+    user_password.onkeyup = function(){
+    	if(user_password.value.length > 5 && user_password.value.length < 13){
+    		checkPassword.innerHTML = "";
+    	}else{
+    		checkPassword.innerHTML = "6~12자 입력 가능합니다.";
+    		checkPassword.style.color = "red";
+    	}
+    }
+    
+    user_phone.onkeyup = function(){
+    	if(user_phone.value.length == 12){
+    		checkphone.innerHTML = "";
+    	}else{
+    		checkphone.innerHTML = "전화번호를 다시 입력해 주세요.";
+    		checkphone.style.color = "red";
+    	}
+    }
+    	
+    user_email.onkeyup = function(){
+    	if(user_email.value == ""){
+    		checkemail.innerHTML = "이메일을 다시 입력해 주세요.";
+    		checkemail.style.color = "red";
+    	}else{
+    		checkemail.innerHTML = "";
+    	}
+    }
+    
+    submitBtn.onclick = function(){
+    	if(user_password.value.length < 5 || user_password.value.length > 13){
+    		alert("비밀번호 오류");
+    		return false;
+    	}
+    	if(user_phone.value.length != 12){
+    		alert("전화번호 오류");
+    		return false;
+    	}
+    	if(user_email.value == ""){
+    		alert("이메일 오류");
+    		return false;
+    	}
+    	
+    }
+    
+    
+    
+    
+    
 function logout() {
     alert("로그아웃되었습니다.");
     location.href = "login.html";
 }
+
+
+
 </script>
 </body>
 </html>
