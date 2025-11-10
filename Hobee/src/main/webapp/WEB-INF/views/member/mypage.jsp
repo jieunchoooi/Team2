@@ -23,7 +23,9 @@
 <main class="main-content">
   <div class="main-header">
     <div class="profile-box">
-      <div class="profile-pic">🐵</div>
+   	    <div class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;"> 
+        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
       <div class="profile-info">
         <p>${user.user_name}</p>
         <p>${user.user_email}</p>
