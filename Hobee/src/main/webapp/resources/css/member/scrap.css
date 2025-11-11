@@ -1,4 +1,22 @@
-/* ✅ 선택 영역 */
+@charset "UTF-8";
+
+/* 기본 스타일 */
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif; background:#f9fafb;}
+.cart-wrap {margin-left:240px; padding:40px;}
+.cart-title {font-size:1.6rem; font-weight:700; margin-bottom:30px;}
+
+/* 2단 레이아웃 */
+.cart-container {display:flex; gap:24px; align-items:flex-start;}
+.cart-list {
+  flex:2;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  padding:20px 24px;
+}
+
+/* 상단 선택 영역 */
 .cart-header {
   display:flex;
   justify-content:space-between;
@@ -23,24 +41,64 @@
 }
 .btn-outline:hover {background:#e5e7eb;}
 
-/* ✅ 수정된 스크랩 해제 버튼 (전보다 차분한 톤) */
+/* 강의 리스트 */
+.cart-item {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid #f0f0f0;
+}
+.cart-item img {
+  width:80px; height:80px; border-radius:8px; object-fit:cover;
+}
+.cart-item .info {flex:1;}
+.cart-item .title {font-weight:600; margin-bottom:4px;}
+.cart-item .teacher {font-size:0.9rem; color:#666;}
+.cart-item .price {width:120px; font-weight:700; color:#2563eb; text-align:right;}
 .btn-delete {
-  background:#64748b;   /* slate gray tone */
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  padding:6px 12px;
-  font-size:0.85rem;
-  cursor:pointer;
-  transition:all 0.2s ease;
+  background:#64748b; color:#fff; border:none;
+  border-radius:8px; padding:6px 12px;
+  font-size:0.85rem; cursor:pointer;
+  transition:background 0.2s ease;
 }
-.btn-delete:hover {
-  background:#475569;   /* 더 진한 slate gray */
-}
+.btn-delete:hover {background:#475569;}
 
-/* ✅ 메인 버튼 유지 */
-.btn-primary {
-  background:#2563eb;
-  color:#fff;
+/* 우측 결제 요약 */
+.cart-summary {
+  flex:1;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  padding:20px;
+  min-width:280px;
 }
-.btn-primary:hover { background:#1e40af; }
+.cart-summary h2 {font-size:1.1rem; font-weight:700; margin-bottom:20px;}
+.summary-line {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  font-size:0.95rem;
+}
+.summary-total {
+  display:flex;
+  justify-content:space-between;
+  font-size:1rem;
+  font-weight:700;
+  color:#2563eb;
+  margin:12px 0;
+}
+.cart-summary .btn-primary {
+  width:100%; padding:10px 0;
+  border:none; border-radius:8px;
+  font-size:0.95rem; font-weight:600;
+  cursor:pointer; margin-top:8px;
+  background:#2563eb; color:#fff;
+}
+.cart-summary .btn-primary:hover {background:#1e40af;}
+
+/* 반응형 */
+@media (max-width:1024px){
+  .cart-container{flex-direction:column;}
+  .cart-summary{width:100%;}
+}
