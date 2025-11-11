@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.itwillbs.mapper.CategoryMapper">
+<!-- ?,?,? -> 대신 MemberVO 멤버변수 이름 작성 #{멤버변수이름} -->
+<!--    <insert id="insertMember"> -->
+<!--       insert into members(id,passwd,name,phone,email,gender,agree,content,rdate) -->
+<!--       values(#{id},#{passwd},#{name},#{phone},#{email},#{gender},#{agree},#{content},#{rdate}) -->
+<!--    </insert> -->
+	
+		
+		<select id="getAllLectures" resultType="com.itwillbs.domain.LectureVO">
+		   	select * from lecture
+		</select>
+		
+		<select id="getTop10" resultType="com.itwillbs.domain.LectureVO">
+    		select *
+			from lecture
+			order by readcount desc
+			limit 10
+    		 
+		</select>
+		
+		<select id="getLecturesByCategory" resultType="com.itwillbs.domain.LectureVO">
+    		select *
+			from lecture
+			where category_detail = #{category_detail}
+		</select>
+		
+		<select id="getTop10ByCategory" resultType="com.itwillbs.domain.LectureVO">
+    		select *
+			from lecture
+			where category_detail = #{category_detail}
+			order by readcount desc
+			limit 10
+		</select>
+   
+<!--    <select id="loginMember" resultType="com.itwillbs.domain.MemberVO"> -->
+<!--    	select * from members -->
+<!--    	where id = #{id} and passwd = #{passwd} -->
+<!--    </select> -->
+   
+<!--    <select id="infoMember" resultType="com.itwillbs.domain.MemberVO"> -->
+<!--    	select * from members -->
+<!--    	where id = #{id} -->
+<!--    </select> -->
+   
+<!--    <update id="updateMember" > -->
+<!--    	update members -->
+<!--    	set -->
+<!--    	passwd = #{passwd}, -->
+<!--    	name = #{name} -->
+<!--    	where id = #{id} -->
+<!--    </update> -->
+   
+<!--    <delete id="deleteMember"> -->
+<!--    	delete from members -->
+<!--    	where id = #{id} -->
+<!--    </delete> -->
+   
+<!--    <select id="listMember" resultType="com.itwillbs.domain.MemberVO"> -->
+<!--    	select * from members -->
+<!--    </select> -->
+   
+   
+
+</mapper>
+  

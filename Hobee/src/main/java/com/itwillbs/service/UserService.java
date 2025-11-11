@@ -1,6 +1,5 @@
 package com.itwillbs.service;
 
-
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import com.itwillbs.domain.UserVO;
@@ -9,16 +8,22 @@ import com.itwillbs.mapper.UserMapper;
 @Service
 public class UserService {
 
-	@Inject
-	private UserMapper userMapper;
+    @Inject
+    private UserMapper userMapper;
 
-	// 회원가입 처리
-	public void registerUser(UserVO userVO) {
-		userMapper.insertUser(userVO);
-	}
-	
-	public UserVO getUserById(String userId) {
-		return userMapper.getUserById(userId);
-	}
+    // 회원가입
+    public void insertUser(UserVO userVO) {
+    	System.out.println("UesrService: insertUser() 실행");
+        userMapper.insertUser(userVO);
+    }
+
+    public UserVO login(UserVO userVO) {
+    	System.out.println("UesrService: login() 실행");
+        return userMapper.login(userVO);
+    }
+    
+    public UserVO infoUser(String user_id) {
+        return userMapper.selectUserById(user_id);
+    }
 
 }
