@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.PaymentMapper">
+
+    <!-- 결제 등록 -->
+    <insert id="insertPayment" parameterType="com.itwillbs.domain.PaymentVO" useGeneratedKeys="true" keyProperty="payment_id">
+        INSERT INTO payment (
+            user_num,
+            amount,
+            used_points,
+            saved_points,
+            status,
+            imp_uid,
+            merchant_uid,
+            created_at
+        ) VALUES (
+            #{user_num},
+            #{amount},
+            #{used_points},
+            #{saved_points},
+            #{status},
+            #{imp_uid},
+            #{merchant_uid},
+            NOW()
+        )
+    </insert>
+
+    <!-- imp_uid 중복 체크 -->
+    <select id="checkImpUidExists" resultType="int">
+        SELECT COUNT(*) FROM payment WHERE imp_uid = #{imp_uid}
+    </select>
+</mapper>
