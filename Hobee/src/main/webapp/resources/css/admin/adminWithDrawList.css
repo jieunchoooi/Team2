@@ -19,7 +19,7 @@ body {
     margin-left: 240px; /* 사이드바 폭만큼 밀기 */
     margin-top: 0;
     padding: 30px;
-    padding-top: 100px; /* 헤더 아래부터 시작 */
+/*     padding-top: 100px; 헤더 아래부터 시작 */
     width: calc(100% - 240px);
     background-color: #f9fafb;
     min-height: 100vh;

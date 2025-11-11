@@ -8,14 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/mypage.css">
-
 </head>
 <body>
-
-
 <jsp:include page="../include/header.jsp"></jsp:include>
-
-
 <!-- 좌측 사이드바 -->
 <jsp:include page="../include/memberSidebar.jsp"></jsp:include>
 
@@ -23,10 +18,12 @@
 <main class="main-content">
   <div class="main-header">
     <div class="profile-box">
-      <div class="profile-pic">🐵</div>
+   	    <div class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;"> 
+        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
       <div class="profile-info">
-        <p>홍길동</p>
-        <p>hong123</p>
+        <p>${user.user_name}</p>
+        <p>${user.user_email}</p>
       </div>
     </div>
     <h1>마이페이지</h1>

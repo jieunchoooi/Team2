@@ -20,7 +20,24 @@
     <h1>클래스 등록</h1>
   </div>
 
-  <form class="form-container" enctype="multipart/form-data">
+  <form class="form-container" action="${pageContext.request.contextPath}/admin/adminClassAddPro" method="post" enctype="multipart/form-data">
+        <!-- ✅ 카테고리 선택 추가 -->
+    <div class="form-group">
+      <label>카테고리</label>
+      <select name="category" id="category" required>
+        <option value="">카테고리를 선택하세요</option>
+        <option value="digital_drawing">디지털 드로잉</option>
+        <option value="drawing">드로잉</option>
+        <option value="crafts">공예</option>
+        <option value="AI">AI</option>
+        <option value="programming">프로그래밍</option>
+        <option value="data_science">데이터 사이언스</option>
+        <option value="english">영어</option>
+        <option value="foreign_language_test">외국어 시험</option>
+        <option value="second_language">제2외국어</option>
+      </select>
+    </div>
+    
     <div class="form-group">
       <label>강의명</label>
       <input type="text" name="title" placeholder="강의명을 입력하세요">

@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<h2>마이 페이지</h2>
 <aside class="sidebar">
   <h2></h2>
   <div class="menu">
@@ -14,7 +13,7 @@
     <div class="menu-item ${page eq 'payment' ? 'active' : ''}" 
          onclick="location.href='${pageContext.request.contextPath}/member/payment'">💳 <span>결제 내역</span></div>
     <div class="menu-item ${page eq 'edit' ? 'active' : ''}" 
-         onclick="location.href='${pageContext.request.contextPath}/member/editInfo'">👤 <span>회원정보 수정</span></div>
+         onclick="location.href='${pageContext.request.contextPath}/member/updatePassWord'">👤 <span>회원정보 수정</span></div>
   </div>
 
   <button class="logout-btn" onclick="logout()">로그아웃</button>

@@ -5,14 +5,33 @@
 
 <mapper namespace="com.itwillbs.mapper.MemberMapper">
 <!-- ?,?,? -> 대신 MemberVO 멤버변수 이름 작성 #{멤버변수이름} -->
-	<update id="udateMember">
-		update user
-		set user_id = #{user_id},user_password = #{user_password},
-		user_name = #{user_name},user_phone = #{user_phone},user_email = #{user_email}
-		where id = #{id}
-	</update>
+<!-- 	<update id="updateProMember"> -->
+<!-- 		update User -->
+<!-- 		set user_id = #{user_id},user_password = #{user_password}, -->
+<!-- 		user_name = #{user_name},user_phone = #{user_phone}, -->
+<!-- 		user_email = #{user_email}, user_file = #{user_file} -->
+<!-- 		where user_id = #{user_id} -->
+<!-- 	</update> -->
 
-
+<update id="updateProMember">
+    update user
+    set user_phone = #{user_phone},
+        user_email = #{user_email},
+        user_address = #{user_address}
+        <if test="user_password != null and user_password != ''">
+            , user_password = #{user_password}
+        </if>
+        <if test="user_file != null and user_file != ''">
+            , user_file = #{user_file}
+        </if>
+    where user_id = #{user_id}
+</update>
+	
+	<select id="insertMember" parameterType="string" resultType="com.itwillbs.domain.UserVO">
+		select * from user
+		where user_id = #{user_id}
+	</select>
+	
 
 
 </mapper>
