@@ -67,7 +67,7 @@
       </div>
       <button type="submit" class="btn" id="submitBtn">정보 수정</button>
       
-      <button type="button" class="btn btn-delete">회원 탈퇴</button>
+      <button type="button" class="btn btn-delete" onclick="location.href='${pageContext.request.contextPath }/member/memberdeletePro'">회원 탈퇴</button>
     </div>
   </section>
   </form>

@@ -5,9 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 목록 | Hobee Admin</title>
+<script type="text/javascript"
+	src="${ pageContext.request.contextPath }/resources/js/jquery-3.7.1.js"></script>
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminMemberList.css">
-
 </head>
 <body>
 

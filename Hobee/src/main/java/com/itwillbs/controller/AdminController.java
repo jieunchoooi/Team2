@@ -1,13 +1,19 @@
 package com.itwillbs.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
+import com.itwillbs.service.MemberService;
 import com.itwillbs.service.UserService;
 
 @Controller
@@ -16,6 +22,8 @@ public class AdminController {
 
 //	@Inject
 //	private AdminService adminservice;
+	@Autowired
+	MemberService memberService;
 
 	@GetMapping("/adminCategory")
 	public String adminCategory() {
@@ -46,10 +54,20 @@ public class AdminController {
 		return "admin/adminClassList";
 	}	
 	
+	// 회원정보 조회
 	@GetMapping("/adminMemberList")
-	public String adminMemberList() {
+	public String adminMemberList(Model model) {
 		System.out.println("AdminController adminMemberList()");
 		
+		if (memberService == null) {  
+            System.out.println(" memberService is null!");
+        }
+		
+		List<UserVO> memberList = memberService.listMember();
+		
+			
+		model.addAttribute("memberList", memberList);
+			
 		return "admin/adminMemberList";
 	}	
 	
