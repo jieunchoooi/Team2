@@ -37,7 +37,7 @@ public class CategoryController {
 	    
 	    model.addAttribute("lectureList", lectureList);
 	    model.addAttribute("top10List", top10List);
-	    model.addAttribute("category", category_detail);
+	    model.addAttribute("category_detail", category_detail);
 		
 		return "category/lectureList";
 	}
