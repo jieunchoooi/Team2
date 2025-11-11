@@ -15,6 +15,5 @@ public interface UserMapper {
 	public UserVO selectUserById(String user_id);
 
 
-	
 	public UserVO getUserById(String userId);
 }

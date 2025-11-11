@@ -18,7 +18,7 @@
 		
 		SELECT *
 		FROM user
-		WHERE user_id = #{user_id}
+			WHERE user_id = #{user_id}
 		  AND user_password = #{user_password}
 	</select>
 	
@@ -27,19 +27,6 @@
     	FROM user
     	WHERE user_id = #{user_id}
 	</select>
-<!-- ======= -->
-   <!--  회원 가입 -->
-   <insert id="insertUser" parameterType="com.itwillbs.domain.UserVO">
-   
-      INSERT INTO Users (user_id, user_password, user_name, user_phone, user_email, user_address, user_gender, user_role, user_status, grade_id, points)
-                  VALUES (#{user_id}, #{user_password}, #{user_name}, #{user_phone}, #{user_email}, #{user_address}, #{user_gender}, 'user', 'active', 1, 0)
-   </insert>
-   
-   <!-- 아이디 중복 확인 -->
-   <select id="getUserById" parameterType="String" resultType="com.itwillbs.domain.UserVO">
-      SELECT * FROM Users WHERE user_id = #{value};
-   </select>
-<!-- >>>>>>> branch 'main' of https://github.com/jieunchoooi/Team2.git -->
 
 </mapper>
 

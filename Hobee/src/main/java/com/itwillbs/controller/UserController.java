@@ -33,7 +33,7 @@ public class UserController {
     @Inject
     private UserService userService;
     
-    @Resource(name = "uploadPath")
+    @javax.annotation.Resource(name = "uploadPath")
 	private String uploadPath;
 
     // ✅ 회원가입 페이지 이동
@@ -59,23 +59,72 @@ public class UserController {
         userVO.setUser_phone(request.getParameter("user_phone"));
         userVO.setUser_address(request.getParameter("user_address"));
         userVO.setUser_gender(request.getParameter("user_gender"));
+        
+     /* ==========================================================
+      ✅ 2. 서버단 유효성검사 (2차 방어)
+       ========================================================== */
 
-        // ✅ 파일 업로드 처리 (한 번만)
-        if (!user_file.isEmpty()) {
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid.toString() + "_" + user_file.getOriginalFilename();
-            FileCopyUtils.copy(user_file.getBytes(), new File(uploadPath, filename));
-            userVO.setUser_file(filename);
+     // 아이디
+     if (userVO.getUser_id() == null || userVO.getUser_id().trim().isEmpty()) {
+         System.out.println("❌ 아이디 미입력");
+         return "redirect:/user/insert";
+     }
 
-            System.out.println("업로드 경로 : " + uploadPath);
-            System.out.println("업로드 파일명 : " + filename);
-        }
+     // 비밀번호
+     String pwPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^*])[A-Za-z\\d!@#$%^*]{8,12}$";
+     if (!userVO.getUser_password().matches(pwPattern)) {
+         System.out.println("❌ 비밀번호 형식 오류");
+         return "redirect:/user/insert";
+     }
 
-        System.out.println("저장할 회원 정보: " + userVO);
-        userService.insertUser(userVO);
+     // 전화번호
+     String phonePattern = "^010-\\d{4}-\\d{4}$";
+     if (!userVO.getUser_phone().matches(phonePattern)) {
+         System.out.println("❌ 전화번호 형식 오류");
+         return "redirect:/user/insert";
+     }
 
-        return "redirect:/user/login";   
-    }
+     // 주소
+     if (userVO.getUser_address() == null || userVO.getUser_address().trim().isEmpty()) {
+         System.out.println("❌ 주소 미입력");
+         return "redirect:/user/insert";
+     }
+
+     // 성별 (DB는 ENUM('Male','Female'))
+     if (!("Male".equals(userVO.getUser_gender()) || "Female".equals(userVO.getUser_gender()))) {
+         System.out.println("❌ 성별 값 오류: " + userVO.getUser_gender());
+         return "redirect:/user/insert";
+     }
+     /* ==========================================================
+     ✅ 3. 파일 업로드 처리
+     ========================================================== */
+     try {
+    	 UUID uuid = UUID.randomUUID();
+    	 String filename = uuid.toString() + "_" + user_file.getOriginalFilename();
+    	 File target = new File(uploadPath, filename);
+
+    	 FileCopyUtils.copy(user_file.getBytes(), target);
+    	 userVO.setUser_file(filename);
+    	 System.out.println("✅ 업로드 완료: " + filename);
+
+     } catch (IOException e) {
+    	 e.printStackTrace();
+    	 System.out.println("❌ 파일 업로드 실패");
+    	 return "redirect:/user/insert";
+     }
+
+  /* ==========================================================
+     ✅ 4. DB 저장
+     ========================================================== */
+     userService.insertUser(userVO);
+  	 System.out.println("✅ 회원가입 완료: " + userVO);
+
+  /* ==========================================================
+     ✅ 5. 가입 완료 페이지로 이동
+     ========================================================== */
+  return "redirect:/user/joinSuccess";
+}
+
     
   //✅ 아이디 중복확인
  	
@@ -159,8 +208,18 @@ public class UserController {
  	    session.invalidate(); // 세션 전체 제거
  	    return "redirect:/main/main"; // 메인으로 돌아가기
  	}
-
+ 	
+ 	/* ==========================================================
+    8️⃣ 회원가입 완료 페이지
+    ========================================================== */
+ 	@GetMapping("/joinSuccess")
+ 	public String joinSuccess() {
+ 		return "user/joinSuccess";
+ }
 }
+
+
+
 
 
 
