@@ -47,8 +47,8 @@
 		</div>
 
 		<div class="nav-right">
-			<a href="#" class="auth-link">로그인</a>
-			<a href="#" class="auth-link">회원가입</a>
+			<a href="${pageContext.request.contextPath }/user/login" class="auth-link">로그인</a>
+			<a href="${pageContext.request.contextPath }/user/insert" class="auth-link">회원가입</a>
 		    <a href="${pageContext.request.contextPath }/member/mypage" class="auth-link">마이페이지</a>
 			<a href="${pageContext.request.contextPath }/admin/adminCategory" class="auth-link">관리자</a>
 		</div>

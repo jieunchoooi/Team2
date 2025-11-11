@@ -26,4 +26,18 @@
 	<context:component-scan base-package="com.itwillbs.service" />
 	
 	<context:property-placeholder location="classpath:/config/appdata.properties"/>
+	
+	
+	<!--  	파일업로드 객체생성, 파일크기 10M  -->
+<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+<beans:property name="maxUploadSize" value="10485760"/>
+</beans:bean>
+<!--  서버 업로드 할 물리적 경로 
+D:\Shared\JSP\workspace_sts\SpringProject2\src\main\webapp\resources\upload
+ -->
+<beans:bean id="uploadPath" class="java.lang.String">
+<beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\upload" />
+</beans:bean>
+	
+	
 </beans:beans>

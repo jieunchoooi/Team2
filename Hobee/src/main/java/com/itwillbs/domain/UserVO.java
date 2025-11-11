@@ -1,6 +1,5 @@
 package com.itwillbs.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,14 +16,11 @@ public class UserVO {
     private String user_email;
     private String user_address;
     private String user_gender;
-    private String user_role;
-    private String user_status;
-    private int grade_id;        // 🔹 외래키: 현재 등급 ID
-    private int points;          // 🔹 보유 포인트
+    private String user_role;      // user, instructor, admin
+    private String user_status;    // active, inactive, withdraw
+    private int grade_id;
+    private int points;
+    private String user_file;      // 프로필 이미지 파일명
     private String created_at;
     private String updated_at;
-
-    // 결제 관련 보조 필드
-    private int used_points;
-    private int saved_points;
 }
