@@ -158,34 +158,34 @@ footer {
 	<aside class="sidebar">
 	  <ul>
 	    <li class="${param.category_detail == null || param.category_detail == '전체' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=전체" style="text-decoration:none; color:inherit;">전체</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" style="text-decoration:none; color:inherit;">전체</a>
 	    </li>
 	    <li class="${param.category_detail == '디지털드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=디지털드로잉" style="text-decoration:none; color:inherit;">디지털드로잉</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" style="text-decoration:none; color:inherit;">디지털드로잉</a>
 	    </li>
 	    <li class="${param.category_detail == '드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=드로잉" style="text-decoration:none; color:inherit;">드로잉</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" style="text-decoration:none; color:inherit;">드로잉</a>
 	    </li>
 	    <li class="${param.category_detail == '공예' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=공예" style="text-decoration:none; color:inherit;">공예</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" style="text-decoration:none; color:inherit;">공예</a>
 	    </li>
 	    <li class="${param.category_detail == 'AI 스킬업' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
 	    </li>
 	    <li class="${param.category_detail == '프로그래밍' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=프로그래밍" style="text-decoration:none; color:inherit;">프로그래밍</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" style="text-decoration:none; color:inherit;">프로그래밍</a>
 	    </li>
 	    <li class="${param.category_detail == '데이터사이언스' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=데이터사이언스" style="text-decoration:none; color:inherit;">데이터사이언스</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" style="text-decoration:none; color:inherit;">데이터사이언스</a>
 	    </li>
 	    <li class="${param.category_detail == '영어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=영어" style="text-decoration:none; color:inherit;">영어</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" style="text-decoration:none; color:inherit;">영어</a>
 	    </li>
 	    <li class="${param.category_detail == '제2외국어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=제2외국어" style="text-decoration:none; color:inherit;">제2외국어</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" style="text-decoration:none; color:inherit;">제2외국어</a>
 	    </li>
 	    <li class="${param.category_detail == '외국어 시험' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/lecture/list?category_detail=외국어 시험" style="text-decoration:none; color:inherit;">외국어 시험</a>
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험" style="text-decoration:none; color:inherit;">외국어 시험</a>
 	    </li>
 	  </ul>
 	</aside>
