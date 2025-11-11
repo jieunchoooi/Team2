@@ -14,7 +14,7 @@
 <!-- 	</update> -->
 
 <update id="updateProMember">
-    update User
+    update user
     set user_phone = #{user_phone},
         user_email = #{user_email},
         user_address = #{user_address}
@@ -28,7 +28,7 @@
 </update>
 	
 	<select id="insertMember" parameterType="string" resultType="com.itwillbs.domain.UserVO">
-		select * from User
+		select * from user
 		where user_id = #{user_id}
 	</select>
 	

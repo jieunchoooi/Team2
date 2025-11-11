@@ -15,7 +15,7 @@
 <!-- header -->
 <jsp:include page="../include/header.jsp"></jsp:include>
 <!-- 좌측 사이드바 -->
-<jsp:include page="../include/memberSidebar.jsp"></jsp:include>
+<jsp:include page="../include/memberSidebar.jsp"></jsp:include>	
 <!-- 메인 콘텐츠 -->
 <main>
   <!-- 오른쪽 정보 수정 폼 -->
@@ -107,6 +107,7 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
 
 </c:if>
 
+
 // ✅ 폼 제출 전 확인
 
     let user_phone = document.querySelector('#user_phone');
@@ -117,54 +118,78 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
     let checkemail = document.querySelector("#checkemail");
     let submitBtn = document.querySelector("#submitBtn");
     
-    user_password.onkeyup = function(){
-    	if(user_password.value.length > 5 && user_password.value.length < 13){
-    		checkPassword.innerHTML = "사용 가능한 비밀번호 입니다.";
-    		checkPassword.style.color = "green";
-    	}else{
-    		checkPassword.innerHTML = "6~12자 입력 가능합니다.";
-    		checkPassword.style.color = "red";
-    	}
-    }
-    
-    user_phone.onkeyup = function(){
-    	if(user_phone.value.length == 11){
-    		checkPhone.innerHTML = "";
-    	}else{
-    		checkPhone.innerHTML = "전화번호를 다시 입력해 주세요.";
-    		checkPhone.style.color = "red";
-    	}
-    }
-    	
-    user_email.onkeyup = function(){
-    	if(user_email.value == "" || user_email.value == 0){
-    		checkemail.innerHTML = "이메일을 다시 입력해 주세요.";
-    		checkemail.style.color = "red";
-    	}else{
-    		checkemail.innerHTML = "";
-    		
-    	}
-    }
-    
-    submitBtn.onclick = function(e){
-    	if(user_password.value.length < 5 || user_password.value.length > 13){
-    		e.preventDefault();
-    		alert("비밀번호 오류");
-    		return false;
-    	}
-    	if(user_phone.value.length != 11){
-    		e.preventDefault();
-    		alert("전화번호 오류");
-    		return false;
-    	}
-    	if(user_email.value == ""){
-    		e.preventDefault();
-    		alert("이메일 오류");
-    		return false;
-    	}
-    	
-    }
 
+// 유효성검사
+function testPassword() {
+    let passwordRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^*]).{8,12}$/;
+    return passwordRegEx.test(user_password.value);
+}
+
+function testPhone() {
+	let PhoneRegEx = /^(01[016789])-\d{3,4}-\d{4}$/;
+	return PhoneRegEx.test(user_phone.value);
+}
+
+function testEmail() {
+	let EmailRegEx = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	return EmailRegEx.test(user_email.value);
+}
+
+user_password.onkeyup = function(){
+    if(!testPassword()){
+        checkPassword.innerHTML = "글자수 : 8~12자, 영어 대소문자, 숫자, 특수문자(!@#$%^*)를 모두 포함해야 합니다.";
+        checkPassword.style.color = "red";
+    } else {
+        checkPassword.innerHTML = "사용가능한 비밀번호입니다.";
+        checkPassword.style.color = "green";
+    }
+}
+
+user_phone.onkeyup = function(){
+	if(!testPhone()){
+		checkPhone.innerHTML = "'-' 넣어서 작성해주세요"
+		checkPhone.style.color = "red";
+	}else{
+		checkPhone.innerHTML = "사용가능한 전화번호 입니다."
+		checkPhone.style.color = "green";
+	}
+}
+
+user_email.onkeyup = function(){
+	if(!testEmail()){
+		checkemail.innerHTML = "이메일을 다시 작성해 주세요."
+		checkemail.style.color = "red";
+	}else{
+		checkemail.innerHTML = "사용가능한 이메일 입니다."
+		checkemail.style.color = "green";
+	}
+}
+
+updateForm.onsubmit = function(e){
+    if(user_password.value && !testPassword()){
+        e.preventDefault();  
+        alert('비밀번호 형식이 올바르지 않습니다.');
+        user_password.focus();
+        return false;
+    }
+    
+    if(user_phone.value && !testPhone()){
+        e.preventDefault();  
+        alert('전화번호 형식이 올바르지 않습니다.');
+        user_phone.focus();
+        return false;
+    }
+    
+    if(user_email.value && !testEmail()){
+        e.preventDefault();  
+        alert('이메일 형식이 올바르지 않습니다.');
+        user_email.focus();
+        return false;
+    }
+    
+    return true;  
+}
+   
     function logout() {
     alert("로그아웃되었습니다.");
     location.href = "login.html";

@@ -9,5 +9,5 @@ public interface UserMapper {
 	
 	public void insertUser(UserVO userVO);
 	
-		UserVO getUserById(String userId);
+	public UserVO getUserById(String userId);
 }
