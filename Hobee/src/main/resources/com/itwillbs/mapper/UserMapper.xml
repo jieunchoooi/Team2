@@ -28,6 +28,13 @@
     	WHERE user_id = #{user_id}
 	</select>
 
+ 
+   
+   <!-- 아이디 중복 확인 -->
+   <select id="getUserById" parameterType="String" resultType="com.itwillbs.domain.UserVO">
+      SELECT * FROM user WHERE user_id = #{value};
+   </select>
+
 </mapper>
 
 
