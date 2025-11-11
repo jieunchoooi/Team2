@@ -56,9 +56,9 @@
         <input type="text" id="user_address" name="user_address" value="${user.user_address}">
       </div>
       <div class="form-group">
-        <label for="phone">휴대폰 번호</label>
+        <label for="tel">휴대폰 번호</label>
         <input type="tel" id="user_phone" name="user_phone" value="${user.user_phone}">
-        <span id="checkphone"></span>
+        <span id="checkPhone"></span>
       </div>
       <div class="form-group">
         <label for="email">이메일</label>
@@ -109,17 +109,18 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
 
 // ✅ 폼 제출 전 확인
 
-    let user_phone = document.querySelector('user_phone');
-    let user_email = document.querySelector('user_email');
+    let user_phone = document.querySelector('#user_phone');
+    let user_email = document.querySelector('#user_email');
     let user_password = document.querySelector("#user_password");
     let checkPassword = document.querySelector("#checkPassword");
-    let checkphone = document.querySelector("#checkphone");
+    let checkPhone = document.querySelector("#checkPhone");
     let checkemail = document.querySelector("#checkemail");
     let submitBtn = document.querySelector("#submitBtn");
     
     user_password.onkeyup = function(){
     	if(user_password.value.length > 5 && user_password.value.length < 13){
-    		checkPassword.innerHTML = "";
+    		checkPassword.innerHTML = "사용 가능한 비밀번호 입니다.";
+    		checkPassword.style.color = "green";
     	}else{
     		checkPassword.innerHTML = "6~12자 입력 가능합니다.";
     		checkPassword.style.color = "red";
@@ -127,33 +128,37 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
     }
     
     user_phone.onkeyup = function(){
-    	if(user_phone.value.length == 12){
-    		checkphone.innerHTML = "";
+    	if(user_phone.value.length == 11){
+    		checkPhone.innerHTML = "";
     	}else{
-    		checkphone.innerHTML = "전화번호를 다시 입력해 주세요.";
-    		checkphone.style.color = "red";
+    		checkPhone.innerHTML = "전화번호를 다시 입력해 주세요.";
+    		checkPhone.style.color = "red";
     	}
     }
     	
     user_email.onkeyup = function(){
-    	if(user_email.value == ""){
+    	if(user_email.value == "" || user_email.value == 0){
     		checkemail.innerHTML = "이메일을 다시 입력해 주세요.";
     		checkemail.style.color = "red";
     	}else{
     		checkemail.innerHTML = "";
+    		
     	}
     }
     
-    submitBtn.onclick = function(){
+    submitBtn.onclick = function(e){
     	if(user_password.value.length < 5 || user_password.value.length > 13){
+    		e.preventDefault();
     		alert("비밀번호 오류");
     		return false;
     	}
-    	if(user_phone.value.length != 12){
+    	if(user_phone.value.length != 11){
+    		e.preventDefault();
     		alert("전화번호 오류");
     		return false;
     	}
     	if(user_email.value == ""){
+    		e.preventDefault();
     		alert("이메일 오류");
     		return false;
     	}
