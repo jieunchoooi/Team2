@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>내 강의실 | Hobee</title>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/my_classroom.css">
 </head>

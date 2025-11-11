@@ -8,14 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/mypage.css">
-
 </head>
 <body>
-
-
 <jsp:include page="../include/header.jsp"></jsp:include>
-
-
 <!-- 좌측 사이드바 -->
 <jsp:include page="../include/memberSidebar.jsp"></jsp:include>
 

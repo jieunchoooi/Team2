@@ -18,7 +18,7 @@
 <jsp:include page="../include/memberSidebar.jsp"></jsp:include>
 
 <!-- 메인 콘텐츠 -->
-<main>
+<main class="main-content">
   <section class="verify-container">
     <div class="verify-box">
       <div class="verify-icon">
