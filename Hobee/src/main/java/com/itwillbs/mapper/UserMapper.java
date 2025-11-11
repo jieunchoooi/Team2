@@ -13,8 +13,6 @@ public interface UserMapper {
 	public UserVO login(UserVO userVO);
 
 	public UserVO selectUserById(String user_id);
-
-
 	
 	public UserVO getUserById(String userId);
 }
