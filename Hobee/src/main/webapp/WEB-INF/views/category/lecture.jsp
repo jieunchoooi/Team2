@@ -24,8 +24,23 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 
 .detail-content {
   flex: 1;
-  max-width: 900px;
-  /* overflow-y: auto;  제거 */
+  max-width: 870px;
+}
+
+.right-sidebar {
+  width: 330px;
+  position: sticky;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.course-thumbnail { 
+  width: 100%;
+  height: auto;
+  border-radius: 16px; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
 }
 
 .tab-menu {
@@ -37,14 +52,11 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   background: var(--bg);
   z-index: 10;
   padding-bottom: 10px;
-  
 }
 
 .tab-item { padding: 12px 5px; font-size: 1.05rem; font-weight: 600; color: #888; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
 .tab-item.active { color: #222; border-bottom-color: #222; }
 .tab-item:hover { color: #222; }
-
-.course-thumbnail { width: 100%; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 
 .course-info { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .course-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 15px; line-height: 1.4; }
@@ -63,27 +75,31 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .curriculum-meta { display: flex; gap: 10px; font-size: 0.85rem; color: var(--gray); }
 .play-icon { color: var(--primary); font-size: 1.2rem; }
 
-.purchase-sidebar { width: 380px; position: sticky; top: 40px; height: fit-content; max-height: calc(100vh - 80px); overflow-y: auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-.purchase-box { background: #fff; border-radius: 16px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-.instructor-info { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e0e0e0; }
-.instructor-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; }
-.instructor-name { font-weight: 600; color: #222; }
-.instructor-category { font-size: 0.85rem; color: var(--gray); }
-.course-main-title { font-size: 1.3rem; font-weight: 700; line-height: 1.4; margin-bottom: 20px; }
-.price-section { margin-bottom: 20px; }
-.discount-rate { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
-.original-price { font-size: 0.95rem; color: var(--gray); text-decoration: line-through; margin-bottom: 5px; }
-.current-price { font-size: 1.8rem; font-weight: 700; color: #222; margin-bottom: 5px; }
-.monthly-price { font-size: 0.9rem; color: var(--primary); font-weight: 600; }
-.btn-purchase { width: 100%; background: var(--primary); color: #fff; border: none; padding: 16px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 15px; }
+.purchase-sidebar { 
+  background: #fff; 
+  border-radius: 16px; 
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08); 
+}
+.purchase-box { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.instructor-info { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid #e0e0e0; }
+.instructor-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; }
+.instructor-name { font-weight: 600; color: #222; font-size: 0.95rem; }
+.instructor-category { font-size: 0.8rem; color: var(--gray); }
+.course-main-title { font-size: 1.15rem; font-weight: 700; line-height: 1.4; margin-bottom: 18px; }
+.price-section { margin-bottom: 18px; }
+.discount-rate { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+.original-price { font-size: 0.9rem; color: var(--gray); text-decoration: line-through; margin-bottom: 5px; }
+.current-price { font-size: 1.6rem; font-weight: 700; color: #222; margin-bottom: 5px; }
+.monthly-price { font-size: 0.85rem; color: var(--primary); font-weight: 600; }
+.btn-purchase { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 12px; }
 .btn-purchase:hover { background: #1f65e0; transform: translateY(-2px); }
-.btn-subscribe { width: 100%; background: #fff; color: var(--primary); border: 2px solid var(--primary); padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 20px; }
+.btn-subscribe { width: 100%; background: #fff; color: var(--primary); border: 2px solid var(--primary); padding: 12px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 18px; }
 .btn-subscribe:hover { background: var(--hover-bg); }
-.class-plus-info { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
-.action-icons { display: flex; justify-content: space-around; padding-top: 20px; border-top: 1px solid #e0e0e0; }
-.action-icon { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s; }
-.action-icon i { font-size: 1.3rem; color: #555; }
-.action-icon span { font-size: 0.8rem; color: var(--gray); }
+.class-plus-info { font-size: 0.8rem; color: var(--gray); line-height: 1.6; padding-bottom: 20px;}
+.action-icons { display: flex; justify-content: space-around; padding-top: 18px; border-top: 1px solid #e0e0e0; }
+.action-icon { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; transition: all 0.2s; }
+.action-icon i { font-size: 1.2rem; color: #555; }
+.action-icon span { font-size: 0.75rem; color: var(--gray); }
 .action-icon:hover i { color: var(--primary); }
 
 /* 강사의 다른 강의 / 비슷한 강의 추천 */
@@ -101,7 +117,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
 @media (max-width: 1200px) {
   main { flex-direction: column; align-items: center; }
-  .purchase-sidebar { width: 100%; max-width: 900px; position: relative; top: 0; }
+  .right-sidebar { width: 100%; max-width: 870px; position: relative; top: 0; }
   .lecture-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
@@ -113,15 +129,6 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
 <main>
   <div class="detail-content">
-    <div class="tab-menu">
-      <div class="tab-item active">강의 소개</div>
-      <div class="tab-item">커리큘럼</div>
-      <div class="tab-item">강사의 다른강의</div>
-      <div class="tab-item">비슷한 강의 추천</div>
-    </div>
-
-    <img class="course-thumbnail" src="https://images.squarespace-cdn.com/content/v1/63d40fe2cbd65e16cb8098b6/7da763b6-1122-4c6f-9bfd-2c9c278dff10/image-asset%2B%2831%29.jpeg" alt="디지털 드로잉 클래스" />
-
     <div class="course-info">
       <h2 class="course-title">디지털 드로잉으로 나만의 캐릭터 만들기</h2>
       <div class="course-meta">
@@ -142,7 +149,14 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       </p>
     </div>
 
-        <!-- 커리큘럼 섹션 -->
+    <div class="tab-menu">
+      <div class="tab-item active">강의 소개</div>
+      <div class="tab-item">커리큘럼</div>
+      <div class="tab-item">강사의 다른강의</div>
+      <div class="tab-item">비슷한 강의 추천</div>
+    </div>
+
+    <!-- 커리큘럼 섹션 -->
     <div class="curriculum-section">
       <h3>
         클래스 커리큘럼
@@ -206,7 +220,6 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       </div>
     </div>
 
-
     <!-- 강사의 다른 강의 -->
     <div class="instructor-section">
       <h3>강사의 다른강의</h3>
@@ -240,37 +253,42 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     </div>
   </div>
 
-  <aside class="purchase-sidebar">
-    <div class="purchase-box">
-      <div class="instructor-info">
-        <div class="instructor-avatar">리니</div>
-        <div><div class="instructor-name">리니</div><div class="instructor-category">🔥 드로잉 1위</div></div>
+  <!-- 우측 사이드바: 이미지 + 구매박스 -->
+  <div class="right-sidebar">
+    <img class="course-thumbnail" src="https://images.squarespace-cdn.com/content/v1/63d40fe2cbd65e16cb8098b6/7da763b6-1122-4c6f-9bfd-2c9c278dff10/image-asset%2B%2831%29.jpeg" alt="디지털 드로잉 클래스" />
+    
+    <aside class="purchase-sidebar">
+      <div class="purchase-box">
+        <div class="instructor-info">
+          <div class="instructor-avatar">리니</div>
+          <div><div class="instructor-name">리니</div><div class="instructor-category">🔥 드로잉 1위</div></div>
+        </div>
+
+        <h3 class="course-main-title">어색한 그림은 이제 안녕! 드로잉 기초부터 시작하는 리니의 펜드로잉</h3>
+
+        <div class="price-section">
+          <div class="discount-rate">42% ₩50,000원</div>
+          <div class="current-price">월 90,000원 <span style="font-size: 0.9rem; color: #888;">5개월 할부까</span></div>
+          <div class="monthly-price">월 52,140원 나의 최대 혜택가 〉</div>
+        </div>
+
+        <button class="btn-purchase">구매하기</button>
+        <button class="btn-subscribe">구독으로 시작하기</button>
+
+        <div class="class-plus-info">
+          이 클래스는 부분유료 5,400개 강의를<br>
+          월 22,400원에 무제한 수강해 보세요.
+        </div>
+
+        <div class="action-icons">
+          <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div>
+          <div class="action-icon"><i class="far fa-bookmark"></i><span>46513</span></div>
+          <div class="action-icon"><i class="far fa-share-square"></i><span>공유</span></div>
+          <div class="action-icon"><i class="fas fa-gift"></i><span>구매</span></div>
+        </div>
       </div>
-
-      <h3 class="course-main-title">어색한 그림은 이제 안녕! 드로잉 기초부터 시작하는 리니의 펜드로잉</h3>
-
-      <div class="price-section">
-        <div class="discount-rate">42% ₩50,000원</div>
-        <div class="current-price">월 90,000원 <span style="font-size: 0.9rem; color: #888;">5개월 할부까</span></div>
-        <div class="monthly-price">월 52,140원 나의 최대 혜택가 〉</div>
-      </div>
-
-      <button class="btn-purchase">구매하기</button>
-      <button class="btn-subscribe">구독으로 시작하기</button>
-
-      <div class="class-plus-info">
-        이 클래스는 부분유료 5,400개 강의를<br>
-        월 22,400원에 무제한 수강해 보세요.
-      </div>
-
-      <div class="action-icons">
-        <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div>
-        <div class="action-icon"><i class="far fa-bookmark"></i><span>46513</span></div>
-        <div class="action-icon"><i class="far fa-share-square"></i><span>공유</span></div>
-        <div class="action-icon"><i class="fas fa-gift"></i><span>구매</span></div>
-      </div>
-    </div>
-  </aside>
+    </aside>
+  </div>
 </main>
 
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
@@ -302,7 +320,6 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     });
   });
 </script>
-
 
 </body>
 </html>
