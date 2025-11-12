@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.AdminMapper;
@@ -29,6 +30,11 @@ public class AdminService {
 	public int countMemberList() {
 		System.out.println("AdminService countMemberList()");
 		return adminMapper.countMemberList();
+	}
+
+	public void LectureUpdate(LectureVO lectureVO) {
+		System.out.println("AdminService LectureUpdate()");
+		adminMapper.LectureUpdate(lectureVO);
 	}
 
 }

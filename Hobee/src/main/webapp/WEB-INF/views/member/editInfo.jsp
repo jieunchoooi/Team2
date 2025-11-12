@@ -217,11 +217,7 @@ updateForm.onsubmit = function(e){
     
     return true;  
 }
-   
-    function logout() {
-    alert("로그아웃되었습니다.");
-    location.href = "login.html";
-}
+
 
 </script>
 </body>

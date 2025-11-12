@@ -196,6 +196,13 @@ public class MemberController {
 		return "main/main";  
 	}
 
+	// 로그아웃
+	@GetMapping("/logout") 
+	public String logout(HttpSession session) {
+		System.out.println("MemberController logout()");
+		session.invalidate();
+		return "main/main";  
+	}
 	
 	
 	
