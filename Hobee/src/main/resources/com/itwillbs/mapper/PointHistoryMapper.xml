@@ -1,48 +1,84 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.PointHistoryMapper">
 
-    <!-- 포인트 내역 등록 -->
-    <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointHistoryVO">
-        INSERT INTO pointHistory (
-            user_num, payment_id, point_change, type, description, created_at
-        ) VALUES (
-            #{user_num}, #{payment_id}, #{point_change}, #{type}, #{description}, NOW()
-        )
-    </insert>
+  <!-- 🔹 포인트 내역 기록 -->
+  <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointHistoryVO">
+    INSERT INTO point_history (
+        user_num,
+        payment_id,
+        point_change,
+        type,
+        description,
+        created_at
+    )
+    VALUES (
+        #{user_num},
+        #{payment_id},
+        #{point_change},
+        #{type},
+        #{description},
+        NOW()
+    )
+  </insert>
 
-    <!-- 특정 회원의 포인트 내역 조회 -->
-    <select id="getPointHistoryByUser" parameterType="com.itwillbs.domain.PointHistoryVO"
-            resultType="com.itwillbs.domain.PointHistoryVO">
-        SELECT *
-        FROM pointHistory
-        WHERE user_num = #{user_num}
-        ORDER BY created_at DESC
-    </select>
+ 
+  
+  <!-- 🔹 포인트 차감 -->
+<update id="deductPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
+  UPDATE user
+  SET points = points + #{point_change}
+  WHERE user_num = #{user_num};
+</update>
 
-    <!-- 총 포인트 조회 -->
-    <select id="getTotalPoints" parameterType="com.itwillbs.domain.PointHistoryVO"
-            resultType="int">
-        SELECT COALESCE(SUM(point_change), 0)
-        FROM pointHistory
-        WHERE user_num = #{user_num}
-    </select>
+<!-- 🔹 포인트 적립 -->
+<update id="addPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
+  UPDATE user
+  SET points = points + #{point_change}
+  WHERE user_num = #{user_num};
+</update>
 
-    <!-- 포인트 차감 -->
-    <update id="deductPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
-        UPDATE user
-        SET points = points - #{point_change}
-        WHERE user_num = #{user_num}
-    </update>
+  <!-- 🔹 특정 회원의 전체 포인트 내역 조회 -->
+  <select id="getPointHistoryByUser" parameterType="int" resultType="com.itwillbs.domain.PointHistoryVO">
+    SELECT 
+        ph.point_id,
+        ph.user_num,
+        ph.payment_id,
+        ph.point_change,
+        ph.type,
+        ph.description,
+        ph.created_at,
+        p.merchant_uid,
+        p.amount AS payment_amount
+    FROM point_history ph
+    LEFT JOIN payment p ON ph.payment_id = p.payment_id
+    WHERE ph.user_num = #{user_num}
+    ORDER BY ph.created_at DESC
+  </select>
 
-    <!-- 포인트 적립 -->
-    <update id="addPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
-        UPDATE user
-        SET points = points + #{point_change}
-        WHERE user_num = #{user_num}
-    </update>
+  <!-- 🔹 특정 회원의 포인트 총합 조회 (user 테이블 기준) -->
+  <select id="getUserTotalPoints" parameterType="int" resultType="int">
+    SELECT user_points
+    FROM user
+    WHERE user_num = #{user_num}
+  </select>
+
+  <!-- 🔹 특정 결제의 포인트 내역 조회 -->
+  <select id="getPointHistoryByPayment" parameterType="int" resultType="com.itwillbs.domain.PointHistoryVO">
+    SELECT 
+        point_id,
+        user_num,
+        payment_id,
+        point_change,
+        type,
+        description,
+        created_at
+    FROM point_history
+    WHERE payment_id = #{payment_id}
+    ORDER BY created_at DESC
+  </select>
 
 </mapper>
