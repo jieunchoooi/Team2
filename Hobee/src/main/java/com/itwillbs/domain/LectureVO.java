@@ -18,12 +18,6 @@ public class LectureVO {
     private String img_url;
     private String lecture_img;
     private String lecture_detail;
-    private String curriculum;
-    
-
-    	
-    	
-    	
 
 }
 
