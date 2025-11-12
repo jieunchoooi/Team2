@@ -1,6 +1,7 @@
 package com.itwillbs.controller;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ 추가
 
+import com.itwillbs.domain.EnrollmentVO;
+import com.itwillbs.domain.EnrollmentViewVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.EnrollmentService;
 import com.itwillbs.service.MemberService;
 import com.mysql.cj.Session;
 
@@ -29,6 +33,8 @@ public class MemberController {
 
 	@Inject
 	private MemberService memberService;
+	@Inject
+	private EnrollmentService enrollmentService;
 	
 	// 업로드 경로
 	@Resource(name = "uploadPath")
@@ -126,16 +132,19 @@ public class MemberController {
 	    return "redirect:/member/mypage";   
 	}
 
-	// 내 강의실
-	@GetMapping("/my_classroom")
-	public String my_classroom() {
-		System.out.println("MemberController my_classroom()");
-		
-		
-		
-		
-		return "member/my_classroom";  
-	}
+	// ✅ 로그인 세션의 user_num 기준으로 조회 → JSP에 enrollList로 전달
+	 @GetMapping("/my_classroom")
+	    public String my_classroom(HttpSession session, Model model) {
+	        UserVO loginUser = (UserVO) session.getAttribute("loginUser");
+	        if (loginUser == null) {
+	        	   return "redirect:/user/login";
+	        }
+
+	        List<EnrollmentViewVO> enrollList =
+	                enrollmentService.getEnrollmentsByUser(loginUser.getUser_num());
+	        model.addAttribute("enrollList", enrollList);
+	        return "member/my_classroom";
+	    }
 	
 	// 결제 내역
 	@GetMapping("/payment")
