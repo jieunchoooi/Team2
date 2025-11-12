@@ -10,29 +10,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.LectureVO;
-import com.itwillbs.service.CategoryService;
+import com.itwillbs.service.LectureService;
 
 @Controller
 @RequestMapping("/category/*")
-public class CategoryController {
+public class LectureController {
 	
 	@Inject
-	private CategoryService categoryService;
+	private LectureService lectureService;
 	
 	@RequestMapping(value="/lectureList")
 	public String lectureList(@RequestParam(required = false, defaultValue = "전체") String category_detail,
             Model model) {
-		System.out.println("CategoryController lectureList()");
+		System.out.println("LectureController lectureList()");
 		
 		List<LectureVO> lectureList;
 	    List<LectureVO> top10List;
 	    
 	    if (category_detail.equals("전체")) {
-	        lectureList = categoryService.getAllLectures();
-	        top10List = categoryService.getTop10();
+	        lectureList = lectureService.getAllLectures();
+	        top10List = lectureService.getTop10();
 	    } else {
-	        lectureList = categoryService.getLecturesByCategory(category_detail);
-	        top10List = categoryService.getTop10ByCategory(category_detail);
+	        lectureList = lectureService.getLecturesByCategory(category_detail);
+	        top10List = lectureService.getTop10ByCategory(category_detail);
 	    }
 	    
 	    model.addAttribute("lectureList", lectureList);
@@ -44,7 +44,7 @@ public class CategoryController {
 	
 	@RequestMapping(value="/lecture")
 	public String lecture() {
-		System.out.println("CategoryController lecture()");
+		System.out.println("LectureController lecture()");
 		return "category/lecture";
 	}
 	
