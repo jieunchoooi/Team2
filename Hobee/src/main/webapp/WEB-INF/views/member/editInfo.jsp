@@ -24,8 +24,14 @@
     <div class="main-header">
       <div class="profile-box">
         <div class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;"> 
-        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}"  
-     			 alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;">
+        	<c:choose>
+				<c:when test="${empty user.user_file}">
+					<span>🐵</span>
+				</c:when>
+				<c:otherwise>
+					<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진">
+				</c:otherwise>
+			</c:choose>
         </div>
         <div class="profile-info">
           <p>${user.user_name}</p>
@@ -37,7 +43,17 @@
     <div class="form-container">
       <div class="profile-edit">
         <div class="profile-pic" style="width: 130px; height: 130px; border-radius: 50%; overflow: hidden;"> 
-        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;">
+<%--         	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;"> --%>
+        <c:choose>
+				<c:when test="${empty user.user_file}">
+					<span>🐵</span>
+				</c:when>
+				<c:otherwise>
+					<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진">
+				</c:otherwise>
+			</c:choose>
+        
+        
         </div>
         <label class="file-input-label" for="profilePic">사진 변경</label>
         <input type="file" id="profilePic" class="file-input" name="user_picture" accept="image/*">
@@ -74,7 +90,13 @@
 </main>
 
 <script>
-// ✅ 파일 선택 시 미리보기 
+
+// ✅ Controller에서 돌아온 후 성공 메시지 (JSTL 사용)
+<c:if test="${not empty updateSuccess}">
+    alert('회원정보가 수정되었습니다.');
+
+</c:if>
+//✅ 파일 선택 시 미리보기 
 document.getElementById('profilePic').addEventListener('change', function(e) {
     const file = e.target.files[0];
     
@@ -89,10 +111,23 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
         const reader = new FileReader();
         
         reader.onload = function(event) {
-            // 모든 프로필 이미지를 선택한 파일로 변경
-            const images = document.querySelectorAll('.profile-pic img');
-            images.forEach(img => {
+            // 모든 .profile-pic 요소 선택
+            const profilePics = document.querySelectorAll('.profile-pic');
+            
+            profilePics.forEach(pic => {
+                // 기존 내용(span 또는 img) 제거
+                pic.innerHTML = '';
+                
+                // 새로운 img 태그 생성
+                const img = document.createElement('img');
                 img.src = event.target.result;
+                img.alt = '프로필 사진';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                
+                // profile-pic에 추가
+                pic.appendChild(img);
             });
             
             console.log('✅ 이미지 미리보기 완료');
@@ -101,12 +136,6 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
         reader.readAsDataURL(file);
     }
 });
-// ✅ Controller에서 돌아온 후 성공 메시지 (JSTL 사용)
-<c:if test="${not empty updateSuccess}">
-    alert('회원정보가 수정되었습니다.');
-
-</c:if>
-
 
 // ✅ 폼 제출 전 확인
 
