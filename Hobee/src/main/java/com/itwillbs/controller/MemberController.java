@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ �
 
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.MemberService;
+import com.mysql.cj.Session;
 
 
 @Controller
@@ -33,10 +35,10 @@ public class MemberController {
 	private String uploadPath;
 	
 	// 마이페이지
-	@GetMapping("/mypage")
-	public String mypage(Model model) {
+	@GetMapping("/mypage") 
+	public String mypage(Model model, HttpSession session) {
 		System.out.println("MemberController mypage()");
-		String user_id = "aaa1";
+		String user_id = (String) session.getAttribute("user_id");
 		UserVO user = memberService.insertMember(user_id);
 		   if (user == null) {
 		        System.out.println("⚠ user is null (DB 조회 실패)");
@@ -50,9 +52,9 @@ public class MemberController {
 	
 	// 회원수정
 	@GetMapping("/editInfo")
-	public String editInfo(Model model) {
+	public String editInfo(Model model, HttpSession session) {
 		System.out.println("MemberController editInfo()");
-		String user_id = "aaa1";
+		String user_id = (String)session.getAttribute("user_id");
 		UserVO user = memberService.insertMember(user_id);
 		   if (user == null) {
 		        System.out.println("⚠ user is null (DB 조회 실패)");
@@ -66,14 +68,15 @@ public class MemberController {
 	}
 	
 	@PostMapping("/updatePro")
-	public String updatePro(HttpServletRequest request, 	// 파일 없으면 null값이 됨
+	public String updatePro(HttpSession session,HttpServletRequest request, 	// 파일 없으면 null값이 됨
 			@RequestParam(value = "user_picture", required = false) MultipartFile user_picture,
             RedirectAttributes rttr) throws Exception { //) throws Exception {
 	    System.out.println("MemberController updatePro()");
 	    
+	    String user_id = (String) session.getAttribute("user_id");
 	    // ✅ 1. 세션에서 user_id 가져오기 (현재는 임시로 하드코딩)
-	    String user_id = "aaa1"; // TODO: 실제로는 session.getAttribute("user_id")로 변경
-	    
+	   //  String user_id = "aaa1"; // TODO: 실제로는 session.getAttribute("user_id")로 변경
+	    UserVO user = memberService.insertMember(user_id);
 	    // ✅ 2. request에서 파라미터 가져오기
 	    String password = request.getParameter("user_password");
 	    String phone = request.getParameter("user_phone");
@@ -160,9 +163,9 @@ public class MemberController {
 	
 	// 회원정보수정 들어가기전 비밀번호 확인
 	@GetMapping("/updatePassWord") 
-	public String updatePassWord(Model model) {
+	public String updatePassWord(Model model, HttpSession session) {
 		System.out.println("MemberController updatePassWord()");
-		String user_id = "aaa1";
+		String user_id = (String) session.getAttribute("user_id");
 		UserVO user = memberService.insertMember(user_id);
 		
 		model.addAttribute("user", user);
@@ -174,7 +177,6 @@ public class MemberController {
 								    @RequestParam("user_password") String user_password, Model model) {
 		System.out.println("MemberController updatePasswordPro()");
 		
-		user_id = "aaa1";
 		UserVO user = memberService.insertMember(user_id);
 		
 		if(user != null && user.getUser_password().equals(user_password)) {
@@ -186,6 +188,13 @@ public class MemberController {
 		
 	}
 	
+	// 회원탈퇴
+	@GetMapping("/memberdeletePro") 
+	public String memberdeletePro() {
+		System.out.println("MemberController memberdeletePro()");
+			
+		return "main/main";  
+	}
 
 	
 	

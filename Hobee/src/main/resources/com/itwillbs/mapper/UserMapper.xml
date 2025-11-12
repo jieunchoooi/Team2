@@ -6,36 +6,29 @@
 <mapper namespace="com.itwillbs.mapper.UserMapper">
 
 <!-- <<<<<<< HEAD -->
-	<!--  회원 가입 -->
+	<!-- ✅ 회원 가입 -->
 	<insert id="insertUser" parameterType="com.itwillbs.domain.UserVO">
 	
-		INSERT INTO user (user_id, user_password, user_name, user_phone, user_email, user_address, user_gender, user_role, user_status, grade_id, points)
-		            VALUES (#{user_id}, #{user_password}, #{user_name}, #{user_phone}, #{user_email}, #{user_address}, #{user_gender}, 'user', 'active', 1, 0)
+		INSERT INTO user (user_id, user_password, user_name, user_phone, user_email, user_address, user_gender, user_file, user_role, user_status, grade_id, points)
+		            VALUES (#{user_id}, #{user_password}, #{user_name}, #{user_phone}, #{user_email}, #{user_address}, #{user_gender}, #{user_file} 'user', 'active', 1, 0)
 		
 	</insert>
 	
+    <!-- 	✅로그인  -->
 	<select id="login" parameterType="com.itwillbs.domain.UserVO" resultType="com.itwillbs.domain.UserVO">
 		
 		SELECT *
 		FROM user
-		WHERE user_id = #{user_id}
+			WHERE user_id = #{user_id}
 		  AND user_password = #{user_password}
 	</select>
 	
+<!-- ✅	아이디로 회원 조화 (로그인, 중복확인용)-->
 	<select id="selectUserById" parameterType="String" resultType="com.itwillbs.domain.UserVO">
     	SELECT * 
     	FROM user
     	WHERE user_id = #{user_id}
 	</select>
-<!-- ======= -->
- 
-   
-   <!-- 아이디 중복 확인 -->
-   <select id="getUserById" parameterType="String" resultType="com.itwillbs.domain.UserVO">
-      SELECT * FROM Users WHERE user_id = #{value};
-   </select>
-
-
 </mapper>
 
 

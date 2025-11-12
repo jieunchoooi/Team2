@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>스크랩 / 관심 | Hobee</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/memberSidebar.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/scrap.css?v=20251111c">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/scrap.css?v=20251111f">
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 </head>
 
@@ -23,7 +23,7 @@
       <div class="cart-header">
         <div class="select-group">
           <label><input type="checkbox" id="selectAll"> 전체 선택</label>
-          <button type="button" class="btn-outline" onclick="deleteSelected()">선택 해제</button>
+          <button type="button" class="btn-outline" onclick="deleteSelected()">선택 강의 스크랩 해제</button>
         </div>
       </div>
 
@@ -69,10 +69,7 @@
         <strong id="finalPrice">₩0</strong>
       </div>
 
-      <div class="btn-row">
-        <button class="btn btn-delete" type="button" onclick="deleteSelected()">선택 강의 해제</button>
-        <button class="btn btn-primary" type="button" onclick="requestPayment()">결제하기</button>
-      </div>
+      <button class="btn-primary" type="button" onclick="requestPayment()">결제하기</button>
     </div>
   </div>
 </main>
@@ -92,8 +89,7 @@
     document.querySelectorAll("input[name='selectItem']:checked").forEach(cb => {
       total += parseInt(cb.dataset.price);
     });
-    const discount = Math.floor(total * 0.05); // ✅ 5% 할인 적용
-
+    const discount = Math.floor(total * 0.05);
     document.getElementById("totalPrice").textContent = "₩" + total.toLocaleString();
     document.getElementById("discountPrice").textContent = "-₩" + discount.toLocaleString();
     document.getElementById("finalPrice").textContent = "₩" + (total - discount).toLocaleString();
