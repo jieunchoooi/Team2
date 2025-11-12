@@ -24,7 +24,7 @@
         <!-- ✅ 카테고리 선택 추가 -->
     <div class="form-group">
       <label>카테고리</label>
-      <select name="category" id="category" required>
+      <select name="category_detail" id="category" required>
         <option value="">카테고리를 선택하세요</option>
         <option value="digital_drawing">디지털 드로잉</option>
         <option value="drawing">드로잉</option>
@@ -40,19 +40,19 @@
     
     <div class="form-group">
       <label>강의명</label>
-      <input type="text" name="title" placeholder="강의명을 입력하세요">
+      <input type="text" name="lecture_title" placeholder="강의명을 입력하세요">
     </div>
     <div class="form-group">
       <label>강사명</label>
-      <input type="text" name="teacher" placeholder="강사명을 입력하세요">
+      <input type="text" name="lecture_author" placeholder="강사명을 입력하세요">
     </div>
     <div class="form-group">
       <label>금액</label>
-      <input type="number" name="price" placeholder="금액을 입력하세요">
+      <input type="number" name="lecture_price" placeholder="금액을 입력하세요">
     </div>
     <div class="form-group">
       <label>상세정보</label>
-      <textarea name="description" placeholder="강의 상세 정보를 입력하세요"></textarea>
+      <textarea name="category_detail" placeholder="강의 상세 정보를 입력하세요"></textarea>
     </div>
     <div class="form-group">
       <label>커리큘럼</label>

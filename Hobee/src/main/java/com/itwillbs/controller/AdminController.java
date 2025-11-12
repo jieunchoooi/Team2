@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
@@ -40,10 +42,32 @@ public class AdminController {
 	}	
 	
 	@PostMapping("/adminClassAddPro")
-	public String adminClassAddPro() {
+	public String adminClassAddPro(HttpServletRequest request) {
 		System.out.println("AdminController adminClassAddPro()");
 		
-		return "admin/adminClassAdd";
+		LectureVO lectureVO = new LectureVO(); 
+		String lecture_title = request.getParameter("lecture_title");
+		String category_detail = request.getParameter("category_detail");
+		String lecture_author = request.getParameter("lecture_author");
+		// int lecture_price = Integer.parseInt(request.getParameter("lecture_price"));
+		String lecture_detail = request.getParameter("lecture_detail");
+		
+		String priceParam = request.getParameter("lecture_price");
+		int lecture_price = 0; // 기본값 설정
+
+		if (priceParam != null && !priceParam.isEmpty()) {
+		    lecture_price = Integer.parseInt(priceParam);
+		}
+		
+		lectureVO.setLecture_title(lecture_title);
+		lectureVO.setCategory_detail(category_detail);
+		lectureVO.setLecture_detail(lecture_detail);
+		lectureVO.setLecture_author(lecture_author);
+		lectureVO.setLecture_price(lecture_price);
+		
+		adminService.LectureUpdate(lectureVO);
+		
+		return "admin/adminClassList";
 	}	
 	
 	

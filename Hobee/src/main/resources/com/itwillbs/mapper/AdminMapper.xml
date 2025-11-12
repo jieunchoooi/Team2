@@ -15,4 +15,10 @@
  		select count(*) from user
 	</select> 
 
+	<insert id="LectureUpdate">
+		INSERT INTO lecture 
+		(lecture_title, category_detail, lecture_detail, lecture_author, lecture_price)
+		values(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author}, #{lecture_price})
+	</insert>
+
 </mapper>
