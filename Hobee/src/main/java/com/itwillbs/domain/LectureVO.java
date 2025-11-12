@@ -15,7 +15,6 @@ public class LectureVO {
     private int lecture_price;
     private String category_detail;
     private int readcount;
-    private String img_url;
     private String lecture_img;
     private String lecture_detail;
 

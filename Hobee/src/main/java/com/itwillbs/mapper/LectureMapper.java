@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.itwillbs.domain.LectureVO;
 
 @Mapper
-public interface CategoryMapper {
+public interface LectureMapper {
 
 	List<LectureVO> getAllLectures();
 

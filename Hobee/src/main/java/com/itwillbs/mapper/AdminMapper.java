@@ -14,4 +14,8 @@ public interface AdminMapper {
 
 	public void LectureUpdate(LectureVO lectureVO);
 
+	public List<LectureVO> listLecture(PageVO pageVO);
+
+	public int countlectureList();
+
 }

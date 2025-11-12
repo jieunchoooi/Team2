@@ -72,8 +72,42 @@ public class AdminController {
 	
 	
 	@GetMapping("/adminClassList")
-	public String adminClassList() {
+	public String adminClassList(Model model, HttpServletRequest request) {
 		System.out.println("AdminController adminClassList()");
+		
+		String pageNum = request.getParameter("pageNum");
+
+		if(pageNum == null) {
+			pageNum = "1";
+		}
+		int currentPage = Integer.parseInt(pageNum);
+		int pageSize = 10;
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setPageNum(pageNum);
+		pageVO.setCurrentPage(currentPage);	
+		pageVO.setPageSize(pageSize);
+		
+		List<LectureVO> lectureList = adminService.listLecture(pageVO);
+		
+		int count = adminService.countlectureList();
+		int pageBlock = 10;
+		int startPage = (currentPage -1)/pageBlock * pageBlock +1;
+		int endPage = startPage + (pageBlock - 1);
+		int pageCount = count / pageSize + (count % pageSize == 0? 0:1);
+		if(endPage > pageCount) {
+		  endPage = pageCount;
+		}
+		
+		pageVO.setCount(count);
+		pageVO.setPageBlock(pageBlock);
+		pageVO.setStartPage(startPage);
+		pageVO.setEndPage(endPage);
+		pageVO.setPageCount(pageCount);
+		pageVO.setCount(count);
+		
+		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("lectureList", lectureList);
 		
 		return "admin/adminClassList";
 	}	
@@ -95,7 +129,6 @@ public class AdminController {
 		pageVO.setPageNum(pageNum);
 		pageVO.setCurrentPage(currentPage);
 		pageVO.setPageSize(pageSize);
-		
 		
 		List<UserVO> memberList = adminService.listMember(pageVO);
 		

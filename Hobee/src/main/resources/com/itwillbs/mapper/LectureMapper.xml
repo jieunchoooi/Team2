@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.itwillbs.mapper.CategoryMapper">
+  <mapper namespace="com.itwillbs.mapper.LectureMapper">
 <!-- ?,?,? -> 대신 MemberVO 멤버변수 이름 작성 #{멤버변수이름} -->
 <!--    <insert id="insertMember"> -->
 <!--       insert into members(id,passwd,name,phone,email,gender,agree,content,rdate) -->
