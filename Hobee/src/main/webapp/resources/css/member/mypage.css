@@ -67,6 +67,14 @@ body {
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
+    display: flex;                /* 중앙 정렬용 */
+    justify-content: center;      
+    align-items: center;          /* 세로 중앙 */
+    background: linear-gradient(135deg, #2573ff 0%, #1e40af 100%);
+}
+
+.profile-pic span {
+    font-size: 3.5rem;
 }
 
 .profile-pic img {

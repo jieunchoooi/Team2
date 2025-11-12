@@ -57,6 +57,10 @@ main {
   transition: all 0.3s ease;
 }
 
+.profile-pic span {
+    font-size: 3.5rem;
+}
+
 .profile-box:hover {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
