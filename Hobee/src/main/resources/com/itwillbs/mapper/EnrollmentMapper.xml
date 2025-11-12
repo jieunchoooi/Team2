@@ -5,18 +5,84 @@
 
 <mapper namespace="com.itwillbs.mapper.EnrollmentMapper">
 
-    <insert id="insertEnrollment" parameterType="com.itwillbs.domain.EnrollmentVO">
-        INSERT INTO enrollment (
-            user_num,
-            lecture_num,
-            payment_id,
-            created_at
-        ) VALUES (
-            #{user_num},
-            #{lecture_num},
-            #{payment_id},
-            NOW()
-        )
-    </insert>
+  <!-- ✅ 수강 등록 -->
+  <insert id="insertEnrollment" parameterType="com.itwillbs.domain.EnrollmentVO" useGeneratedKeys="true" keyProperty="enrollment_id">
+    INSERT INTO enrollment (
+        user_num,
+        lecture_num,
+        payment_id,
+        enrolled_at
+    )
+    VALUES (
+        #{user_num},
+        #{lecture_num},
+        #{payment_id},
+        NOW()
+    )
+  </insert>
+
+  <!-- ✅ 특정 회원의 수강 내역 조회 (마이페이지용) -->
+  <select id="getEnrollmentsByUser" parameterType="int" resultType="com.itwillbs.domain.EnrollmentVO">
+    SELECT 
+        e.enrollment_id,
+        e.user_num,
+        e.lecture_num,
+        e.payment_id,
+        e.enrolled_at,
+        l.title AS lecture_title,
+        l.thumbnail AS lecture_thumbnail,
+        l.category,
+        l.price,
+        p.status AS payment_status
+    FROM enrollment e
+    LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+    LEFT JOIN payment p ON e.payment_id = p.payment_id
+    WHERE e.user_num = #{user_num}
+    ORDER BY e.enrolled_at DESC
+  </select>
+
+  <!-- ✅ 특정 강의의 수강자 목록 (관리자용) -->
+  <select id="getEnrollmentsByLecture" parameterType="int" resultType="com.itwillbs.domain.EnrollmentVO">
+    SELECT 
+        e.enrollment_id,
+        e.user_num,
+        e.lecture_num,
+        e.payment_id,
+        e.enrolled_at,
+        u.user_name,
+        u.user_email,
+        p.status AS payment_status
+    FROM enrollment e
+    LEFT JOIN user u ON e.user_num = u.user_num
+    LEFT JOIN payment p ON e.payment_id = p.payment_id
+    WHERE e.lecture_num = #{lecture_num}
+    ORDER BY e.enrolled_at DESC
+  </select>
+
+  <!-- ✅ 결제별 수강 목록 (결제 상세용) -->
+  <select id="getEnrollmentsByPayment" parameterType="int" resultType="com.itwillbs.domain.EnrollmentVO">
+    SELECT 
+        e.enrollment_id,
+        e.user_num,
+        e.lecture_num,
+        e.payment_id,
+        e.enrolled_at,
+        l.title AS lecture_title,
+        l.category,
+        l.thumbnail AS lecture_thumbnail,
+        l.teacher_name
+    FROM enrollment e
+    LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+    WHERE e.payment_id = #{payment_id}
+    ORDER BY e.enrolled_at DESC
+  </select>
+
+  <!-- ✅ 중복 등록 방지 (회원 + 강의 기준) -->
+  <select id="checkEnrollmentExists" parameterType="com.itwillbs.domain.EnrollmentVO" resultType="int">
+    SELECT COUNT(*) 
+    FROM enrollment
+    WHERE user_num = #{user_num}
+      AND lecture_num = #{lecture_num}
+  </select>
 
 </mapper>

@@ -1,19 +1,42 @@
 package com.itwillbs.controller;
 
-import java.util.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession; // ✅ jakarta → javax 로 수정
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import javax.servlet.http.HttpSession;
-import com.itwillbs.service.PaymentService;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itwillbs.domain.GradeVO;
+import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.UserVO;
-import com.itwillbs.domain.LectureVO;
-import javax.servlet.http.HttpServletRequest;
+import com.itwillbs.service.PaymentService;
 
+/**
+ * PaymentController
+ * -----------------------------
+ * 결제 요청 → 검증 → DB 저장 → 완료 페이지 이동
+ */
 @Controller
 @RequestMapping("/payment/*")
 public class PaymentController {
@@ -21,168 +44,184 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    // 🔹 결제 테스트 페이지 이동
-    @GetMapping("/form")
-    public String paymentForm() {
-        System.out.println("PaymentController paymentForm()");
-        return "payment/paymentForm";  // /WEB-INF/views/payment/paymentForm.jsp
-    }
-
-  
-    
-    
-    //키값 가져오기
     @Value("${pay.API_KEY}")
     private String apiKey;
+
     @Value("${pay.API_SECRET}")
     private String apiSecret;
     
-    
+   
+    // ✅ 결제 페이지 이동
+    @GetMapping("/form")
+    public String paymentForm() {
+        return "payment/paymentForm";
+    }
+
     @PostMapping("/verify")
     @ResponseBody
     public Map<String, Object> verifyPayment(@RequestParam("imp_uid") String impUid) {
-        System.out.println("✅ [verifyPayment] PortOne 결제 검증 시작");
         Map<String, Object> result = new HashMap<>();
+        RestTemplate restTemplate = new RestTemplate();
+
+        System.out.println("🟢 [verifyPayment] 결제 검증 시작");
+        System.out.println("📦 imp_uid: " + impUid);
+        System.out.println("🔑 PortOne API Key Loaded: " + safeKey(apiKey));
+        System.out.println("🔒 PortOne API Secret Loaded: " + safeKey(apiSecret));
 
         try {
-            // ------------------------------
-            // ① PortOne REST API 토큰 발급
-            // ------------------------------
-            RestTemplate restTemplate = new RestTemplate();
+            // ✅ 1️⃣ Access Token 발급 (JSON 형식 보장)
             String tokenUrl = "https://api.iamport.kr/users/getToken";
-
-            Map<String, String> tokenParams = new HashMap<>();
-            tokenParams.put("imp_key", apiKey);
-            tokenParams.put("imp_secret", apiSecret);
-
-            ResponseEntity<Map> tokenResponse =
-                    restTemplate.postForEntity(tokenUrl, tokenParams, Map.class);
-            String accessToken = (String) ((Map) tokenResponse.getBody().get("response")).get("access_token");
-
-            // ------------------------------
-            // ② 결제 정보 조회
-            // ------------------------------
-            String paymentUrl = "https://api.iamport.kr/payments/" + impUid;
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", accessToken);
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<Map> paymentResponse =
-                    restTemplate.exchange(paymentUrl, HttpMethod.GET, entity, Map.class);
-            Map<String, Object> response = (Map<String, Object>) paymentResponse.getBody().get("response");
-
-            // ------------------------------
-            // ③ 필요한 정보 추출
-            // ------------------------------
-            int amount = (int) Double.parseDouble(response.get("amount").toString());
-            String status = response.get("status").toString(); // "paid" | "ready" | "failed"
-
-            System.out.println("💰 결제금액: " + amount);
-            System.out.println("📦 상태: " + status);
-
-            // ------------------------------
-            // ④ 결과 반환
-            // ------------------------------
-            result.put("verify_result", "success");
-            result.put("amount", amount);
-            result.put("status", status);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("verify_result", "fail");
-            result.put("message", e.getMessage());
-        }
-
-        return result;
-    }
-
-    // =========================================================
-    // ✅ [2단계] 결제 완료 - 검증 성공 후 DB에 저장
-    // =========================================================
-    @PostMapping("/complete")
-    @ResponseBody
-    public Map<String, Object> completePayment(
-            @RequestParam("imp_uid") String impUid,
-            @RequestParam("merchant_uid") String merchantUid,
-            @RequestParam("user_id") int userId,
-            @SessionAttribute("lectureList") List<LectureVO> lectureList) {
-
-        Map<String, Object> result = new HashMap<>();
-        try {
-            System.out.println("✅ completePayment() 실행");
-
-            RestTemplate restTemplate = new RestTemplate();
-
-            // 1️⃣ Access Token 발급
             HttpHeaders tokenHeaders = new HttpHeaders();
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-            Map<String, String> tokenReq = new HashMap<>();
-            tokenReq.put("imp_key", "7875022175504818");
-            tokenReq.put("imp_secret", "E8qkSjLRXXjR7FQmSiyUfjt74HfkPQMZlSAf60ofV1sZaGRcNXiSOHlRrjDArletk89OAdTwSYKPuYNZ");
+            Map<String, String> tokenBody = new HashMap<>();
+            tokenBody.put("imp_key", apiKey);
+            tokenBody.put("imp_secret", apiSecret);
 
-            HttpEntity<Map<String, String>> tokenEntity = new HttpEntity<>(tokenReq, tokenHeaders);
-            ResponseEntity<Map> tokenRes = restTemplate.postForEntity(
-                "https://api.iamport.kr/users/getToken", tokenEntity, Map.class);
+            // 🔍 ObjectMapper로 강제 JSON 직렬화
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonBody = mapper.writeValueAsString(tokenBody);
+            System.out.println("📤 Token Request JSON: " + jsonBody);
 
-            String accessToken = (String)((Map)tokenRes.getBody().get("response")).get("access_token");
+            HttpEntity<String> tokenEntity = new HttpEntity<>(jsonBody, tokenHeaders);
+            ResponseEntity<Map> tokenResp = restTemplate.postForEntity(tokenUrl, tokenEntity, Map.class);
 
-            // 2️⃣ 결제 정보 조회
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", accessToken);
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
+            System.out.println("📡 Token Response Status: " + tokenResp.getStatusCode());
+            System.out.println("📡 Token Response Body: " + tokenResp.getBody());
 
-            ResponseEntity<Map> paymentRes = restTemplate.exchange(
-                "https://api.iamport.kr/payments/" + impUid,
-                HttpMethod.GET, entity, Map.class);
+            if (tokenResp.getBody() == null) return fail(result, "토큰 응답이 비어있습니다.");
 
-            Map<String, Object> response = (Map<String, Object>) paymentRes.getBody().get("response");
+            Object codeObj = tokenResp.getBody().get("code");
+            if (!(codeObj instanceof Number) || ((Number) codeObj).intValue() != 0) {
+                return fail(result, "토큰 발급 실패: " + tokenResp.getBody().get("message"));
+            }
 
-            int amount = ((Number) response.get("amount")).intValue();
-            String status = (String) response.get("status");
+            Map respMap = (Map) tokenResp.getBody().get("response");
+            if (respMap == null || respMap.get("access_token") == null) return fail(result, "access_token 없음");
 
-            // 3️⃣ PaymentVO 세팅 (한 번 결제 전체)
-            PaymentVO paymentVO = new PaymentVO();
-            paymentVO.setUser_num(userId);
-            paymentVO.setAmount(amount);          // ✅ 전체 금액
-            paymentVO.setStatus(status);          // ✅ 결제 상태
-            paymentVO.setImp_uid(impUid);
-            paymentVO.setMerchant_uid(merchantUid);
-            paymentVO.setUsed_points(0);
-            paymentVO.setSaved_points(0);
+            String accessToken = String.valueOf(respMap.get("access_token"));
+            System.out.println("✅ Access Token 발급 성공 (길이=" + accessToken.length() + "): " + safeKey(accessToken));
 
-            // 4️⃣ 결제 및 다중 수강등록
-            paymentService.processPayment(paymentVO, lectureList);
+            // ✅ 2️⃣ 결제 정보 조회
+            String paymentUrl = "https://api.iamport.kr/payments/" + impUid;
+            HttpHeaders payHeaders = new HttpHeaders();
+            payHeaders.set("Authorization", accessToken);
 
-            result.put("status", "success");
+            HttpEntity<Void> payEntity = new HttpEntity<>(payHeaders);
+            ResponseEntity<Map> payResp = restTemplate.exchange(paymentUrl, HttpMethod.GET, payEntity, Map.class);
+
+            System.out.println("📡 Payment Response Status: " + payResp.getStatusCode());
+            System.out.println("📡 Payment Response Body: " + payResp.getBody());
+
+            if (payResp.getBody() == null) return fail(result, "결제 조회 응답이 비어있습니다.");
+
+            Object pCodeObj = payResp.getBody().get("code");
+            if (!(pCodeObj instanceof Number) || ((Number) pCodeObj).intValue() != 0) {
+                return fail(result, "결제 조회 실패: " + payResp.getBody().get("message"));
+            }
+
+            Map payment = (Map) payResp.getBody().get("response");
+            if (payment == null) return fail(result, "결제 조회 response 없음");
+
+            int amount = ((Number) payment.get("amount")).intValue();
+            String status = String.valueOf(payment.get("status"));
+            String merchantUid = String.valueOf(payment.get("merchant_uid"));
+            String impUidResp = String.valueOf(payment.get("imp_uid"));
+
+            System.out.println("🧾 결제 금액: " + amount + ", 상태: " + status);
+            System.out.println("🧾 merchant_uid=" + merchantUid + ", imp_uid=" + impUidResp);
+
+            result.put("verify_result", "success");
             result.put("amount", amount);
-            result.put("payment_status", status);
+            result.put("status", status);
+            result.put("merchant_uid", merchantUid);
+            result.put("imp_uid", impUidResp);
 
+            System.out.println("🔚 [verifyPayment] 정상 종료");
+            return result;
+
+        } catch (HttpClientErrorException e) {
+            System.out.println("❌ HTTP 오류: " + e.getStatusCode());
+            System.out.println("❌ 응답 본문: " + e.getResponseBodyAsString());
+            return fail(result, "HTTP 오류: " + e.getStatusCode() + " / " + e.getResponseBodyAsString());
         } catch (Exception e) {
+            System.out.println("❌ 예외 발생: " + e.getMessage());
             e.printStackTrace();
-            result.put("status", "fail");
-            result.put("message", e.getMessage());
+            return fail(result, "예외: " + e.getMessage());
         }
-
-        return result;
     }
 
+    // 실패 처리 공통
+    private Map<String, Object> fail(Map<String, Object> ret, String msg) {
+        ret.put("verify_result", "fail");
+        ret.put("message", msg);
+        System.out.println("⚠️ [verifyPayment] " + msg);
+        System.out.println("🔚 [verifyPayment] 종료");
+        return ret;
+    }
+
+    // 키/토큰 일부만 출력
+    private String safeKey(String s) {
+        if (s == null) return "null";
+        int n = s.length();
+        if (n <= 6) return "***";
+        return s.substring(0, Math.min(6, n)) + "...(" + n + ")";
+    }
+
+
+
+    /**
+    * ✅ 결제 완료 처리 (검증 이후 호출)
+    */
+   @PostMapping("/payment/complete")
+   @ResponseBody
+   public Map<String, Object> completePayment(
+           @ModelAttribute PaymentVO paymentVO,
+           @ModelAttribute GradeVO gradeVO,
+           @RequestParam("lectureNums") List<Integer> lectureNums) {
+
+       Map<String, Object> result = new HashMap<>();
+
+       System.out.println("🟢 [PaymentController] 결제 완료 요청 도착");
+       System.out.println("📦 imp_uid=" + paymentVO.getImp_uid());
+       System.out.println("📦 merchant_uid=" + paymentVO.getMerchant_uid());
+       System.out.println("📦 amount=" + paymentVO.getAmount());
+       System.out.println("📦 lectureNums=" + lectureNums);
+       System.out.println("📦 grade 할인율=" + gradeVO.getDiscount_rate() + "%, 적립률=" + gradeVO.getReward_rate() + "%");
+
+       try {
+           // ✅ 서비스 호출 (중복 체크, 포인트 처리, 수강 등록 등)
+           paymentService.processPayment(paymentVO, lectureNums, gradeVO);
+
+           result.put("status", "success");
+           result.put("message", "결제가 정상 처리되었습니다.");
+           System.out.println("✅ [PaymentController] 결제 프로세스 완료");
+
+       } catch (IllegalStateException e) {
+           // 중복 결제 등 로직상 예외
+           result.put("status", "duplicate");
+           result.put("message", e.getMessage());
+           System.out.println("⚠️ [PaymentController] " + e.getMessage());
+
+       } catch (Exception e) {
+           // 기타 오류
+           result.put("status", "fail");
+           result.put("message", "결제 처리 중 오류 발생: " + e.getMessage());
+           e.printStackTrace();
+       }
+
+       return result;
+   }
     
-    
-    // =========================================================
-    // ✅ [3단계] 결제 완료 페이지 이동
-    // =========================================================
+    // ✅ 결제 성공 페이지 이동
     @GetMapping("/success")
     public String paymentSuccess() {
         return "payment/paymentSuccess";
     }
 
-    // 결제 실패 시
+    // ✅ 결제 실패 페이지 이동
     @GetMapping("/fail")
     public String paymentFail() {
         return "payment/paymentFail";
     }
-
-
-
 }

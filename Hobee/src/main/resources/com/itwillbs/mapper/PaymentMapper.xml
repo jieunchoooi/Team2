@@ -5,8 +5,9 @@
 
 <mapper namespace="com.itwillbs.mapper.PaymentMapper">
 
-    <!-- 결제 등록 -->
-    <insert id="insertPayment" parameterType="com.itwillbs.domain.PaymentVO" useGeneratedKeys="true" keyProperty="payment_id">
+    <!-- ✅ 결제 내역 저장 -->
+    <insert id="insertPayment" parameterType="com.itwillbs.domain.PaymentVO"
+            useGeneratedKeys="true" keyProperty="payment_id">
         INSERT INTO payment (
             user_num,
             amount,
@@ -16,20 +17,47 @@
             imp_uid,
             merchant_uid,
             created_at
-        ) VALUES (
+        )
+        VALUES (
             #{user_num},
             #{amount},
             #{used_points},
             #{saved_points},
-            #{status},
+            'paid',
             #{imp_uid},
             #{merchant_uid},
             NOW()
         )
     </insert>
 
-    <!-- imp_uid 중복 체크 -->
-    <select id="checkImpUidExists" resultType="int">
-        SELECT COUNT(*) FROM payment WHERE imp_uid = #{imp_uid}
+    <!-- ✅ imp_uid 중복 체크 -->
+    <select id="checkDuplicateImpUid" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM payment WHERE imp_uid = #{impUid}
     </select>
+
+    <!-- ✅ 회원 누적 결제금액 조회 -->
+    <select id="getUserTotalPayment" parameterType="int" resultType="int">
+        SELECT IFNULL(SUM(amount), 0)
+        FROM payment
+        WHERE user_num = #{userNum}
+          AND status = 'paid'
+    </select>
+
+    <!-- ✅ 특정 회원 결제 내역 조회 -->
+    <select id="getPaymentsByUser" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
+        SELECT 
+            payment_id,
+            user_num,
+            amount,
+            used_points,
+            saved_points,
+            status,
+            imp_uid,
+            merchant_uid,
+            created_at
+        FROM payment
+        WHERE user_num = #{userNum}
+        ORDER BY created_at DESC
+    </select>
+
 </mapper>
