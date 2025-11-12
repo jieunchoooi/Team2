@@ -16,37 +16,51 @@
 
 <!-- 메인 영역 -->
 <main class="main-content">
+ <h1>마이페이지</h1>
+ <div class="content-wrapper">
   <div class="main-header">
     <div class="profile-box">
-   	    <div class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;"> 
-        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;">
+   	    <div class="profile-pic"> 
+        	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진">
         </div>
       <div class="profile-info">
         <p>${user.user_name}</p>
         <p>${user.user_email}</p>
+        <p>포인트 &nbsp;${user.points}</p>
       </div>
     </div>
-    <h1>마이페이지</h1>
   </div>
-
-  <div class="card-container">
-    <div class="card">
-      <h3>내 강의실</h3>
-      <p>0개</p>
+  
+  <div class="form-container">
+      <div class="form-group">
+        <label for="userId">아이디</label>
+        <span class="form-value">${user.user_id}</span>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <span class="form-value">${user.user_password}</span>
+      </div>
+      <div class="form-group">
+        <label for="adress">주소</label>
+        <span class="form-value">${user.user_address}</span>
+      </div>
+      <div class="form-group">
+        <label for="tel">휴대폰 번호</label>
+        <span class="form-value">${user.user_phone}</span>
+      </div>
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <span class="form-value">${user.user_email}</span>
+      </div>
+      <div class="form-group">
+        <label for="gender">성별</label>
+        <span class="form-value">${user.user_gender}</span>
+      </div>
+     </div> 
     </div>
-    <div class="card">
-      <h3>내가 쓴 리뷰</h3>
-      <p>0건</p>
-    </div>
-    <div class="card">
-      <h3>관심목록</h3>
-      <p>2개</p>
-    </div>
-    <div class="card">
-      <h3>문의내역</h3>
-      <p>1건</p>
-    </div>
-  </div>
+  </section>
+  
 </main>
 
 <script>
