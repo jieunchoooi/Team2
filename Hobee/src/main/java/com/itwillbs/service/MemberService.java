@@ -15,8 +15,7 @@ public class MemberService {
 
 	@Inject
 	private MemberMapper memberMapper;
-	@Autowired
-	private UserVO userVO;
+	
 	
 	public void updateProMember(UserVO userVO) {
 		System.out.println("MemberService updateProMember()");
@@ -29,13 +28,6 @@ public class MemberService {
 		return memberMapper.insertMember(user_id);
 	}
 
-	public List<UserVO> listMember() {
-		System.out.println("MemberService listMember()");
-		
-		if(userVO == null) {
-			System.out.println("UserVO null");
-		}
-		return memberMapper.listMember();
-	}
+
 
 }

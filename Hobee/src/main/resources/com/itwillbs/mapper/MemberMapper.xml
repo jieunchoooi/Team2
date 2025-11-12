@@ -25,9 +25,9 @@
 		where user_id = #{user_id}
 	</select>
 
-	<select id="listMember" >
-		select * from user
-	</select>
+<!-- 	<select id="listMember" resultType="com.itwillbs.hobee.UserVO" > -->
+<!-- 		select * from user -->
+<!-- 	</select> -->
 
 
 </mapper>

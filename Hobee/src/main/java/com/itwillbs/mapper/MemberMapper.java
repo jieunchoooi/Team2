@@ -10,7 +10,7 @@ public interface MemberMapper {
 
 	public UserVO insertMember(String user_id);
 
-	public List<UserVO> listMember();
+
 	
 
 }

@@ -36,7 +36,7 @@
 D:\Shared\JSP\workspace_sts\SpringProject2\src\main\webapp\resources\upload
  -->
 <beans:bean id="uploadPath" class="java.lang.String">
-<beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\upload" />
+<beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\img\\user_picture" />
 </beans:bean>
 	</beans:beans>
 

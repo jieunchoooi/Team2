@@ -20,11 +20,9 @@ import com.itwillbs.service.UserService;
 @RequestMapping("/admin/*")
 public class AdminController {
 
-//	@Inject
-//	private AdminService adminservice;
-	@Autowired
-	MemberService memberService;
-
+	@Inject
+	private AdminService adminservice;
+	
 	@GetMapping("/adminCategory")
 	public String adminCategory() {
 		System.out.println("AdminController adminCategory()");
@@ -59,13 +57,8 @@ public class AdminController {
 	public String adminMemberList(Model model) {
 		System.out.println("AdminController adminMemberList()");
 		
-		if (memberService == null) {  
-            System.out.println(" memberService is null!");
-        }
+		List<UserVO> memberList = adminservice.listMember();
 		
-		List<UserVO> memberList = memberService.listMember();
-		
-			
 		model.addAttribute("memberList", memberList);
 			
 		return "admin/adminMemberList";
