@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-/* ====== 기존 디자인 그대로 유지 ====== */
+/* ====== 기본 스타일 ====== */
 * {
 	margin: 0;
 	padding: 0;
@@ -120,14 +120,92 @@ main {
 	font-weight: 700;
 	font-size: 0.95rem;
 }
-.top10-grid {
-	display: grid;
+
+/* ====== Top10 슬라이더 ====== */
+.top10-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+.top10-header h3 {
+	margin: 0;
+}
+.slider-controls {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+}
+.top10-slider-container {
+	overflow: hidden;
+}
+.top10-slide {
+	display: none;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 24px;
+	width: 100%;
 }
-.top10-grid .card img {
-	height: 150px;
+.top10-slide.active {
+	display: grid;
 }
+.top10-slide .card {
+	width: 100%;
+}
+.top10-slide .card img {
+	height: 200px;
+}
+.top10-slide .card-body {
+	padding: 14px;
+}
+.top10-slide .card-title {
+	font-size: 1.05rem;
+	margin-bottom: 8px;
+}
+.top10-slide .card-price {
+	font-size: 1rem;
+}
+/* 화살표 버튼 */
+.slider-btn {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 1.5rem;
+	color: #2573ff;
+	transition: color 0.2s;
+	padding: 0;
+	width: 35px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.slider-btn:hover {
+	color: #0056d6;
+}
+.slider-dots {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 25px;
+}
+.dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: #ddd;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+.dot:hover {
+	background: #999;
+}
+.dot.active {
+	background: #2573ff;
+	width: 24px;
+	border-radius: 5px;
+}
+
+/* ====== 전체 강의 ====== */
 .all-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -136,6 +214,8 @@ main {
 .all-grid .card img {
 	height: 120px;
 }
+
+/* ====== 푸터 ====== */
 footer {
 	background: #fff;
 	text-align: center;
@@ -147,6 +227,7 @@ footer {
 	margin-top: 60px;
 }
 </style>
+
 </head>
 
 <body>
@@ -199,25 +280,49 @@ footer {
 			<input type="text" placeholder="강의를 검색해보세요">
 		</div>
 
-	<!-- 🔹 Top10 -->
+	<!-- 🔹 Top10 슬라이더 -->
 	<div class="section">
-	    <h3 id="top10-title">${param.category_detail == null ? '전체' : param.category_detail} Top 10</h3>
-	    <div class="top10-grid">
-	        <c:forEach var="top" items="${top10List}">
-	            <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
-	                <div class="card">
-	                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
-	                    <div class="card-body">
-	                        <div class="card-title">${top.lecture_title}</div>
-	                        <div class="card-price">₩<fmt:formatNumber value="${top.lecture_price}" pattern="#,###" /></div>
-	                    </div>
-	                </div>
-	            </a>
-	        </c:forEach>
-	        <c:if test="${empty top10List}">
-	            <p>Top10 강의가 없습니다.</p>
-	        </c:if>
+	    <div class="top10-header">
+	        <h3 id="top10-title">${param.category_detail == null ? '전체' : param.category_detail} Top 10</h3>
+	        <div class="slider-controls">
+	            <button class="slider-btn prev" onclick="moveSlide(-1)">
+	                <i class="fa-solid fa-chevron-left"></i>
+	            </button>
+	            <button class="slider-btn next" onclick="moveSlide(1)">
+	                <i class="fa-solid fa-chevron-right"></i>
+	            </button>
+	        </div>
 	    </div>
+	    
+	    <div class="top10-slider-container">
+	        <div class="top10-grid" id="top10Slider">
+	            <c:forEach var="top" items="${top10List}" varStatus="status">
+	                <c:if test="${status.index % 3 == 0}">
+	                    <div class="top10-slide ${status.index == 0 ? 'active' : ''}">
+	                </c:if>
+	                
+	                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
+	                    <div class="card">
+	                        <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
+	                        <div class="card-body">
+	                            <div class="card-title">${top.lecture_title}</div>
+	                            <div class="card-price">₩<fmt:formatNumber value="${top.lecture_price}" pattern="#,###" /></div>
+	                        </div>
+	                    </div>
+	                </a>
+	                
+	                <c:if test="${(status.index + 1) % 3 == 0 || status.last}">
+	                    </div>
+	                </c:if>
+	            </c:forEach>
+	        </div>
+	    </div>
+	    
+	    <div class="slider-dots" id="sliderDots"></div>
+	    
+	    <c:if test="${empty top10List}">
+	        <p>Top10 강의가 없습니다.</p>
+	    </c:if>
 	</div>
 	
 	<!-- 🔹 전체 강의 -->
@@ -244,6 +349,57 @@ footer {
 </main>
 
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.top10-slide');
+const totalSlides = slides.length;
+
+// 닷 생성
+function createDots() {
+    const dotsContainer = document.getElementById('sliderDots');
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+}
+
+// 슬라이드 이동
+function moveSlide(direction) {
+    currentSlide += direction;
+    if (currentSlide < 0) currentSlide = totalSlides - 1;
+    if (currentSlide >= totalSlides) currentSlide = 0;
+    showSlide(currentSlide);
+}
+
+// 특정 슬라이드로 이동
+function goToSlide(index) {
+    currentSlide = index;
+    showSlide(currentSlide);
+}
+
+// 슬라이드 표시
+function showSlide(index) {
+    slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) slide.classList.add('active');
+    });
+    
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        if (i === index) dot.classList.add('active');
+    });
+}
+
+// 초기화
+if (totalSlides > 0) {
+    createDots();
+}
+</script>
 
 </body>
 </html>
