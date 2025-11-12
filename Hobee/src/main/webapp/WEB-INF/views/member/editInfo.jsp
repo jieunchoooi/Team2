@@ -43,7 +43,6 @@
     <div class="form-container">
       <div class="profile-edit">
         <div class="profile-pic" style="width: 130px; height: 130px; border-radius: 50%; overflow: hidden;"> 
-<%--         	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진" style="width: 100%; height: 100%; object-fit: cover;"> --%>
         <c:choose>
 				<c:when test="${empty user.user_file}">
 					<span>🐵</span>
