@@ -21,4 +21,17 @@
 		values(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author}, #{lecture_price})
 	</insert>
 
+	<select id="listLecture" resultType="com.itwillbs.domain.LectureVO" > 
+ 		select * from lecture 
+   		order by lecture_num desc
+    	LIMIT #{startRow}, #{pageSize}
+	</select> 
+	
+	<select id="countlectureList" resultType="java.lang.Integer" > 
+ 		select count(*) from lecture
+	</select> 
+	
+	
+	
+	
 </mapper>

@@ -37,4 +37,20 @@ public class AdminService {
 		adminMapper.LectureUpdate(lectureVO);
 	}
 
+	public List<LectureVO> listLecture(PageVO pageVO) {
+		System.out.println("AdminService listLecture()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.listLecture(pageVO);
+	}
+
+	public int countlectureList() {
+		System.out.println("AdminService countlectureList()");
+
+		return adminMapper.countlectureList();
+	}
+
 }
