@@ -21,20 +21,17 @@
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
 		<div class="filter-container">
-			<div class="search-box">
-				<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
-				<button>검색</button>
-			</div>
-			<select class="filter-select">
-				<option>전체 회원</option>
-				<option>최근 가입</option>
-				<option>활성 회원</option>
-			</select>
+			
 		</div>
 		<div class="main-header">
 			<h1>회원 목록</h1>
 		</div>
 
+			<div class="search-box">
+				<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
+				<button>검색</button>
+				<button>전체회원</button>
+			</div>
 		<div class="table-container">
 			<table>
 				<thead>

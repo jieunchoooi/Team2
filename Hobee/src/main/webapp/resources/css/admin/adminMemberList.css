@@ -17,8 +17,7 @@ body {
 .main-content {
     margin-left: 240px; /* 사이드바 폭만큼 밀기 */
     margin-top: 0;
-    padding: 30px;
-/*     padding-top: 100px; 헤더 아래부터 시작 */
+    padding: 0 30px 30px 30px;
     width: calc(100% - 240px);
     background-color: #f9fafb;
     min-height: 100vh;
@@ -121,7 +120,7 @@ tbody tr:last-child td {
     background-color: #2573ff;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 8px 18px;
     font-size: 0.9rem;
     cursor: pointer;
@@ -169,13 +168,16 @@ td:last-child {
 
 .search-box {
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
-    flex: 1;
-    min-width: 300px;
+    margin-bottom: 20px;
+    padding:  0 105px 0 0;;
 }
 
+
+
 .search-box input {
-    flex: 1;
+    width: 300px;
     padding: 10px 14px;
     border: 1px solid #d3ddff;
     border-radius: 10px;
@@ -183,7 +185,6 @@ td:last-child {
     font-size: 0.95rem;
     transition: border-color 0.2s;
 }
-
 .search-box input:focus {
     border-color: #2573ff;
     box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
