@@ -22,8 +22,9 @@ public class UserService {
         return userMapper.login(userVO);
     }
     
-    public UserVO infoUser(String user_id) {
-        return userMapper.selectUserById(user_id);
-    }
+	public UserVO selectUserById(String user_id) {
+		System.out.println("UesrService: selectUserById() 실행");
+		return userMapper.selectUserById(user_id);
+	}
 
 }
