@@ -24,7 +24,7 @@
             <label for="user_id">아이디</label>
             <div style="display:flex; gap:8px;">
                 <input type="text" id="user_id" name="user_id" placeholder="아이디를 입력하세요" required>
-                <button type="button" id="checkIdBtn" 
+                <button type="button" id="checkIdBtn"
                     style="width:120px; background:#0d6efd; color:white; border:none; border-radius:8px; cursor:pointer;">
                     중복확인
                 </button>
@@ -35,7 +35,8 @@
         <!-- 비밀번호 -->
         <div class="form-group">
             <label for="user_password">비밀번호</label>
-            <input type="password" id="user_password" name="user_password" placeholder="영문+숫자+특수문자 포함 8~12자" required>
+            <input type="password" id="user_password" name="user_password"
+                   placeholder="영문+숫자+특수문자 포함 8~12자" required>
         </div>
 
         <!-- 비밀번호 확인 -->
@@ -60,7 +61,8 @@
         <!-- 전화번호 -->
         <div class="form-group">
             <label for="user_phone">전화번호</label>
-            <input type="text" id="user_phone" name="user_phone" maxlength="13" placeholder="010-0000-0000" required>
+            <input type="text" id="user_phone" name="user_phone" maxlength="13"
+                   placeholder="010-0000-0000" required>
             <p id="phoneMsg" style="font-size:13px; margin-top:4px;"></p>
         </div>
 
@@ -84,7 +86,8 @@
         <!-- 파일 -->
         <div class="form-group">
             <label for="user_file">프로필 이미지</label>
-            <input type="file" id="user_file" name="user_file">
+            <input type="file" id="user_file" name="user_file" accept="image/*" required>
+            <p id="fileMsg" style="font-size:13px; margin-top:4px;"></p>
         </div>
 
         <!-- 회원가입 버튼 -->
@@ -132,7 +135,7 @@ $(document).ready(function(){
   });
 
   /* ------------------------------ *
-     유효성검사 + 전화번호 하이픈
+     유효성검사 + 전화번호 하이픈 + 파일 검사
   * ------------------------------ */
   const pw = $("#user_password");
   const pw2 = $("#user_password2");
@@ -141,11 +144,13 @@ $(document).ready(function(){
   const phoneMsg = $("#phoneMsg");
   const addr = $("#user_address");
   const addrMsg = $("#addrMsg");
+  const file = $("#user_file");
+  const fileMsg = $("#fileMsg");
 
   $("form").on("submit", function(e){
     let valid = true;
 
-    // ✅ 비밀번호 형식검사 (영문+숫자+특수문자(!@#$%^*), 8~12자)
+    // ✅ 비밀번호 형식검사
     const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
     if (!pwPattern.test(pw.val())) {
       pwMsg.text("비밀번호는 영문+숫자+특수문자(!@#$%^*) 포함 8~12자여야 합니다.").css("color", "red");
@@ -160,7 +165,7 @@ $(document).ready(function(){
       valid = false;
     }
 
-    // ✅ 전화번호 유효성 검사
+    // ✅ 전화번호 유효성검사
     const phonePattern = /^010-\d{4}-\d{4}$/;
     if (!phonePattern.test(phone.val())) {
       phoneMsg.text("전화번호 형식은 010-0000-0000 입니다.").css("color", "red");
@@ -175,6 +180,14 @@ $(document).ready(function(){
       valid = false;
     } else {
       addrMsg.text("");
+    }
+
+    // ✅ 파일 업로드 필수 검사
+    if (file.val().trim() === "") {
+      fileMsg.text("프로필 이미지를 업로드해주세요.").css("color", "red");
+      valid = false;
+    } else {
+      fileMsg.text("");
     }
 
     if (!valid) e.preventDefault();
