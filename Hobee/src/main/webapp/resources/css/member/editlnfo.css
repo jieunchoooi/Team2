@@ -59,11 +59,20 @@ main {
 
 .profile-pic span {
     font-size: 3.5rem;
+    
 }
 
 .profile-box:hover {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
+}
+
+.profile-pic img {
+    width: 100%;          /* 부모 div 크기에 맞춤 */
+    height: 100%;         /* 부모 div 크기에 맞춤 */
+    object-fit: cover;    /* 비율 유지하면서 div에 맞게 잘림 */
+    border-radius: 50%;   /* 원형 유지 */
+    display: block;
 }
 
 .profile-box .profile-pic {

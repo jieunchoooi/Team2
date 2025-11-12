@@ -21,24 +21,28 @@
     )
   </insert>
 
-  <!-- ✅ 특정 회원의 수강 내역 조회 (마이페이지용) -->
-  <select id="getEnrollmentsByUser" parameterType="int" resultType="com.itwillbs.domain.EnrollmentVO">
-    SELECT 
+ 
+  <!-- ✅ 특정 회원의 수강 내역 조회 (내 강의실)
+       - JOIN: enrollment + lecture
+       - 실제 DB 컬럼 기준 -->
+  <select id="getEnrollmentsByUser"
+          parameterType="int"
+          resultType="com.itwillbs.domain.EnrollmentViewVO">
+    SELECT
         e.enrollment_id,
         e.user_num,
         e.lecture_num,
         e.payment_id,
         e.enrolled_at,
-        l.title AS lecture_title,
-        l.thumbnail AS lecture_thumbnail,
-        l.category,
-        l.price,
-        p.status AS payment_status
+        l.lecture_title,
+        l.lecture_author,
+        l.lecture_price,
+        l.category_detail,
+        l.lecture_img
     FROM enrollment e
     LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
-    LEFT JOIN payment p ON e.payment_id = p.payment_id
     WHERE e.user_num = #{user_num}
-    ORDER BY e.enrolled_at DESC
+    ORDER BY e.enrolled_at DESC;
   </select>
 
   <!-- ✅ 특정 강의의 수강자 목록 (관리자용) -->

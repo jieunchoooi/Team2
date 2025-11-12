@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.itwillbs.domain.EnrollmentVO;
+import com.itwillbs.domain.EnrollmentViewVO;
 
 /**
  * EnrollmentMapper (v2)
@@ -18,8 +19,8 @@ public interface EnrollmentMapper {
     /** 수강 등록 */
     int insertEnrollment(EnrollmentVO enrollVO);
 
-    /** 회원별 수강 내역 조회 */
-    List<EnrollmentVO> getEnrollmentsByUser(@Param("user_num") int user_num);
+    /** ✅ 회원의 수강 내역 조회 */
+    List<EnrollmentViewVO> getEnrollmentsByUser(@Param("user_num") int user_num);
 
     /** 강의별 수강자 목록 (관리자용) */
     List<EnrollmentVO> getEnrollmentsByLecture(@Param("lecture_num") int lecture_num);
@@ -29,4 +30,6 @@ public interface EnrollmentMapper {
 
     /** 중복 등록 방지 */
     int checkEnrollmentExists(EnrollmentVO enrollVO);
+    
+    
 }
