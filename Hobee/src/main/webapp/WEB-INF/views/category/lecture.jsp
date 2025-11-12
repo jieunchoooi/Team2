@@ -186,46 +186,6 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       <div class="chapter-item">
         <div class="chapter-header" onclick="toggleChapter(this)">
           <div class="chapter-info">
-            <div class="chapter-label">WELCOME</div>
-            <div class="chapter-title">누구나 그림을 그릴 수 있어요</div>
-          </div>
-          <div class="chapter-meta">
-            <span>강의 4개</span>
-            <i class="fas fa-chevron-down chapter-toggle"></i>
-          </div>
-        </div>
-        <div class="chapter-content">
-          <div class="lecture-item">
-            <span class="lecture-number">1</span>
-            <span class="lecture-title">어색한 그림은 이제 안녕! 드로잉 클래스에 오신 것을 환영합니다</span>
-            <span class="lecture-duration">02:16</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">2</span>
-            <span class="lecture-title">강의 소개 및 준비물</span>
-            <span class="lecture-duration">03:45</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">3</span>
-            <span class="lecture-title">디지털 드로잉 기초</span>
-            <span class="lecture-duration">05:20</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">4</span>
-            <span class="lecture-title">첫 번째 실습</span>
-            <span class="lecture-duration">04:30</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- 챕터 2 -->
-      <div class="chapter-item">
-        <div class="chapter-header" onclick="toggleChapter(this)">
-          <div class="chapter-info">
             <div class="chapter-label">CHAPTER 1</div>
             <div class="chapter-title">무작정 따라 그리며 기초 쌓기!</div>
           </div>
@@ -239,30 +199,26 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
             <span class="lecture-number">1</span>
             <span class="lecture-title">기본 선 연습하기</span>
             <span class="lecture-duration">07:15</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">2</span>
             <span class="lecture-title">도형 그리기 마스터</span>
             <span class="lecture-duration">06:30</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">3</span>
             <span class="lecture-title">명암 표현 기법</span>
             <span class="lecture-duration">08:45</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">4</span>
             <span class="lecture-title">실습: 간단한 오브젝트 그리기</span>
             <span class="lecture-duration">05:50</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
         </div>
       </div>
 
-      <!-- 챕터 3 -->
+      <!-- 챕터 2 -->
       <div class="chapter-item">
         <div class="chapter-header" onclick="toggleChapter(this)">
           <div class="chapter-info">
@@ -279,36 +235,31 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
             <span class="lecture-number">1</span>
             <span class="lecture-title">색상 이론과 팔레트 만들기</span>
             <span class="lecture-duration">09:20</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">2</span>
             <span class="lecture-title">레이어 활용 팁</span>
             <span class="lecture-duration">06:15</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">3</span>
             <span class="lecture-title">디테일 추가하는 법</span>
             <span class="lecture-duration">07:40</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">4</span>
             <span class="lecture-title">텍스처 표현 기법</span>
             <span class="lecture-duration">08:10</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">5</span>
             <span class="lecture-title">실습: 복잡한 오브젝트 그리기</span>
             <span class="lecture-duration">10:25</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
         </div>
       </div>
 
-      <!-- 챕터 4 -->
+      <!-- 챕터 3 -->
       <div class="chapter-item">
         <div class="chapter-header" onclick="toggleChapter(this)">
           <div class="chapter-info">
@@ -325,24 +276,21 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
             <span class="lecture-number">1</span>
             <span class="lecture-title">얼굴 구조와 표정 그리기</span>
             <span class="lecture-duration">12:30</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">2</span>
             <span class="lecture-title">다양한 각도에서 얼굴 그리기</span>
             <span class="lecture-duration">11:15</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">3</span>
             <span class="lecture-title">캐릭터 개성 만들기</span>
             <span class="lecture-duration">09:50</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
         </div>
       </div>
 
-      <!-- 챕터 5 -->
+      <!-- 챕터 4 -->
       <div class="chapter-item">
         <div class="chapter-header" onclick="toggleChapter(this)">
           <div class="chapter-info">
@@ -359,19 +307,16 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
             <span class="lecture-number">1</span>
             <span class="lecture-title">의상과 포즈 디자인</span>
             <span class="lecture-duration">10:20</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">2</span>
             <span class="lecture-title">배경과 구도 잡기</span>
             <span class="lecture-duration">13:40</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
           <div class="lecture-item">
             <span class="lecture-number">3</span>
             <span class="lecture-title">최종 프로젝트: 나만의 작품 완성하기</span>
             <span class="lecture-duration">15:30</span>
-            <i class="fas fa-play-circle lecture-play-icon"></i>
           </div>
         </div>
       </div>
