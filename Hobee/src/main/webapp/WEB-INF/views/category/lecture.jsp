@@ -64,16 +64,38 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .course-meta i { color: var(--primary); }
 .course-description { line-height: 1.7; color: #444; }
 
+/* 커리큘럼 섹션 - 새로운 디자인 */
 .curriculum-section { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.curriculum-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.curriculum-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.curriculum-header h3 { font-size: 1.3rem; font-weight: 700; color: #222; }
 .curriculum-count { font-size: 0.95rem; color: var(--gray); font-weight: 500; }
-.curriculum-item { display: flex; align-items: center; gap: 15px; padding: 18px; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; transition: all 0.2s; cursor: pointer; }
-.curriculum-item:hover { background: var(--hover-bg); border-color: var(--primary); }
-.curriculum-thumbnail { width: 80px; height: 60px; border-radius: 8px; object-fit: cover; }
-.curriculum-info { flex: 1; }
-.curriculum-title { font-weight: 600; margin-bottom: 5px; color: #222; }
-.curriculum-meta { display: flex; gap: 10px; font-size: 0.85rem; color: var(--gray); }
-.play-icon { color: var(--primary); font-size: 1.2rem; }
+.expand-all-btn { color: var(--primary); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: none; transition: color 0.2s; }
+.expand-all-btn:hover { color: #1f65e0; }
+
+.chapter-item { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; }
+.chapter-item:hover { border-color: var(--primary); }
+
+.chapter-header { display: flex; align-items: center; gap: 15px; padding: 18px; cursor: pointer; background: #fff; transition: background 0.2s; }
+.chapter-header:hover { background: var(--hover-bg); }
+.chapter-header.active { background: var(--hover-bg); }
+
+.chapter-info { flex: 1; }
+.chapter-label { font-size: 0.8rem; color: var(--gray); margin-bottom: 4px; text-transform: uppercase; }
+.chapter-title { font-weight: 700; font-size: 1.05rem; color: #222; line-height: 1.4; }
+
+.chapter-meta { display: flex; align-items: center; gap: 8px; color: var(--gray); font-size: 0.85rem; }
+.chapter-toggle { color: var(--gray); font-size: 1rem; transition: transform 0.3s; }
+.chapter-toggle.active { transform: rotate(180deg); }
+
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #fafafa; }
+.chapter-content.active { max-height: 1000px; }
+
+.lecture-item { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-top: 1px solid #e0e0e0; cursor: pointer; transition: background 0.2s; }
+.lecture-item:hover { background: #f0f0f0; }
+.lecture-number { font-size: 0.85rem; color: var(--gray); font-weight: 600; min-width: 30px; }
+.lecture-title { flex: 1; font-size: 0.95rem; color: #333; }
+.lecture-duration { font-size: 0.85rem; color: var(--gray); }
+.lecture-play-icon { color: var(--primary); font-size: 1rem; }
 
 .purchase-sidebar { 
   background: #fff; 
@@ -90,11 +112,10 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .discount-rate { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
 .original-price { font-size: 0.9rem; color: var(--gray); text-decoration: line-through; margin-bottom: 5px; }
 .current-price { font-size: 1.6rem; font-weight: 700; color: #222; margin-bottom: 5px; }
-.monthly-price { font-size: 0.85rem; color: var(--primary); font-weight: 600; }
+
 .btn-purchase { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 12px; }
 .btn-purchase:hover { background: #1f65e0; transform: translateY(-2px); }
-.btn-subscribe { width: 100%; background: #fff; color: var(--primary); border: 2px solid var(--primary); padding: 12px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-bottom: 18px; }
-.btn-subscribe:hover { background: var(--hover-bg); }
+
 .class-plus-info { font-size: 0.8rem; color: var(--gray); line-height: 1.6; padding-bottom: 20px;}
 .action-icons { display: flex; justify-content: space-around; padding-top: 18px; border-top: 1px solid #e0e0e0; }
 .action-icon { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; transition: all 0.2s; }
@@ -133,14 +154,10 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       <h2 class="course-title">디지털 드로잉으로 나만의 캐릭터 만들기</h2>
       <div class="course-meta">
         <span><i class="far fa-calendar"></i> 2019년 1월 30일 수강 시작</span>
-        <span><i class="far fa-clock"></i> 총 8시간 6분</span>
       </div>
       <div class="course-meta">
-        <span><i class="far fa-play-circle"></i> 일반 난이도 · 영상 36개 · 챕터 파일 120개</span>
-      </div>
-      <div class="course-meta">
-        <span><i class="fas fa-globe"></i> 한국어 음성</span>
-        <span><i class="far fa-closed-captioning"></i> 한국어 · 영어 · 일본어 자막</span>
+      	<span><i class="far fa-clock"></i> 총 8시간 6분</span>
+        <span><i class="far fa-play-circle"></i> 챕터 파일 4개</span>
       </div>
       <p class="course-description">
         아이패드와 펜슬만 있다면 누구나 쉽게 시작할 수 있는 디지털 드로잉 입문 클래스!  
@@ -156,67 +173,207 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       <div class="tab-item">비슷한 강의 추천</div>
     </div>
 
-    <!-- 커리큘럼 섹션 -->
+    <!-- 커리큘럼 섹션 - 새로운 디자인 -->
     <div class="curriculum-section">
-      <h3>
-        클래스 커리큘럼
-        <span class="curriculum-count">챕터 11개</span>
-      </h3>
-
-      <div class="curriculum-item">
-        <img class="curriculum-thumbnail" src="https://picsum.photos/80/60?random=101" alt="커리큘럼 1" />
-        <div class="curriculum-info">
-          <div class="curriculum-title">Welcome<br>어색한 그림은 이제 안녕! 드로잉 기초부터 시작하는 리니의 펜드로잉 클래스에 오신 것을 환영합니다!</div>
-          <div class="curriculum-meta">
-            <span><i class="far fa-play-circle"></i> 미리보기</span>
-            <span>02:16</span>
-          </div>
+      <div class="curriculum-header">
+        <div>
+          <h3>커리큘럼 <span class="curriculum-count">챕터 4개</span></h3>
         </div>
-        <i class="fas fa-play-circle play-icon"></i>
+        <button class="expand-all-btn" onclick="toggleAllChapters()">전체 챕터 열기</button>
       </div>
 
-      <div class="curriculum-item">
-        <img class="curriculum-thumbnail" src="https://picsum.photos/80/60?random=102" alt="커리큘럼 2" />
-        <div class="curriculum-info">
-          <div class="curriculum-title">1. 제대로 배우는 펜드로잉 클래스를 소개합니다.</div>
-          <div class="curriculum-meta">
-            <span>03:45</span>
+      <!-- 챕터 1 -->
+      <div class="chapter-item">
+        <div class="chapter-header" onclick="toggleChapter(this)">
+          <div class="chapter-info">
+            <div class="chapter-label">WELCOME</div>
+            <div class="chapter-title">누구나 그림을 그릴 수 있어요</div>
+          </div>
+          <div class="chapter-meta">
+            <span>강의 4개</span>
+            <i class="fas fa-chevron-down chapter-toggle"></i>
           </div>
         </div>
-        <i class="fas fa-play-circle play-icon"></i>
+        <div class="chapter-content">
+          <div class="lecture-item">
+            <span class="lecture-number">1</span>
+            <span class="lecture-title">어색한 그림은 이제 안녕! 드로잉 클래스에 오신 것을 환영합니다</span>
+            <span class="lecture-duration">02:16</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">2</span>
+            <span class="lecture-title">강의 소개 및 준비물</span>
+            <span class="lecture-duration">03:45</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">3</span>
+            <span class="lecture-title">디지털 드로잉 기초</span>
+            <span class="lecture-duration">05:20</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">4</span>
+            <span class="lecture-title">첫 번째 실습</span>
+            <span class="lecture-duration">04:30</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+        </div>
       </div>
 
-      <div class="curriculum-item">
-        <img class="curriculum-thumbnail" src="https://picsum.photos/80/60?random=103" alt="커리큘럼 3" />
-        <div class="curriculum-info">
-          <div class="curriculum-title">2. 기본 선과 색 표현 배우기</div>
-          <div class="curriculum-meta">
-            <span>05:20</span>
+      <!-- 챕터 2 -->
+      <div class="chapter-item">
+        <div class="chapter-header" onclick="toggleChapter(this)">
+          <div class="chapter-info">
+            <div class="chapter-label">CHAPTER 1</div>
+            <div class="chapter-title">무작정 따라 그리며 기초 쌓기!</div>
+          </div>
+          <div class="chapter-meta">
+            <span>강의 4개</span>
+            <i class="fas fa-chevron-down chapter-toggle"></i>
           </div>
         </div>
-        <i class="fas fa-play-circle play-icon"></i>
+        <div class="chapter-content">
+          <div class="lecture-item">
+            <span class="lecture-number">1</span>
+            <span class="lecture-title">기본 선 연습하기</span>
+            <span class="lecture-duration">07:15</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">2</span>
+            <span class="lecture-title">도형 그리기 마스터</span>
+            <span class="lecture-duration">06:30</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">3</span>
+            <span class="lecture-title">명암 표현 기법</span>
+            <span class="lecture-duration">08:45</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">4</span>
+            <span class="lecture-title">실습: 간단한 오브젝트 그리기</span>
+            <span class="lecture-duration">05:50</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+        </div>
       </div>
 
-      <div class="curriculum-item">
-        <img class="curriculum-thumbnail" src="https://picsum.photos/80/60?random=104" alt="커리큘럼 4" />
-        <div class="curriculum-info">
-          <div class="curriculum-title">3. 얼굴 구조와 표정 그리기</div>
-          <div class="curriculum-meta">
-            <span>07:15</span>
+      <!-- 챕터 3 -->
+      <div class="chapter-item">
+        <div class="chapter-header" onclick="toggleChapter(this)">
+          <div class="chapter-info">
+            <div class="chapter-label">CHAPTER 2</div>
+            <div class="chapter-title">응용편! 약간의 변화로 디테일 업그레이드하기!</div>
+          </div>
+          <div class="chapter-meta">
+            <span>강의 5개</span>
+            <i class="fas fa-chevron-down chapter-toggle"></i>
           </div>
         </div>
-        <i class="fas fa-play-circle play-icon"></i>
+        <div class="chapter-content">
+          <div class="lecture-item">
+            <span class="lecture-number">1</span>
+            <span class="lecture-title">색상 이론과 팔레트 만들기</span>
+            <span class="lecture-duration">09:20</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">2</span>
+            <span class="lecture-title">레이어 활용 팁</span>
+            <span class="lecture-duration">06:15</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">3</span>
+            <span class="lecture-title">디테일 추가하는 법</span>
+            <span class="lecture-duration">07:40</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">4</span>
+            <span class="lecture-title">텍스처 표현 기법</span>
+            <span class="lecture-duration">08:10</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">5</span>
+            <span class="lecture-title">실습: 복잡한 오브젝트 그리기</span>
+            <span class="lecture-duration">10:25</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+        </div>
       </div>
 
-      <div class="curriculum-item">
-        <img class="curriculum-thumbnail" src="https://picsum.photos/80/60?random=105" alt="커리큘럼 5" />
-        <div class="curriculum-info">
-          <div class="curriculum-title">4. 의상과 포즈 디자인</div>
-          <div class="curriculum-meta">
-            <span>06:30</span>
+      <!-- 챕터 4 -->
+      <div class="chapter-item">
+        <div class="chapter-header" onclick="toggleChapter(this)">
+          <div class="chapter-info">
+            <div class="chapter-label">CHAPTER 3</div>
+            <div class="chapter-title">나만의 캐릭터를 찾기 위한 여정!</div>
+          </div>
+          <div class="chapter-meta">
+            <span>강의 3개</span>
+            <i class="fas fa-chevron-down chapter-toggle"></i>
           </div>
         </div>
-        <i class="fas fa-play-circle play-icon"></i>
+        <div class="chapter-content">
+          <div class="lecture-item">
+            <span class="lecture-number">1</span>
+            <span class="lecture-title">얼굴 구조와 표정 그리기</span>
+            <span class="lecture-duration">12:30</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">2</span>
+            <span class="lecture-title">다양한 각도에서 얼굴 그리기</span>
+            <span class="lecture-duration">11:15</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">3</span>
+            <span class="lecture-title">캐릭터 개성 만들기</span>
+            <span class="lecture-duration">09:50</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 챕터 5 -->
+      <div class="chapter-item">
+        <div class="chapter-header" onclick="toggleChapter(this)">
+          <div class="chapter-info">
+            <div class="chapter-label">CHAPTER 4</div>
+            <div class="chapter-title">내 그림으로 나의 우주를 표현해보기!</div>
+          </div>
+          <div class="chapter-meta">
+            <span>강의 3개</span>
+            <i class="fas fa-chevron-down chapter-toggle"></i>
+          </div>
+        </div>
+        <div class="chapter-content">
+          <div class="lecture-item">
+            <span class="lecture-number">1</span>
+            <span class="lecture-title">의상과 포즈 디자인</span>
+            <span class="lecture-duration">10:20</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">2</span>
+            <span class="lecture-title">배경과 구도 잡기</span>
+            <span class="lecture-duration">13:40</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+          <div class="lecture-item">
+            <span class="lecture-number">3</span>
+            <span class="lecture-title">최종 프로젝트: 나만의 작품 완성하기</span>
+            <span class="lecture-duration">15:30</span>
+            <i class="fas fa-play-circle lecture-play-icon"></i>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -268,12 +425,10 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
         <div class="price-section">
           <div class="discount-rate">42% ₩50,000원</div>
-          <div class="current-price">월 90,000원 <span style="font-size: 0.9rem; color: #888;">5개월 할부까</span></div>
-          <div class="monthly-price">월 52,140원 나의 최대 혜택가 〉</div>
+          <div class="current-price">월 90,000원 </div>
         </div>
 
         <button class="btn-purchase">구매하기</button>
-        <button class="btn-subscribe">구독으로 시작하기</button>
 
         <div class="class-plus-info">
           이 클래스는 부분유료 5,400개 강의를<br>
@@ -302,12 +457,9 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      // 모든 탭 active 제거
       tabs.forEach(t => t.classList.remove('active'));
-      // 클릭한 탭만 active
       tab.classList.add('active');
 
-      // 각 섹션으로 스크롤 이동
       if(tab.textContent.includes('커리큘럼')){
         curriculumSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else if(tab.textContent.includes('다른강의')){
@@ -319,6 +471,46 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       }
     });
   });
+
+  // 챕터 토글 기능
+  function toggleChapter(header) {
+    const content = header.nextElementSibling;
+    const toggle = header.querySelector('.chapter-toggle');
+    const isActive = content.classList.contains('active');
+
+    if (isActive) {
+      content.classList.remove('active');
+      toggle.classList.remove('active');
+      header.classList.remove('active');
+    } else {
+      content.classList.add('active');
+      toggle.classList.add('active');
+      header.classList.add('active');
+    }
+  }
+
+  // 전체 챕터 열기/닫기
+  let allExpanded = false;
+  function toggleAllChapters() {
+    const btn = document.querySelector('.expand-all-btn');
+    const allContents = document.querySelectorAll('.chapter-content');
+    const allToggles = document.querySelectorAll('.chapter-toggle');
+    const allHeaders = document.querySelectorAll('.chapter-header');
+
+    allExpanded = !allExpanded;
+
+    if (allExpanded) {
+      btn.textContent = '전체 챕터 닫기';
+      allContents.forEach(content => content.classList.add('active'));
+      allToggles.forEach(toggle => toggle.classList.add('active'));
+      allHeaders.forEach(header => header.classList.add('active'));
+    } else {
+      btn.textContent = '전체 챕터 열기';
+      allContents.forEach(content => content.classList.remove('active'));
+      allToggles.forEach(toggle => toggle.classList.remove('active'));
+      allHeaders.forEach(header => header.classList.remove('active'));
+    }
+  }
 </script>
 
 </body>
