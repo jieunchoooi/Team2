@@ -23,7 +23,7 @@
   <section class="main-content">
     <div class="main-header">
       <div class="profile-box">
-        <div class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;"> 
+        <div class="profile-pic" > 
         	<c:choose>
 				<c:when test="${empty user.user_file}">
 					<span>🐵</span>
@@ -42,7 +42,7 @@
     </div>
     <div class="form-container">
       <div class="profile-edit">
-        <div class="profile-pic" style="width: 130px; height: 130px; border-radius: 50%; overflow: hidden;"> 
+        <div class="profile-pic" > 
         <c:choose>
 				<c:when test="${empty user.user_file}">
 					<span>🐵</span>
