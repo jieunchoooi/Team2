@@ -20,18 +20,16 @@
 	<jsp:include page="../include/header.jsp"></jsp:include>
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
-		<div class="filter-container">
-			
-		</div>
+		<div class="filter-container"></div>
 		<div class="main-header">
 			<h1>회원 목록</h1>
 		</div>
 
-			<div class="search-box">
-				<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
-				<button>검색</button>
-				<button>전체회원</button>
-			</div>
+		<div class="search-box">
+			<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
+			<button>검색</button>
+			<button>전체회원</button>
+		</div>
 		<div class="table-container">
 			<table>
 				<thead>
@@ -60,7 +58,25 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			<div class="pagination">
+				<!-- 10 만큼 이전 -->
+				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
+					<a href="${ pageContext.request.contextPath }/admin/adminMemberList?pageNum=${pageVO.startPage - pageVO.pageBlock}">[이전]</a>
+				</c:if>
+
+				<c:forEach var="i" begin="${pageVO.startPage}"
+					end="${pageVO.endPage}" step="1">
+					<a href="${ pageContext.request.contextPath }/admin/adminMemberList?pageNum=${i}">${i}</a>
+				</c:forEach>
+
+				<!-- 10만큼 다음 -->
+				<c:if test="${pageVO.endPage < pageVO.pageCount }">
+					<a href="${ pageContext.request.contextPath }/admin/adminMemberList?pageNum=${pageVO.startPage + pageVO.pageBlock}">[다음]</a>
+				</c:if>
+			</div>
 		</div>
+
 	</main>
+
 </body>
 </html>

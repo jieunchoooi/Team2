@@ -7,7 +7,12 @@
 
 	<select id="listMember" resultType="com.itwillbs.domain.UserVO" > 
  		select * from user 
+   		order by user_num desc
+    	LIMIT #{startRow}, #{pageSize}
 	</select> 
 
+	<select id="countMemberList" resultType="java.lang.Integer" > 
+ 		select count(*) from user
+	</select> 
 
 </mapper>

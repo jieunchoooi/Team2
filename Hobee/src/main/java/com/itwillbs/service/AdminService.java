@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.AdminMapper;
 
@@ -13,12 +14,21 @@ import com.itwillbs.mapper.AdminMapper;
 public class AdminService {
 
 	@Inject
-	private AdminMapper adminmapper;
+	private AdminMapper adminMapper;
 	
-	public List<UserVO> listMember() {
+	public List<UserVO> listMember(PageVO pageVO) {
 		System.out.println("AdminService listMember()");
 		
-		return adminmapper.listMember();
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.listMember(pageVO);
+	}
+
+	public int countMemberList() {
+		System.out.println("AdminService countMemberList()");
+		return adminMapper.countMemberList();
 	}
 
 }
