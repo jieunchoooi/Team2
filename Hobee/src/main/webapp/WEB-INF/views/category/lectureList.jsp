@@ -206,7 +206,7 @@ footer {
 	        <c:forEach var="top" items="${top10List}">
 	            <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
 	                <div class="card">
-	                    <img src="${top.img_url}" alt="${top.lecture_title}">
+	                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
 	                    <div class="card-body">
 	                        <div class="card-title">${top.lecture_title}</div>
 	                        <div class="card-price">₩<fmt:formatNumber value="${top.lecture_price}" pattern="#,###" /></div>
@@ -227,7 +227,7 @@ footer {
 	        <c:forEach var="lec" items="${lectureList}">
 	            <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" style="text-decoration:none;color:inherit;">
 	                <div class="card">
-	                    <img src="${lec.img_url}" alt="${lec.lecture_title}">
+	                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
 	                    <div class="card-body">
 	                        <div class="card-title">${lec.lecture_title}</div>
 	                        <div class="card-price">₩<fmt:formatNumber value="${lec.lecture_price}" pattern="#,###" /></div>
