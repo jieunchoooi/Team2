@@ -1,16 +1,12 @@
 package com.itwillbs.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 
-import javax.annotation.Resource;
+import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.UserService;
@@ -31,10 +26,6 @@ public class UserController {
     @Inject
     private UserService userService;
     
-    // 업로드 경로 설정 (root-context.xml -> bean 등록)
-    @javax.annotation.Resource(name = "uploadPath")
-	private String uploadPath;
-
     /* ==========================================================
     // ✅ 1. 회원가입 페이지 이동
     ========================================================== */
@@ -48,8 +39,7 @@ public class UserController {
     // ✅ 2. 회원가입 처리
      ========================================================== */
     @PostMapping("/insertPro")
-    public String insertPro(HttpServletRequest request,
-                            @RequestParam("user_file") MultipartFile user_file) throws IOException {
+    public String insertPro(HttpServletRequest request) throws IOException {
 
         System.out.println("UserController: insertPro() 실행");
         
@@ -99,33 +89,11 @@ public class UserController {
          return "redirect:/user/insert";
      }
     
-     // ✅ 파일 업로드 필수 
-     if (user_file == null || user_file.isEmpty()) {
-    	 System.out.println("❌ 프로필 이미지 미업로드");
-    	 return "redirect:/user/insert";
-     }
-    	// ✅ 파일 업로드 처리
-    	 try {
-    		 UUID uuid = UUID.randomUUID();
-    		 String filename = uuid.toString() + "_" + user_file.getOriginalFilename();
-    		 File target = new File(uploadPath, filename);
-
-    		 FileCopyUtils.copy(user_file.getBytes(), target);
-    		 userVO.setUser_file(filename);
-    		 System.out.println("✅ 파일 업로드 완료: " + filename);
-
-    	 } catch (IOException e) {
-    		 e.printStackTrace();
-    		 System.out.println("❌ 파일 업로드 실패");
-    		 return "redirect:/user/insert";
-     }
-
      // ✅  DB 저장
     
     	 userService.insertUser(userVO);
     	 System.out.println("✅ 회원가입 완료: " + userVO.getUser_id());
 
-  
      // ✅ 가입 완료 페이지로 이동
     
     	 return "redirect:/user/login";

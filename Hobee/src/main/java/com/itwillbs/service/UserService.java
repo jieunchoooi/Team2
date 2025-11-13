@@ -17,9 +17,9 @@ public class UserService {
         userMapper.insertUser(userVO);
     }
 
-    public UserVO login(UserVO userVO) {
+    public UserVO loginUser(UserVO userVO) {
     	System.out.println("UesrService: login() 실행");
-        return userMapper.login(userVO);
+        return userMapper.loginUser(userVO);
     }
     
 	public UserVO selectUserById(String user_id) {
