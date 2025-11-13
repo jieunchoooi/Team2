@@ -2,11 +2,16 @@ package com.itwillbs.controller;
 
 
 import java.io.IOException;
+import java.util.UUID;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +23,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.UserService;
 
+//✅ 올바른 import (Spring 5.x 호환)
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+
 
 @Controller
 @RequestMapping("/user/*")
@@ -25,6 +35,11 @@ public class UserController {
 
     @Inject
     private UserService userService;
+    
+    @Inject
+    private JavaMailSender mailSender;
+
+
     
     /* ==========================================================
     // ✅ 1. 회원가입 페이지 이동
@@ -161,7 +176,64 @@ public class UserController {
  	    System.out.println("✅ 로그아웃 완료");
  	    return "redirect:/user/login"; 
  	}
+
+ 	
+ // ✅ 비밀번호 찾기 페이지 이동
+    @GetMapping("/findPw")
+    public String findPwForm() {
+        return "/user/findPw";
+    }
+
+    // ✅ 비밀번호 찾기 처리
+    @PostMapping("/findPwPro")
+    public String findPwPro(String user_email, Model model) throws Exception {
+        // 1️⃣ 이메일로 사용자 조회
+        UserVO user = userService.findUserByEmail(user_email);
+
+        if (user == null) {
+            model.addAttribute("msg", "입력하신 이메일로 가입된 계정이 없습니다.");
+            return "/user/findPw";
+        }
+
+        // 2️⃣ 임시 비밀번호 생성
+        String tempPw = UUID.randomUUID().toString().substring(0, 10);
+
+        // 3️⃣ 임시 비밀번호 DB 업데이트
+        userService.updateTempPassword(user.getUser_id(), tempPw);
+
+        // 4️⃣ 이메일 발송
+        sendTempPasswordMail(user_email, tempPw);
+
+        model.addAttribute("msg", "임시 비밀번호가 이메일로 발송되었습니다.");
+        return "/user/login";
+    }
+
+    // ✅ 임시비밀번호 이메일 발송 메서드
+    private void sendTempPasswordMail(String toEmail, String tempPw) {
+        String subject = "[Hobee] 임시 비밀번호 안내";
+        String content = "<h3>Hobee 비밀번호 재설정 안내</h3>"
+                + "<p>요청하신 임시 비밀번호는 다음과 같습니다:</p>"
+                + "<p style='font-size:18px; font-weight:bold; color:#2573ff;'>" + tempPw + "</p>"
+                + "<p>로그인 후 반드시 새 비밀번호로 변경해주세요.</p>";
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+            helper.setText(content, true);
+            helper.setFrom("yourgmail@gmail.com", "Hobee 관리자");
+
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
 
 
 
