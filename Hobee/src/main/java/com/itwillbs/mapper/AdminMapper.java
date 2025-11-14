@@ -30,4 +30,8 @@ public interface AdminMapper {
 
 	public List<UserVO> listTeacher(PageVO pageVO);
 
+	public int teacharCount();
+
+	public int classCount();
+
 }
