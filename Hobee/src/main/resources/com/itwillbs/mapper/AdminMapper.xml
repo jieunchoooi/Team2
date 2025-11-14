@@ -63,6 +63,7 @@
 	<select id="listTeacher" resultType="com.itwillbs.domain.UserVO" > 
  		select * from user 
  		WHERE user_role = 'instructor'
+ 		order by user_num desc
     	LIMIT #{startRow}, #{pageSize}
 	</select> 
 	
