@@ -28,4 +28,6 @@ public interface AdminMapper {
 
 	public void adminEditClass(LectureVO lectureVO);
 
+	public List<UserVO> listTeacher(PageVO pageVO);
+
 }

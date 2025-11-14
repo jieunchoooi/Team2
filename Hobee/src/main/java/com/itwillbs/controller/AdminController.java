@@ -211,9 +211,45 @@ public class AdminController {
 		return "redirect:/admin/adminMemberList";
 	}
 
+	// 강사정보 조회
 	@GetMapping("/adminTeacherList")
-	public String adminTeacherList() {
+	public String adminTeacherList(Model model, HttpServletRequest request) {
 		System.out.println("AdminController adminTeacherList()");
+
+		String pageNum = request.getParameter("pageNum");
+
+		if (pageNum == null) {
+			pageNum = "1";
+		}
+		int currentPage = Integer.parseInt(pageNum);
+		int pageSize = 10;
+
+		PageVO pageVO = new PageVO();
+		pageVO.setPageNum(pageNum);
+		pageVO.setCurrentPage(currentPage);
+		pageVO.setPageSize(pageSize);
+
+		List<UserVO> teacherList = adminService.listTeacher(pageVO);
+
+		int count = adminService.countMemberList();
+		int pageBlock = 10;
+		int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+		int endPage = startPage + (pageBlock - 1);
+		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+		if (endPage > pageCount) {
+			endPage = pageCount;
+		}
+
+		// pageVO 담기
+		pageVO.setCount(count);
+		pageVO.setPageBlock(pageBlock);
+		pageVO.setStartPage(startPage);
+		pageVO.setEndPage(endPage);
+		pageVO.setPageCount(pageCount);
+		pageVO.setCount(count);
+
+		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("teacherList", teacherList);
 
 		return "admin/adminTeacherList";
 	}

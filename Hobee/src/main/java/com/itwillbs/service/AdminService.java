@@ -80,4 +80,14 @@ public class AdminService {
 		adminMapper.adminEditClass(lectureVO);
 	}
 
+	public List<UserVO> listTeacher(PageVO pageVO) {
+		System.out.println("AdminService listTeacher()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.listTeacher(pageVO);
+	}
+
 }
