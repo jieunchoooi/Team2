@@ -17,8 +17,8 @@
 
 	<insert id="LectureUpdate">
 		INSERT INTO lecture 
-		(lecture_title, category_detail, lecture_detail, lecture_author, lecture_price)
-		values(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author}, #{lecture_price})
+		(lecture_title, category_detail, lecture_detail, lecture_author, lecture_price, lecture_img)
+		values(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author}, #{lecture_price}, #{lecture_img})
 	</insert>
 
 	<select id="listLecture" resultType="com.itwillbs.domain.LectureVO" > 

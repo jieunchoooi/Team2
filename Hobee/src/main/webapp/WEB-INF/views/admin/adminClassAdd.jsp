@@ -60,7 +60,7 @@
     </div>
     <div class="form-group">
       <label>썸네일 이미지</label>
-      <input type="file" name="thumbnail">
+      <input type="file" name="lecture_img">
     </div>
     <button class="btn" type="submit">등록하기</button>
   </form>
