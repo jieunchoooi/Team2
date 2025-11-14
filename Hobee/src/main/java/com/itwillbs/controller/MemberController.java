@@ -135,9 +135,9 @@ public class MemberController {
 	// ✅ 로그인 세션의 user_num 기준으로 조회 → JSP에 enrollList로 전달
 	 @GetMapping("/my_classroom")
 	    public String my_classroom(HttpSession session, Model model) {
-	        UserVO loginUser = (UserVO) session.getAttribute("loginUser");
+	        UserVO loginUser = (UserVO) session.getAttribute("userVO");
 	        if (loginUser == null) {
-	        	   return "redirect:/user/login";
+	        	   return "redirect:/main/main";
 	        }
 
 	        List<EnrollmentViewVO> enrollList =
@@ -147,7 +147,7 @@ public class MemberController {
 	    }
 	
 	// 결제 내역
-	@GetMapping("/payment")
+	@GetMapping("/paymentList")
 	public String payment() {
 		System.out.println("MemberController payment()");
 		
