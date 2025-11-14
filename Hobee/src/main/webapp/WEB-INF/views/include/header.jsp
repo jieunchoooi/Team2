@@ -70,14 +70,8 @@
 			<c:if test="${not empty sessionScope.user_id}">
 				<span class="welcome-text">${sessionScope.user_name}님</span>
 
-				<!-- 회원정보 조회 -->
-				<a href="${pageContext.request.contextPath }/member/infoUser" class="auth-link">회원정보조회</a>
-
-				<!-- 회원정보 수정 -->
-				<a href="${pageContext.request.contextPath }/member/updateUser" class="auth-link">회원정보수정</a>
-
-				<!-- 회원탈퇴 -->
-				<a href="${pageContext.request.contextPath }/member/deleteUser" class="auth-link">회원정보삭제</a>
+				<!-- 마이페이지 -->
+				<a href="${pageContext.request.contextPath }/member/mypage" class="auth-link">마이페이지</a>
 
 				<!-- 로그아웃 -->
 				<a href="${pageContext.request.contextPath }/user/logout" class="auth-link">로그아웃</a>
