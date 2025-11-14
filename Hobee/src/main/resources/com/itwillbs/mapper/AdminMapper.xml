@@ -7,6 +7,7 @@
 
 	<select id="listMember" resultType="com.itwillbs.domain.UserVO" > 
  		select * from user 
+ 		WHERE user_role = 'user'
    		order by user_num desc
     	LIMIT #{startRow}, #{pageSize}
 	</select> 
@@ -35,6 +36,36 @@
 		delete from lecture
 		where lecture_num = #{lecture_num};
 	</delete>
+	
+	<select id="insertMember" resultType="com.itwillbs.domain.UserVO">
+		select * from user
+		where user_num = #{user_num}
+	</select>
+	
+	<update id="adminUserUpdate" parameterType="com.itwillbs.domain.UserVO">
+		update user
+		set user_role = #{user_role}
+		where user_num = #{user_num}
+	</update>
+	
+	<select id="classEdit" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where lecture_num = #{lecture_num}
+	</select>
+
+	<update id="adminEditClass" parameterType="com.itwillbs.domain.LectureVO">
+		update lecture
+		set lecture_title = #{lecture_title}, category_detail = #{category_detail}, lecture_detail = #{lecture_detail},
+			lecture_author = #{lecture_author}, lecture_price = #{lecture_price}, lecture_img = #{lecture_img}
+		where lecture_num = #{lecture_num}
+	</update>
+	
+	<select id="listTeacher" resultType="com.itwillbs.domain.UserVO" > 
+ 		select * from user 
+ 		WHERE user_role = 'instructor'
+    	LIMIT #{startRow}, #{pageSize}
+	</select> 
+	
 	
 	
 </mapper>

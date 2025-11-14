@@ -52,7 +52,7 @@
     </div>
     <div class="form-group">
       <label>상세정보</label>
-      <textarea name="category_detail" placeholder="강의 상세 정보를 입력하세요"></textarea>
+      <textarea name="lecture_detail" placeholder="강의 상세 정보를 입력하세요"></textarea>
     </div>
     <div class="form-group">
       <label>커리큘럼</label>

@@ -10,6 +10,7 @@ import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.AdminMapper;
+import com.itwillbs.mapper.MemberMapper;
 
 @Service
 public class AdminService {
@@ -57,6 +58,36 @@ public class AdminService {
 		System.out.println("AdminService deleteClass()");
 		
 		adminMapper.deleteClass(lecture_num);
+	}
+
+	public UserVO insertMember(int user_num) {
+		System.out.println("AdminService insertMember()");
+		return adminMapper.insertMember(user_num);
+	}
+
+	public void adminUserUpdate(UserVO userVO) {
+		System.out.println("AdminService adminUserUpdate()");
+		adminMapper.adminUserUpdate(userVO);
+	}
+
+	public LectureVO classEdit(int lecture_num) {
+		System.out.println("AdminService adminUserUpdate()");
+		return adminMapper.classEdit(lecture_num);
+	}
+
+	public void adminEditClass(LectureVO lectureVO) {
+		System.out.println("AdminService adminEditClass()");
+		adminMapper.adminEditClass(lectureVO);
+	}
+
+	public List<UserVO> listTeacher(PageVO pageVO) {
+		System.out.println("AdminService listTeacher()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.listTeacher(pageVO);
 	}
 
 }

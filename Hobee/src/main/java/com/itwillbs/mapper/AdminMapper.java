@@ -20,4 +20,14 @@ public interface AdminMapper {
 
 	public void deleteClass(String lecture_num);
 
+	public UserVO insertMember(int user_num);
+
+	public void adminUserUpdate(UserVO userVO);
+
+	public LectureVO classEdit(int lecture_num);
+
+	public void adminEditClass(LectureVO lectureVO);
+
+	public List<UserVO> listTeacher(PageVO pageVO);
+
 }

@@ -43,7 +43,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="user" items="${memberList}" varStatus="status">
+					<c:forEach var="user" items="${memberList}">
 						<tr>
 							<td>${user.user_num}</td>
 							<td>${user.user_name}</td>
@@ -51,7 +51,7 @@
 							<td>${user.user_email}</td>
 							<td>${user.created_at}</td>
 							<td>
-								<button class="btn">상세보기</button>
+								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
 								<button class="btn btn-delete">강제탈퇴</button>
 							</td>
 						</tr>
@@ -79,4 +79,19 @@
 	</main>
 
 </body>
+<script type="text/javascript">
+let detail = document.querySelectorAll(".detail");
+
+detail.forEach(function(btn){
+    btn.onclick = function(){
+        let userNum = this.getAttribute("data-num");
+        // user_num을 쿼리스트링으로 보내서 컨트롤러로 이동
+        location.href = "${pageContext.request.contextPath}/admin/MemberManagement?user_num=" + userNum;
+    }
+});
+
+
+
+
+</script>
 </html>
