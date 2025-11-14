@@ -46,5 +46,21 @@
 		set user_role = #{user_role}
 		where user_num = #{user_num}
 	</update>
+	
+	<select id="classEdit" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where lecture_num = #{lecture_num}
+	</select>
 
+	<update id="adminEditClass" parameterType="com.itwillbs.domain.LectureVO">
+		update lecture
+		set lecture_title = #{lecture_title}, category_detail = #{category_detail}, lecture_detail = #{lecture_detail},
+			lecture_author = #{lecture_author}, lecture_price = #{lecture_price}, lecture_img = #{lecture_img}
+		where lecture_num = #{lecture_num}
+	</update>
+	
+	
+	
+	
+	
 </mapper>

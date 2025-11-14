@@ -70,4 +70,14 @@ public class AdminService {
 		adminMapper.adminUserUpdate(userVO);
 	}
 
+	public LectureVO classEdit(int lecture_num) {
+		System.out.println("AdminService adminUserUpdate()");
+		return adminMapper.classEdit(lecture_num);
+	}
+
+	public void adminEditClass(LectureVO lectureVO) {
+		System.out.println("AdminService adminEditClass()");
+		adminMapper.adminEditClass(lectureVO);
+	}
+
 }

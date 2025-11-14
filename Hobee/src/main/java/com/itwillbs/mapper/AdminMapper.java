@@ -24,4 +24,8 @@ public interface AdminMapper {
 
 	public void adminUserUpdate(UserVO userVO);
 
+	public LectureVO classEdit(int lecture_num);
+
+	public void adminEditClass(LectureVO lectureVO);
+
 }
