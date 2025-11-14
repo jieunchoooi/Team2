@@ -44,7 +44,7 @@
 						<p>${user.user_name}</p>
 						<p>${user.user_email}</p>
 						<p>포인트 &nbsp;${user.points}</p>
-						<p>권한 &nbsp;
+						<p>권한 &nbsp;:&nbsp;
 							<c:choose>
 								<c:when test="${user.user_role == 'user'}">유저</c:when>
 								<c:when test="${user.user_role == 'instructor'}">강사</c:when>
