@@ -90,4 +90,14 @@ public class AdminService {
 		return adminMapper.listTeacher(pageVO);
 	}
 
+	public int teacharCount() {
+		System.out.println("AdminService teacharCount()");
+		return adminMapper.teacharCount();
+	}
+
+	public int classCount() {
+		System.out.println("AdminService classCount()");
+		return adminMapper.classCount();
+	}
+
 }

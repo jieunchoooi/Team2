@@ -66,6 +66,23 @@
     	LIMIT #{startRow}, #{pageSize}
 	</select> 
 	
+	<select id="teacharCount" resultType="java.lang.Integer" > 
+ 		select count(*) from user
+ 		WHERE user_role = 'instructor'
+	</select> 
+	
+	<select id="classCount" resultType="java.lang.Integer" > 
+ 		select count(*) from lecture
+	</select> 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>

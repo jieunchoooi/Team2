@@ -24,15 +24,15 @@
 		<div class="stats-container">
 			<div class="stat-card">
 				<h3>총 강사 수</h3>
-				<div class="stat-number">48</div>
+				<div class="stat-number">${tCount}</div>
 			</div>
 			<div class="stat-card orange">
 				<h3>총 클래스 수</h3>
-				<div class="stat-number">156</div>
+				<div class="stat-number">${clCount}</div>
 			</div>
 			<div class="stat-card green">
 				<h3>활성 강사</h3>
-				<div class="stat-number">45</div>
+				<div class="stat-number">${tCount}</div>
 			</div>
 		</div>
 
@@ -93,4 +93,14 @@
 			</div>
 	</main>
 </body>
+<script type="text/javascript">
+
+let sumtc = document.querySelector(".stat-number");
+
+sumtc = function(){
+	href = "${pageContext.request.contextPath}/admin/sumTeacher"
+}
+
+
+</script>
 </html>

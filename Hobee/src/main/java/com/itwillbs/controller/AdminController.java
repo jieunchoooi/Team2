@@ -232,6 +232,9 @@ public class AdminController {
 		List<UserVO> teacherList = adminService.listTeacher(pageVO);
 
 		int count = adminService.countMemberList();
+		int tCount = adminService.teacharCount();
+		int clCount = adminService.classCount();
+		
 		int pageBlock = 10;
 		int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
 		int endPage = startPage + (pageBlock - 1);
@@ -250,6 +253,8 @@ public class AdminController {
 
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("teacherList", teacherList);
+		model.addAttribute("tCount", tCount);
+		model.addAttribute("clCount", clCount);
 
 		return "admin/adminTeacherList";
 	}
@@ -274,7 +279,7 @@ public class AdminController {
 
 	// 클래스 수정
 	@PostMapping("/adminClassEditPro")
-	public String adminClassEditPro(HttpServletRequest request,
+	public String adminClassEditPro(HttpServletRequest request, 
 			@RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
 		System.out.println("AdminController adminClassEditPro()");
 		LectureVO lectureVO = new LectureVO();
@@ -313,5 +318,7 @@ public class AdminController {
 
 		return "redirect:/admin/adminClassList";
 	}
+	
+
 
 }
