@@ -2,6 +2,8 @@ package com.itwillbs.controller;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -142,30 +144,40 @@ public class UserController {
     	return "user/login";
     }
     
-    // ✅ 로그인 처리 (로그인 실패 메세지 포함)
+ // ✅ 로그인 Ajax 전용 (모달용)
     @PostMapping("/loginPro")
-    public String loginPro(@ModelAttribute UserVO userVO, HttpSession session, RedirectAttributes rttr) {
+    @ResponseBody
+    public Map<String, Object> loginPro(@ModelAttribute UserVO userVO, HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+
         System.out.println("UserController loginPro() 실행 - ID: " + userVO.getUser_id());
 
-        // ✅ 아이디로 회원 조회
+        // ✅ DB에서 회원 조회
         UserVO dbUser = userService.selectUserById(userVO.getUser_id());
 
-        // ✅  비밀번호 검증
+        // ✅ 비밀번호 검증
         if (dbUser != null && dbUser.getUser_password().equals(userVO.getUser_password())) {
+
             // ✅ 로그인 성공
-            session.setAttribute("user_id", dbUser.getUser_id());
+            session.setAttribute("userVO", dbUser);                // 전체 VO 객체 저장
+            session.setAttribute("user_id", dbUser.getUser_id());  // 기존 JSP 호환용
             session.setAttribute("user_name", dbUser.getUser_name());
+
             System.out.println("✅ 로그인 성공: " + dbUser.getUser_name());
-            // member 팀원 페이지로 이동
-            return "redirect:/member/mypage";
+
+            result.put("result", "success");
+            result.put("user_name", dbUser.getUser_name());
+
         } else {
-            // ❌ 로그인 실패 시 메세지 전달
-        	System.out.println("❌ 로그인 실패");
-            rttr.addFlashAttribute("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다.");
-    
-            return "redirect:/user/login";
+            // ❌ 로그인 실패
+            System.out.println("❌ 로그인 실패");
+            result.put("result", "fail");
+            result.put("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
         }
+
+        return result; // ✅ JSON 응답
     }
+
     /* ==========================================================
  	// ✅ 6. 로그아웃 처리
  	   ========================================================== */
@@ -174,7 +186,7 @@ public class UserController {
  	    System.out.println("UserController: logout() 실행");
  	    session.invalidate(); // 세션 전체 제거
  	    System.out.println("✅ 로그아웃 완료");
- 	    return "redirect:/user/login"; 
+ 	   return "redirect:/main/main";
  	}
 
  	
