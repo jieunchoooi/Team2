@@ -124,6 +124,7 @@ $(document).ready(function(){
     loginRequest();
   });
 
+  
   // 🔹 Ajax 로그인 처리
   function loginRequest() {
     $.ajax({
@@ -145,6 +146,9 @@ $(document).ready(function(){
       }
     });
   }
+  
+  
+  
 });
 </script>
 

@@ -41,7 +41,6 @@ public class UserController {
     @Inject
     private JavaMailSender mailSender;
 
-
     
     /* ==========================================================
     // ✅ 1. 회원가입 페이지 이동
@@ -244,16 +243,4 @@ public class UserController {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
