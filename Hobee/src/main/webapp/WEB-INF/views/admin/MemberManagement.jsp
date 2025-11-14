@@ -97,7 +97,7 @@
 					<label for="grade_id">현재등급</label> <span class="form-value">${user.grade_id}</span>
 				</div>
 				
-				<button class="btn" type="submit">정보 수정</button>
+				<button class="btn" type="submit" onclick="return submitForm();">정보 수정</button>
 			</div>
 		</div>
 		
@@ -105,4 +105,18 @@
 </form>
 
 </body>
+<script type="text/javascript">
+
+function submitForm() {
+    let selectBox = document.getElementById("category");
+    let selectedText = selectBox.options[selectBox.selectedIndex].text;
+    
+    if(confirm("회원 권한을 '" + selectedText + "'(으)로 변경하시겠습니까?")) {
+        alert("회원 권한이 변경됩니다.");
+        return true; // 폼 제출 허용
+    }
+    
+    return false; // 폼 제출 막기
+}
+</script>
 </html>
