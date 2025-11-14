@@ -1,74 +1,110 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>내 강의실 | Hobee</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/memberSidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/my_classroom.css">
 </head>
 <body>
 
-<!-- ✅ header / sidebar -->
+<!-- header / sidebar -->
 <jsp:include page="../include/header.jsp" />
 <jsp:include page="../include/memberSidebar.jsp" />
 
-<!-- ✅ main content -->
 <main class="main-content">
-  <div class="main-header">
-    <h1>내 강의실</h1>
-  </div>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>강의명</th>
-          <th>강사명</th>
-          <th>리뷰 작성</th>
-          <th>클래스 입장</th>
-        </tr>
-      </thead>
+    <!-- 🔥 미니 프로필 카드 -->
+    <div class="profile-card">
+        <div class="profile-pic">
+            <c:choose>
+                <c:when test="${empty userVO.user_file}">
+                    <span>🐵</span>
+                </c:when>
+                <c:otherwise>
+                    <img src="${pageContext.request.contextPath}/resources/img/user_picture/${userVO.user_file}">
+                </c:otherwise>
+            </c:choose>
+        </div>
 
-      <tbody>
+        <div class="profile-info">
+            <div class="name-line">
+
+                <!-- 등급배지: 등급 없으면 BRONZE -->
+                <c:choose>
+                    <c:when test="${empty userVO.grade_id or userVO.grade_id == 1}">
+                        <span class="badge bronze">🥉</span>
+                    </c:when>
+                    <c:when test="${userVO.grade_id == 2}">
+                        <span class="badge silver">🥈</span>
+                    </c:when>
+                    <c:when test="${userVO.grade_id == 3}">
+                        <span class="badge gold">🥇</span>
+                    </c:when>
+                </c:choose>
+
+                <span class="user-name">${userVO.user_name}</span>
+            </div>
+
+            <p class="user-email">${userVO.user_email}</p>
+
+            <p class="user-points">
+                🪙 <fmt:formatNumber value="${userVO.points}" /> P
+            </p>
+        </div>
+    </div>
+
+    <h1 class="section-title">내 강의실</h1>
+
+    <!-- 🔥 강의 리스트 -->
+    <div class="classroom-list">
         <c:choose>
-          <c:when test="${empty enrollList}">
-            <tr>
-              <td colspan="4" style="text-align:center; padding:20px;">수강 중인 강의가 없습니다.</td>
-            </tr>
-          </c:when>
+            <c:when test="${empty enrollList}">
+                <p class="empty-text">수강 중인 강의가 없습니다.</p>
+            </c:when>
 
-          <c:otherwise>
-            <c:forEach var="enroll" items="${enrollList}">
-              <tr>
-                <!-- 강의명 + 썸네일 -->
-                <td>
-                  <div class="lecture-info">
-                    <img src="${pageContext.request.contextPath}/resources/upload/${enroll.lecture_img}"
-                         alt="썸네일"
-                         class="thumb">
-                    <span class="lecture-title">${enroll.lecture_title}</span>
-                  </div>
-                </td>
+            <c:otherwise>
+                <c:forEach var="enroll" items="${enrollList}">
+                    <div class="class-card">
 
-                <!-- 강사명 -->
-                <td>${enroll.lecture_author}</td>
+                        <!-- 썸네일 -->
+                        <div class="thumb-wrap">
+                            <img class="thumb"
+                                 src="${pageContext.request.contextPath}/resources/img/lecture_picture/${enroll.lecture_img}">
+                        </div>
 
-                <!-- 리뷰 작성 버튼 -->
-                <td><button class="btn btn-gray">리뷰 작성</button></td>
+                        <!-- 강의 정보 -->
+                        <div class="info-wrap">
 
-                <!-- 클래스 입장 버튼 -->
-                <td><button class="btn">클래스 입장</button></td>
-              </tr>
-            </c:forEach>
-          </c:otherwise>
+                            <!-- 강의명 + 카테고리 -->
+                            <a href="#" class="lecture-title">
+                                ${enroll.lecture_title}
+                                <span class="lecture-category">· ${enroll.category_detail}</span>
+                            </a>
+
+                            <!-- 강사명 + 간략 설명 -->
+                            <p class="lecture-author">
+                                ${enroll.lecture_author}
+                                <span class="lecture-detail"> - ${enroll.lecture_detail}</span>
+                            </p>
+                        </div>
+
+                        <!-- 리뷰 작성 -->
+                        <div class="action-wrap">
+                            <a href="#" class="review-link">리뷰 작성</a>
+                        </div>
+
+                    </div>
+                </c:forEach>
+            </c:otherwise>
         </c:choose>
-      </tbody>
-    </table>
-  </div>
+    </div>
+
 </main>
 
 </body>

@@ -107,4 +107,16 @@ public class PaymentService {
 
         System.out.println("✅ [PaymentService] 결제 프로세스 정상 완료");
     }
+    
+    @Transactional
+    public void testTransaction() {
+        System.out.println("=== [1] 결제내역 저장 ===");
+        paymentMapper.insertPaymentForTest(); // 기존 mapper insert 사용
+
+        System.out.println("=== [2] 포인트 기록 저장 ===");
+        pointHistoryMapper.insertPointHistoryForTest(); // 기존 mapper insert 사용
+
+        System.out.println("=== [3] 강제 예외 발생 ===");
+        int x = 10 / 0; // 💥 일부러 예외 (rollback 확인용)
+    }
 }

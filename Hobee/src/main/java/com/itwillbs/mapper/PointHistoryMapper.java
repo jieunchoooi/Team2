@@ -24,4 +24,6 @@ public interface PointHistoryMapper {
 
     /** 🔹 특정 결제에 대한 포인트 내역 조회 */
     List<PointHistoryVO> getPointHistoryByPayment(int payment_id);
+    
+    void insertPointHistoryForTest();
 }
