@@ -55,6 +55,7 @@ body {
     display: none;
 }
 
+
 /* =========================== 프로필 박스 =========================== */
 .profile-box {
     display: flex;
@@ -106,7 +107,31 @@ body {
     color: #666;
 }
 
+.profile-info p:nth-child(4) {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+}
+
 /* =========================== 폼 컨테이너 =========================== */
+
+/* select 박스 스타일 추가 */
+.form-group select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #666;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+.form-group select:focus {
+    border-color: #2573ff;
+    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+}
 .form-container {
     background-color: #fff;
     border-radius: 16px;
@@ -176,15 +201,21 @@ body {
 }
 
 .btn {
-    padding: 12px 30px;
+    background-color: #2573ff;
+    color: white;
     border: none;
     border-radius: 10px;
+    padding: 12px 30px;
     font-size: 1rem;
-    font-weight: 600;
     cursor: pointer;
+    box-shadow: 0 3px 8px rgba(37, 115, 255, 0.2);
     transition: all 0.2s;
+    font-weight: 600;
+    display: block;
+    margin: 30px auto 0;
+    cursor: pointer;
+    justify-content: center;
 }
-
 .btn-primary {
     background-color: #2573ff;
     color: white;

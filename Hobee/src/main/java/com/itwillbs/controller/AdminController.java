@@ -190,6 +190,33 @@ public class AdminController {
 		return "admin/adminMemberList";
 	}	
 	
+	@GetMapping("/MemberManagement")
+	public String MemberManagement(Model model, @RequestParam("user_num") int user_num) {
+		System.out.println("AdminController MemberManagement()");
+		UserVO user = adminService.insertMember(user_num);
+		
+		model.addAttribute("user", user);
+		return "admin/MemberManagement";
+	}	
+	
+	// 회원 권한 등록
+	@PostMapping("/managementPro")
+	public String managementPro(@RequestParam("user_role") String user_role,
+								@RequestParam("user_num") int user_num) {
+		System.out.println("AdminController managementPro()");
+		UserVO userVO = new UserVO();
+		
+		if(user_role != "" && !user_role.isEmpty()) {
+			userVO.setUser_role(user_role);
+		}
+		userVO.setUser_num(user_num);
+		
+		System.out.println(userVO);
+		adminService.adminUserUpdate(userVO);
+		return "redirect:/admin/adminMemberList";
+	}
+	
+	
 	@GetMapping("/adminTeacherList")
 	public String adminTeacherList() {
 		System.out.println("AdminController adminTeacherList()");
