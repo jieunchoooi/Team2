@@ -53,7 +53,8 @@
 							<td>₩ <fmt:formatNumber value="${lectureVO.lecture_price}" pattern="#,###"/></td>
 							<td>
 								<button class="btn">수정</button>
-								<button class="btn btn-delete">삭제</button>
+								<button class="btn btn-delete" data-num="${lectureVO.lecture_num}">삭제</button>
+								
 							</td>
 						</tr>
 					</c:forEach>
@@ -78,4 +79,23 @@
 		</div>
 	</main>
 </body>
+<script type="text/javascript">
+	
+let deleteBtn = document.querySelectorAll('.btn-delete');
+
+deleteBtn.forEach(function(btn) {
+    btn.onclick = function() {
+        let lectureNum = this.getAttribute('data-num');
+        
+        let result = confirm("클래스를 삭제하시겠습니까?");
+        if(result) {
+            alert("강의가 삭제되었습니다.");
+            location.href = "${pageContext.request.contextPath}/admin/deleteClass?lecture_num=" + lectureNum;
+        }
+    }
+});
+
+
+
+</script>
 </html>

@@ -93,6 +93,18 @@ public class AdminController {
 		return "redirect:/admin/adminClassList";
 	}	
 	
+	// 클래스 등록
+	@GetMapping("/deleteClass")
+	public String deleteClass(@RequestParam("lecture_num") String lecture_num,Model model) {
+		System.out.println("AdminController deleteClass()");
+			
+		adminService.deleteClass(lecture_num);
+		
+		return "redirect:/admin/adminClassList";
+	}	
+	
+	
+	
 	
 	@GetMapping("/adminClassList")
 	public String adminClassList(Model model, HttpServletRequest request) {

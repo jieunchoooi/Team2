@@ -53,4 +53,10 @@ public class AdminService {
 		return adminMapper.countlectureList();
 	}
 
+	public void deleteClass(String lecture_num) {
+		System.out.println("AdminService deleteClass()");
+		
+		adminMapper.deleteClass(lecture_num);
+	}
+
 }

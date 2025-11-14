@@ -18,4 +18,6 @@ public interface AdminMapper {
 
 	public int countlectureList();
 
+	public void deleteClass(String lecture_num);
+
 }

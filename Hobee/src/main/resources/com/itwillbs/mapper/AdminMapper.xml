@@ -31,7 +31,10 @@
  		select count(*) from lecture
 	</select> 
 	
-	
+	<delete id="deleteClass">
+		delete from lecture
+		where lecture_num = #{lecture_num};
+	</delete>
 	
 	
 </mapper>
