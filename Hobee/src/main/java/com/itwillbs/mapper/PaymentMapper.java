@@ -18,4 +18,6 @@ public interface PaymentMapper {
 
     // 특정 회원의 결제 내역 조회 (마이페이지용)
     List<PaymentVO> getPaymentsByUser(int userNum);
+    
+    void insertPaymentForTest();
 }

@@ -80,5 +80,12 @@
     WHERE payment_id = #{payment_id}
     ORDER BY created_at DESC
   </select>
+  
+  
+  <!-- ✅ 트랜잭션 테스트용 임시 INSERT -->
+  <insert id="insertPointHistoryForTest">
+    INSERT INTO point_history (user_num, used_points, saved_points, type, created_at)
+    VALUES (1, 0, 100, 'TEST', NOW())
+  </insert>
 
 </mapper>

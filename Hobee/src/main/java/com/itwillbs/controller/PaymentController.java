@@ -224,4 +224,14 @@ public class PaymentController {
     public String paymentFail() {
         return "payment/paymentFail";
     }
+    
+    @GetMapping("/test/tx")
+    public String txTest() {
+        try {
+            paymentService.testTransaction();
+        } catch (Exception e) {
+            System.out.println("💥 예외 발생 → 롤백 확인 필요");
+        }
+        return "redirect:/main/main";
+    }
 }

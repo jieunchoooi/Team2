@@ -24,8 +24,13 @@
 	<context:component-scan base-package="com.itwillbs.hobee" />
 	<context:component-scan base-package="com.itwillbs.controller" />
 	<context:component-scan base-package="com.itwillbs.service" />
-	
+
 	<context:property-placeholder location="classpath:/config/appdata.properties"/>
+	
+	
+	
+	
+	
 	
 	
 	<!--  	파일업로드 객체생성, 파일크기 10M  -->
