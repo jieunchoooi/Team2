@@ -1,94 +1,122 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원정보 수정 | Hobee</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/member/editlnfo.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
+<link rel="stylesheet"
+	href="${ pageContext.request.contextPath }/resources/css/member/editlnfo.css">
 </head>
 <body>
-<!-- header -->
-<jsp:include page="../include/header.jsp"></jsp:include>
-<!-- 좌측 사이드바 -->
-<jsp:include page="../include/memberSidebar.jsp"></jsp:include>	
-<!-- 메인 콘텐츠 -->
-<main>
-  <!-- 오른쪽 정보 수정 폼 -->
-  <form id="updateForm" action="${pageContext.request.contextPath}/member/updatePro" method="post" enctype="multipart/form-data">
-  <section class="main-content">
-    <div class="main-header">
-      <div class="profile-box">
-        <div class="profile-pic" > 
-        	<c:choose>
-				<c:when test="${empty user.user_file}">
-					<span>🐵</span>
-				</c:when>
-				<c:otherwise>
-					<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진">
-				</c:otherwise>
-			</c:choose>
-        </div>
-        <div class="profile-info">
-          <p>${user.user_name}</p>
-          <p>${user.user_email}</p>
-        </div>
-      </div>
-      <h1>회원정보 수정</h1>
-    </div>
-    <div class="form-container">
-      <div class="profile-edit">
-        <div class="profile-pic" > 
-        <c:choose>
-				<c:when test="${empty user.user_file}">
-					<span>🐵</span>
-				</c:when>
-				<c:otherwise>
-					<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진">
-				</c:otherwise>
-			</c:choose>
-        
-        
-        </div>
-        <label class="file-input-label" for="profilePic">사진 변경</label>
-        <input type="file" id="profilePic" class="file-input" name="user_picture" accept="image/*">
-      </div>
-      <div class="form-group">
-        <label for="userId">아이디</label>
-        <input type="text" name="User_id" id="user_id" value="${user.user_id}" readonly>
-      </div>
-      <div class="form-group">
-        <label for="password">비밀번호</label>
-        <input type="password" name="user_password" id="user_password" value="${user.user_password}">
-        <span id="checkPassword"></span>
-      </div>
-      <div class="form-group">
-        <label for="adress">주소</label>
-        <input type="text" id="user_address" name="user_address" value="${user.user_address}">
-      </div>
-      <div class="form-group">
-        <label for="tel">휴대폰 번호</label>
-        <input type="tel" id="user_phone" name="user_phone" value="${user.user_phone}">
-        <span id="checkPhone"></span>
-      </div>
-      <div class="form-group">
-        <label for="email">이메일</label>
-        <input type="email" id="user_email" name="user_email" value="${user.user_email}">
-        <span id="checkemail"></span>
-      </div>
-      <button type="submit" class="btn" id="submitBtn">정보 수정</button>
-      
-      <button type="button" class="btn btn-delete" onclick="location.href='${pageContext.request.contextPath }/member/memberdeletePro'">회원 탈퇴</button>
-    </div>
-  </section>
-  </form>
-</main>
+	<!-- header -->
+	<jsp:include page="../include/header.jsp"></jsp:include>
+	<!-- 좌측 사이드바 -->
+	<jsp:include page="../include/memberSidebar.jsp"></jsp:include>
+	<!-- 메인 콘텐츠 -->
+	<main>
+		<!-- 오른쪽 정보 수정 폼 -->
+		<form id="updateForm"
+			action="${pageContext.request.contextPath}/member/updatePro"
+			method="post" enctype="multipart/form-data">
+			<section class="main-content">
+				<h1>회원정보 수정</h1>
+				<div class="main-header">
+					<div class="profile-box">
+						<div class="profile-pic">
+							<c:choose>
+								<c:when test="${empty user.user_file}">
+									<span>🐵</span>
+								</c:when>
+								<c:otherwise>
+									<img
+										src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}"
+										alt="프로필 사진">
+								</c:otherwise>
+							</c:choose>
+						</div>
+						<div class="profile-info">
+							<p>
+								<c:choose>
+									<c:when test="${empty userVO.grade_id or userVO.grade_id == 1}">
+										<span class="badge bronze">🥉</span>
+									</c:when>
+									<c:when test="${userVO.grade_id == 2}">
+										<span class="badge silver">🥈</span>
+									</c:when>
+									<c:when test="${userVO.grade_id == 3}">
+										<span class="badge gold">🥇</span>
+									</c:when>
+								</c:choose>
+								${user.user_name}
+							</p>
+							<p>${user.user_email}</p>
+							<p>🪙 &nbsp;${user.points} P</p>
+						</div>
+					</div>
+				</div>
+				<div class="form-container">
+					<div class="profile-edit">
+						<div class="profile-pic">
+							<c:choose>
+								<c:when test="${empty user.user_file}">
+									<span>🐵</span>
+								</c:when>
+								<c:otherwise>
+									<img
+										src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}"
+										alt="프로필 사진">
+								</c:otherwise>
+							</c:choose>
 
-<script>
+
+						</div>
+						<label class="file-input-label" for="profilePic">사진 변경</label> <input
+							type="file" id="profilePic" class="file-input"
+							name="user_picture" accept="image/*">
+					</div>
+					<div class="form-group">
+						<label for="userId">아이디</label> <input type="text" name="User_id"
+							id="user_id" value="${user.user_id}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="password">비밀번호</label> <input type="password"
+							name="user_password" id="user_password"
+							value="${user.user_password}"> <span id="checkPassword"></span>
+					</div>
+					<div class="form-group">
+						<label for="adress">주소</label> <input type="text"
+							id="user_address" name="user_address"
+							value="${user.user_address}">
+					</div>
+					<div class="form-group">
+						<label for="tel">휴대폰 번호</label> <input type="tel" id="user_phone"
+							name="user_phone" value="${user.user_phone}"> <span
+							id="checkPhone"></span>
+					</div>
+					<div class="form-group">
+						<label for="email">이메일</label> <input type="email" id="user_email"
+							name="user_email" value="${user.user_email}"> <span
+							id="checkemail"></span>
+					</div>
+					<button type="submit" class="btn" id="submitBtn">정보 수정</button>
+
+					<button type="button" class="btn btn-delete"
+						onclick="location.href='${pageContext.request.contextPath }/member/memberdeletePro'">회원
+						탈퇴</button>
+				</div>
+			</section>
+		</form>
+	</main>
+
+	<script>
 
 // ✅ Controller에서 돌아온 후 성공 메시지 (JSTL 사용)
 <c:if test="${not empty updateSuccess}">

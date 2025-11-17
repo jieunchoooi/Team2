@@ -40,9 +40,22 @@
 						</c:choose>
 					</div>
 					<div class="profile-info">
-						<p>${user.user_name}</p>
+
+						<p><c:choose>
+								<c:when test="${empty userVO.grade_id or userVO.grade_id == 1}">
+									<span class="badge bronze">🥉</span>
+								</c:when>
+								<c:when test="${userVO.grade_id == 2}">
+									<span class="badge silver">🥈</span>
+								</c:when>
+								<c:when test="${userVO.grade_id == 3}">
+									<span class="badge gold">🥇</span> 
+								</c:when>
+							</c:choose>
+							${user.user_name}
+						</p>
 						<p>${user.user_email}</p>
-						<p>포인트 &nbsp;${user.points}</p>
+						<p>🪙  &nbsp;${user.points} P</p>
 					</div>
 				</div>
 			</div>
