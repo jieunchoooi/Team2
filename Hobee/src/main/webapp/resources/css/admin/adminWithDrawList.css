@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@charset "UTF-8";
 /* =========================== 기본 설정 =========================== */
 * {
     box-sizing: border-box;
@@ -13,6 +12,33 @@ body {
     padding-top: 0;
     overflow-x: hidden;
 }
+
+.btn {
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(37, 115, 255, 0.25);
+    transition: background-color 0.2s, transform 0.1s;
+    font-weight: 600;
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.btn-revert {
+	background-color: #ff7f00;
+    box-shadow: 0 3px 8px rgba(255, 77, 79, 0.2);
+}
+
+.detail {
+	background-color: #1F65E0;
+    box-shadow: 0 3px 8px rgba(255, 77, 79, 0.2);
+}
+
+
+
 
 /* =========================== 메인 콘텐츠 영역 =========================== */
 .main-content {
@@ -40,6 +66,7 @@ body {
     font-weight: 700;
     color: #333;
 }
+
 
 /* =========================== 테이블 컨테이너 =========================== */
 .table-container {
