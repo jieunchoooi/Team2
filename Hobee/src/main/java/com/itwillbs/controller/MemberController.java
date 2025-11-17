@@ -75,13 +75,12 @@ public class MemberController {
 	
 	@PostMapping("/updatePro")
 	public String updatePro(HttpSession session,HttpServletRequest request, 	// 파일 없으면 null값이 됨
-			@RequestParam(value = "user_picture", required = false) MultipartFile user_picture,
+			@RequestParam(value = "user_file", required = false) MultipartFile user_picture,
             RedirectAttributes rttr) throws Exception { //) throws Exception {
 	    System.out.println("MemberController updatePro()");
 	    
 	    String user_id = (String) session.getAttribute("user_id");
-	    // ✅ 1. 세션에서 user_id 가져오기 (현재는 임시로 하드코딩)
-	   //  String user_id = "aaa1"; // TODO: 실제로는 session.getAttribute("user_id")로 변경
+	    // ✅ 1. 세션에서 user_id 가져오기 
 	    UserVO user = memberService.insertMember(user_id);
 	    // ✅ 2. request에서 파라미터 가져오기
 	    String password = request.getParameter("user_password");
@@ -106,27 +105,29 @@ public class MemberController {
 	    userVO.setUser_email(email);
 	    userVO.setUser_address(address);
 	    
-	    // ✅ 4. 파일 업로드 처리
-	    if(user_picture != null && !user_picture.isEmpty()) {
-	        UUID uuid = UUID.randomUUID();
+	    if(user_picture == null || user_picture.isEmpty()) {
+	    	userVO.setUser_file(request.getParameter("oldfile"));
+		}else {
+			UUID uuid = UUID.randomUUID();
 	        String filename = uuid.toString() + "_" + user_picture.getOriginalFilename();
 	        
-	        System.out.println("📁 파일 저장 경로: " + uploadPath);
 	        System.out.println("📁 파일명: " + filename);
 	        
-	        // 파일 저장
 	        FileCopyUtils.copy(user_picture.getBytes(), new File(uploadPath, filename));
 	        
-	        // DB에 저장할 파일명 설정
 	        userVO.setUser_file(filename);
-	    }
-	    
+	        
+			File oldfile = new File(uploadPath, request.getParameter("oldfile"));
+			
+			if(oldfile.exists()) {
+				oldfile.delete();
+			}
+		}
+		
 	    System.out.println("✅ 저장할 데이터: " + userVO);
 	    
-	    // ✅ 5. DB 업데이트
 	    memberService.updateProMember(userVO);
 	    
-	 // ✅ 성공 플래그 추가
 	    rttr.addFlashAttribute("updateSuccess", "true");
 	    
 	    return "redirect:/member/mypage";   
