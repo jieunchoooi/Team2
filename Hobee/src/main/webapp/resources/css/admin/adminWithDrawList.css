@@ -318,10 +318,6 @@ tbody tr:last-child td {
     color: #c62828;
 }
 
-.reason-badge.violation {
-    background-color: #fff3e0;
-    color: #ef6c00;
-}
 
 .reason-badge.other {
     background-color: #f5f5f5;

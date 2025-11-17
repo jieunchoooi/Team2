@@ -88,12 +88,14 @@ public class MemberController {
 	    String name = request.getParameter("user_name");
 	    String email = request.getParameter("user_email");
 	    String address = request.getParameter("user_address");
+	    int user_num = Integer.parseInt(request.getParameter("user_num"));
 	    
 	    System.out.println("📝 받은 데이터: " + password + ", " + phone + ", " + name + ", " + email + ", " + address);
 	    
 	    // ✅ 3. UserVO 객체 생성 및 설정
 	    UserVO userVO = new UserVO();
 	    userVO.setUser_id(user_id); // WHERE 조건에 필수!
+	    userVO.setUser_num(user_num);
 	    
 	    // 비밀번호가 입력된 경우만 설정 	// 양쪽 공백 제거. 문자열 길이가 0인지
 	    if(password != null && !password.trim().isEmpty()) {
@@ -200,10 +202,13 @@ public class MemberController {
 	
 	// 회원탈퇴
 	@GetMapping("/memberdeletePro") 
-	public String memberdeletePro() {
+	public String memberdeletePro(@RequestParam("user_num") int user_num, HttpSession session) {
 		System.out.println("MemberController memberdeletePro()");
-			
-		return "main/main";  
+		
+		memberService.memberDelete(user_num);
+		session.invalidate();
+		
+		return "redirect:/";  
 	}
 
 	// 로그아웃
@@ -211,10 +216,8 @@ public class MemberController {
 	public String logout(HttpSession session) {
 		System.out.println("MemberController logout()");
 		session.invalidate();
-		return "main/main";  
+		return "redirect:/";  
 	}
-	
-	
 	
 	
 	

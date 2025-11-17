@@ -42,7 +42,6 @@
 						<td>2025-09-15</td>
 						<td><span class="reason-badge user-request">본인 요청 탈퇴</span></td>
 						<td><span class="reason-badge forced">강제 탈퇴</span></td>
-						<td><span class="reason-badge violation">규정 위반</span></td>
 					</tr>
 				</tbody>
 			</table>

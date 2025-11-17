@@ -28,6 +28,12 @@ public class MemberService {
 		return memberMapper.insertMember(user_id);
 	}
 
+	public void memberDelete(int user_num) {
+		System.out.println("MemberService insertMember()");
+		
+		memberMapper.memberDelete(user_num);
+	}
+
 
 
 }

@@ -25,9 +25,12 @@
 		where user_id = #{user_id}
 	</select>
 
-<!-- 	<select id="listMember" resultType="com.itwillbs.hobee.UserVO" > -->
-<!-- 		select * from user -->
-<!-- 	</select> -->
+	<update id="memberDelete">
+		update user
+   		set user_status = 'self-withdraw'
+    	where user_num = #{user_num}
+	</update>
+
 
 
 </mapper>

@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,9 +93,9 @@ public class AdminController {
 		return "redirect:/admin/adminClassList";
 	}
 
-	// 클래스 등록
+	// 클래스 삭제
 	@GetMapping("/deleteClass")
-	public String deleteClass(@RequestParam("lecture_num") String lecture_num, Model model) {
+	public String deleteClass(@RequestParam("lecture_num") String lecture_num) {
 		System.out.println("AdminController deleteClass()");
 
 		adminService.deleteClass(lecture_num);
@@ -329,6 +330,5 @@ public class AdminController {
 		return "redirect:/admin/adminClassList";
 	}
 	
-
 
 }

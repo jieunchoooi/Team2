@@ -10,6 +10,8 @@ public interface MemberMapper {
 
 	public UserVO insertMember(String user_id);
 
+	public void memberDelete(int user_num);
+
 
 	
 
