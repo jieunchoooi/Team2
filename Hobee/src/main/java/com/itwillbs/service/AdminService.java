@@ -100,4 +100,9 @@ public class AdminService {
 		return adminMapper.classCount();
 	}
 
+	public void deleteMember(int user_num) {
+		System.out.println("AdminService deleteMember()");
+		adminMapper.deleteMember(user_num);
+	}
+
 }

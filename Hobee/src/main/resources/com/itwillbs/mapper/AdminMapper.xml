@@ -76,7 +76,11 @@
  		select count(*) from lecture
 	</select> 
 	
-	
+	<update id="deleteMember" parameterType="int">
+		update user
+   		set user_status = 'withdraw'
+    	where user_num = #{user_num}
+	</update>
 	
 	
 	

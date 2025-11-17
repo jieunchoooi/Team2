@@ -195,6 +195,20 @@ public class AdminController {
 		model.addAttribute("user", user);
 		return "admin/MemberManagement";
 	}
+	
+	// 회원 강제 탈퇴
+	@GetMapping("/MemberAdminDelete")
+	public String MemberAdminDelete(@RequestParam("user_num") int user_num) {
+		System.out.println("AdminController deleteClass()");
+
+		adminService.deleteMember(user_num);
+
+		return "redirect:/admin/adminMemberList";
+	}
+	
+	
+	
+	
 
 	// 회원 권한 등록
 	@PostMapping("/managementPro")
@@ -322,13 +336,14 @@ public class AdminController {
 			}
 		
 		}
-		
-		
 		System.out.println(lectureVO);
 		adminService.adminEditClass(lectureVO);
 
 		return "redirect:/admin/adminClassList";
 	}
+	
+	
+	
 	
 
 }

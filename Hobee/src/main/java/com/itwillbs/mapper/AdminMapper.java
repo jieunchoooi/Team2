@@ -34,4 +34,6 @@ public interface AdminMapper {
 
 	public int classCount();
 
+	public void deleteMember(int user_num);
+
 }
