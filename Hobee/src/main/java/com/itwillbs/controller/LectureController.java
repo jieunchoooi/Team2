@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.LectureService;
 
 @Controller
@@ -43,8 +44,15 @@ public class LectureController {
 	}
 	
 	@RequestMapping(value="/lecture")
-	public String lecture() {
+	public String lecture(@RequestParam("no") int lecture_num,
+            Model model) {
 		System.out.println("LectureController lecture()");
+		
+		LectureVO lectureVO = lectureService.contentLecture(lecture_num);
+		UserVO userVO = lectureService.getUserImg(lecture_num);
+
+		model.addAttribute("lectureVO", lectureVO);
+		model.addAttribute("userVO", userVO);
 		return "category/lecture";
 	}
 	
