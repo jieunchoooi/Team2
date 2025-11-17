@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.UserVO;
 
 @Mapper
 public interface LectureMapper {
@@ -16,5 +17,9 @@ public interface LectureMapper {
 	List<LectureVO> getLecturesByCategory(String category_detail);
 
 	List<LectureVO> getTop10ByCategory(String category_detail);
+
+	LectureVO contentLecture(int lecture_num);
+
+	UserVO getUserImg(int lecture_num);
 
 }
