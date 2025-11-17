@@ -48,6 +48,15 @@
     		JOIN user u ON l.user_num = u.user_num
     		WHERE l.lecture_num = #{lecture_num}
   		</select>
+  		
+  		<!-- 같은 강사의 다른 강의 조회 (현재 강의 제외) -->
+		<select id="authorLectures" resultType="com.itwillbs.domain.LectureVO">
+		    SELECT * FROM lecture 
+		    WHERE lecture_author = #{lecture_author} 
+		    AND lecture_num != #{lecture_num}
+		    ORDER BY readcount DESC
+		    LIMIT 4
+		</select>
    
 <!--    <select id="loginMember" resultType="com.itwillbs.domain.MemberVO"> -->
 <!--    	select * from members -->

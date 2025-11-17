@@ -18,6 +18,7 @@ public class LectureVO {
     private int readcount;
     private String lecture_img;
     private String lecture_detail;
-
+    private String lecture_tag;
+    
 }
 

@@ -50,9 +50,11 @@ public class LectureController {
 		
 		LectureVO lectureVO = lectureService.contentLecture(lecture_num);
 		UserVO userVO = lectureService.getUserImg(lecture_num);
+		List<LectureVO> authorLectures = lectureService.authorLectures(lectureVO);
 
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userVO);
+		model.addAttribute("authorLectures", authorLectures);
 		return "category/lecture";
 	}
 	

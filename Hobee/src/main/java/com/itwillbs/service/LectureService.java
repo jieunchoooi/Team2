@@ -46,5 +46,10 @@ public class LectureService {
 		return lectureMapper.getUserImg(lecture_num);
 	}
 
+	public List<LectureVO> authorLectures(LectureVO lectureVO) {
+		System.out.println("LectureService authorLectures()");
+		return lectureMapper.authorLectures(lectureVO);
+	}
+
 
 }

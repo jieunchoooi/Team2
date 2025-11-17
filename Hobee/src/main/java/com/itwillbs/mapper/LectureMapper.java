@@ -22,4 +22,6 @@ public interface LectureMapper {
 
 	UserVO getUserImg(int lecture_num);
 
+	List<LectureVO> authorLectures(LectureVO lectureVO);
+
 }
