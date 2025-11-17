@@ -36,6 +36,18 @@
 			order by readcount desc
 			limit 10
 		</select>
+		
+		<select id="contentLecture" resultType="com.itwillbs.domain.LectureVO">
+  			select * from lecture
+  			where lecture_num = #{lecture_num}
+  		</select>
+  		
+  		<select id="getUserImg" resultType="com.itwillbs.domain.UserVO">
+  			SELECT u.user_file
+    		FROM lecture l
+    		JOIN user u ON l.user_num = u.user_num
+    		WHERE l.lecture_num = #{lecture_num}
+  		</select>
    
 <!--    <select id="loginMember" resultType="com.itwillbs.domain.MemberVO"> -->
 <!--    	select * from members -->

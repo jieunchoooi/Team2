@@ -44,4 +44,5 @@ public interface AdminMapper {
 
 	public void RevertMember(int user_num);
 
+
 }

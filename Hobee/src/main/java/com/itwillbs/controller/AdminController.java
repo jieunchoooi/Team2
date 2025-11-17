@@ -254,7 +254,7 @@ public class AdminController {
 		pageVO.setPageSize(pageSize);
 
 		List<UserVO> teacherList = adminService.listTeacher(pageVO);
-
+		
 		int count = adminService.countTeacherList();
 		int tCount = adminService.teacharCount();
 		int clCount = adminService.classCount();
