@@ -156,37 +156,49 @@ public class UserController {
     
  // ✅ 로그인 Ajax 전용 (모달용)
     @PostMapping("/loginPro")
-    @ResponseBody
-    public Map<String, Object> loginPro(@ModelAttribute UserVO userVO, HttpSession session) {
-        Map<String, Object> result = new HashMap<>();
+    public Object loginPro(HttpServletRequest request,
+                           @ModelAttribute UserVO userVO,
+                           HttpSession session,
+                           RedirectAttributes ra) {
 
-        System.out.println("UserController loginPro() 실행 - ID: " + userVO.getUser_id());
+        System.out.println("loginPro 실행 → " + userVO.getUser_id());
 
-        // ✅ DB에서 회원 조회
         UserVO dbUser = userService.selectUserById(userVO.getUser_id());
 
-        // ✅ 비밀번호 검증
+        // AJAX 요청 여부
+        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+
+        // 로그인 성공
         if (dbUser != null && dbUser.getUser_password().equals(userVO.getUser_password())) {
 
-            // ✅ 로그인 성공
-            session.setAttribute("userVO", dbUser);                // 전체 VO 객체 저장
-            session.setAttribute("user_id", dbUser.getUser_id());  // 기존 JSP 호환용
+            session.setAttribute("user_id", dbUser.getUser_id());
             session.setAttribute("user_name", dbUser.getUser_name());
+            session.setAttribute("userVO", dbUser);
 
-            System.out.println("✅ 로그인 성공: " + dbUser.getUser_name());
+            // ⭐ AJAX 요청이면 JSON 응답
+            if (isAjax) {
+                Map<String, Object> json = new HashMap<>();
+                json.put("result", "success");
+                json.put("user_name", dbUser.getUser_name());
+                return json;
+            }
 
-            result.put("result", "success");
-            result.put("user_name", dbUser.getUser_name());
-
-        } else {
-            // ❌ 로그인 실패
-            System.out.println("❌ 로그인 실패");
-            result.put("result", "fail");
-            result.put("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            // ⭐ 일반 요청이면 redirect
+            return "redirect:/main/main";
         }
 
-        return result; // ✅ JSON 응답
+        // 로그인 실패 처리
+        if (isAjax) {
+            Map<String, Object> json = new HashMap<>();
+            json.put("result", "fail");
+            json.put("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return json;
+        } else {
+            ra.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return "redirect:/user/login";
+        }
     }
+
 
     /* ==========================================================
  	// ✅ 6. 로그아웃 처리
@@ -201,57 +213,62 @@ public class UserController {
 
  	
  // ✅ 비밀번호 찾기 페이지 이동
-    @GetMapping("/findPw")
-    public String findPwForm() {
-        return "/user/findPw";
-    }
+ 	@GetMapping("/findPw")
+ 	public String findPwForm() {
+ 	    return "/user/findPw";
+ 	}
 
-    // ✅ 비밀번호 찾기 처리
-    @PostMapping("/findPwPro")
-    public String findPwPro(String user_email, Model model) throws Exception {
-        // 1️⃣ 이메일로 사용자 조회
-        UserVO user = userService.findUserByEmail(user_email);
+ 	// ✅ 비밀번호 찾기 처리 (아이디 + 이메일)
+ 	@PostMapping("/findPwPro")
+ 	public String findPwPro(
+ 	        @RequestParam("user_id") String user_id,
+ 	        @RequestParam("user_email") String user_email,Model model) throws Exception {
 
-        if (user == null) {
-            model.addAttribute("msg", "입력하신 이메일로 가입된 계정이 없습니다.");
-            return "/user/findPw";
-        }
+ 	    System.out.println("findPwPro() 실행 - ID : " + user_id + ", Email : " + user_email);
 
-        // 2️⃣ 임시 비밀번호 생성
-        String tempPw = UUID.randomUUID().toString().substring(0, 10);
+ 	    // 1️⃣ 아이디 + 이메일로 사용자 조회
+ 	    UserVO user = userService.findUserByIdAndEmail(user_id, user_email);
 
-        // 3️⃣ 임시 비밀번호 DB 업데이트
-        userService.updateTempPassword(user.getUser_id(), tempPw);
+ 	    if (user == null) {
+ 	        model.addAttribute("msg", "아이디 또는 이메일이 일치하지 않습니다.");
+ 	        return "/user/findPw";
+ 	    }
 
-        // 4️⃣ 이메일 발송
-        sendTempPasswordMail(user_email, tempPw);
+ 	    // 2️⃣ 임시 비밀번호 생성
+ 	    String tempPw = UUID.randomUUID().toString().substring(0, 8);
 
-        model.addAttribute("msg", "임시 비밀번호가 이메일로 발송되었습니다.");
-        return "/user/login";
-    }
+ 	    // 3️⃣ 임시 비밀번호 DB 업데이트
+ 	    userService.updateTempPassword(user_id, tempPw);
 
-    // ✅ 임시비밀번호 이메일 발송 메서드
-    private void sendTempPasswordMail(String toEmail, String tempPw) {
-        String subject = "[Hobee] 임시 비밀번호 안내";
-        String content = "<h3>Hobee 비밀번호 재설정 안내</h3>"
-                + "<p>요청하신 임시 비밀번호는 다음과 같습니다:</p>"
-                + "<p style='font-size:18px; font-weight:bold; color:#2573ff;'>" + tempPw + "</p>"
-                + "<p>로그인 후 반드시 새 비밀번호로 변경해주세요.</p>";
+ 	    // 4️⃣ 이메일 발송
+ 	    sendTempPasswordMail(user_email, tempPw);
 
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(toEmail);
-            helper.setSubject(subject);
-            helper.setText(content, true);
-            helper.setFrom("yourgmail@gmail.com", "Hobee 관리자");
+ 	    model.addAttribute("msg", "임시 비밀번호가 이메일로 전송되었습니다.");
+ 	    return "/user/login";
+ 	}
 
-            mailSender.send(message);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+ 	// ✅ 임시비밀번호 이메일 발송
+ 	private void sendTempPasswordMail(String toEmail, String tempPw) {
+
+ 	    String subject = "[Hobee] 임시 비밀번호 안내";
+ 	    String content = "<h3>Hobee 임시 비밀번호 안내</h3>"
+ 	            + "<p>임시 비밀번호는 다음과 같습니다:</p>"
+ 	            + "<p style='font-size:18px; font-weight:bold; color:#2573ff;'>" + tempPw + "</p>"
+ 	            + "<p>로그인 후 반드시 비밀번호를 변경해주세요.</p>";
+
+ 	    try {
+ 	        MimeMessage message = mailSender.createMimeMessage();
+ 	        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+ 	        helper.setTo(toEmail);
+ 	        helper.setSubject(subject);
+ 	        helper.setText(content, true);
+ 	        helper.setFrom("yourgmail@gmail.com", "Hobee 관리자");
+
+ 	        mailSender.send(message);
+
+ 	    } catch (Exception e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	}
 }
-

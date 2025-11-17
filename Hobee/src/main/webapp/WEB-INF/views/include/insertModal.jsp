@@ -35,7 +35,7 @@
             <div class="input-row">
                 <input type="text" id="ins_user_email" name="user_email" class="insert-input" placeholder="example@naver.com">
                 <button type="button" id="ins_checkEmailBtn" class="check-btn">중복확인</button>
-            </div>
+            </div>hat gpt
             <div id="ins_emailCheckMsg" class="msg"></div>
 
             <!-- 전화번호 -->
