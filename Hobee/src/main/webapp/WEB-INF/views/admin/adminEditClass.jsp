@@ -39,24 +39,23 @@
 			<div class="form-group">
 				<label>카테고리</label> <select name="category_detail" id="category"
 					required>
-					<option value="디지털 드로잉"
-						${lectureVO.category_detail == '디지털 드로잉' ? 'selected' : ''}>디지털
-						드로잉</option>
+					<option value="디지털드로잉"
+						${lectureVO.category_detail == '디지털드로잉' ? 'selected' : ''}>디지털드로잉</option>
 					<option value="드로잉"
 						${lectureVO.category_detail == '드로잉' ? 'selected' : ''}>드로잉</option>
 					<option value="공예"
 						${lectureVO.category_detail == '공예' ? 'selected' : ''}>공예</option>
-					<option value="AI"
-						${lectureVO.category_detail == 'AI' ? 'selected' : ''}>AI</option>
+					<option value="AI 스킬업"
+						${lectureVO.category_detail == 'AI 스킬업' ? 'selected' : ''}>AI</option>
 					<option value="프로그래밍"
 						${lectureVO.category_detail == '프로그래밍' ? 'selected' : ''}>프로그래밍</option>
-					<option value="데이터 사이언스"
-						${lectureVO.category_detail == '데이터 사이언스' ? 'selected' : ''}>데이터
+					<option value="데이터사이언스"
+						${lectureVO.category_detail == '데이터사이언스' ? 'selected' : ''}>데이터
 						사이언스</option>
 					<option value="영어"
-						${lectureVO.category_detail == 'english' ? 'selected' : ''}>영어</option>
+						${lectureVO.category_detail == '영어' ? 'selected' : ''}>영어</option>
 					<option value="외국어 시험"
-						${lectureVO.category_detail == 'foreign_language_test' ? 'selected' : ''}>외국어
+						${lectureVO.category_detail == '외국어 시험' ? 'selected' : ''}>외국어
 						시험</option>
 					<option value="제2외국어"
 						${lectureVO.category_detail == '제2외국어' ? 'selected' : ''}>제2외국어</option>
