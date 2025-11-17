@@ -46,5 +46,9 @@ public class UserService {
 		System.out.println("UesrService: findUserByIdAndEmail() 실행");
 		return userMapper.findUserByIdAndEmail(user_id, user_email);
 	}
+	public UserVO findIdByNameAndEmail(String user_name, String user_email) {
+		System.out.println("UesrService: findIdByNameAndEmail() 실행");
+		return userMapper.findIdByNameAndEmail(user_name, user_email);
+	}
 
 }

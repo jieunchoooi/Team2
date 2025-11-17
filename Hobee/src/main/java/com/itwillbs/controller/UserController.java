@@ -156,49 +156,37 @@ public class UserController {
     
  // ✅ 로그인 Ajax 전용 (모달용)
     @PostMapping("/loginPro")
-    public Object loginPro(HttpServletRequest request,
-                           @ModelAttribute UserVO userVO,
-                           HttpSession session,
-                           RedirectAttributes ra) {
+    @ResponseBody
+    public Map<String, Object> loginPro(@ModelAttribute UserVO userVO, HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
 
-        System.out.println("loginPro 실행 → " + userVO.getUser_id());
+        System.out.println("UserController loginPro() 실행 - ID: " + userVO.getUser_id());
 
+        // ✅ DB에서 회원 조회
         UserVO dbUser = userService.selectUserById(userVO.getUser_id());
 
-        // AJAX 요청 여부
-        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-
-        // 로그인 성공
+        // ✅ 비밀번호 검증
         if (dbUser != null && dbUser.getUser_password().equals(userVO.getUser_password())) {
 
-            session.setAttribute("user_id", dbUser.getUser_id());
+            // ✅ 로그인 성공
+            session.setAttribute("userVO", dbUser);                // 전체 VO 객체 저장
+            session.setAttribute("user_id", dbUser.getUser_id());  // 기존 JSP 호환용
             session.setAttribute("user_name", dbUser.getUser_name());
-            session.setAttribute("userVO", dbUser);
 
-            // ⭐ AJAX 요청이면 JSON 응답
-            if (isAjax) {
-                Map<String, Object> json = new HashMap<>();
-                json.put("result", "success");
-                json.put("user_name", dbUser.getUser_name());
-                return json;
-            }
+            System.out.println("✅ 로그인 성공: " + dbUser.getUser_name());
 
-            // ⭐ 일반 요청이면 redirect
-            return "redirect:/main/main";
-        }
+            result.put("result", "success");
+            result.put("user_name", dbUser.getUser_name());
 
-        // 로그인 실패 처리
-        if (isAjax) {
-            Map<String, Object> json = new HashMap<>();
-            json.put("result", "fail");
-            json.put("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return json;
         } else {
-            ra.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "redirect:/user/login";
+            // ❌ 로그인 실패
+            System.out.println("❌ 로그인 실패");
+            result.put("result", "fail");
+            result.put("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
         }
-    }
 
+        return result; // ✅ JSON 응답
+    }
 
     /* ==========================================================
  	// ✅ 6. 로그아웃 처리
@@ -210,6 +198,29 @@ public class UserController {
  	    System.out.println("✅ 로그아웃 완료");
  	   return "redirect:/main/main";
  	}
+ 	
+ // 🔍 아이디 찾기 화면
+    @GetMapping("/findId")
+    public String findId() {
+        return "/user/findId";
+    }
+
+    // 🔍 아이디 찾기 처리
+    @PostMapping("/findIdPro")
+    public String findIdPro(@RequestParam String user_name,
+                            @RequestParam String user_email,
+                            Model model) {
+
+        UserVO user = userService.findIdByNameAndEmail(user_name, user_email);
+
+        if(user == null) {
+            model.addAttribute("msg", "일치하는 정보가 없습니다.");
+            return "/user/findId";
+        }
+
+        model.addAttribute("msg", "회원님의 아이디는: " + user.getUser_id());
+        return "/user/findId";  
+    }
 
  	
  // ✅ 비밀번호 찾기 페이지 이동

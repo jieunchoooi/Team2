@@ -8,13 +8,15 @@
 <meta charset="UTF-8">
 <title>Hobee Header</title>
 
+<!-- CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/loginModal.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/insertModal.css">
 
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
 
+</head>
 <body>
 
 <header>
@@ -34,6 +36,7 @@
 							<li><a href="${pageContext.request.contextPath}/category/drawingList">공예</a></li>
 						</ul>
 					</div>
+
 					<div class="mega-column">
 						<h3>IT</h3>
 						<ul>
@@ -42,6 +45,7 @@
 							<li><a href="${pageContext.request.contextPath}/category/drawingList">데이터사이언스</a></li>
 						</ul>
 					</div>
+
 					<div class="mega-column">
 						<h3>외국어</h3>
 						<ul>
@@ -50,6 +54,7 @@
 							<li><a href="${pageContext.request.contextPath}/category/drawingList">제2 외국어</a></li>
 						</ul>
 					</div>
+
 				</div>
 			</div>
 
@@ -57,27 +62,25 @@
 			<a href="${pageContext.request.contextPath}/recommend/recoList">베스트 & 추천강의</a>
 		</div>
 
+
 		<div class="nav-right">
 			<c:choose>
+   <c:when test="${empty sessionScope.user_id}">
+      <a href="#" id="openLoginModal" class="auth-link">로그인</a>
+      <a href="#" id="openInsertModal" class="auth-link">회원가입</a>
+   </c:when>
 
-				<c:when test="${empty sessionScope.user_id}">
-					<a href="#" id="openLoginModal" class="auth-link">로그인</a>
-					<a href="#" id="openInsertModal" class="auth-link">회원가입</a>
-				</c:when>
+   <c:otherwise>
+      <span class="welcome-text">${sessionScope.user_name}님</span>
+      <a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
 
-				<c:otherwise>
-					<span class="welcome-text">${sessionScope.user_name}님</span>
+      <c:if test="${sessionScope.user_id eq 'admin'}">
+         <a href="${pageContext.request.contextPath}/admin/adminCategory" class="auth-link">관리자페이지</a>
+      </c:if>
 
-					<a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
-
-					<c:if test="${sessionScope.user_id eq 'admin'}">
-						<a href="${pageContext.request.contextPath}/admin/adminCategory" class="auth-link">관리자페이지</a>
-					</c:if>
-
-					<a href="${pageContext.request.contextPath}/user/logout" class="auth-link">로그아웃</a>
-				</c:otherwise>
-
-			</c:choose>
+      <a href="${pageContext.request.contextPath}/user/logout" class="auth-link">로그아웃</a>
+   </c:otherwise>
+</c:choose>
 		</div>
 	</nav>
 </header>
@@ -100,7 +103,7 @@ $(document).ready(function(){
 
 	/* ======================
 	   [ 1 ] 로그인 모달
-	====================== */
+	 ===================== */
 
 	$("#openLoginModal").click(function(e){
 		e.preventDefault();
@@ -142,10 +145,9 @@ $(document).ready(function(){
 					alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 				}
 			}
-	
-			
 		});
 	}
+
 	/* ======================
 	   [ 2 ] 회원가입 모달
 	====================== */

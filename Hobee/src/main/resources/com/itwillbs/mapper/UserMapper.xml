@@ -60,7 +60,13 @@
    		WHERE user_email = #{user_email}
 	</select>
 	
-
+	<select id="findIdByNameAndEmail" resultType="com.itwillbs.domain.UserVO">
+    SELECT *
+    FROM user
+    WHERE user_name = #{user_name}
+   	  AND user_email = #{user_email}
+	</select>
+	
 </mapper>
 
 

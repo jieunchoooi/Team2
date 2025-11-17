@@ -24,13 +24,13 @@
     </form>
 
     <div class="modal-footer">
-      <a href="${pageContext.request.contextPath}/user/findPw">비밀번호 찾기</a>
-      |
-      <a href="${pageContext.request.contextPath}/user/insert">회원가입</a>
-
-    </div>
+    <a href="${pageContext.request.contextPath}/user/findId">아이디 찾기</a>
+    |
+    <a href="${pageContext.request.contextPath}/user/findPw">비밀번호 찾기</a>
+    |
+    <a href="#" id="openInsertModal">회원가입</a>
+</div>
   </div>
 </div>
 
-<!-- ✅ 외부 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/loginModal.css">
