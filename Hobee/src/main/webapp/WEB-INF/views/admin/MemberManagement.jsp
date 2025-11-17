@@ -41,17 +41,21 @@
 						</c:choose>
 					</div>
 					<div class="profile-info">
-						<p>${user.user_name}</p>
+						<p><p><c:choose>
+								<c:when test="${empty userVO.grade_id or userVO.grade_id == 1}">
+									<span class="badge bronze">🥉</span>
+								</c:when>
+								<c:when test="${userVO.grade_id == 2}">
+									<span class="badge silver">🥈</span>
+								</c:when>
+								<c:when test="${userVO.grade_id == 3}">
+									<span class="badge gold">🥇</span> 
+								</c:when>
+							</c:choose>
+							${user.user_name}</p>
 						<p>${user.user_email}</p>
-						<p>포인트 &nbsp;${user.points}</p>
-						<p>권한 &nbsp;:&nbsp;
-							<c:choose>
-								<c:when test="${user.user_role == 'user'}">유저</c:when>
-								<c:when test="${user.user_role == 'instructor'}">강사</c:when>
-								<c:when test="${user.user_role == 'admin'}">관리자</c:when>
-								<c:otherwise>${user.user_role}</c:otherwise>
-							</c:choose></p>
-					</div>
+						<p>🪙  &nbsp;${user.points} P</p>
+												</div>
 				</div>
 			</div>
 
@@ -62,10 +66,9 @@
 				<div class="form-group">
     		    	<label>권한</label>
       				<select name="user_role" id="category" required>
-        				<option value="">권한 설정</option>
-        				<option value="user">유저</option>
-        				<option value="instructor">강사</option>
-        				<option value="admin">관리자</option>
+        				<option value="user" ${user.user_role == 'user' ? 'selected' : ''}>유저</option>
+        				<option value="instructor" ${user.user_role == 'instructor' ? 'selected' : ''}>강사</option>
+        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option>
       				</select>
    			    </div>
 				<div class="form-group">
@@ -97,7 +100,9 @@
 					<label for="grade_id">현재등급</label> <span class="form-value">${user.grade_id}</span>
 				</div>
 				
+				<button class="btn" type="button" onclick="history.back();">목록</button>
 				<button class="btn" type="submit" onclick="return submitForm();">정보 수정</button>
+<!-- 				<a onclick="history.back();"> 목록</a>				 -->
 			</div>
 		</div>
 		

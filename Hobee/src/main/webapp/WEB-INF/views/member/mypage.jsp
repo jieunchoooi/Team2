@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -55,7 +55,10 @@
 							${user.user_name}
 						</p>
 						<p>${user.user_email}</p>
-						<p>🪙  &nbsp;${user.points} P</p>
+						<p>
+					  🪙 &nbsp;
+					  <fmt:formatNumber value="${userVO.points != null ? userVO.points : 0}" type="number" /> P
+					</p>
 					</div>
 				</div>
 			</div>

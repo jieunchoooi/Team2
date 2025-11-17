@@ -100,4 +100,29 @@ public class AdminService {
 		return adminMapper.classCount();
 	}
 
+	public void deleteMember(int user_num) {
+		System.out.println("AdminService deleteMember()");
+		adminMapper.deleteMember(user_num);
+	}
+
+	public List<UserVO> withDrawListMember(PageVO pageVO) {
+		System.out.println("AdminService withDrawListMember()");
+		return adminMapper.withDrawListMember(pageVO);
+	}
+
+	public int countDrawMemberList() {
+		System.out.println("AdminService countDrawMemberList()");
+		return adminMapper.countDrawMemberList();
+	}
+
+	public int countTeacherList() {
+		System.out.println("AdminService countTeacherList()");
+		return adminMapper.countTeacherList();
+	}
+
+	public void RevertMember(int user_num) {
+		System.out.println("AdminService RevertMember()");
+		adminMapper.RevertMember(user_num);
+	}
+
 }

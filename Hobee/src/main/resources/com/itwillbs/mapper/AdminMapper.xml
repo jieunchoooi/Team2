@@ -6,16 +6,40 @@
 <mapper namespace="com.itwillbs.mapper.AdminMapper">
 
 	<select id="listMember" resultType="com.itwillbs.domain.UserVO" > 
- 		select * from user 
- 		WHERE user_role = 'user'
+ 		select * 
+    	from user 
+    	where user_role = 'user'
+     	and user_status = 'active'
    		order by user_num desc
-    	LIMIT #{startRow}, #{pageSize}
+   		LIMIT #{startRow}, #{pageSize}
+	</select> 
+	
+	<select id="withDrawListMember" resultType="com.itwillbs.domain.UserVO" > 
+ 		select * 
+    	from user 
+    	where user_role = 'user'
+     	and (user_status = 'self-withdraw' 
+             or user_status = 'withdraw')
+   		order by user_num desc
+   		LIMIT #{startRow}, #{pageSize}
 	</select> 
 
 	<select id="countMemberList" resultType="java.lang.Integer" > 
  		select count(*) from user
+ 		WHERE user_status = 'active'
+	</select> 
+	
+	<select id="countDrawMemberList" resultType="java.lang.Integer" > 
+ 		select count(*) from user
+ 		WHERE user_status = 'self-withdraw' 
+             or user_status = 'withdraw'
 	</select> 
 
+	<select id="countTeacherList" resultType="java.lang.Integer" > 
+ 		select count(*) from user
+ 		WHERE user_role = 'instructor' 
+	</select> 
+	
 	<insert id="LectureUpdate">
 		INSERT INTO lecture 
 		(lecture_title, category_detail, lecture_detail, lecture_author, lecture_price, lecture_img)
@@ -76,8 +100,17 @@
  		select count(*) from lecture
 	</select> 
 	
+	<update id="deleteMember" parameterType="int">
+		update user
+   		set user_status = 'withdraw'
+    	where user_num = #{user_num}
+	</update>
 	
-	
+	<update id="RevertMember" parameterType="int">
+		update user
+   		set user_status = 'active'
+    	where user_num = #{user_num}
+	</update>
 	
 	
 	

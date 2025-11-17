@@ -52,7 +52,7 @@
 							<td>${user.created_at}</td>
 							<td>
 								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
-								<button class="btn btn-delete">강제탈퇴</button>
+								<button class="btn btn-delete" data-num="${user.user_num}" data-name="${user.user_name}">강제탈퇴</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -81,15 +81,27 @@
 </body>
 <script type="text/javascript">
 let detail = document.querySelectorAll(".detail");
+let deletebtn = document.querySelectorAll(".btn-delete");
 
 detail.forEach(function(btn){
     btn.onclick = function(){
         let userNum = this.getAttribute("data-num");
-        // user_num을 쿼리스트링으로 보내서 컨트롤러로 이동
         location.href = "${pageContext.request.contextPath}/admin/MemberManagement?user_num=" + userNum;
     }
 });
 
+deletebtn.forEach(function(btn){
+	btn.onclick = function(){
+		let userNum = this.getAttribute("data-num");
+        let userName = this.getAttribute("data-name"); 
+        
+        let result = confirm(userName + "님을 강제 탈퇴시키겠습니까?"); 
+        if(result) {
+            location.href = "${pageContext.request.contextPath}/admin/MemberAdminDelete?user_num=" + userNum;
+			alert("탈퇴되었습니다.");
+        }
+    }
+});
 
 
 

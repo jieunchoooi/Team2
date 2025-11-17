@@ -18,48 +18,47 @@
 <jsp:include page="../include/memberSidebar.jsp" />
 
 <main class="main-content">
-
+<h1>내 강의실</h1>
     <!-- 🔥 미니 프로필 카드 -->
-    <div class="profile-card">
-        <div class="profile-pic">
-            <c:choose>
-                <c:when test="${empty userVO.user_file}">
-                    <span>🐵</span>
-                </c:when>
-                <c:otherwise>
-                    <img src="${pageContext.request.contextPath}/resources/img/user_picture/${userVO.user_file}">
-                </c:otherwise>
-            </c:choose>
-        </div>
+    <div class="main-header">
+				<div class="profile-box">
+					<div class="profile-pic">
+						<c:choose>
+							<c:when test="${empty userVO.user_file}">
+								<span>🐵</span>
+							</c:when>
+							<c:otherwise>
+								<img
+									src="${pageContext.request.contextPath}/resources/img/user_picture/${userVO.user_file}"
+									alt="프로필 사진">
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div class="profile-info">
 
-        <div class="profile-info">
-            <div class="name-line">
+						<p><c:choose>
+								<c:when test="${empty userVO.grade_id or userVO.grade_id == 1}">
+									<span class="badge bronze">🥉</span>
+								</c:when>
+								<c:when test="${userVO.grade_id == 2}">
+									<span class="badge silver">🥈</span>
+								</c:when>
+								<c:when test="${userVO.grade_id == 3}">
+									<span class="badge gold">🥇</span> 
+								</c:when>
+							</c:choose>
+							${userVO.user_name}
+						</p>
+						<p>${userVO.user_email}</p>
+					<p>
+					  🪙 &nbsp;
+					  <fmt:formatNumber value="${userVO.points != null ? userVO.points : 0}" type="number" /> P
+					</p>
+					</div>
+				</div>
+			</div>
 
-                <!-- 등급배지: 등급 없으면 BRONZE -->
-                <c:choose>
-                    <c:when test="${empty userVO.grade_id or userVO.grade_id == 1}">
-                        <span class="badge bronze">🥉</span>
-                    </c:when>
-                    <c:when test="${userVO.grade_id == 2}">
-                        <span class="badge silver">🥈</span>
-                    </c:when>
-                    <c:when test="${userVO.grade_id == 3}">
-                        <span class="badge gold">🥇</span>
-                    </c:when>
-                </c:choose>
-
-                <span class="user-name">${userVO.user_name}</span>
-            </div>
-
-            <p class="user-email">${userVO.user_email}</p>
-
-            <p class="user-points">
-                🪙 <fmt:formatNumber value="${userVO.points}" /> P
-            </p>
-        </div>
-    </div>
-
-    <h1 class="section-title">내 강의실</h1>
+    
 
     <!-- 🔥 강의 리스트 -->
     <div class="classroom-list">

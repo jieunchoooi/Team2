@@ -86,7 +86,8 @@
 							
 					</div>
 					<div class="form-group">
-						<label for="userId">아이디</label> <input type="text" name="User_id"
+						<input type="hidden" name="user_num" value="${user.user_num}" readonly>
+						<label for="userId">아이디</label> <input type="text" name="user_id"
 							id="user_id" value="${user.user_id}" readonly>
 					</div>
 					<div class="form-group">
@@ -110,16 +111,27 @@
 							id="checkemail"></span>
 					</div>
 					<button type="submit" class="btn" id="submitBtn">정보 수정</button>
-
-					<button type="button" class="btn btn-delete"
-						onclick="location.href='${pageContext.request.contextPath }/member/memberdeletePro'">회원
-						탈퇴</button>
+					<button class="btn btn-delete" data-num="${user.user_num}">회원 탈퇴</button>
 				</div>
 			</section>
 		</form>
 	</main>
 
 	<script>
+	
+	// 회원 탈퇴	
+	let deleteBtn = document.querySelectorAll('.btn-delete');
+
+	deleteBtn.forEach(function(btn) {
+	    btn.onclick = function() {
+	        let userNum = this.getAttribute('data-num');
+	        let result = confirm("정말로 탈퇴하시겠습니까?");
+	        if(result) {
+	            alert("탈퇴되었습니다.");
+	            location.href = "${pageContext.request.contextPath}/member/memberdeletePro?user_num=" + userNum;
+	        }
+	    }
+	});
 
 // ✅ Controller에서 돌아온 후 성공 메시지 (JSTL 사용)
 <c:if test="${not empty updateSuccess}">

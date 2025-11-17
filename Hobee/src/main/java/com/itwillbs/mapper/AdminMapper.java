@@ -34,4 +34,14 @@ public interface AdminMapper {
 
 	public int classCount();
 
+	public void deleteMember(int user_num);
+
+	public List<UserVO> withDrawListMember(PageVO pageVO);
+
+	public int countDrawMemberList();
+
+	public int countTeacherList();
+
+	public void RevertMember(int user_num);
+
 }
