@@ -125,4 +125,5 @@ public class AdminService {
 		adminMapper.RevertMember(user_num);
 	}
 
+
 }

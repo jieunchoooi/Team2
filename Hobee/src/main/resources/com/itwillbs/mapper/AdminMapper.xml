@@ -112,6 +112,13 @@
     	where user_num = #{user_num}
 	</update>
 	
+<!-- 	<select id="classCount" parameterType="int" resultType="int"> -->
+<!--     	SELECT COUNT(*) -->
+<!--     	FROM lecture -->
+<!--     	WHERE user_num = #{user_num} -->
+<!-- 	</select> -->
+	
+	
 	
 	
 	
