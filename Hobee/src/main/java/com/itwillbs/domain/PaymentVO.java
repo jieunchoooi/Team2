@@ -44,7 +44,10 @@ public class PaymentVO {
 
     /** 결제 생성 일시 (MySQL NOW() 기반 자동 입력) */
     private Timestamp created_at;
-
+    
+    
+    // 환불 가능 여부 (DB에는 없음, 화면 표시용)
+    private boolean refundable;
     /** [조회 전용] 여러 강의 제목 표시용 (ex. "수채화 기초, 캘리그래피 입문") */
     private String lectureTitles;
 

@@ -94,5 +94,12 @@
     WHERE user_num = #{user_num}
       AND lecture_num = #{lecture_num}
   </select>
+  
+    <!-- 환불 시 enrollment 상태 변경 -->
+    <update id="cancelEnrollmentByPaymentId">
+        UPDATE enrollment
+        SET status = 'cancelled'
+        WHERE payment_id = #{payment_id}
+    </update>
 
 </mapper>

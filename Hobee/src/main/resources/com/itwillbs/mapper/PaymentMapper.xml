@@ -43,22 +43,6 @@
           AND status = 'paid'
     </select>
 
-    <!-- ✅ 특정 회원 결제 내역 조회 -->
-    <select id="getPaymentsByUser" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
-        SELECT 
-            payment_id,
-            user_num,
-            amount,
-            used_points,
-            saved_points,
-            status,
-            imp_uid,
-            merchant_uid,
-            created_at
-        FROM payment
-        WHERE user_num = #{userNum}
-        ORDER BY created_at DESC
-    </select>
     
       <!-- ✅ 트랜잭션 테스트용 임시 INSERT -->
  <insert id="insertPaymentForTest">
@@ -68,5 +52,87 @@
     1, 10000, 0, 0, 'paid', 'imp_test_12345', 'M12345678953', NOW()
   )
 </insert>
+
+  <!-- =========================================================
+         1) 특정 회원의 결제 목록 조회
+         ========================================================= -->
+    <select id="getPaymentList" parameterType="int"
+            resultType="com.itwillbs.domain.PaymentVO">
+
+        SELECT 
+            p.payment_id,
+            p.user_num,
+            p.amount,
+            p.used_points,
+            p.saved_points,
+            p.status,
+            p.imp_uid,
+            p.merchant_uid,
+            p.created_at,
+
+            u.user_name,
+            u.user_email,
+
+            (
+                SELECT GROUP_CONCAT(l.lecture_title SEPARATOR ', ')
+                FROM enrollment e
+                LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+                WHERE e.payment_id = p.payment_id
+            ) AS lectureTitles
+
+        FROM payment p
+        LEFT JOIN user u ON p.user_num = u.user_num
+        WHERE p.user_num = #{user_num}
+        ORDER BY p.payment_id DESC;
+
+    </select>
+
+    <!-- =========================================================
+         2) 특정 결제 상세 조회
+         ========================================================= -->
+    <select id="getPayment" parameterType="int"
+            resultType="com.itwillbs.domain.PaymentVO">
+
+        SELECT 
+            p.payment_id,
+            p.user_num,
+            p.amount,
+            p.used_points,
+            p.saved_points,
+            p.status,
+            p.imp_uid,
+            p.merchant_uid,
+            p.created_at,
+
+            u.user_name,
+            u.user_email,
+
+            (
+                SELECT GROUP_CONCAT(l.lecture_title SEPARATOR ', ')
+                FROM enrollment e
+                LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+                WHERE e.payment_id = p.payment_id
+            ) AS lectureTitles
+
+        FROM payment p
+        LEFT JOIN user u ON p.user_num = u.user_num
+        WHERE p.payment_id = #{payment_id};
+
+    </select>
+ <!-- 1. 결제 단건 조회 -->
+    <select id="getPaymentById" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
+        SELECT *
+        FROM payment
+        WHERE payment_id = #{payment_id}
+    </select>
+
+    <!-- 2. 결제 상태 'cancelled'로 변경 -->
+    <update id="updatePaymentStatusRefund" parameterType="int">
+        UPDATE payment
+        SET status = 'cancelled'
+        WHERE payment_id = #{payment_id}
+    </update>
+
+   
 
 </mapper>

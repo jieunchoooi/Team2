@@ -31,5 +31,11 @@ public interface EnrollmentMapper {
     /** 중복 등록 방지 */
     int checkEnrollmentExists(EnrollmentVO enrollVO);
     
+    /** 
+     * 환불 시 수강 상태를 cancelled 로 변경
+     * - payment_id 기준으로 전체 강의 취소
+     */
+    int cancelEnrollmentByPaymentId(int payment_id);
+    
     
 }

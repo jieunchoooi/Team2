@@ -234,4 +234,98 @@ public class PaymentController {
         }
         return "redirect:/main/main";
     }
+    
+    
+    @PostMapping("/refund")
+    @ResponseBody
+    public Map<String, Object> refundPayment(@ModelAttribute PaymentVO paymentVO) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+
+            System.out.println("🟣 환불 요청: payment_id = " + paymentVO.getPayment_id());
+
+            // 1) 기존 결제 정보 조회 (created_at, imp_uid 등 필요)
+            PaymentVO original = paymentService.getPayment(paymentVO.getPayment_id());
+            if (original == null) {
+                result.put("status", "fail");
+                result.put("message", "결제 정보를 찾을 수 없습니다.");
+                return result;
+            }
+
+            // 2) 3일 이내 환불 가능 여부 체크
+            if (!paymentService.isRefundable(original.getCreated_at())) {
+                result.put("status", "fail");
+                result.put("message", "결제일 기준 3일이 지나 환불이 불가능합니다.");
+                return result;
+            }
+
+            // 3) 포트원 Access Token 발급
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders tokenHeaders = new HttpHeaders();
+            tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+            Map<String, String> tokenReq = new HashMap<>();
+            tokenReq.put("imp_key", apiKey);
+            tokenReq.put("imp_secret", apiSecret);
+
+            HttpEntity<Map<String, String>> tokenEntity = new HttpEntity<>(tokenReq, tokenHeaders);
+
+            ResponseEntity<Map> tokenRes = restTemplate.postForEntity(
+                    "https://api.iamport.kr/users/getToken",
+                    tokenEntity,
+                    Map.class	
+            );
+
+            String accessToken =
+                (String)((Map)tokenRes.getBody().get("response")).get("access_token");
+
+            // 4) 포트원 실제 환불 요청
+            HttpHeaders refundHeaders = new HttpHeaders();
+            refundHeaders.setContentType(MediaType.APPLICATION_JSON);
+            refundHeaders.set("Authorization", accessToken);
+
+            Map<String, Object> refundReq = new HashMap<>();
+            refundReq.put("imp_uid", original.getImp_uid());
+            refundReq.put("reason", "사용자 요청 환불");
+
+            HttpEntity<Map<String, Object>> refundEntity =
+                    new HttpEntity<>(refundReq, refundHeaders);
+
+            ResponseEntity<Map> refundRes = restTemplate.postForEntity(
+                    "https://api.iamport.kr/payments/cancel",
+                    refundEntity,
+                    Map.class
+            );
+
+            Map<String, Object> refundResponse = (Map<String, Object>) refundRes.getBody();
+
+            int code = (int) refundResponse.get("code");
+
+            if (code != 0) {
+                result.put("status", "fail");
+                result.put("message", "포트원 환불 실패: " + refundResponse.get("message"));
+                return result;
+            }
+
+            System.out.println("🟢 포트원 환불 성공");
+
+            // 5) 실제 DB 환불 처리 → 트랜잭션 적용됨
+            paymentService.refundPayment(original);
+
+            result.put("status", "success");
+            result.put("message", "환불이 완료되었습니다.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("status", "fail");
+            result.put("message", "서버 오류가 발생했습니다.");
+        }
+
+        return result;
+    }
+    
+   
 }

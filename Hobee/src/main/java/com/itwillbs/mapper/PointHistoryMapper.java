@@ -26,4 +26,8 @@ public interface PointHistoryMapper {
     List<PointHistoryVO> getPointHistoryByPayment(int payment_id);
     
     void insertPointHistoryForTest();
+    
+    
+
+    
 }

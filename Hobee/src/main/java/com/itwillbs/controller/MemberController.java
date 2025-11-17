@@ -21,9 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ �
 
 import com.itwillbs.domain.EnrollmentVO;
 import com.itwillbs.domain.EnrollmentViewVO;
+import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.EnrollmentService;
 import com.itwillbs.service.MemberService;
+import com.itwillbs.service.PaymentService;
 import com.mysql.cj.Session;
 
 
@@ -35,7 +37,8 @@ public class MemberController {
 	private MemberService memberService;
 	@Inject
 	private EnrollmentService enrollmentService;
-	
+	@Inject
+    private PaymentService paymentService;
 	// 업로드 경로
 	@Resource(name = "uploadPath")
 	private String uploadPath;
@@ -149,13 +152,7 @@ public class MemberController {
 	        return "member/my_classroom";
 	    }
 	
-	// 결제 내역
-	@GetMapping("/paymentList")
-	public String payment() {
-		System.out.println("MemberController payment()");
-		
-		return "member/payment"; 
-	}
+
 
 	// 리뷰
 	@GetMapping("/review")
@@ -220,10 +217,38 @@ public class MemberController {
 	}
 	
 	
+	//결제내역
+	  @GetMapping("/paymentList")
+	    public String myPayment(HttpSession session, Model model) {
+		  	 System.out.println("MemberController paymetList()");
+		  	UserVO loginUser = (UserVO) session.getAttribute("userVO");
+	        if (loginUser == null) {
+	        	   return "redirect:/main/main";
+	        }
+
+	        List<PaymentVO> paymentList =
+	                paymentService.getPaymentList(loginUser.getUser_num());
+
+	        model.addAttribute("paymentList", paymentList);
+	        
+
+	        return "member/paymentList";    // JSP 경로
+	    }
 	
-	
-	
-	
+	  // 결제내역상세상세
+	    @GetMapping("/payment")
+	    public String paymentDetail(int payment_id, HttpSession session, Model model) {
+
+	        UserVO user = (UserVO) session.getAttribute("userVO");
+	        PaymentVO payment = paymentService.getPayment(payment_id);
+
+	        payment.setRefundable(paymentService.isRefundable(payment.getCreated_at()));
+
+	        model.addAttribute("userVO", user);
+	        model.addAttribute("payment", payment);
+
+	        return "member/payment";
+	    }
 	
 	
 	

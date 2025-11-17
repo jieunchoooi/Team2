@@ -11,7 +11,7 @@
     <div class="menu-item ${page eq 'review' ? 'active' : ''}" 
          onclick="location.href='${pageContext.request.contextPath}/member/review'">💌 <span>내가 쓴 리뷰</span></div>
     <div class="menu-item ${page eq 'payment' ? 'active' : ''}" 
-         onclick="location.href='${pageContext.request.contextPath}/member/payment'">💳 <span>결제 내역</span></div>
+         onclick="location.href='${pageContext.request.contextPath}/member/paymentList'">💳 <span>결제 내역</span></div>
     <div class="menu-item ${page eq 'edit' ? 'active' : ''}" 
          onclick="location.href='${pageContext.request.contextPath}/member/updatePassWord'">👤 <span>회원정보 수정</span></div>
   </div>
