@@ -302,8 +302,10 @@ public class AdminController {
 		lectureVO.setLecture_detail(lecture_detail);
 		lectureVO.setLecture_author(lecture_author);
 		lectureVO.setLecture_price(lecture_price);
-
-		if (lecture_img != null && !lecture_img.isEmpty()) {
+		
+		if(lecture_img.isEmpty()) {
+			lectureVO.setLecture_img(request.getParameter("oldfile"));
+		}else {
 			UUID uuid = UUID.randomUUID();
 			String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
 			System.out.println("파일명: " + filename);
@@ -311,8 +313,16 @@ public class AdminController {
 			FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
 
 			lectureVO.setLecture_img(filename);
-
+			
+			File oldfile = new File(uploadPath1, request.getParameter("oldfile"));
+			
+			if(oldfile.exists()) {
+				oldfile.delete();
+			}
+		
 		}
+		
+		
 		System.out.println(lectureVO);
 		adminService.adminEditClass(lectureVO);
 

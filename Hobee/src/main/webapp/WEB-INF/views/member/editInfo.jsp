@@ -78,9 +78,12 @@
 
 
 						</div>
-						<label class="file-input-label" for="profilePic">사진 변경</label> <input
-							type="file" id="profilePic" class="file-input"
-							name="user_picture" accept="image/*">
+						<label class="file-input-label" for="profilePic">사진 변경</label> 
+						<input type="hidden" name="oldfile" value="${user.user_file}" readonly>
+						
+						<input type="file" id="profilePic" class="file-input"
+							name="user_file" accept="image/*">
+							
 					</div>
 					<div class="form-group">
 						<label for="userId">아이디</label> <input type="text" name="User_id"

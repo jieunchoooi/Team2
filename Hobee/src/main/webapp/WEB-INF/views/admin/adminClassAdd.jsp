@@ -26,15 +26,15 @@
       <label>카테고리</label>
       <select name="category_detail" id="category" required>
         <option value="">카테고리를 선택하세요</option>
-        <option value="digital_drawing">디지털 드로잉</option>
-        <option value="drawing">드로잉</option>
-        <option value="crafts">공예</option>
+        <option value="디지털 드로잉">디지털 드로잉</option>
+        <option value="드로잉">드로잉</option>
+        <option value="공예">공예</option>
         <option value="AI">AI</option>
-        <option value="programming">프로그래밍</option>
-        <option value="data_science">데이터 사이언스</option>
-        <option value="english">영어</option>
-        <option value="foreign_language_test">외국어 시험</option>
-        <option value="second_language">제2외국어</option>
+        <option value="프로그래밍">프로그래밍</option>
+        <option value="데이터 사이언스">데이터 사이언스</option>
+        <option value="영어">영어</option>
+        <option value="외국어 시험">외국어 시험</option>
+        <option value="제2외국어">제2외국어</option>
       </select>
     </div>
     
