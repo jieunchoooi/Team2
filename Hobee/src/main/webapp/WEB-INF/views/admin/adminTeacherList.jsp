@@ -45,7 +45,6 @@
 						<th>이름</th>
 						<th>아이디</th>
 						<th>이메일</th>
-						<th>등록 클래스 수</th>
 						<th>관리</th>
 					</tr>
 				</thead>
@@ -64,7 +63,6 @@
 							<td>${user.user_name}</td>
 							<td>${user.user_id}</td>
 							<td>${user.user_email}</td>
-							<td>클래스 수</td>
 							<td>
 								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
 								<button class="btn btn-delete">강제탈퇴</button>

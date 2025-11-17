@@ -27,7 +27,7 @@
             <button type="button" id="checkIdBtn">중복확인</button>
         </div>
         <p id="idCheckMsg" class="msg"></p>
-
+	
         <!-- ✅ 비밀번호 -->
         <div class="form-group">
             <label for="user_password">비밀번호</label>
@@ -48,11 +48,16 @@
             <input type="text" id="user_name" name="user_name" placeholder="이름을 입력하세요" required>
         </div>
 
-        <!-- ✅ 이메일 -->
-        <div class="form-group">
-            <label for="user_email">이메일</label>
-            <input type="email" id="user_email" name="user_email" placeholder="이메일을 입력하세요" required>
+        <!-- 이메일 -->
+   		 <div class="form-group">
+        	<label>이메일</label>
+        	<div style="display:flex; gap:10px;">
+            <input type="text" id="user_email" name="user_email" required>
+            <button type="button" class="btn-check" id="checkEmailBtn">중복확인</button>
         </div>
+        <p id="emailCheckMsg" class="msg"></p>
+   	   </div>
+
 
         <!-- ✅ 전화번호 -->
         <div class="form-group">
@@ -101,20 +106,32 @@
 <script>
 $(document).ready(function(){
 
-  // ✅ 아이디 입력 시: 영문+숫자만, 8자리 이내
+  // ================================
+  // 1) 아이디 중복확인 체크 여부
+  // ================================
+  let isIdChecked = false;  // 🔥 아이디 중복확인 통과 여부
+
+  // ================================
+  // 2) 아이디 입력 시 패턴 검사 + 중복확인 초기화
+  // ================================
   $("#user_id").on("input", function(){
     const id = $(this).val();
-    const idPattern = /^[A-Za-z0-9]{1,8}$/; // 영문+숫자, 최대 8자
+    const idPattern = /^[A-Za-z0-9]{1,8}$/;
     const msg = $("#idCheckMsg");
 
+    // 입력이 바뀌면 다시 중복확인 해야 함!
+    isIdChecked = false;
+
     if (!idPattern.test(id)) {
-      msg.text("❌ 아이디는 영문과 숫자 조합, 8자 이내로 입력해주세요.").css("color", "#dc3545");
+      msg.text("❌ 영문 + 숫자 8자 이내로 입력해주세요.").css("color","#dc3545");
     } else {
       msg.text("");
     }
   });
 
-  // ✅ 아이디 중복확인
+  // ================================
+  // 3) 중복확인 버튼 클릭 시
+  // ================================
   $("#checkIdBtn").on("click", function(){
     const userId = $("#user_id").val().trim();
     const msg = $("#idCheckMsg");
@@ -126,7 +143,7 @@ $(document).ready(function(){
     }
 
     if(!idPattern.test(userId)){
-      msg.text("❌ 아이디는 영문과 숫자 조합, 8자 이내로 입력해주세요.").css("color","#dc3545");
+      msg.text("❌ 영문+숫자 조합 8자 이내로 입력해주세요.").css("color","#dc3545");
       return;
     }
 
@@ -137,50 +154,112 @@ $(document).ready(function(){
       success: function(result){
         if(result === "available"){
           msg.text("✅ 사용 가능한 아이디입니다.").css("color","#198754");
-        } else if(result === "duplicate"){
-          msg.text("❌ 이미 존재하는 아이디입니다.").css("color","#dc3545");
+          isIdChecked = true;   // 🔥 성공 처리
         } else {
-          msg.text("⚠ 오류가 발생했습니다. 다시 시도해주세요.").css("color","#dc3545");
+          msg.text("❌ 이미 존재하는 아이디입니다.").css("color","#dc3545");
+          isIdChecked = false;
         }
       },
       error: function(){
-        msg.text("서버 통신 오류가 발생했습니다.").css("color","#dc3545");
+        msg.text("서버 통신 오류").css("color","#dc3545");
       }
     });
   });
+  
+  /* ===========================
+  2) 이메일 중복검사
+	============================ */
+let isEmailChecked = false;
 
-  // ✅ 비밀번호 / 전화번호 / 약관 검사
+$("#user_email").on("input", function(){
+   isEmailChecked = false;
+   $("#emailCheckMsg").text("");
+});
+
+$("#checkEmailBtn").click(function(){
+   const email = $("#user_email").val().trim();
+   const msg = $("#emailCheckMsg");
+   const emailPattern = /^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+
+   if(email === ""){
+       msg.text("이메일을 입력해주세요.").css("color","red"); return;
+   }
+   if(!emailPattern.test(email)){
+       msg.text("이메일 형식이 올바르지 않습니다.").css("color","red"); return;
+   }
+
+   $.ajax({
+       type: "GET",
+       url: "${pageContext.request.contextPath}/user/checkEmail",
+       data: { user_email: email },
+       success: function(res){
+           if(res === "available"){
+               msg.text("사용 가능한 이메일입니다.").css("color","green");
+               isEmailChecked = true;
+           } else {
+               msg.text("이미 사용 중인 이메일입니다.").css("color","red");
+               isEmailChecked = false;
+           }
+       }
+   });
+});
+
+
+  // ================================
+  // 4) 회원가입 submit 검증 (최종 방어)
+  // ================================
   $("form").on("submit", function(e){
-    let valid = true;
 
+    // (1) 아이디 중복확인 했는지 체크
+    if (!isIdChecked) {
+      alert("아이디 중복확인을 먼저 해주세요!");
+      $("#user_id").focus();
+      e.preventDefault();
+      return false;
+    }
+    if (!isEmailChecked) {
+        alert("이메일 중복확인을 해주세요!");
+        e.preventDefault(); return false;
+    }
+
+    // (2) 비밀번호 패턴 검사
     const pw = $("#user_password").val();
     const pw2 = $("#user_password2").val();
     const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
-    const phonePattern = /^010-\d{4}-\d{4}$/;
 
-    if (!pwPattern.test(pw)) {
-      alert("비밀번호는 영문+숫자+특수문자 포함 8~12자여야 합니다.");
-      valid = false;
-    } else if (pw !== pw2) {
+    if(!pwPattern.test(pw)){
+      alert("비밀번호는 영문+숫자+특수문자 포함 8~12자입니다.");
+      e.preventDefault();
+      return false;
+    }
+
+    if(pw !== pw2){
       alert("비밀번호가 일치하지 않습니다.");
-      valid = false;
+      e.preventDefault();
+      return false;
     }
 
-    if (!phonePattern.test($("#user_phone").val())) {
+    // (3) 전화번호 검사
+    const phonePattern = /^010-\d{4}-\d{4}$/;
+    if(!phonePattern.test($("#user_phone").val())){
       alert("전화번호 형식은 010-0000-0000 입니다.");
-      valid = false;
+      e.preventDefault();
+      return false;
     }
 
-    const allChecked = $(".agree-item[required]").toArray().every(chk => chk.checked);
-    if(!allChecked){
-      alert("약관 및 개인정보 수집에 모두 동의해야 합니다.");
-      valid = false;
+    // (4) 약관 체크
+    const checked = $(".agree-item[required]").toArray().every(chk => chk.checked);
+    if(!checked){
+      alert("약관 동의(필수)를 체크해주세요.");
+      e.preventDefault();
+      return false;
     }
 
-    if (!valid) e.preventDefault();
   });
 
-  // ✅ 전화번호 자동 하이픈
+  // ================================
+  // 전화번호 자동 하이픈
+  // ================================
   $("#user_phone").on("input", function(){
     let value = $(this).val().replace(/[^0-9]/g, "");
     if (value.length < 4) $(this).val(value);
@@ -188,7 +267,9 @@ $(document).ready(function(){
     else $(this).val(value.slice(0,3)+"-"+value.slice(3,7)+"-"+value.slice(7,11));
   });
 
-  // ✅ 약관 전체 동의
+  // ================================
+  // 약관 전체동의
+  // ================================
   $("#agreeAll").on("change", function(){
       $(".agree-item").prop("checked", $(this).is(":checked"));
   });

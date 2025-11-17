@@ -1,0 +1,192 @@
+/* ===========================
+   모달 전체 영역
+=========================== */
+#insertModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+
+/* ===========================
+   모달 컨텐츠
+=========================== */
+.insert-modal-content {
+  background: #fff;
+  width: 420px;
+  max-height: 95vh;
+  overflow-y: auto;
+  padding: 28px 35px 35px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 0.25s ease-in-out;
+  font-family: "Pretendard", sans-serif;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ===========================
+   X 닫기 버튼
+=========================== */
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 22px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #333;
+  transition: .2s;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+
+/* ===========================
+   타이틀
+=========================== */
+.insert-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+
+/* ===========================
+   입력 필드
+=========================== */
+label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.insert-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d1d1;
+  margin-bottom: 14px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.insert-input:focus {
+  outline: none;
+  border-color: #2573ff;
+}
+
+
+/* ===========================
+   input + 버튼(중복확인) 정렬
+=========================== */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.input-row .insert-input {
+  flex: 1;
+  width: auto;
+  margin-bottom: 0;
+}
+
+/* 중복확인 버튼 */
+.check-btn {
+  flex: 0 0 90px;
+  height: 44px;
+  background: #444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.check-btn:hover {
+  background: #222;
+}
+
+
+/* ===========================
+   약관 동의
+=========================== */
+.insert-agree-box {
+  margin-top: 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.insert-agree-box label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+
+/* ===========================
+   오류 / 성공 메시지
+=========================== */
+.error-msg {
+  color: #d9534f;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.success-msg {
+  color: #2e7d32;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+
+/* ===========================
+   회원가입 버튼
+=========================== */
+.insert-submit-btn {
+  width: 100%;
+  height: 46px;
+  background: #3d6fff;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: .2s;
+}
+
+.insert-submit-btn:hover {
+  background: #255dff;
+}
+
+
+/* 스크롤바 스타일 (선택적) */
+.insert-modal-content::-webkit-scrollbar {
+  width: 7px;
+}
+.insert-modal-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}

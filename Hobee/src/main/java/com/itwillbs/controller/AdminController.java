@@ -206,6 +206,15 @@ public class AdminController {
 		return "redirect:/admin/adminMemberList";
 	}
 	
+	// 탈퇴 회원 복구
+	@GetMapping("/MemberRevert")
+	public String MemberRevert(@RequestParam("user_num") int user_num) {
+		System.out.println("AdminController deleteClass()");
+		
+		adminService.RevertMember(user_num);
+		
+		return "redirect:/admin/adminMemberList";
+	}
 	
 	
 	
@@ -245,8 +254,8 @@ public class AdminController {
 		pageVO.setPageSize(pageSize);
 
 		List<UserVO> teacherList = adminService.listTeacher(pageVO);
-
-		int count = adminService.countMemberList();
+		
+		int count = adminService.countTeacherList();
 		int tCount = adminService.teacharCount();
 		int clCount = adminService.classCount();
 		
@@ -274,12 +283,49 @@ public class AdminController {
 		return "admin/adminTeacherList";
 	}
 
+	// 회원정보 조회
 	@GetMapping("/adminWithdrawList")
-	public String adminWithdrawList() {
+	public String adminWithdrawList(Model model, HttpServletRequest request) {
 		System.out.println("AdminController adminWithdrawList()");
+
+		String pageNum = request.getParameter("pageNum");
+
+		if (pageNum == null) {
+			pageNum = "1";
+		}
+		int currentPage = Integer.parseInt(pageNum);
+		int pageSize = 10;
+
+		PageVO pageVO = new PageVO();
+		pageVO.setPageNum(pageNum);
+		pageVO.setCurrentPage(currentPage);
+		pageVO.setPageSize(pageSize);
+
+		List<UserVO> memberList = adminService.withDrawListMember(pageVO);
+
+		int count = adminService.countDrawMemberList();
+		int pageBlock = 10;
+		int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+		int endPage = startPage + (pageBlock - 1);
+		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+		if (endPage > pageCount) {
+			endPage = pageCount;
+		}
+
+		// pageVO 담기
+		pageVO.setCount(count);
+		pageVO.setPageBlock(pageBlock);
+		pageVO.setStartPage(startPage);
+		pageVO.setEndPage(endPage);
+		pageVO.setPageCount(pageCount);
+		pageVO.setCount(count);
+
+		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("memberList", memberList);
 
 		return "admin/adminWithdrawList";
 	}
+
 
 	// 클래스 수정
 	@GetMapping("/adminEditClass")

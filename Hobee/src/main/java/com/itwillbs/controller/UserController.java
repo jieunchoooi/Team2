@@ -41,7 +41,6 @@ public class UserController {
     @Inject
     private JavaMailSender mailSender;
 
-
     
     /* ==========================================================
     // ✅ 1. 회원가입 페이지 이동
@@ -53,68 +52,62 @@ public class UserController {
         return "user/insert"; // views/user/insert.jsp
     }
     /* ==========================================================
-    // ✅ 2. 회원가입 처리
-     ========================================================== */
-    @PostMapping("/insertPro")
-    public String insertPro(HttpServletRequest request) throws IOException {
+    2. Ajax 회원가입 처리 (insertModal)
+    ========================================================== */
+ @PostMapping("/insertAjax")
+ @ResponseBody
+ public Map<String, Object> insertAjax(@ModelAttribute UserVO userVO) {
 
-        System.out.println("UserController: insertPro() 실행");
-        
-        // ✅ 폼 데이터 수집
-        UserVO userVO = new UserVO();
-        userVO.setUser_id(request.getParameter("user_id"));
-        userVO.setUser_password(request.getParameter("user_password"));
-        userVO.setUser_name(request.getParameter("user_name"));
-        userVO.setUser_email(request.getParameter("user_email"));
-        userVO.setUser_phone(request.getParameter("user_phone"));
-        userVO.setUser_address(request.getParameter("user_address"));
-        userVO.setUser_gender(request.getParameter("user_gender"));
-        
-     
-       // ✅ 서버단 유효성검사 (2차 방어)
-    
+     Map<String, Object> result = new HashMap<>();
 
-     // 아이디
-     if (userVO.getUser_id() == null || userVO.getUser_id().trim().isEmpty()) {
-         System.out.println("❌ 아이디 미입력");
-         return "redirect:/user/insert";
+     System.out.println("insertAjax 실행 → " + userVO.getUser_id());
+
+     // 아이디 중복 체크
+     if (userService.selectUserById(userVO.getUser_id()) != null) {
+         result.put("result", "fail");
+         result.put("message", "이미 존재하는 아이디입니다.");
+         return result;
      }
 
-     // 비밀번호
+     // 이메일 중복 체크
+     if (userService.checkEmail(userVO.getUser_email()) > 0) {
+         result.put("result", "fail");
+         result.put("message", "이미 등록된 이메일입니다.");
+         return result;
+     }
+
+     // 비밀번호 검사
      String pwPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^*])[A-Za-z\\d!@#$%^*]{8,12}$";
      if (!userVO.getUser_password().matches(pwPattern)) {
-         System.out.println("❌ 비밀번호 형식 오류");
-         return "redirect:/user/insert";
+         result.put("result", "fail");
+         result.put("message", "비밀번호 형식이 올바르지 않습니다.");
+         return result;
      }
 
-     // 전화번호
+     // 전화번호 검증
      String phonePattern = "^010-\\d{4}-\\d{4}$";
      if (!userVO.getUser_phone().matches(phonePattern)) {
-         System.out.println("❌ 전화번호 형식 오류");
-         return "redirect:/user/insert";
+         result.put("result", "fail");
+         result.put("message", "전화번호 형식이 올바르지 않습니다.");
+         return result;
      }
 
-     // 주소
-     if (userVO.getUser_address() == null || userVO.getUser_address().trim().isEmpty()) {
-         System.out.println("❌ 주소 미입력");
-         return "redirect:/user/insert";
+     // 성별
+     if (!( "Male".equals(userVO.getUser_gender()) || "Female".equals(userVO.getUser_gender()))) {
+         result.put("result", "fail");
+         result.put("message", "성별을 선택해주세요.");
+         return result;
      }
 
-     // 성별 (DB는 ENUM('Male','Female'))
-     if (!("Male".equals(userVO.getUser_gender()) || "Female".equals(userVO.getUser_gender()))) {
-         System.out.println("❌ 성별 값 오류: " + userVO.getUser_gender());
-         return "redirect:/user/insert";
-     }
-    
-     // ✅  DB 저장
-    
-    	 userService.insertUser(userVO);
-    	 System.out.println("✅ 회원가입 완료: " + userVO.getUser_id());
+     // DB 저장
+     userService.insertUser(userVO);
+     System.out.println("회원가입 완료 : " + userVO.getUser_id());
 
-     // ✅ 가입 완료 페이지로 이동
-    
-    	 return "redirect:/user/login";
-    }
+     result.put("result", "success");
+     return result;
+ }
+
+
 
     /* ==========================================================
     // 3. ✅ 아이디 중복확인
@@ -133,9 +126,26 @@ public class UserController {
   		}
   		return result;
   	}
-    
+  	
+  	 /* ==========================================================
+     // 4️ ✅ 이메일 중복확인 AJAX (★신규)
+ 	========================================================== */
+  	@GetMapping("/checkEmail")
+  	@ResponseBody
+  	public String checkEmail(@RequestParam("user_email") String user_email) {
+
+     int count = userService.checkEmail(user_email);
+
+     if (count == 0) {
+         return "available";
+     } else {
+         return "duplicate";
+     }
+  	
+  	}
+  
   	/* ==========================================================
-    // 4. ✅ 로그인 페이지 이동
+    // 5. ✅ 로그인 페이지 이동
        ========================================================== */
      
     @GetMapping("/login")
@@ -188,72 +198,88 @@ public class UserController {
  	    System.out.println("✅ 로그아웃 완료");
  	   return "redirect:/main/main";
  	}
+ 	
+ // 🔍 아이디 찾기 화면
+    @GetMapping("/findId")
+    public String findId() {
+        return "/user/findId";
+    }
+
+    // 🔍 아이디 찾기 처리
+    @PostMapping("/findIdPro")
+    public String findIdPro(@RequestParam String user_name,
+                            @RequestParam String user_email,
+                            Model model) {
+
+        UserVO user = userService.findIdByNameAndEmail(user_name, user_email);
+
+        if(user == null) {
+            model.addAttribute("msg", "일치하는 정보가 없습니다.");
+            return "/user/findId";
+        }
+
+        model.addAttribute("msg", "회원님의 아이디는: " + user.getUser_id());
+        return "/user/findId";  
+    }
 
  	
  // ✅ 비밀번호 찾기 페이지 이동
-    @GetMapping("/findPw")
-    public String findPwForm() {
-        return "/user/findPw";
-    }
+ 	@GetMapping("/findPw")
+ 	public String findPwForm() {
+ 	    return "/user/findPw";
+ 	}
 
-    // ✅ 비밀번호 찾기 처리
-    @PostMapping("/findPwPro")
-    public String findPwPro(String user_email, Model model) throws Exception {
-        // 1️⃣ 이메일로 사용자 조회
-        UserVO user = userService.findUserByEmail(user_email);
+ 	// ✅ 비밀번호 찾기 처리 (아이디 + 이메일)
+ 	@PostMapping("/findPwPro")
+ 	public String findPwPro(
+ 	        @RequestParam("user_id") String user_id,
+ 	        @RequestParam("user_email") String user_email,Model model) throws Exception {
 
-        if (user == null) {
-            model.addAttribute("msg", "입력하신 이메일로 가입된 계정이 없습니다.");
-            return "/user/findPw";
-        }
+ 	    System.out.println("findPwPro() 실행 - ID : " + user_id + ", Email : " + user_email);
 
-        // 2️⃣ 임시 비밀번호 생성
-        String tempPw = UUID.randomUUID().toString().substring(0, 10);
+ 	    // 1️⃣ 아이디 + 이메일로 사용자 조회
+ 	    UserVO user = userService.findUserByIdAndEmail(user_id, user_email);
 
-        // 3️⃣ 임시 비밀번호 DB 업데이트
-        userService.updateTempPassword(user.getUser_id(), tempPw);
+ 	    if (user == null) {
+ 	        model.addAttribute("msg", "아이디 또는 이메일이 일치하지 않습니다.");
+ 	        return "/user/findPw";
+ 	    }
 
-        // 4️⃣ 이메일 발송
-        sendTempPasswordMail(user_email, tempPw);
+ 	    // 2️⃣ 임시 비밀번호 생성
+ 	    String tempPw = UUID.randomUUID().toString().substring(0, 8);
 
-        model.addAttribute("msg", "임시 비밀번호가 이메일로 발송되었습니다.");
-        return "/user/login";
-    }
+ 	    // 3️⃣ 임시 비밀번호 DB 업데이트
+ 	    userService.updateTempPassword(user_id, tempPw);
 
-    // ✅ 임시비밀번호 이메일 발송 메서드
-    private void sendTempPasswordMail(String toEmail, String tempPw) {
-        String subject = "[Hobee] 임시 비밀번호 안내";
-        String content = "<h3>Hobee 비밀번호 재설정 안내</h3>"
-                + "<p>요청하신 임시 비밀번호는 다음과 같습니다:</p>"
-                + "<p style='font-size:18px; font-weight:bold; color:#2573ff;'>" + tempPw + "</p>"
-                + "<p>로그인 후 반드시 새 비밀번호로 변경해주세요.</p>";
+ 	    // 4️⃣ 이메일 발송
+ 	    sendTempPasswordMail(user_email, tempPw);
 
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(toEmail);
-            helper.setSubject(subject);
-            helper.setText(content, true);
-            helper.setFrom("yourgmail@gmail.com", "Hobee 관리자");
+ 	    model.addAttribute("msg", "임시 비밀번호가 이메일로 전송되었습니다.");
+ 	    return "/user/login";
+ 	}
 
-            mailSender.send(message);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+ 	// ✅ 임시비밀번호 이메일 발송
+ 	private void sendTempPasswordMail(String toEmail, String tempPw) {
+
+ 	    String subject = "[Hobee] 임시 비밀번호 안내";
+ 	    String content = "<h3>Hobee 임시 비밀번호 안내</h3>"
+ 	            + "<p>임시 비밀번호는 다음과 같습니다:</p>"
+ 	            + "<p style='font-size:18px; font-weight:bold; color:#2573ff;'>" + tempPw + "</p>"
+ 	            + "<p>로그인 후 반드시 비밀번호를 변경해주세요.</p>";
+
+ 	    try {
+ 	        MimeMessage message = mailSender.createMimeMessage();
+ 	        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+ 	        helper.setTo(toEmail);
+ 	        helper.setSubject(subject);
+ 	        helper.setText(content, true);
+ 	        helper.setFrom("yourgmail@gmail.com", "Hobee 관리자");
+
+ 	        mailSender.send(message);
+
+ 	    } catch (Exception e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

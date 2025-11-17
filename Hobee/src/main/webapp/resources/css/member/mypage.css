@@ -211,11 +211,16 @@ body {
     box-shadow: 0 3px 8px rgba(37, 115, 255, 0.2);
     transition: all 0.2s;
     font-weight: 600;
-    display: block;
-    margin: 30px auto 0;
     cursor: pointer;
     justify-content: center;
+    display: inline-block; /* ✅ 변경 */
+    margin: 30px 6px 0; /* ✅ 변경 */
 }
+
+.btn:last-child{
+	background-color: #FF9226;
+}
+
 .btn-primary {
     background-color: #2573ff;
     color: white;
@@ -322,4 +327,9 @@ body {
     margin-bottom: 20px;
     font-size: 0.9rem;
     color: #15803d;
+}
+
+/* ✅ 추가: 버튼들만 중앙 정렬 */
+.form-container > .btn:first-of-type {
+    margin-left: calc(50% - 110px);
 }

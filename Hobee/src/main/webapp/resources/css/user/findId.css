@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/* 전체 컨테이너 */
+.findid-container {
+    width: 420px;
+    margin: 80px auto;
+    background: #ffffff;
+    padding: 40px 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    font-family: "Pretendard", sans-serif;
+}
+
+/* 제목 */
+.findid-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 28px;
+    font-weight: 700;
+    color: #222;
+}
+
+/* 설명문 */
+.desc {
+    text-align: center;
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 22px;
+    line-height: 1.5;
+}
+
+/* 입력 그룹 */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+}
+
+/* input */
+.form-group input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fafafa;
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #2573ff;
+    background: #fff;
+    box-shadow: 0 0 4px rgba(37,115,255,0.3);
+    outline: none;
+}
+
+/* 버튼 */
+.findid-btn {
+    width: 100%;
+    padding: 14px;
+    background: #2573ff;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.findid-btn:hover {
+    background: #1e5edb;
+}
+
+/* 메시지 */
+.msg {
+    text-align: center;
+    font-size: 14px;
+    color: #d12f2f;
+    margin-bottom: 10px;
+}
+
+/* 하단 링크 */
+.bottom-link {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.bottom-link a {
+    color: #2573ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.bottom-link a:hover {
+    text-decoration: underline;
+}

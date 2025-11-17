@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -59,8 +60,8 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .tab-item:hover { color: #222; }
 
 .course-info { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.course-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 15px; line-height: 1.4; }
-.course-meta { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; color: var(--gray); font-size: 0.95rem; }
+.course-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4; }
+.course-meta { display: flex; align-items: center; gap: 15px; margin-bottom: 1px; color: var(--gray); font-size: 0.95rem; }
 .course-meta i { color: var(--primary); }
 .course-description { line-height: 1.7; color: #444; }
 
@@ -104,7 +105,24 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 }
 .purchase-box { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
 .instructor-info { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid #e0e0e0; }
-.instructor-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; }
+.instructor-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;       /* 이미지가 영역 밖으로 나오지 않도록 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary); 
+}
+
+.instructor-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* 이미지 비율 유지하며 꽉 채우기 */
+  display: block;
+}
+
 .instructor-name { font-weight: 600; color: #222; font-size: 0.95rem; }
 .instructor-category { font-size: 0.8rem; color: var(--gray); }
 .course-main-title { font-size: 1.15rem; font-weight: 700; line-height: 1.4; margin-bottom: 18px; }
@@ -151,18 +169,17 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 <main>
   <div class="detail-content">
     <div class="course-info">
-      <h2 class="course-title">디지털 드로잉으로 나만의 캐릭터 만들기</h2>
       <div class="course-meta">
-        <span><i class="far fa-calendar"></i> 2019년 1월 30일 수강 시작</span>
+        <span>${lectureVO.category_detail}</span>
       </div>
+      <h2 class="course-title">${lectureVO.lecture_title}</h2>
+      
       <div class="course-meta">
-      	<span><i class="far fa-clock"></i> 총 8시간 6분</span>
-        <span><i class="far fa-play-circle"></i> 챕터 파일 4개</span>
+      	<span><i class="far fa-clock"></i> &nbsp;${lectureVO.lecture_author} &nbsp;강사</span>&nbsp;
+        <span><i class="far fa-play-circle"></i> &nbsp;조회수 ${lectureVO.readcount}</span>
       </div>
       <p class="course-description">
-        아이패드와 펜슬만 있다면 누구나 쉽게 시작할 수 있는 디지털 드로잉 입문 클래스!  
-        캐릭터 디자인의 기본부터, 나만의 개성을 담은 일러스트 완성까지 함께 해요.
-        디지털 드로잉은 단순한 그림 그리기를 넘어, 자신만의 창의력과 감성을 표현할 수 있는 새로운 방식의 예술입니다.
+        ${lectureVO.lecture_detail}
       </p>
     </div>
 
@@ -357,13 +374,23 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
   <!-- 우측 사이드바: 이미지 + 구매박스 -->
   <div class="right-sidebar">
-    <img class="course-thumbnail" src="https://images.squarespace-cdn.com/content/v1/63d40fe2cbd65e16cb8098b6/7da763b6-1122-4c6f-9bfd-2c9c278dff10/image-asset%2B%2831%29.jpeg" alt="디지털 드로잉 클래스" />
+    <img class="course-thumbnail" src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="디지털 드로잉 클래스" />
     
     <aside class="purchase-sidebar">
       <div class="purchase-box">
         <div class="instructor-info">
-          <div class="instructor-avatar">리니</div>
-          <div><div class="instructor-name">리니</div><div class="instructor-category">🔥 드로잉 1위</div></div>
+          <div class="instructor-avatar">
+          	<c:choose>
+				<c:when test="${empty user.user_file}">
+					<span>🐵</span>
+				</c:when>
+				<c:otherwise>
+					<img src="${pageContext.request.contextPath}/resources/img/user_picture/${userVO.user_file}" alt="프로필 사진">
+				</c:otherwise>
+			</c:choose>
+<%--           	<img src="${pageContext.request.contextPath}/resources/img/user_picture/${userVO.user_file}" alt="프로필 사진"> --%>
+          </div>
+          <div><div class="instructor-name">${lectureVO.lecture_author}</div><div class="instructor-category">🔥 드로잉 1위</div></div>
         </div>
 
         <h3 class="course-main-title">어색한 그림은 이제 안녕! 드로잉 기초부터 시작하는 리니의 펜드로잉</h3>
