@@ -22,5 +22,8 @@ public interface UserMapper {
 
 	// ✅ 임시 비밀번호 업데이트
 	public void updateTempPassword(@Param("user_id") String user_id, @Param("tempPw") String tempPw);
-
+	
+	// ✅ 이메일 중복 체크
+	public int checkEmail(String user_email);
+	
 }

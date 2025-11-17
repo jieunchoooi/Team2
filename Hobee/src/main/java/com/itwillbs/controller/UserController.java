@@ -52,68 +52,62 @@ public class UserController {
         return "user/insert"; // views/user/insert.jsp
     }
     /* ==========================================================
-    // ✅ 2. 회원가입 처리
-     ========================================================== */
-    @PostMapping("/insertPro")
-    public String insertPro(HttpServletRequest request) throws IOException {
+    2. Ajax 회원가입 처리 (insertModal)
+    ========================================================== */
+ @PostMapping("/insertAjax")
+ @ResponseBody
+ public Map<String, Object> insertAjax(@ModelAttribute UserVO userVO) {
 
-        System.out.println("UserController: insertPro() 실행");
-        
-        // ✅ 폼 데이터 수집
-        UserVO userVO = new UserVO();
-        userVO.setUser_id(request.getParameter("user_id"));
-        userVO.setUser_password(request.getParameter("user_password"));
-        userVO.setUser_name(request.getParameter("user_name"));
-        userVO.setUser_email(request.getParameter("user_email"));
-        userVO.setUser_phone(request.getParameter("user_phone"));
-        userVO.setUser_address(request.getParameter("user_address"));
-        userVO.setUser_gender(request.getParameter("user_gender"));
-        
-     
-       // ✅ 서버단 유효성검사 (2차 방어)
-    
+     Map<String, Object> result = new HashMap<>();
 
-     // 아이디
-     if (userVO.getUser_id() == null || userVO.getUser_id().trim().isEmpty()) {
-         System.out.println("❌ 아이디 미입력");
-         return "redirect:/user/insert";
+     System.out.println("insertAjax 실행 → " + userVO.getUser_id());
+
+     // 아이디 중복 체크
+     if (userService.selectUserById(userVO.getUser_id()) != null) {
+         result.put("result", "fail");
+         result.put("message", "이미 존재하는 아이디입니다.");
+         return result;
      }
 
-     // 비밀번호
+     // 이메일 중복 체크
+     if (userService.checkEmail(userVO.getUser_email()) > 0) {
+         result.put("result", "fail");
+         result.put("message", "이미 등록된 이메일입니다.");
+         return result;
+     }
+
+     // 비밀번호 검사
      String pwPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^*])[A-Za-z\\d!@#$%^*]{8,12}$";
      if (!userVO.getUser_password().matches(pwPattern)) {
-         System.out.println("❌ 비밀번호 형식 오류");
-         return "redirect:/user/insert";
+         result.put("result", "fail");
+         result.put("message", "비밀번호 형식이 올바르지 않습니다.");
+         return result;
      }
 
-     // 전화번호
+     // 전화번호 검증
      String phonePattern = "^010-\\d{4}-\\d{4}$";
      if (!userVO.getUser_phone().matches(phonePattern)) {
-         System.out.println("❌ 전화번호 형식 오류");
-         return "redirect:/user/insert";
+         result.put("result", "fail");
+         result.put("message", "전화번호 형식이 올바르지 않습니다.");
+         return result;
      }
 
-     // 주소
-     if (userVO.getUser_address() == null || userVO.getUser_address().trim().isEmpty()) {
-         System.out.println("❌ 주소 미입력");
-         return "redirect:/user/insert";
+     // 성별
+     if (!( "Male".equals(userVO.getUser_gender()) || "Female".equals(userVO.getUser_gender()))) {
+         result.put("result", "fail");
+         result.put("message", "성별을 선택해주세요.");
+         return result;
      }
 
-     // 성별 (DB는 ENUM('Male','Female'))
-     if (!("Male".equals(userVO.getUser_gender()) || "Female".equals(userVO.getUser_gender()))) {
-         System.out.println("❌ 성별 값 오류: " + userVO.getUser_gender());
-         return "redirect:/user/insert";
-     }
-    
-     // ✅  DB 저장
-    
-    	 userService.insertUser(userVO);
-    	 System.out.println("✅ 회원가입 완료: " + userVO.getUser_id());
+     // DB 저장
+     userService.insertUser(userVO);
+     System.out.println("회원가입 완료 : " + userVO.getUser_id());
 
-     // ✅ 가입 완료 페이지로 이동
-    
-    	 return "redirect:/user/login";
-    }
+     result.put("result", "success");
+     return result;
+ }
+
+
 
     /* ==========================================================
     // 3. ✅ 아이디 중복확인
@@ -132,9 +126,26 @@ public class UserController {
   		}
   		return result;
   	}
-    
+  	
+  	 /* ==========================================================
+     // 4️ ✅ 이메일 중복확인 AJAX (★신규)
+ 	========================================================== */
+  	@GetMapping("/checkEmail")
+  	@ResponseBody
+  	public String checkEmail(@RequestParam("user_email") String user_email) {
+
+     int count = userService.checkEmail(user_email);
+
+     if (count == 0) {
+         return "available";
+     } else {
+         return "duplicate";
+     }
+  	
+  	}
+  
   	/* ==========================================================
-    // 4. ✅ 로그인 페이지 이동
+    // 5. ✅ 로그인 페이지 이동
        ========================================================== */
      
     @GetMapping("/login")

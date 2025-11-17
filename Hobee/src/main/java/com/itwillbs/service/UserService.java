@@ -36,5 +36,10 @@ public class UserService {
 		System.out.println("UesrService: updateTempPassword() 실행");
 		userMapper.updateTempPassword(user_id, tempPw);
 	}
+	// ✅ 이메일 중복 체크
+	public int checkEmail(String user_email) {
+		System.out.println("UesrService: checkEmail() 실행");
+		return userMapper.checkEmail(user_email); 
+	}
 
 }

@@ -27,7 +27,7 @@
             <button type="button" id="checkIdBtn">중복확인</button>
         </div>
         <p id="idCheckMsg" class="msg"></p>
-
+	
         <!-- ✅ 비밀번호 -->
         <div class="form-group">
             <label for="user_password">비밀번호</label>
@@ -48,11 +48,16 @@
             <input type="text" id="user_name" name="user_name" placeholder="이름을 입력하세요" required>
         </div>
 
-        <!-- ✅ 이메일 -->
-        <div class="form-group">
-            <label for="user_email">이메일</label>
-            <input type="email" id="user_email" name="user_email" placeholder="이메일을 입력하세요" required>
+        <!-- 이메일 -->
+   		 <div class="form-group">
+        	<label>이메일</label>
+        	<div style="display:flex; gap:10px;">
+            <input type="text" id="user_email" name="user_email" required>
+            <button type="button" class="btn-check" id="checkEmailBtn">중복확인</button>
         </div>
+        <p id="emailCheckMsg" class="msg"></p>
+   	   </div>
+
 
         <!-- ✅ 전화번호 -->
         <div class="form-group">
@@ -160,6 +165,45 @@ $(document).ready(function(){
       }
     });
   });
+  
+  /* ===========================
+  2) 이메일 중복검사
+	============================ */
+let isEmailChecked = false;
+
+$("#user_email").on("input", function(){
+   isEmailChecked = false;
+   $("#emailCheckMsg").text("");
+});
+
+$("#checkEmailBtn").click(function(){
+   const email = $("#user_email").val().trim();
+   const msg = $("#emailCheckMsg");
+   const emailPattern = /^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+
+   if(email === ""){
+       msg.text("이메일을 입력해주세요.").css("color","red"); return;
+   }
+   if(!emailPattern.test(email)){
+       msg.text("이메일 형식이 올바르지 않습니다.").css("color","red"); return;
+   }
+
+   $.ajax({
+       type: "GET",
+       url: "${pageContext.request.contextPath}/user/checkEmail",
+       data: { user_email: email },
+       success: function(res){
+           if(res === "available"){
+               msg.text("사용 가능한 이메일입니다.").css("color","green");
+               isEmailChecked = true;
+           } else {
+               msg.text("이미 사용 중인 이메일입니다.").css("color","red");
+               isEmailChecked = false;
+           }
+       }
+   });
+});
+
 
   // ================================
   // 4) 회원가입 submit 검증 (최종 방어)
@@ -172,6 +216,10 @@ $(document).ready(function(){
       $("#user_id").focus();
       e.preventDefault();
       return false;
+    }
+    if (!isEmailChecked) {
+        alert("이메일 중복확인을 해주세요!");
+        e.preventDefault(); return false;
     }
 
     // (2) 비밀번호 패턴 검사

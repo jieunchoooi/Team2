@@ -45,6 +45,13 @@
    		SET user_password = #{tempPw}
    		WHERE user_id = #{user_id}
   	</update>
+  	
+<!-- ✅ 이메일 중복검사 -->
+  	 <select id="checkEmail" parameterType="String" resultType="int">
+   		SELECT COUNT(*) 
+   		FROM user 
+   		WHERE user_email = #{user_email}
+	</select>
 	
 
 </mapper>
