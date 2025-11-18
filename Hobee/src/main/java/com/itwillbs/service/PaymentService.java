@@ -100,7 +100,7 @@ public class PaymentService {
         GradeVO newGrade = gradeMapper.getGradeByTotalPayment(totalPayments);
 
         if (newGrade != null) {
-            userMapper.updateUserGrade(userNum, newGrade.getGrade_id());
+           	
             System.out.println("🏅 등급 업데이트 → " + newGrade.getGrade_name());
         }
 

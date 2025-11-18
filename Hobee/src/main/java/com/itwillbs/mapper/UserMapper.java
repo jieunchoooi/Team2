@@ -30,4 +30,9 @@ public interface UserMapper {
 
 	public UserVO findIdByNameAndEmail(@Param("user_name")String user_name, @Param("user_email")String user_email);
 	
+	   // 회원 등급 업데이트
+    void updateUserGrade(@Param("user_num") int userNum,
+                         @Param("grade_id") int gradeId);
+
+	
 }
