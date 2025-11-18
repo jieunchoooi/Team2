@@ -46,6 +46,9 @@
 								<c:when test="${userVO.grade_id == 3}">
 									<span class="badge gold">🥇</span> 
 								</c:when>
+								<c:when test="${userVO.grade_id == 4}">
+									<span class="badge platinum">🔷</span> 
+								</c:when>
 							</c:choose>
 							${userVO.user_name}
 						</p>

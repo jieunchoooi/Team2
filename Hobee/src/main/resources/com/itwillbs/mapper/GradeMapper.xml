@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.GradeMapper">
+
+<!--     누적 결제금액으로 등급 찾기 -->
+    <select id="getGradeByTotalPayment" parameterType="int" resultType="com.itwillbs.domain.GradeVO">
+        SELECT *
+        FROM grade
+        WHERE #{totalPayment} BETWEEN min_payment AND max_payment
+        LIMIT 1;
+    </select>
+
+<!--      (선택) 전체 등급 가져오기  -->
+    <select id="getAllGrades" resultType="com.itwillbs.domain.GradeVO">
+        SELECT *
+        FROM grade
+        ORDER BY grade_id ASC;
+    </select>
+
+</mapper>

@@ -238,7 +238,7 @@ public class MemberController {
 	  // 결제내역상세상세
 	    @GetMapping("/payment")
 	    public String paymentDetail(int payment_id, HttpSession session, Model model) {
-
+	    	System.out.println("MemberController paymet()");
 	        UserVO user = (UserVO) session.getAttribute("userVO");
 	        PaymentVO payment = paymentService.getPayment(payment_id);
 

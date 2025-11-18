@@ -50,6 +50,8 @@ public class PaymentVO {
     private boolean refundable;
     /** [조회 전용] 여러 강의 제목 표시용 (ex. "수채화 기초, 캘리그래피 입문") */
     private String lectureTitles;
+    private String lecturePrices;   // 추가
+    private String lectureNums;     // 선택 추가
 
     /** [조회 전용] 회원 이름, 이메일 표시용 (JOIN 시 활용) */
     private String user_name;

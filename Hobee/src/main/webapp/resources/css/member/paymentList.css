@@ -1,132 +1,123 @@
 @charset "UTF-8";
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Pretendard', sans-serif;
+}
+
+body {
+    background: #f4f6fa;
+}
+
 .main-content {
     margin-left: 240px;
     padding: 40px 30px;
-    background: #f9fafb;
-    min-height: 100vh;
 }
 
-/* 타이틀 */
-.main-content > h1 {
+h1 {
     font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
-/* 프로필 카드 */
-.main-header {
-    background: #fff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom: 40px;
-}
-
-.profile-box {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.profile-pic {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #1e40af;
-    color: white;
-    font-size: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile-info p:first-child {
-    font-size: 1.3rem;
-    font-weight: 700;
-}
-
-.badge {
-    margin-right: 6px;
-}
-
-/* 리스트 */
+/* 카드 공통 */
 .payment-card {
     background: #fff;
     padding: 25px 30px;
-    border-radius: 14px;
     margin-bottom: 18px;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     display: flex;
     justify-content: space-between;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: .15s ease;
+}
+
+.payment-card:hover {
+    background: #f3f4f6;
+    transform: translateY(-2px);
+}
+
+/* 왼쪽 */
+.order-no {
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 4px;
+}
+
+.date-status {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.date {
+    font-size: 0.9rem;
+    color: #666;
 }
 
 .lecture-title {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin: 8px 0;
+    margin-top: 5px;
+    color: #333;
 }
 
-.price {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2563eb;
+/* 상태 텍스트 */
+.status-text {
+    font-size: 0.9rem;
+    font-weight: 700;
 }
 
-.status {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    margin-bottom: 10px;
+.status-paid { color: #16a34a; }     /* 초록 */
+.status-cancelled { color: #dc2626; } /* 빨강 */
+.status-etc { color: #6b7280; }       /* 회색 */
+
+/* 오른쪽 액션 */
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
 }
 
-.status.paid { background: #dbeafe; color: #1e40af; }
-.status.cancelled { background: #fee2e2; color: #b91c1c; }
-.status.unknown { background: #e5e7eb; }
-
-.detail-link {
-    display: inline-block;
-    margin-bottom: 12px;
-    text-decoration: none;
+/* 텍스트 버튼 */
+.action-btn {
+    border: none;
+    background: transparent;
     font-size: 0.95rem;
-    color: #374151;
+    cursor: pointer;
+    padding: 0;
+    color: #555;
+    transition: .15s ease;
 }
-.detail-link:hover {
+
+.action-btn:hover {
     text-decoration: underline;
 }
 
-/* .btn-refund { */
-/*     padding: 10px 16px; */
-/*     background: #2563eb; */
-/*     color: #fff; */
-/*     border: none; */
-/*     border-radius: 10px; */
-/*     cursor: pointer; */
-/*     font-weight: 600; */
-/* } */
-
-/* .btn-refund.disabled { */
-/*     background: #9ca3af; */
-/*     cursor: not-allowed; */
-/* } */
-
-/* 환불 버튼 스타일 */
-.btn-refund {
-    margin-top: 10px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 8px;
-    background-color: #ff4f4f;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
+/* 환불 요청 버튼 */
+.refund-btn {
+    color: #dc2626;
 }
-.btn-refund.disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.refund-btn:hover {
+    color: #b91c1c;
 }
-.status.cancelled {
-    color: #999;
+
+/* 상세 보기 */
+.detail-btn {
+    color: #666;
+}
+.detail-btn:hover {
+    color: #2563eb;
+}
+
+/* 환불 불가 */
+.disabled-btn {
+    color: #a1a1a1;
+    cursor: default;
+    text-decoration: none !important;
 }
