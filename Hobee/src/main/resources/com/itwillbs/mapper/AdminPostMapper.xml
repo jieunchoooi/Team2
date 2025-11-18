@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.AdminPostMapper">
+
+    <!-- 📌 1. 게시글 전체 목록 -->
+    <select id="getPostList" resultType="com.itwillbs.domain.AdminPostVO">
+        SELECT 
+            post_id,
+            title,
+            content,
+            author,
+            tag,
+            views,
+            is_visible,
+            created_at
+        FROM community_content
+        ORDER BY post_id DESC
+    </select>
+
+
+    <!-- 📌 2. 게시글 상세 조회 -->
+    <select id="getPostDetail" resultType="com.itwillbs.domain.AdminPostVO">
+        SELECT 
+            post_id,
+            title,
+            content,
+            author,
+            tag,
+            views,
+            is_visible,
+            created_at
+        FROM community_content
+        WHERE post_id = #{post_id}
+    </select>
+
+
+    <!-- 📌 3. 게시글 공개/숨김 토글 -->
+    <update id="togglePostVisible">
+        UPDATE community_content
+        SET is_visible = CASE 
+                            WHEN is_visible = 1 THEN 0 
+                            ELSE 1 
+                         END
+        WHERE post_id = #{post_id}
+    </update>
+
+
+    <!-- 📌 4. 게시글 삭제 -->
+    <delete id="deletePost">
+        DELETE FROM community_content
+        WHERE post_id = #{post_id}
+    </delete>
+
+</mapper>

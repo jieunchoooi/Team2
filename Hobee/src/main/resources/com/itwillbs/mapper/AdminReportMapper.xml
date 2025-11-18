@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.AdminReportMapper">
+
+    <!-- 신고 목록 조회 (게시글/댓글 포함) -->
+    <select id="getReportList" resultType="com.itwillbs.domain.AdminReportVO">
+        SELECT 
+            r.report_id,
+            r.post_id,
+            r.comment_id,
+            r.reporter_id,
+            r.reason,
+            r.created_at,
+            r.is_done,
+            
+            -- 게시글 제목 JOIN
+            p.title AS post_title,
+            
+            -- 댓글 내용 JOIN
+            c.content AS comment_content
+
+        FROM report r
+        LEFT JOIN community_content p ON r.post_id = p.post_id
+        LEFT JOIN comment c ON r.comment_id = c.comment_id
+        ORDER BY r.report_id DESC
+    </select>
+
+    <!-- 신고 단건 상세 조회 -->
+    <select id="getReportDetail" resultType="com.itwillbs.domain.AdminReportVO">
+        SELECT 
+            r.*, 
+            p.title AS post_title,
+            c.content AS comment_content
+        FROM report r
+        LEFT JOIN community_content p ON r.post_id = p.post_id
+        LEFT JOIN comment c ON r.comment_id = c.comment_id
+        WHERE r.report_id = #{report_id}
+    </select>
+
+    <!-- 신고 처리 완료 -->
+    <update id="updateReportDone">
+        UPDATE report
+        SET is_done = 1
+        WHERE report_id = #{report_id}
+    </update>
+
+</mapper>

@@ -56,13 +56,45 @@
 		<div class="menu-section">
 			<h3>🗨️ 커뮤니티 관리</h3>
 			<div class="menu">
+				 <!-- 기존: 게시판 목록 -->
 				<div class="menu-item ${page eq 'boardList' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'">
 					📋 <span>게시판 목록</span>
 				</div>
-			</div>
-		</div>
-	</div>
+				<!-- ⭐ 필수: 게시글 관리 -->
+                <div class="menu-item ${page eq 'postList' ? 'active' : ''}"
+                    onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'">
+                    📝 <span>게시글 관리</span>
+                </div>
+
+                <!-- ⭐ 필수: 댓글 관리 -->
+                <div class="menu-item ${page eq 'commentList' ? 'active' : ''}"
+                    onclick="location.href='${pageContext.request.contextPath}/admin/adminCommentList'">
+                    💬 <span>댓글 관리</span>
+                </div>
+
+                <!-- ⭐ 필수: 신고 관리 -->
+                <div class="menu-item ${page eq 'reportList' ? 'active' : ''}"
+                    onclick="location.href='${pageContext.request.contextPath}/admin/adminReportList'">
+                    🚨 <span>신고 관리</span>
+                </div>
+
+                <!-- 옵션: 공지사항 -->
+                <div class="menu-item ${page eq 'noticeList' ? 'active' : ''}"
+                    onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeList'">
+                    📢 <span>공지사항 관리</span>
+                </div>
+
+                <!-- 옵션: FAQ -->
+                <div class="menu-item ${page eq 'faqList' ? 'active' : ''}"
+                    onclick="location.href='${pageContext.request.contextPath}/admin/adminFaqList'">
+                    ❓ <span>FAQ 관리</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+			
 	<button class="logout-btn" onclick="logout()">로그아웃</button>
 	<script type="text/javascript">
 		function logout() {

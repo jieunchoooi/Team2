@@ -2,71 +2,75 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="com.itwillbs.mapper.UserMapper">
 
-<!-- <<<<<<< HEAD -->
-	<!-- ✅ 회원 가입 -->
-	<insert id="insertUser" parameterType="com.itwillbs.domain.UserVO">
-	
-		INSERT INTO user (user_id, user_password, user_name, user_phone, user_email, user_address, user_gender, user_file, user_role, user_status, grade_id, points)
-		            VALUES (#{user_id}, #{user_password}, #{user_name}, #{user_phone}, #{user_email}, #{user_address}, #{user_gender}, #{user_file}, 'user', 'active', 1, 0)
-		
-	</insert>
-	
-    <!-- 	✅로그인  -->
-	<select id="loginUser" parameterType="com.itwillbs.domain.UserVO" resultType="com.itwillbs.domain.UserVO">
-		
-		SELECT *
-		FROM user
-			WHERE user_id = #{user_id}
-		  AND user_password = #{user_password}
-		  AND user_status = 'active'
-	</select>
-	
-<!-- ✅	아이디로 회원 조화 (로그인, 중복확인용)-->
-	<select id="selectUserById" parameterType="String" resultType="com.itwillbs.domain.UserVO">
-    	SELECT * 
-    	FROM user
-    	WHERE user_id = #{user_id}
-	</select>
-	
-<!-- ✅ 이메일로 사용자 찾기 -->
-	<select id="findUserByEmail" resultType="com.itwillbs.domain.UserVO">
-        SELECT * 
+    <!-- ✅ 회원 가입 -->
+    <insert id="insertUser" parameterType="com.itwillbs.domain.UserVO">
+        INSERT INTO user (
+            user_id, user_password, user_name,
+            user_phone, user_email, user_address,
+            user_gender, user_file, user_role,
+            user_status, grade_id, points
+        )
+        VALUES (
+            #{user_id}, #{user_password}, #{user_name},
+            #{user_phone}, #{user_email}, #{user_address},
+            #{user_gender}, #{user_file}, 'user',
+            'active', 1, 0
+        )
+    </insert>
+
+    <!-- ✅ 로그인 (상태 조건 제거 — Controller에서 체크) -->
+    <select id="loginUser" parameterType="com.itwillbs.domain.UserVO"
+            resultType="com.itwillbs.domain.UserVO">
+        SELECT *
+        FROM user
+        WHERE user_id = #{user_id}
+    </select>
+
+    <!-- 아이디로 회원 조회 -->
+    <select id="selectUserById" parameterType="String" resultType="com.itwillbs.domain.UserVO">
+        SELECT *
+        FROM user
+        WHERE user_id = #{user_id}
+    </select>
+
+    <!-- 이메일로 사용자 찾기 -->
+    <select id="findUserByEmail" resultType="com.itwillbs.domain.UserVO">
+        SELECT *
         FROM user
         WHERE user_email = #{user_email}
     </select>
 
-<!-- 아이디 + 이메일로 사용자 찾기 -->
+    <!-- 아이디 + 이메일로 회원 조회 -->
     <select id="findUserByIdAndEmail" resultType="com.itwillbs.domain.UserVO">
-    	SELECT *
-   	    FROM user
+        SELECT *
+        FROM user
         WHERE user_id = #{user_id}
-        AND user_email = #{user_email}
+          AND user_email = #{user_email}
     </select>
-	
-<!-- ✅ 임시 비밀번호 업데이트 -->
- 	 <update id="updateTempPassword">
-    	UPDATE user
-   		SET user_password = #{tempPw}
-   		WHERE user_id = #{user_id}
-  	</update>
-  	
-<!-- ✅ 이메일 중복검사 -->
-  	 <select id="checkEmail" parameterType="String" resultType="int">
-   		SELECT COUNT(*) 
-   		FROM user 
-   		WHERE user_email = #{user_email}
-	</select>
-	
-	<select id="findIdByNameAndEmail" resultType="com.itwillbs.domain.UserVO">
-    SELECT *
-    FROM user
-    WHERE user_name = #{user_name}
-   	  AND user_email = #{user_email}
-	</select>
-	
+
+    <!-- 임시 비밀번호 업데이트 -->
+    <update id="updateTempPassword">
+        UPDATE user
+        SET user_password = #{tempPw}
+        WHERE user_id = #{user_id}
+    </update>
+
+    <!-- 이메일 중복 검사 -->
+    <select id="checkEmail" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM user
+        WHERE user_email = #{user_email}
+    </select>
+
+    <!-- 이름 + 이메일로 아이디 찾기 -->
+    <select id="findIdByNameAndEmail" resultType="com.itwillbs.domain.UserVO">
+        SELECT *
+        FROM user
+        WHERE user_name = #{user_name}
+          AND user_email = #{user_email}
+    </select>
+
 </mapper>
-
-

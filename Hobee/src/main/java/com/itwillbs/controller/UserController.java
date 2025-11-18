@@ -158,35 +158,56 @@ public class UserController {
     @PostMapping("/loginPro")
     @ResponseBody
     public Map<String, Object> loginPro(@ModelAttribute UserVO userVO, HttpSession session) {
+
         Map<String, Object> result = new HashMap<>();
 
         System.out.println("UserController loginPro() 실행 - ID: " + userVO.getUser_id());
 
-        // ✅ DB에서 회원 조회
-        UserVO dbUser = userService.selectUserById(userVO.getUser_id());
+        // 1️⃣ DB 회원 조회 (아이디 기준)
+        UserVO dbUser = userService.loginUser(userVO);
 
-        // ✅ 비밀번호 검증
-        if (dbUser != null && dbUser.getUser_password().equals(userVO.getUser_password())) {
-
-            // ✅ 로그인 성공
-            session.setAttribute("userVO", dbUser);                // 전체 VO 객체 저장
-            session.setAttribute("user_id", dbUser.getUser_id());  // 기존 JSP 호환용
-            session.setAttribute("user_name", dbUser.getUser_name());
-
-            System.out.println("✅ 로그인 성공: " + dbUser.getUser_name());
-
-            result.put("result", "success");
-            result.put("user_name", dbUser.getUser_name());
-
-        } else {
-            // ❌ 로그인 실패
-            System.out.println("❌ 로그인 실패");
+        // 2️⃣ 아이디 없음
+        if (dbUser == null) {
             result.put("result", "fail");
-            result.put("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            result.put("message", "존재하지 않는 아이디입니다.");
+            return result;
         }
 
-        return result; // ✅ JSON 응답
+        // 3️⃣ 비밀번호 불일치
+        if (!dbUser.getUser_password().equals(userVO.getUser_password())) {
+            result.put("result", "fail");
+            result.put("message", "비밀번호가 일치하지 않습니다.");
+            return result;
+        }
+
+        // 4️⃣ 상태 체크
+        String status = dbUser.getUser_status();
+
+        if ("withdraw".equals(status) || "self-withdraw".equals(status)) {
+            result.put("result", "fail");
+            result.put("message", "탈퇴한 계정은 로그인이 불가능합니다.");
+            return result;
+        }
+
+        if ("inactive".equals(status)) {
+            result.put("result", "fail");
+            result.put("message", "현재 비활성화된 계정입니다.\n관리자에게 문의하세요.");
+            return result;
+        }
+
+        // 5️⃣ 로그인 성공
+        session.setAttribute("userVO", dbUser);
+        session.setAttribute("user_id", dbUser.getUser_id());
+        session.setAttribute("user_name", dbUser.getUser_name());
+
+        System.out.println("로그인 성공: " + dbUser.getUser_name());
+
+        result.put("result", "success");
+        result.put("user_name", dbUser.getUser_name());
+
+        return result;
     }
+
 
     /* ==========================================================
  	// ✅ 6. 로그아웃 처리

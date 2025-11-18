@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.AdminCommentMapper">
+
+  
+<!--      1. 댓글 전체 목록 조회 : comment + community_content JOIN-->
+    <select id="getCommentList" resultType="com.itwillbs.domain.AdminCommentVO">
+        SELECT 
+            c.comment_id,
+            c.post_id,
+            c.user_id,
+            c.content,
+            c.created_at,
+            c.report_count,
+            c.is_deleted,
+            p.title AS post_title
+        FROM comment c
+        JOIN community_content p 
+            ON c.post_id = p.post_id
+        WHERE c.is_deleted = 0
+        ORDER BY c.comment_id DESC
+    </select>
+    
+<!--     2. 댓글 상세 -->
+    <select id="getCommentDetail" resultType="com.itwillbs.domain.AdminCommentVO">
+    SELECT 
+        c.comment_id,
+        c.post_id,
+        c.user_id,
+        c.content,
+        c.created_at,
+        c.report_count,
+        p.title AS post_title
+    FROM comment c
+    JOIN community_content p ON c.post_id = p.post_id
+    WHERE comment_id = #{comment_id}
+</select>
+    
+
+
+
+<!--       3. 댓글 삭제 -->
+     
+    <update id="deleteComment" parameterType="int">
+        UPDATE comment
+        SET is_deleted = 1
+        WHERE comment_id = #{comment_id}
+    </update> 
+
+</mapper>

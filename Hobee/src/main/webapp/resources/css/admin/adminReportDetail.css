@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+/* 전체 중앙 정렬 */
+.admin-detail-container {
+    margin-left: 260px; /* 사이드바 공간 */
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+/* 상세 카드 */
+.detail-card {
+    background: #fff;
+    padding: 35px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 850px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+h2 {
+    font-size: 1.7rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* 상세 정보 라인 */
+.detail-row {
+    display: flex;
+    margin-bottom: 18px;
+    line-height: 1.6;
+}
+
+.key {
+    width: 130px;
+    font-weight: bold;
+    color: #444;
+}
+
+.value {
+    flex: 1;
+}
+
+/* 신고 사유 박스 */
+.reason-box {
+    background: #fff5f5;
+    border: 1px solid #f5c7c7;
+    padding: 12px 14px;
+    border-radius: 10px;
+    min-height: 60px;
+    line-height: 1.6;
+}
+
+/* 대상 내용 박스 */
+.content-box {
+    background: #f3f6ff;
+    border: 1px solid #d7def5;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.content-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #4259f4;
+}
+
+.content-detail {
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+/* 버튼 */
+.btn-area {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.btn-area button {
+    margin-left: 10px;
+}

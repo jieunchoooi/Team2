@@ -1,0 +1,144 @@
+@charset "UTF-8";
+/* 전체 레이아웃 중앙 */
+.admin-container {
+    margin-left: 260px;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 제목 */
+.admin-title {
+    width: 100%;
+    max-width: 1100px;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-title::before {
+    content: "📝";
+    font-size: 1.8rem;
+}
+
+/* 상세 카드 */
+.detail-card {
+    width: 100%;
+    max-width: 1100px;
+    background: #ffffff;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e7e9ec;
+    animation: fadeIn 0.4s ease;
+}
+
+/* 부드러운 등장 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 구분선 포함 섹션 */
+.detail-section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+/* 정보 행 */
+.detail-row {
+    display: flex;
+    margin-bottom: 18px;
+}
+
+.detail-label {
+    width: 150px;
+    font-weight: 700;
+    color: #34495e;
+    font-size: 16px;
+}
+
+.detail-value {
+    flex: 1;
+    font-size: 16px;
+    color: #555;
+}
+
+/* 내용 박스 */
+.detail-content {
+    width: 100%;
+    background: #f6f7fa;
+    border-radius: 12px;
+    padding: 25px;
+    min-height: 300px;
+    font-size: 16px;
+    line-height: 1.7;
+    white-space: pre-line;
+    border: 1px solid #e0e0e0;
+}
+
+/* 버튼 영역 */
+.button-area {
+    margin-top: 35px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+}
+
+/* 버튼 공통 (고급 디자인) */
+.btn {
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* 공개 버튼 */
+.btn-visible {
+    background: linear-gradient(135deg, #29cc74, #20b866);
+    color: white;
+}
+.btn-visible:hover {
+    transform: translateY(-2px);
+}
+
+/* 숨김 버튼 */
+.btn-hidden {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+}
+.btn-hidden:hover {
+    transform: translateY(-2px);
+}
+
+/* 삭제 버튼 */
+.btn-delete {
+    background: linear-gradient(135deg, #e74c3c, #cf3f2f);
+    color: white;
+}
+.btn-delete:hover {
+    transform: translateY(-2px);
+}
+
+/* 뒤로가기 */
+.btn-back {
+    background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+    color: white;
+}
+.btn-back:hover {
+    transform: translateY(-2px);
+}

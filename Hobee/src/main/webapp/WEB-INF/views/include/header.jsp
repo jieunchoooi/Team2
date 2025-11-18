@@ -131,22 +131,47 @@ $(document).ready(function(){
 	});
 
 	function loginRequest(){
-		$.ajax({
-			type:"POST",
-			url: contextPath + "/user/loginPro",
-			data: $("#loginForm").serialize(),
-			dataType:"json",
-			success:function(res){
-				if(res.result === "success"){
-					alert(res.user_name + "님, 환영합니다!");
-					$("#loginModal").fadeOut();
-					location.href = contextPath + "/";
-				} else {
-					alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-				}
-			}
-		});
+	    $.ajax({
+	        type:"POST",
+	        url: contextPath + "/user/loginPro",
+	        data: $("#loginForm").serialize(),
+	        dataType:"json",
+	        success:function(res){
+
+	            // 로그인 성공
+	            if(res.result === "success"){
+
+	                $("#loginError")
+	                    .css("color", "#2ecc71")  // 초록색
+	                    .hide()
+	                    .text(res.user_name + "님 환영합니다!")
+	                    .fadeIn(200);
+
+	                // 모달 닫고 새로고침
+	                setTimeout(() => {
+	                    $("#loginModal").fadeOut();
+	                    location.reload(); // 헤더 로그인 상태 반영
+	                }, 700);
+
+	                return;
+	            }
+
+	            // 로그인 실패 → Controller에서 보낸 메시지를 그대로 출력
+	            $("#loginError")
+	                .css("color", "#e74c3c")
+	                .hide()
+	                .text(res.message)   // ⭐ 탈퇴 계정/비활성 계정 메시지 자동 반영
+	                .fadeIn(200);
+	        },
+
+	        error:function(){
+	            $("#loginError")
+	                .css("color", "#e74c3c")
+	                .text("서버 오류가 발생했습니다. 다시 시도해주세요.");
+	        }
+	    });
 	}
+
 
 	/* ======================
 	   [ 2 ] 회원가입 모달
