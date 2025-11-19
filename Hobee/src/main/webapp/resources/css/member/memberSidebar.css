@@ -40,7 +40,6 @@
   border-radius: 10px;
 
   font-size: 14px; /* 원본 유지 */
-  font-weight: 500;
   color: #374151; /* 검정 유지 */
 
   cursor: pointer;
@@ -51,7 +50,6 @@
 /* 아이콘 고정 너비 */
 .menu-item span:first-child {
   width: 22px;
-  font-size: 18px;
   text-align: center;
 }
 
