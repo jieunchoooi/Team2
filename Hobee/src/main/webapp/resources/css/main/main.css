@@ -22,7 +22,7 @@ main {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 80px 20px;
+	padding: 60px 20px;
 	text-align: center;
 }
 
@@ -60,7 +60,7 @@ main p {
 .course-section {
 	width: 100%;
 	max-width: 1200px;
-	margin: 60px auto;
+	margin: 50px auto;
 }
 
 .course-section h3 {
