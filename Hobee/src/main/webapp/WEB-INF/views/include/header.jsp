@@ -10,8 +10,8 @@
 
 <!-- CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/header.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/loginModal.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/insertModal.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/loginModal.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/insertModal.css">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -99,222 +99,203 @@
 <script>
 $(document).ready(function(){
 
-	const contextPath = "${pageContext.request.contextPath}";
+    const contextPath = "${pageContext.request.contextPath}";
 
-	/* ======================
-	   [ 1 ] 로그인 모달
-	 ===================== */
+    /* ======================
+       1) 로그인 모달 열기
+    ======================= */
+    $("#openLoginModal").click(function(e){
+        e.preventDefault();
+        $("#loginModal").fadeIn().css("display","flex");
+    });
 
-	$("#openLoginModal").click(function(e){
-		e.preventDefault();
-		$("#loginModal").fadeIn().css("display","flex");
-	});
-
-	$(document).on("click", ".close-btn, .modal-overlay", function(){
-		if($(this).closest("#loginModal").length > 0 ||
-		   $(this).hasClass("modal-overlay")){
-			$("#loginModal").fadeOut();
-			$("#loginForm")[0].reset();
-			$("#loginError").text("");
-		}
-	});
-
-	$("#loginBtn").click(function(){
-		loginRequest();
-	});
-
-	$("#loginForm input").keypress(function(e){
-		if(e.which === 13){
-			e.preventDefault();
-			loginRequest();
-		}
-	});
-
-	function loginRequest(){
-	    $.ajax({
-	        type:"POST",
-	        url: contextPath + "/user/loginPro",
-	        data: $("#loginForm").serialize(),
-	        dataType:"json",
-	        success:function(res){
-
-	            // 로그인 성공
-	            if(res.result === "success"){
-
-	                $("#loginError")
-	                    .css("color", "#2ecc71")  // 초록색
-	                    .hide()
-	                    .text(res.user_name + "님 환영합니다!")
-	                    .fadeIn(200);
-
-	                // 모달 닫고 새로고침
-	                setTimeout(() => {
-	                    $("#loginModal").fadeOut();
-	                    location.reload(); // 헤더 로그인 상태 반영
-	                }, 700);
-
-	                return;
-	            }
-
-	            // 로그인 실패 → Controller에서 보낸 메시지를 그대로 출력
-	            $("#loginError")
-	                .css("color", "#e74c3c")
-	                .hide()
-	                .text(res.message)   // ⭐ 탈퇴 계정/비활성 계정 메시지 자동 반영
-	                .fadeIn(200);
-	        },
-
-	        error:function(){
-	            $("#loginError")
-	                .css("color", "#e74c3c")
-	                .text("서버 오류가 발생했습니다. 다시 시도해주세요.");
-	        }
-	    });
-	}
+    /* 로그인 모달 닫기 */
+    $(document).on("click", ".login-close, #loginModal .modal-overlay", function(){
+        $("#loginModal").fadeOut();
+        $("#loginForm")[0].reset();
+        $("#loginError").text("");
+    });
 
 
-	/* ======================
-	   [ 2 ] 회원가입 모달
-	====================== */
+    /* ======================
+       2) 회원가입 모달 열기
+    ======================= */
+    $("#openInsertModal").click(function(e){
+        e.preventDefault();
+        $("#insertModal").fadeIn().css("display","flex");
+    });
 
-	$("#openInsertModal").click(function(e){
-		e.preventDefault();
-		$("#insertModal").fadeIn().css("display","flex");
-	});
+    /* 회원가입 모달 닫기 */
+    $(document).on("click", ".insert-close, #insertModal .modal-overlay", function(){
+        $("#insertModal").fadeOut();
+        $("#insertForm")[0].reset();
+        $("#insertError").text("");
+        $("#insertSuccess").text("");
+    });
 
-	$(document).on("click", ".close-btn, .modal-overlay", function(){
-		if($(this).closest("#insertModal").length > 0 ||
-		   $(this).hasClass("modal-overlay")){
-			$("#insertModal").fadeOut();
-			$("#insertForm")[0].reset();
-			$("#insertError").text("");
-			$("#insertSuccess").text("");
-		}
-	});
 
-	/* ===============================
-	   insertModal 유효성 검사 + Ajax
-	================================ */
+    /* ======================
+       로그인 기능 (AJAX)
+    ======================= */
+    $("#loginBtn").click(function(){
+        loginRequest();
+    });
 
-	let insIdOk = false;
-	let insEmailOk = false;
+    function loginRequest() {
+        $.ajax({
+            type: "POST",
+            url: contextPath + "/user/loginPro",
+            data: $("#loginForm").serialize(),
+            dataType: "json",
+            success: function(res) {
 
-	$("#ins_user_id").on("input", () => {
-	    insIdOk = false;
-	    $("#ins_idCheckMsg").text("");
-	});
+                if (res.result === "success") {
+                    $("#loginError")
+                        .css("color", "#2ecc71")
+                        .hide()
+                        .text(res.user_name + "님 환영합니다!")
+                        .fadeIn(200);
 
-	$("#ins_user_email").on("input", () => {
-	    insEmailOk = false;
-	    $("#ins_emailCheckMsg").text("");
-	});
+                    setTimeout(() => {
+                        $("#loginModal").fadeOut();
+                        location.href = contextPath + "/main/main";
+                    }, 700);
 
-	$("#ins_checkIdBtn").click(() => {
-	    const id = $("#ins_user_id").val().trim();
-	    const pattern = /^[A-Za-z0-9]{1,8}$/;
+                    return;
+                }
 
-	    if(!pattern.test(id)){
-	        $("#ins_idCheckMsg").text("영문+숫자 8자").css("color","red");
-	        return;
-	    }
+                $("#loginError")
+                    .css("color", "#e74c3c")
+                    .hide()
+                    .text(res.message)
+                    .fadeIn(200);
+            },
+            error: function() {
+                $("#loginError").text("서버 오류가 발생했습니다.");
+            }
+        });
+    }
 
-	    $.ajax({
-	        url: contextPath + "/user/checkId",
-	        type:"GET",
-	        data:{ user_id:id },
-	        success:function(res){
-	            if(res==="available"){
-	                $("#ins_idCheckMsg").text("사용 가능").css("color","green");
-	                insIdOk=true;
-	            } else {
-	                $("#ins_idCheckMsg").text("이미 사용중").css("color","red");
-	                insIdOk=false;
-	            }
-	        }
-	    });
-	});
 
-	$("#ins_checkEmailBtn").click(() => {
-	    const email = $("#ins_user_email").val();
-	    const pattern=/^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+    /* ======================
+       회원가입 AJAX
+    ======================= */
+    let insIdOk = false;
+    let insEmailOk = false;
 
-	    if(!pattern.test(email)){
-	        $("#ins_emailCheckMsg").text("이메일 형식 오류").css("color","red");
-	        return;
-	    }
+    // 아이디 input 변경 → 다시 중복확인 필요
+    $("#ins_user_id").on("input", () => {
+        insIdOk = false;
+        $("#ins_idCheckMsg").text("");
+    });
 
-	    $.ajax({
-	        url: contextPath + "/user/checkEmail",
-	        type:"GET",
-	        data:{ user_email:email },
-	        success:function(res){
-	            if(res==="available"){
-	                $("#ins_emailCheckMsg").text("사용 가능").css("color","green");
-	                insEmailOk=true;
-	            } else {
-	                $("#ins_emailCheckMsg").text("이미 사용중").css("color","red");
-	                insEmailOk=false;
-	            }
-	        }
-	    });
-	});
+    $("#ins_user_email").on("input", () => {
+        insEmailOk = false;
+        $("#ins_emailCheckMsg").text("");
+    });
 
-	$("#ins_user_phone").on("input", function(){
-	    let v = $(this).val().replace(/[^0-9]/g, "");
-	    if(v.length < 4) $(this).val(v);
-	    else if(v.length < 8) $(this).val(v.slice(0,3)+"-"+v.slice(3));
-	    else $(this).val(v.slice(0,3)+"-"+v.slice(3,7)+"-"+v.slice(7,11));
-	});
+    // 아이디 중복확인
+    $("#ins_checkIdBtn").click(() => {
+        const id = $("#ins_user_id").val().trim();
+        const pattern = /^[A-Za-z0-9]{1,8}$/;
 
-	$("#ins_agreeAll").on("change", function(){
-	    $(".ins-agree-item").prop("checked", $(this).prop("checked"));
-	});
+        if(!pattern.test(id)){
+            $("#ins_idCheckMsg").text("영문+숫자 8자").css("color","red");
+            return;
+        }
 
-	$("#insertBtn").click(function(){
+        $.ajax({
+            url: contextPath + "/user/checkId",
+            type:"GET",
+            data:{ user_id:id },
+            success:function(res){
+                if(res==="available"){
+                    $("#ins_idCheckMsg").text("사용 가능").css("color","green");
+                    insIdOk=true;
+                } else {
+                    $("#ins_idCheckMsg").text("이미 사용중").css("color","red");
+                    insIdOk=false;
+                }
+            }
+        });
+    });
 
-	    $("#insertError").text("");
+    // 이메일 중복확인
+    $("#ins_checkEmailBtn").click(() => {
+        const email = $("#ins_user_email").val();
+        const pattern=/^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
 
-	    if(!insIdOk){
-	        $("#insertError").text("아이디 중복확인을 해주세요.");
-	        return;
-	    }
+        if(!pattern.test(email)){
+            $("#ins_emailCheckMsg").text("이메일 형식 오류").css("color","red");
+            return;
+        }
 
-	    if(!insEmailOk){
-	        $("#insertError").text("이메일 중복확인을 해주세요.");
-	        return;
-	    }
+        $.ajax({
+            url: contextPath + "/user/checkEmail",
+            type:"GET",
+            data:{ user_email:email },
+            success:function(res){
+                if(res==="available"){
+                    $("#ins_emailCheckMsg").text("사용 가능").css("color","green");
+                    insEmailOk=true;
+                } else {
+                    $("#ins_emailCheckMsg").text("이미 사용중").css("color","red");
+                    insEmailOk=false;
+                }
+            }
+        });
+    });
 
-	    const pw = $("#ins_user_password").val();
-	    const pw2 = $("#ins_user_password2").val();
-	    const pattern=/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
 
-	    if(!pattern.test(pw)){
-	        $("#insertError").text("비밀번호 형식 오류입니다.");
-	        return;
-	    }
+    /* 회원가입 실행 */
+    $("#insertBtn").click(function() {
 
-	    if(pw !== pw2){
-	        $("#insertError").text("비밀번호가 일치하지 않습니다.");
-	        return;
-	    }
+        $("#insertError").text("");
 
-	    $.ajax({
-	        type:"POST",
-	        url: contextPath + "/user/insertAjax",
-	        data: $("#insertForm").serialize(),
-	        dataType:"json",
-	        success:function(res){
-	            if(res.result==="success"){
-	                alert("회원가입 완료! 다시 로그인해주세요.");
-	                $("#insertModal").fadeOut();
-	                $("#loginModal").fadeIn().css("display","flex");
-	            } else {
-	                $("#insertError").text(res.message);
-	            }
-	        }
-	    });
+        if (!insIdOk) {
+            $("#insertError").text("아이디 중복확인을 해주세요.");
+            return;
+        }
 
-	});
+        if (!insEmailOk) {
+            $("#insertError").text("이메일 중복확인을 해주세요.");
+            return;
+        }
+
+        const pw = $("#ins_user_password").val();
+        const pw2 = $("#ins_user_password2").val();
+        const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
+
+        if (!pattern.test(pw)) {
+            $("#insertError").text("비밀번호 형식 오류입니다.");
+            return;
+        }
+
+        if (pw !== pw2) {
+            $("#insertError").text("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: contextPath + "/user/insertAjax",
+            data: $("#insertForm").serialize(),
+            dataType: "json",
+            success: function(res) {
+
+                if (res.result === "success") {
+                    alert("회원가입 완료! 다시 로그인해주세요.");
+                    $("#insertModal").fadeOut();
+                    $("#loginModal").fadeIn().css("display", "flex");
+                } else {
+                    $("#insertError").text(res.message);
+                }
+            },
+            error: function() {
+                $("#insertError").text("회원가입 중 오류가 발생했습니다.");
+            }
+        });
+    });
 
 });
 </script>

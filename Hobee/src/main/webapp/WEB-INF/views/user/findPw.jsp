@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- 로그인/회원가입 모달 포함 -->
+<jsp:include page="/WEB-INF/views/include/header.jsp"/> 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -43,13 +46,17 @@
     <button type="submit" class="findpw-btn">임시 비밀번호 발송하기</button>
   </form>
 
+  <!-- 🔥 로그인 모달로 돌아가기 버튼 -->
   <div class="bottom-link">
-    <a href="${pageContext.request.contextPath}/user/login">로그인으로 돌아가기</a>
+    <a href="#" id="backToLoginModal">로그인으로 돌아가기</a>
   </div>
+
 </div>
 
-
 <script>
+/* ======================
+   유효성 검사
+====================== */
 $("#findPwForm").on("submit", function(e){
 
   const id = $("#user_id").val().trim();
@@ -72,6 +79,15 @@ $("#findPwForm").on("submit", function(e){
     alert("이메일 형식이 올바르지 않습니다.");
     e.preventDefault();
   }
+});
+
+
+/* ======================
+   로그인 모달 열기
+====================== */
+$("#backToLoginModal").click(function(e){
+    e.preventDefault();
+    $("#loginModal").fadeIn().css("display","flex");
 });
 </script>
 

@@ -46,7 +46,8 @@
   </form>
 
   <div class="bottom-link">
-    <a href="${pageContext.request.contextPath}/user/login">로그인으로 돌아가기</a>
+    <!-- 🔥 로그인 페이지 이동 → 모달 열기로 변경 -->
+    <a href="#" id="backToLoginModal">로그인으로 돌아가기</a>
   </div>
 </div>
 
@@ -73,6 +74,12 @@ $("#findIdForm").on("submit", function(e){
     alert("이메일 형식이 올바르지 않습니다.");
     e.preventDefault();
   }
+});
+
+// 🔥 로그인 모달 열기 추가
+$("#backToLoginModal").click(function(e){
+    e.preventDefault();
+    $("#loginModal").fadeIn().css("display","flex");
 });
 </script>
 
