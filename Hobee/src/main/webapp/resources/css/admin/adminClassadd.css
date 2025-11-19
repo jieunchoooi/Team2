@@ -271,3 +271,205 @@ body {
     margin-bottom: 20px;
     font-size: 0.95rem;
 }
+
+/* =========================== 커리큘럼 챕터 스타일 =========================== */
+#curriculum-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 15px;
+}
+
+.chapter-item {
+    padding: 20px;
+    background-color: #f8f9ff;
+    border-radius: 12px;
+    border: 2px solid #d3ddff;
+}
+
+.chapter-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chapter-title {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #2573ff;
+    border-radius: 8px;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    background-color: white;
+}
+
+.chapter-title:focus {
+    border-color: #1f65e0;
+    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+}
+
+.btn-remove-chapter {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-remove-chapter:hover {
+    background-color: #e04344;
+    transform: translateY(-2px);
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-left: 20px;
+}
+
+.detail-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.detail-title {
+    flex: 2;                    /* flex: 1에서 flex: 2로 변경 */
+    padding: 10px 14px;
+    border: 1px solid #d3ddff;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.detail-title:focus {
+    border-color: #2573ff;
+    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+}
+
+/* 강의 시간 입력 스타일 추가 */
+.detail-time {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #d3ddff;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    text-align: center;
+}
+
+.detail-time:focus {
+    border-color: #2573ff;
+    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+}
+
+.detail-time::placeholder {
+    color: #999;
+}
+
+.btn-remove-detail {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    min-width: 36px;
+}
+
+.btn-remove-detail:hover {
+    background-color: #ff5252;
+}
+
+.btn-add-detail {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    width: auto;
+    display: block;
+    margin-left: auto;      /* 20px에서 auto로 변경 */
+    margin-right: 0;        /* 추가 */
+}
+
+.btn-add-detail:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.btn-add {
+    background-color: #2573ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    width: auto;
+    margin-top: 0;
+    display: block;
+    margin-left: auto;
+}
+
+.btn-add:hover {
+    background-color: #1f65e0;
+    transform: translateY(-2px);
+}
+
+.chapter-title::placeholder,
+.detail-title::placeholder {
+    color: #999;
+}
+
+.detail-order {
+    min-width: 30px;
+    height: 30px;
+    color: black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0	;
+}
+
+.Chapter_order {
+    background-color: #ff6b35;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    white-space: nowrap;
+}
