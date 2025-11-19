@@ -1,160 +1,126 @@
 @charset "UTF-8";
 
 /* ===============================
-   🎨 마이페이지 사이드바 (Hobee 파스텔톤 스타일)
+   📌 마이페이지 사이드바 기본
    =============================== */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 240px;
+  width: 260px;
   height: 100vh;
   background: #ffffff;
   border-right: 1px solid #e5e7eb;
   padding: 24px 20px;
-  padding-top: 100px; /* 헤더 아래 공간 맞춤 */
-  box-sizing: border-box;
-  overflow-y: auto;
-  z-index: 50;
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  z-index: 50;
 }
 
 /* ===============================
-   🔹 제목 (현재 미사용이지만 유지)
-   =============================== */
-.sidebar h2 {
-  text-align: center;
-  color: #2563eb;
-  font-size: 17px;
-  font-weight: 700;
-  margin: 10px 0 25px 0;
-}
-
-/* ===============================
-   🔹 메뉴 컨테이너
+   📌 메뉴 전체
    =============================== */
 .menu {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
 /* ===============================
-   🔹 메뉴 아이템 기본
+   📌 메뉴 아이템 기본
    =============================== */
 .menu-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+
   padding: 10px 14px;
   border-radius: 10px;
-  font-size: 14px;
-  color: #374151;
+
+  font-size: 14px; /* 원본 유지 */
+  font-weight: 500;
+  color: #374151; /* 검정 유지 */
+
   cursor: pointer;
-  transition: all 0.25s ease;
-  user-select: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+/* 아이콘 고정 너비 */
+.menu-item span:first-child {
+  width: 22px;
+  font-size: 18px;
+  text-align: center;
 }
 
 /* ===============================
-   🔹 hover 효과
+   📌 hover (글씨 확대 ONLY)
    =============================== */
 .menu-item:hover {
-  background-color: #f3f6ff;
-  color: #2563eb;
-  transform: translateX(4px);
+  font-size: 15px; /* 글자만 커짐 */
+  color: #374151;  /* 절대 파란색 금지 */
+  background: transparent; /* 배경 변화 없음 */
 }
 
 /* ===============================
-   ⭐ 활성(active) 메뉴 스타일
+   📌 active (글씨 더 확대 + 밑줄 강조)
    =============================== */
 .menu-item.active {
-  background-color: #e8f0ff;
-  color: #2563eb;
-  font-weight: 600;
-  border-left: 4px solid #2563eb;
-  transform: translateX(6px);
+  font-size: 16px;
+  font-weight: 700;
+  color: #374151; /* 글자색 변경 금지 */
+
+  background: transparent;
+  border-left: none;
+  transform: translateX(0);
+
+  position: relative;
 }
 
-.menu-item.active span {
-  color: #2563eb;
+/* 밑줄 효과 */
+.menu-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 14px;
+  width: calc(100% - 28px);
+  height: 2px;
+  background: #2563eb33; /* 연한 파스텔톤 */
+  border-radius: 3px;
 }
 
 /* ===============================
-   텍스트 영역
-   =============================== */
-.menu-item span {
-  flex: 1;
-}
-
-/* ===============================
-   🔻 로그아웃 버튼
+   📌 로그아웃 버튼
    =============================== */
 .logout-btn {
-  width: 100%;
-  background-color: #ff5b5b;
-  color: #fff;
+  margin-top: auto;
+  background: #ff8585;
   border: none;
   padding: 12px 0;
-  border-radius: 25px;
-  font-weight: 600;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(255, 91, 91, 0.3);
-  transition: all 0.25s ease;
+  transition: 0.25s ease;
 }
 
 .logout-btn:hover {
-  background-color: #ff3b3b;
-  box-shadow: 0 6px 14px rgba(255, 91, 91, 0.4);
+  background: #ff6b6b;
 }
 
 /* ===============================
-   스크롤바 디자인
+   📌 스크롤바
    =============================== */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
-
 .sidebar::-webkit-scrollbar-thumb {
   background-color: #cbd5e1;
   border-radius: 4px;
 }
-
 .sidebar::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8;
-}
-
-/* ===============================
-   📱 반응형 스타일
-   =============================== */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
-    padding: 20px 16px;
-    padding-top: 90px;
-  }
-
-  .menu-item {
-    padding: 9px 12px;
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar {
-    width: 180px;
-    padding: 18px 14px;
-    padding-top: 85px;
-  }
-
-  .menu-item {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
-  .logout-btn {
-    padding: 10px 0;
-    font-size: 13px;
-  }
 }
