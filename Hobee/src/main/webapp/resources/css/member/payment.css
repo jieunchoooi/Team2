@@ -1,128 +1,114 @@
-@charset "UTF-8";
+/***********************************************
+ 🔵 payment.jsp + 모달 전용 스타일
+************************************************/
 
-/* 기본 레이아웃 */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Pretendard', sans-serif;
-}
-
-
-.main-content {
-    margin-left: 240px;
-    padding: 40px 30px 60px;
-    background: #f4f6fa;
-    min-height: 100vh;
-}
-
-h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 30px;
-    color: #333;
-}
-
-/* 영수증 박스 */
-.receipt-box {
+html, body {
     background: #fff;
-    border-radius: 16px;
-    padding: 35px 40px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    max-width: 760px;
-    border: 1px solid #f1f1f1;
-    margin-bottom: 40px;
 }
 
+/* 전체 wrapper */
+.payment-detail-container {
+    width: 100%;
+    max-width: 650px; /* 🔥 모달 720px에 딱 맞는 내부 폭 */
+    margin: 0 auto;
+}
+
+
+/* 🧾 영수증 스타일 */
 .receipt-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin: 12px 0;
 }
 
 .label {
     font-size: 0.95rem;
     font-weight: 700;
-    color: #4b5563;
+    color: #444;
 }
 
 .value {
     font-size: 0.95rem;
-    font-weight: 500;
-    color: #1f2937;
+    color: #333;
 }
 
-/* 상태 색상 */
-.status-paid { color: #22c55e; font-weight: 700; }
+.status-paid { color: #16a34a; font-weight: 700; }
 .status-cancelled { color: #dc2626; font-weight: 700; }
 .status-etc { color: #6b7280; font-weight: 700; }
 
 .minus { color: #dc2626; }
 .plus { color: #2563eb; }
 
-/* 구분선 */
 .divider {
     border-top: 1px dashed #d4d4d4;
     margin: 22px 0;
 }
 
-/* 강의 목록 */
+/* 🔸 강의 리스트 */
 .section-title {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin-bottom: 14px;
-    color: #111827;
+    margin-bottom: 12px;
 }
 
 .lecture-list {
-    margin-left: 10px;
-    margin-bottom: 20px;
+    list-style: none;
+    padding-left: 4px;
+    margin-bottom: 18px;
 }
 
 .lecture-item {
     display: flex;
     justify-content: space-between;
-    padding: 4px 0;
+    padding: 6px 0;
 }
 
 .lecture-title-text {
-    color: #374151;
-    font-weight: 500;
+    color: #333;
     font-size: 0.95rem;
 }
 
 .lecture-price-text {
     color: #2563eb;
     font-weight: 600;
-    font-size: 0.95rem;
 }
 
-/* 최종 금액 강조 */
+/* 최종결제금액 */
 .total-amount {
     font-size: 1.35rem;
     font-weight: 800;
     color: #2563eb;
 }
 
-/* 환불 버튼 (투명 + 빨간 글씨) */
+/* 환불 버튼 */
 .refund-btn {
+    display: inline-block;
+    margin-top: 24px;
+    width: 100%;
+    padding: 14px 0;
+
+    border: 1px solid #dc2626;
+    border-radius: 12px;
     background: transparent;
-    border: none;
+
+    font-weight: 700;
     color: #dc2626;
-    padding: 10px 6px;
     font-size: 1rem;
-    font-weight: 600;
+
     cursor: pointer;
-
-    display: block;
-    margin-left: auto;
-    margin-top: 20px;
-
-    transition: all .18s ease;
+    transition: .15s ease;
 }
 
 .refund-btn:hover {
-    background: rgba(220, 38, 38, 0.08);
-    color: #b91c1c;
-    transform: translateY(-1px);
+    background: rgba(220,38,38,0.1);
 }
+
+.lecture-title-text, 
+.lecture-item span:first-child {
+    max-width: 420px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+

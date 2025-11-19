@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ 추가
 
@@ -255,21 +256,45 @@ public class MemberController {
 	        return "member/paymentList";    // JSP 경로
 	    }
 	
-	  // 결제내역상세상세
+//	  // 결제내역상세상세
+//	    @GetMapping("/payment")
+//	    public String paymentDetail(int payment_id, HttpSession session, Model model) {
+//	    	System.out.println("MemberController paymet()");
+//	        UserVO user = (UserVO) session.getAttribute("userVO");
+//	        PaymentVO payment = paymentService.getPayment(payment_id);
+//
+//	        payment.setRefundable(paymentService.isRefundable(payment.getCreated_at()));
+//
+//	        model.addAttribute("userVO", user);
+//	        model.addAttribute("payment", payment);
+//
+//	        return "member/payment";
+//	    }
+	    
 	    @GetMapping("/payment")
-	    public String paymentDetail(int payment_id, HttpSession session, Model model) {
-	    	System.out.println("MemberController paymet()");
-	        UserVO user = (UserVO) session.getAttribute("userVO");
-	        PaymentVO payment = paymentService.getPayment(payment_id);
+	    public String paymentDetailPage(
+	            @RequestParam("payment_id") int paymentId,
+	            HttpSession session,
+	            Model model) {
 
+	        UserVO user = (UserVO) session.getAttribute("userVO");
+	        if (user == null) {
+	            return "redirect:/member/login"; // 보호
+	        }
+
+	        // 결제 상세 정보
+	        PaymentVO payment = paymentService.getPayment(paymentId);
+
+	        // 환불 가능 여부 계산
 	        payment.setRefundable(paymentService.isRefundable(payment.getCreated_at()));
 
-	        model.addAttribute("userVO", user);
+	        // JSP에서 사용하도록 모델에 담기
 	        model.addAttribute("payment", payment);
 
-	        return "member/payment";
+	        // JSP 경로
+	        return "member/payment";  // /WEB-INF/views/member/payment.jsp
 	    }
-	
+
 	
 	
 	

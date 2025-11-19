@@ -16,20 +16,21 @@ body {
     padding: 40px 30px;
 }
 
-h1 {
-    font-size: 1.8rem;
-    margin-bottom: 25px;
-}
-
-/* 카드 공통 */
+/* ===============================
+   결제 카드
+================================ */
 .payment-card {
     background: #fff;
     padding: 25px 30px;
     margin-bottom: 18px;
     border-radius: 14px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    min-height: 140px;
     transition: .15s ease;
 }
 
@@ -38,86 +39,112 @@ h1 {
     transform: translateY(-2px);
 }
 
-/* 왼쪽 */
+/* 🔥 충돌 방지: 기존 left → card-left */
+.card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+/* 🔥 충돌 방지: 기존 right → card-right */
+.card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+
+    min-width: 150px;
+}
+
+/* 텍스트 기본 */
 .order-no {
     font-size: 0.95rem;
     color: #444;
-    margin-bottom: 4px;
 }
 
 .date-status {
     font-size: 0.9rem;
     color: #666;
-    margin-bottom: 6px;
     display: flex;
-    align-items: center;
     gap: 6px;
 }
 
-.date {
-    font-size: 0.9rem;
-    color: #666;
-}
-
 .lecture-title {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-top: 5px;
-    color: #333;
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* 상태 텍스트 */
-.status-text {
-    font-size: 0.9rem;
-    font-weight: 700;
-}
+.status-paid { color: #16a34a; font-weight: 700; }
+.status-cancelled { color: #dc2626; font-weight: 700; }
+.status-etc { color: #999; }
 
-.status-paid { color: #16a34a; }     /* 초록 */
-.status-cancelled { color: #dc2626; } /* 빨강 */
-.status-etc { color: #6b7280; }       /* 회색 */
-
-/* 오른쪽 액션 */
-.right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-}
-
-/* 텍스트 버튼 */
+/* 버튼 */
 .action-btn {
+    background: none;
     border: none;
-    background: transparent;
     font-size: 0.95rem;
-    cursor: pointer;
-    padding: 0;
     color: #555;
-    transition: .15s ease;
+    cursor: pointer;
 }
 
 .action-btn:hover {
     text-decoration: underline;
 }
 
-/* 환불 요청 버튼 */
-.refund-btn {
-    color: #dc2626;
-}
-.refund-btn:hover {
-    color: #b91c1c;
-}
+.refund-btn { color: #dc2626; }
+.refund-btn:hover { color: #b91c1c; }
 
-/* 상세 보기 */
-.detail-btn {
-    color: #666;
-}
-.detail-btn:hover {
-    color: #2563eb;
-}
+.detail-btn { color: #666; }
+.detail-btn:hover { color: #2563eb; }
 
-/* 환불 불가 */
 .disabled-btn {
-    color: #a1a1a1;
+    color: #bbb;
     cursor: default;
-    text-decoration: none !important;
+}
+
+/* ==========================
+   모달 기본 스타일
+=========================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.48);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-box {
+    width: 720px; /* 🔥 480 → 720 으로 확대 */
+    max-height: 80vh;
+    padding: 32px 40px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    border: none;
+    background: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.modal-frame {
+    width: 100%;
+    height: 74vh; /* 🔥 더 많은 내용을 표시 */
+    border: none;
+    border-radius: 12px;
 }
