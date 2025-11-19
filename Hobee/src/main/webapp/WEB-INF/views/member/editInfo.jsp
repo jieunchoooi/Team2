@@ -27,7 +27,6 @@
 			action="${pageContext.request.contextPath}/member/updatePro"
 			method="post" enctype="multipart/form-data">
 			<section class="main-content">
-				<h1>회원정보 수정</h1>
 				<div class="main-header">
 					<div class="profile-box">
 						<div class="profile-pic">
