@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -28,46 +30,29 @@
 <section class="course-section">
 	<h3>인기 강의 🔥</h3>
 	<div class="course-grid">
+	<c:choose>
+		<c:when test="${not empty bestList}">
+			<c:forEach var="lecture" items="${bestList}">
+				<div class="course-card">
+					<a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}">
+						<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" class="course-thumb" 
+						     alt="${lecture.lecture_title}">
+					</a>
+					<div class="course-info">
+						<div class="course-title">${lecture.lecture_title}</div>
+						<div class="course-price">
+							<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<p>인기강의가 없습니다.</p>
+		</c:otherwise>
+	</c:choose>
 	
-		<div class="course-card">
-			<a href="${pageContext.request.contextPath}/category/lecture">
-				<img src="https://picsum.photos/400/250?random=1" class="course-thumb" alt="강의1">
-			</a>
-			<div class="course-info">
-				<div class="course-title">드로잉 기초 클래스</div>
-				<div class="course-price">₩49,000</div>
-			</div>
-		</div>
-
-		<div class="course-card">
-			<a href="${pageContext.request.contextPath}/category/lecture">
-				<img src="https://picsum.photos/400/250?random=2" class="course-thumb" alt="강의2">
-			</a>
-			<div class="course-info">
-				<div class="course-title">파이썬으로 배우는 코딩</div>
-				<div class="course-price">₩69,000</div>
-			</div>
-		</div>
-
-		<div class="course-card">
-			<a href="${pageContext.request.contextPath}/category/lecture">
-				<img src="https://picsum.photos/400/250?random=3" class="course-thumb" alt="강의3">
-			</a>
-			<div class="course-info">
-				<div class="course-title">영어 회화 마스터</div>
-				<div class="course-price">₩59,000</div>
-			</div>
-		</div>
-
-		<div class="course-card">
-			<a href="${pageContext.request.contextPath}/category/lecture">
-				<img src="https://picsum.photos/400/250?random=4" class="course-thumb" alt="강의4">
-			</a>
-			<div class="course-info">
-				<div class="course-title">공예로 힐링하기</div>
-				<div class="course-price">₩55,000</div>
-			</div>
-		</div>
+		
 		
 	</div>
 </section>
