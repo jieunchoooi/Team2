@@ -306,7 +306,7 @@ footer {
 	                        <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
 	                        <div class="card-body">
 	                            <div class="card-title">${top.lecture_title}</div>
-	                            <div class="card-price">₩<fmt:formatNumber value="${top.lecture_price}" pattern="#,###" /></div>
+	                            <div class="card-price"><fmt:formatNumber value="${top.lecture_price}" pattern="#,###" />원</div>
 	                        </div>
 	                    </div>
 	                </a>
@@ -335,7 +335,7 @@ footer {
 	                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
 	                    <div class="card-body">
 	                        <div class="card-title">${lec.lecture_title}</div>
-	                        <div class="card-price">₩<fmt:formatNumber value="${lec.lecture_price}" pattern="#,###" /></div>
+	                        <div class="card-price"><fmt:formatNumber value="${lec.lecture_price}" pattern="#,###" />원</div>
 	                    </div>
 	                </div>
 	            </a>
