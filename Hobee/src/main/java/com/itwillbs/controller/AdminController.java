@@ -149,8 +149,12 @@ public class AdminController {
    public String adminMemberList(Model model, HttpServletRequest request) {
       System.out.println("AdminController adminMemberList()");
 
+      String filter = request.getParameter("filter");
+      if(filter == null || filter.isEmpty()) {
+    	  filter = "all";
+      }
+      
       String pageNum = request.getParameter("pageNum");
-
       if (pageNum == null) {
          pageNum = "1";
       }
@@ -162,11 +166,24 @@ public class AdminController {
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
 
-      List<UserVO> memberList = adminService.listMember(pageVO);
-
+      List<UserVO> memberList;
+      int count;
+      
+      if("active".equals(filter)) {
+    	  memberList = adminService.activeMemberList(pageVO);
+    	  count = adminService.memberCount();
+      }else if("inactive".equals(filter)) {
+    	  memberList = adminService.inactiveMemberList(pageVO);
+    	  count = adminService.inactiveMemberCount();
+      }else {
+    	  memberList = adminService.MemberList(pageVO);
+    	  count = adminService.countMemberCount();
+      }
+      
+      
       int dcount = adminService.deletecountMemberList();
       int acount = adminService.activecountMemberList();
-      int count = adminService.countMemberList();
+      int totalcount = adminService.countMemberList();
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
@@ -181,13 +198,12 @@ public class AdminController {
       pageVO.setStartPage(startPage);
       pageVO.setEndPage(endPage);
       pageVO.setPageCount(pageCount);
-      pageVO.setCount(count);
 
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("memberList", memberList);
-      model.addAttribute("count", count);
       model.addAttribute("acount", acount);
       model.addAttribute("dcount", dcount);
+      model.addAttribute("totalcount",totalcount);
 
       return "admin/adminMemberList";
    }
@@ -244,9 +260,13 @@ public class AdminController {
    @GetMapping("/adminTeacherList")
    public String adminTeacherList(Model model, HttpServletRequest request) {
       System.out.println("AdminController adminTeacherList()");
-
+      
+      String filter = request.getParameter("filter");
+      if (filter == null || filter.isEmpty()) {
+          filter = "all"; // 기본값: 전체
+      }
+      
       String pageNum = request.getParameter("pageNum");
-
       if (pageNum == null) {
          pageNum = "1";
       }
@@ -258,9 +278,22 @@ public class AdminController {
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
 
-      List<UserVO> teacherList = adminService.listTeacher(pageVO);
+      List<UserVO> teacherList;
+
+      int count;
       
-      int count = adminService.countTeacherList();
+      if ("active".equals(filter)) {
+          teacherList = adminService.activeTeacherList(pageVO);
+          count = adminService.teacharCount();
+      } else if ("inactive".equals(filter)) {
+          teacherList = adminService.inactiveTeacherList(pageVO);
+          count = adminService.inactiveTeacharCount();
+      } else {
+          teacherList = adminService.listTeacher(pageVO);
+          count = adminService.countTeacherList();
+      }
+      
+      int totalCount = adminService.countTeacherList();
       int tCount = adminService.teacharCount();
       int intCount = adminService.inactiveTeacharCount();
       
@@ -278,13 +311,13 @@ public class AdminController {
       pageVO.setStartPage(startPage);
       pageVO.setEndPage(endPage);
       pageVO.setPageCount(pageCount);
-      pageVO.setCount(count);
 
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("teacherList", teacherList);
       model.addAttribute("tCount", tCount);
-      model.addAttribute("count", count);
       model.addAttribute("intCount", intCount);
+      model.addAttribute("totalCount", totalCount);
+//      model.addAttribute("filter", filter);
 
       return "admin/adminTeacherList";
    }
