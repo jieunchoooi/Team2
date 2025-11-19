@@ -56,7 +56,7 @@
 								</c:choose></td>
 							<td>
 								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
-								<button class="btn btn-revert" data-num="${user.user_num}" ata-name="${user.user_name}">탈퇴 취소</button>
+								<button class="btn btn-revert" data-num="${user.user_num}" data-name="${user.user_name}">탈퇴 취소</button>
 							</td>
 						</tr>
 					</c:forEach>

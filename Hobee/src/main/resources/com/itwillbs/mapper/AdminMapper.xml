@@ -50,6 +50,11 @@
        WHERE user_role = 'instructor' 
    </select> 
    
+   <select id="countMemberCount" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_role = 'user' 
+   </select> 
+   
    <insert id="LectureUpdate">
       INSERT INTO lecture 
       (lecture_title, category_detail, lecture_detail, lecture_author, lecture_price, lecture_img)
@@ -101,14 +106,59 @@
        LIMIT #{startRow}, #{pageSize}
    </select> 
    
+   <select id="MemberList" resultType="com.itwillbs.domain.UserVO" > 
+       select * from user 
+       WHERE user_role = 'user'
+       order by user_num desc
+       LIMIT #{startRow}, #{pageSize}
+   </select> 
+
+   <select id="activeTeacherList" resultType="com.itwillbs.domain.UserVO" > 
+       select * from user 
+       WHERE user_role = 'instructor' and user_status = 'active'
+       order by user_num desc
+       LIMIT #{startRow}, #{pageSize}
+   </select> 
+   
+   <select id="activeMemberList" resultType="com.itwillbs.domain.UserVO" > 
+       select * from user 
+       WHERE user_role = 'user' and user_status = 'active'
+       order by user_num desc
+       LIMIT #{startRow}, #{pageSize}
+   </select> 
+   
+   <select id="inactiveTeacherList" resultType="com.itwillbs.domain.UserVO" > 
+       select * from user 
+       WHERE user_role = 'instructor' and user_status != 'active'
+       order by user_num desc
+       LIMIT #{startRow}, #{pageSize}
+   </select> 
+
+   <select id="inactiveMemberList" resultType="com.itwillbs.domain.UserVO" > 
+       select * from user 
+       WHERE user_role = 'user' and user_status != 'active'
+       order by user_num desc
+       LIMIT #{startRow}, #{pageSize}
+   </select> 
+   
    <select id="teacharCount" resultType="java.lang.Integer" > 
        select count(*) from user
        WHERE user_role = 'instructor' and user_status = 'active'
    </select> 
    
+   <select id="memberCount" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_role = 'user' and user_status = 'active'
+   </select> 
+   
    <select id="inactiveTeacharCount" resultType="java.lang.Integer" > 
        select count(*) from user
        WHERE user_role = 'instructor' and user_status != 'active'
+   </select> 
+   
+   <select id="inactiveMemberCount" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_role = 'user' and user_status != 'active'
    </select> 
    
    <select id="classCount" resultType="java.lang.Integer" > 
