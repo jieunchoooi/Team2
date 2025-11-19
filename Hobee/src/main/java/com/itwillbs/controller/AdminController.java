@@ -322,13 +322,17 @@ public class AdminController {
       return "admin/adminTeacherList";
    }
 
-   // 회원정보 조회
+   // 탈퇴 회원 조회
    @GetMapping("/adminWithdrawList")
    public String adminWithdrawList(Model model, HttpServletRequest request) {
       System.out.println("AdminController adminWithdrawList()");
 
+      String filter = request.getParameter("filter");
+      if (filter == null || filter.isEmpty()) {
+          filter = "all"; // 기본값: 전체
+      }
+      
       String pageNum = request.getParameter("pageNum");
-
       if (pageNum == null) {
          pageNum = "1";
       }
@@ -340,9 +344,26 @@ public class AdminController {
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
 
-      List<UserVO> memberList = adminService.withDrawListMember(pageVO);
-
-      int count = adminService.countDrawMemberList();
+//      List<UserVO> memberList = adminService.withDrawListMember(pageVO);
+      List<UserVO> memberList;
+      
+      int count;
+//      int count = adminService.countDrawMemberList();
+      if("user".equals(filter)) {
+    	  memberList = adminService.withDeleteUserMember(pageVO);
+    	  count = adminService.deletecountMemberList();
+      }else if("instructor".equals(filter)) {
+    	  memberList = adminService.DrawinstructorListMember(pageVO);
+    	  count = adminService.instructorDeletecountList();
+      }else {
+    	  memberList = adminService.withDrawListMember(pageVO);
+    	  count = adminService.deleteAllMemberCount();
+      }
+      
+      int totalCount = adminService.deleteAllMemberCount();
+      int mdCount = adminService.deletecountMemberList();
+      int intCount = adminService.instructorDeletecountList();
+      
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
@@ -361,6 +382,10 @@ public class AdminController {
 
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("memberList", memberList);
+      model.addAttribute("totalCount", totalCount);
+      model.addAttribute("mdCount", mdCount);
+      model.addAttribute("intCount", intCount);
+      model.addAttribute("filter", filter);
 
       return "admin/adminWithdrawList";
    }

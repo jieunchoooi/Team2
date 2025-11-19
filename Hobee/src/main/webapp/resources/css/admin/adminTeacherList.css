@@ -196,9 +196,9 @@ td:last-child {
 }
 
 .search-box input {
-    width: 300px;
+    flex: 1;
     padding: 10px 14px;
-    border: 1px solid #d3ddff;
+    border: 1px solid #ffcdd2;
     border-radius: 10px;
     outline: none;
     font-size: 0.95rem;
@@ -206,8 +206,8 @@ td:last-child {
 }
 
 .search-box input:focus {
-    border-color: #2573ff;
-    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
 }
 
 .search-box input::placeholder {
