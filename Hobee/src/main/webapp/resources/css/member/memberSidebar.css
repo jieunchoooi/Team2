@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* ===============================
-   ✅ 마이페이지 사이드바 스타일
+   🎨 마이페이지 사이드바 (Hobee 파스텔톤 스타일)
    =============================== */
 .sidebar {
   position: fixed;
@@ -9,10 +9,10 @@
   left: 0;
   width: 240px;
   height: 100vh;
-  background: #fff;
+  background: #ffffff;
   border-right: 1px solid #e5e7eb;
   padding: 24px 20px;
-  padding-top: 100px; /* 헤더 아래로 내용 시작 */
+  padding-top: 100px; /* 헤더 아래 공간 맞춤 */
   box-sizing: border-box;
   overflow-y: auto;
   z-index: 50;
@@ -21,7 +21,7 @@
 }
 
 /* ===============================
-   ✅ 사이드바 타이틀
+   🔹 제목 (현재 미사용이지만 유지)
    =============================== */
 .sidebar h2 {
   text-align: center;
@@ -32,7 +32,7 @@
 }
 
 /* ===============================
-   ✅ 메뉴 컨테이너
+   🔹 메뉴 컨테이너
    =============================== */
 .menu {
   flex: 1;
@@ -42,7 +42,7 @@
 }
 
 /* ===============================
-   ✅ 메뉴 아이템
+   🔹 메뉴 아이템 기본
    =============================== */
 .menu-item {
   display: flex;
@@ -53,31 +53,43 @@
   font-size: 14px;
   color: #374151;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: all 0.25s ease;
   user-select: none;
 }
 
 /* ===============================
-   ✅ hover / active 상태
+   🔹 hover 효과
    =============================== */
 .menu-item:hover {
   background-color: #f3f6ff;
   color: #2563eb;
+  transform: translateX(4px);
 }
 
+/* ===============================
+   ⭐ 활성(active) 메뉴 스타일
+   =============================== */
 .menu-item.active {
   background-color: #e8f0ff;
   color: #2563eb;
   font-weight: 600;
   border-left: 4px solid #2563eb;
+  transform: translateX(6px);
 }
 
+.menu-item.active span {
+  color: #2563eb;
+}
+
+/* ===============================
+   텍스트 영역
+   =============================== */
 .menu-item span {
   flex: 1;
 }
 
 /* ===============================
-   ✅ 로그아웃 버튼
+   🔻 로그아웃 버튼
    =============================== */
 .logout-btn {
   width: 100%;
@@ -88,9 +100,8 @@
   border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s ease;
-  margin-top: 15px;
   box-shadow: 0 4px 10px rgba(255, 91, 91, 0.3);
+  transition: all 0.25s ease;
 }
 
 .logout-btn:hover {
@@ -99,7 +110,7 @@
 }
 
 /* ===============================
-   ✅ 스크롤바
+   스크롤바 디자인
    =============================== */
 .sidebar::-webkit-scrollbar {
   width: 6px;
@@ -115,7 +126,7 @@
 }
 
 /* ===============================
-   ✅ 반응형
+   📱 반응형 스타일
    =============================== */
 @media (max-width: 768px) {
   .sidebar {
@@ -123,16 +134,7 @@
     padding: 20px 16px;
     padding-top: 90px;
   }
-  
-  .sidebar h2 {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  
-  .menu {
-    gap: 5px;
-  }
-  
+
   .menu-item {
     padding: 9px 12px;
     font-size: 13px;
@@ -145,21 +147,12 @@
     padding: 18px 14px;
     padding-top: 85px;
   }
-  
-  .sidebar h2 {
-    font-size: 15px;
-    margin-bottom: 18px;
-  }
-  
-  .menu {
-    gap: 4px;
-  }
-  
+
   .menu-item {
     padding: 8px 10px;
     font-size: 12px;
   }
-  
+
   .logout-btn {
     padding: 10px 0;
     font-size: 13px;

@@ -79,31 +79,40 @@
          ========================================================= -->
     <select id="getPayment" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
 
-        SELECT 
-            p.payment_id,
-            p.user_num,
-            p.amount,
-            p.used_points,
-            p.saved_points,
-            p.status,
-            p.imp_uid,
-            p.merchant_uid,
-            p.created_at,
+    SELECT 
+        p.payment_id,
+        p.user_num,
+        p.amount,
+        p.used_points,
+        p.saved_points,
+        p.status,
+        p.imp_uid,
+        p.merchant_uid,
+        p.created_at,
 
-            u.user_name,
-            u.user_email,
+        u.user_name,
+        u.user_email,
 
-            (
-                SELECT GROUP_CONCAT(l.lecture_title SEPARATOR ', ')
-                FROM enrollment e
-                LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
-                WHERE e.payment_id = p.payment_id
-            ) AS lectureTitles
+        (
+            SELECT GROUP_CONCAT(l.lecture_title SEPARATOR ', ')
+            FROM enrollment e
+            LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+            WHERE e.payment_id = p.payment_id
+        ) AS lectureTitles,
 
-        FROM payment p
-        LEFT JOIN user u ON p.user_num = u.user_num
-        WHERE p.payment_id = #{payment_id};
-    </select>
+        (
+            SELECT GROUP_CONCAT(l.lecture_price SEPARATOR ',')
+            FROM enrollment e
+            LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+            WHERE e.payment_id = p.payment_id
+        ) AS lecturePrices
+
+    FROM payment p
+    LEFT JOIN user u ON p.user_num = u.user_num
+    WHERE p.payment_id = #{payment_id};
+
+</select>
+
 
 
     <!-- =========================================================

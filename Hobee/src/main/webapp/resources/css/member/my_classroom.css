@@ -120,36 +120,7 @@ body {
      - 모든 페이지에서 공통 사용 가능
 ============================================ */
 
-.badge {
-    display: inline-block;
-    padding: 3px 8px;          <%-- 기본 패딩 --%>
-    border-radius: 8px;        <%-- 둥근 모서리 --%>
-    font-size: 0.85rem;        <%-- 배지 글자 크기 --%>
-    font-weight: 700;          <%-- 강조 --%>
-    color: #fff;               <%-- 배경색 위 가독성 --%>
-    vertical-align: middle;
-}
 
-/* 🥉 Bronze 등급 */
-.badge.bronze {
-    background-color: #cd7f32;    <%-- 동(브론즈) 컬러 --%>
-}
-
-/*  🥈 Silver 등급 */
-.badge.silver {
-    background-color: #9ca3af;    <%-- 중간 회색 (실버 톤) --%>
-}
-
-/*  🥇 Gold 등급 */
-.badge.gold {
-    background-color: #fbbf24;    <%-- 골드 노랑 톤 --%>
-}
-
-/* 🔷 Platinum 등급*/
-.badge.platinum {
-    background: linear-gradient(135deg, #93c5fd, #3b82f6); 
-    <%-- 밝은 블루 → 진한 블루 그라데이션 --%>
-}
 
 
 /* =========================================

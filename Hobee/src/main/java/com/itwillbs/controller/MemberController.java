@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,25 @@ public class MemberController {
 	// 업로드 경로
 	@Resource(name = "uploadPath")
 	private String uploadPath;
+	
+	// ⭐ 모든 /member/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
+	@ModelAttribute("page")
+	public String setPageIdentifier(HttpServletRequest req) {
+	    String uri = req.getRequestURI();
+
+	    if (uri.contains("mypage")) return "mypageHome";
+	    if (uri.contains("my_classroom")) return "lecture";
+	    if (uri.contains("scrap")) return "scrap";
+	    if (uri.contains("review")) return "review";
+	    if (uri.contains("paymentList")) return "paymentList";
+	    if (uri.contains("payment")) return "paymentList"; // ⭐ 상세 페이지도 동일 그룹
+	    if (uri.contains("editInfo")) return "edit";
+	    if (uri.contains("updatePassWord")) return "edit";
+
+	    return "";
+	}
+
+	
 	
 	// 마이페이지
 	@GetMapping("/mypage") 
