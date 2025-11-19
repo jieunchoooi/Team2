@@ -23,7 +23,6 @@
 
 	<!-- 메인 영역 -->
 	<main class="main-content">
-		<h1>마이페이지</h1>
 		<div class="content-wrapper">
 			<div class="main-header">
 				<div class="profile-box">

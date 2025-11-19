@@ -18,7 +18,6 @@
 <jsp:include page="../include/memberSidebar.jsp" />
 
 <main class="main-content">
-<h1>내 강의실</h1>
     <!-- 🔥 미니 프로필 카드 -->
     <div class="main-header">
 				<div class="profile-box">

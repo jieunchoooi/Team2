@@ -15,7 +15,6 @@
 <jsp:include page="../include/memberSidebar.jsp" />
 
 <main class="cart-wrap">
-  <h1 class="cart-title">스크랩 / 관심</h1>
 
   <div class="cart-container">
     <!-- ✅ 좌측 강의 리스트 -->

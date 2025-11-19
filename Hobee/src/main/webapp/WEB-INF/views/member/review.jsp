@@ -18,7 +18,6 @@
 
 <main class="main-content">
   <div class="main-header">
-    <h1>내가 쓴 리뷰</h1>
   </div>
 
   <div class="table-container">

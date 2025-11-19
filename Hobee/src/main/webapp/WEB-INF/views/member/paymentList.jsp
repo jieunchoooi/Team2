@@ -20,7 +20,6 @@
 
 <main class="main-content">
 
-<h1>결제 내역</h1>
 
 <div class="payment-list">
 
