@@ -234,7 +234,7 @@ public class AdminController {
       
       adminService.RevertMember(user_num);
       
-      return "redirect:/admin/adminMemberList";
+      return "redirect:/admin/adminWithdrawList";
    }
    
    
