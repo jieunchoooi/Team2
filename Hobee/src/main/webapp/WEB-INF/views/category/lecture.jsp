@@ -229,142 +229,49 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       </div>
 
       <!-- 챕터 1 -->
+<!--       <div class="chapter-item"> -->
+<!--         <div class="chapter-header" onclick="toggleChapter(this)"> -->
+<!--           <div class="chapter-info"> -->
+<!--             <div class="chapter-label">CHAPTER 1</div> -->
+<!--             <div class="chapter-title">무작정 따라 그리며 기초 쌓기!</div> -->
+<!--           </div> -->
+<!--           <div class="chapter-meta"> -->
+<!--             <span>강의 4개</span> -->
+<!--             <i class="fas fa-chevron-down chapter-toggle"></i> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--         <div class="chapter-content"> -->
+<!--           <div class="lecture-item"> -->
+<!--             <span class="lecture-number">1</span> -->
+<!--             <span class="lecture-title">기본 선 연습하기</span> -->
+<!--             <span class="lecture-duration">07:15</span> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--       </div> -->
+      
+      <!-- 챕터 1 -->
       <div class="chapter-item">
-        <div class="chapter-header" onclick="toggleChapter(this)">
-          <div class="chapter-info">
-            <div class="chapter-label">CHAPTER 1</div>
-            <div class="chapter-title">무작정 따라 그리며 기초 쌓기!</div>
-          </div>
-          <div class="chapter-meta">
-            <span>강의 4개</span>
-            <i class="fas fa-chevron-down chapter-toggle"></i>
-          </div>
-        </div>
-        <div class="chapter-content">
-          <div class="lecture-item">
-            <span class="lecture-number">1</span>
-            <span class="lecture-title">기본 선 연습하기</span>
-            <span class="lecture-duration">07:15</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">2</span>
-            <span class="lecture-title">도형 그리기 마스터</span>
-            <span class="lecture-duration">06:30</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">3</span>
-            <span class="lecture-title">명암 표현 기법</span>
-            <span class="lecture-duration">08:45</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">4</span>
-            <span class="lecture-title">실습: 간단한 오브젝트 그리기</span>
-            <span class="lecture-duration">05:50</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 챕터 2 -->
-      <div class="chapter-item">
-        <div class="chapter-header" onclick="toggleChapter(this)">
-          <div class="chapter-info">
-            <div class="chapter-label">CHAPTER 2</div>
-            <div class="chapter-title">응용편! 약간의 변화로 디테일 업그레이드하기!</div>
-          </div>
-          <div class="chapter-meta">
-            <span>강의 5개</span>
-            <i class="fas fa-chevron-down chapter-toggle"></i>
-          </div>
-        </div>
-        <div class="chapter-content">
-          <div class="lecture-item">
-            <span class="lecture-number">1</span>
-            <span class="lecture-title">색상 이론과 팔레트 만들기</span>
-            <span class="lecture-duration">09:20</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">2</span>
-            <span class="lecture-title">레이어 활용 팁</span>
-            <span class="lecture-duration">06:15</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">3</span>
-            <span class="lecture-title">디테일 추가하는 법</span>
-            <span class="lecture-duration">07:40</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">4</span>
-            <span class="lecture-title">텍스처 표현 기법</span>
-            <span class="lecture-duration">08:10</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">5</span>
-            <span class="lecture-title">실습: 복잡한 오브젝트 그리기</span>
-            <span class="lecture-duration">10:25</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 챕터 3 -->
-      <div class="chapter-item">
-        <div class="chapter-header" onclick="toggleChapter(this)">
-          <div class="chapter-info">
-            <div class="chapter-label">CHAPTER 3</div>
-            <div class="chapter-title">나만의 캐릭터를 찾기 위한 여정!</div>
-          </div>
-          <div class="chapter-meta">
-            <span>강의 3개</span>
-            <i class="fas fa-chevron-down chapter-toggle"></i>
-          </div>
-        </div>
-        <div class="chapter-content">
-          <div class="lecture-item">
-            <span class="lecture-number">1</span>
-            <span class="lecture-title">얼굴 구조와 표정 그리기</span>
-            <span class="lecture-duration">12:30</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">2</span>
-            <span class="lecture-title">다양한 각도에서 얼굴 그리기</span>
-            <span class="lecture-duration">11:15</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">3</span>
-            <span class="lecture-title">캐릭터 개성 만들기</span>
-            <span class="lecture-duration">09:50</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 챕터 4 -->
-      <div class="chapter-item">
-        <div class="chapter-header" onclick="toggleChapter(this)">
-          <div class="chapter-info">
-            <div class="chapter-label">CHAPTER 4</div>
-            <div class="chapter-title">내 그림으로 나의 우주를 표현해보기!</div>
-          </div>
-          <div class="chapter-meta">
-            <span>강의 3개</span>
-            <i class="fas fa-chevron-down chapter-toggle"></i>
-          </div>
-        </div>
-        <div class="chapter-content">
-          <div class="lecture-item">
-            <span class="lecture-number">1</span>
-            <span class="lecture-title">의상과 포즈 디자인</span>
-            <span class="lecture-duration">10:20</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">2</span>
-            <span class="lecture-title">배경과 구도 잡기</span>
-            <span class="lecture-duration">13:40</span>
-          </div>
-          <div class="lecture-item">
-            <span class="lecture-number">3</span>
-            <span class="lecture-title">최종 프로젝트: 나만의 작품 완성하기</span>
-            <span class="lecture-duration">15:30</span>
-          </div>
-        </div>
+      	<c:forEach var="chapter" items="${chapterList}">
+	        <div class="chapter-header" onclick="toggleChapter(this)">
+	          <div class="chapter-info">
+	          	<div class="chapter-label">CHAPTER ${chapter.chapter_order}</div>
+	            <div class="chapter-title">${chapter.chapter_title}</div>
+	          </div>
+	          <div class="chapter-meta">
+	            <span>강의 4개</span>
+	            <i class="fas fa-chevron-down chapter-toggle"></i>
+	          </div>
+	        </div>
+        </c:forEach>
+        <c:forEach var="detail" items="${detailList}">
+        	<div class="chapter-content">
+	          <div class="lecture-item">
+	            <span class="lecture-number">${detail.detail_order}</span>
+	            <span class="lecture-title">${detail.detail_title}</span>
+	            <span class="lecture-duration">${detail.detail_time}</span>
+	          </div>
+	        </div>
+        </c:forEach>
       </div>
     </div>
 

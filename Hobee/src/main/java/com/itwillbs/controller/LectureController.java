@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.domain.ChapterDetailVO;
+import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.LectureService;
@@ -52,7 +54,9 @@ public class LectureController {
 		UserVO userVO = lectureService.getUserImg(lecture_num);
 		List<LectureVO> authorLectures = lectureService.authorLectures(lectureVO);
 		List<LectureVO> similarLectures = lectureService.similarLectures(lectureVO);
-
+		ChapterVO chapterVO = lectureService.getChapter(lecture_num);
+		ChapterDetailVO detailVO = lectureService.getDetail(lecture_num);
+		
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userVO);
 		model.addAttribute("authorLectures", authorLectures);
