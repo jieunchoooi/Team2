@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+/* 테이블 스타일 */
+.admin-card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-card thead {
+    background: #f6f7fb;
+}
+
+.admin-card th, 
+.admin-card td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 14px;
+}
+
+.admin-card a:hover {
+    text-decoration: underline;
+}
+
+/* 버튼 상자 레이아웃 동일 유지 */
+.btn-blue, .btn-gray, .btn-red {
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}

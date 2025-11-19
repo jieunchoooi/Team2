@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+/* 테이블 – admin-table 구조 동일 */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.admin-table thead {
+    background: #f6f7fb;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+/* 상태 배지 */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.done {
+    background: #2f6bff;
+}
+
+.status-badge.wait {
+    background: #9b9b9b;
+}
+
+/* 버튼 – adminLayout.css와 동일 */
+.btn-blue {
+    background: #2f6bff;
+    border: none;
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-blue:hover {
+    background: #2658d6;
+}
+
+.btn-red {
+    background: #ff4d4f;
+    border: none;
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-gray {
+    background: #7f8c8d;
+    border: none;
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}

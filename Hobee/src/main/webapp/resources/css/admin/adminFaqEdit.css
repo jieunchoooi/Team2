@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+/* 수정 테이블 */
+.faq-edit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.faq-label {
+    width: 130px;
+    font-weight: 700;
+    color: #333;
+    padding: 14px 10px;
+    background: #f6f7fb;
+    border-bottom: 1px solid #eee;
+}
+
+.faq-edit-table td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* input, select, textarea 공통 */
+.faq-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccd3e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.faq-select {
+    padding: 8px 12px;
+    border: 1px solid #ccd3e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.faq-textarea {
+    width: 90%;
+    height: 200px;
+    padding: 12px;
+    border: 1px solid #ccd3e0;
+    border-radius: 10px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* 버튼 */
+.faq-btn-area {
+    text-align: right;
+    margin-top: 25px;
+}

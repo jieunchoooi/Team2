@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+/* 답변 박스 (댓글 상세 comment-box와 동일한 스타일) */
+.faq-answer-box {
+    background: #f7f9fc;
+    border: 1px solid #e3e9f2;
+    padding: 20px;
+    border-radius: 14px;
+    font-size: 15.5px;
+    line-height: 1.7;
+    white-space: pre-line;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* 상단 정보 카드 */
+.post-info-card {
+    background: #eef3ff;
+    border-left: 6px solid #4a6cf7;
+    padding: 18px 22px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.post-info-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #34497b;
+}
+
+/* 상세 테이블 */
+.faq-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-label {
+    width: 140px;
+    padding: 12px 10px;
+    font-weight: 700;
+    color: #333;
+    background: #f6f7fb;
+    border-bottom: 1px solid #eee;
+}
+
+.faq-detail-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* 공개/숨김 태그 */
+.visible-on {
+    background: #4a6cf7;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.visible-off {
+    background: #9aa1b4;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.AdminFaqMapper">
+
+    <!-- FAQ 목록 -->
+    <select id="getFaqList" resultType="com.itwillbs.domain.AdminFaqVO">
+        SELECT
+            faq_id,
+            category,
+            question,
+            answer,
+            is_visible,
+            created_at
+        FROM faq
+        ORDER BY faq_id DESC
+    </select>
+
+    <!-- FAQ 등록 -->
+    <insert id="insertFaq">
+        INSERT INTO faq (
+            category,
+            question,
+            answer,
+            is_visible
+        ) VALUES (
+            #{category},
+            #{question},
+            #{answer},
+            #{is_visible}
+        )
+    </insert>
+
+    <!-- FAQ 상세 -->
+    <select id="getFaqDetail" resultType="com.itwillbs.domain.AdminFaqVO">
+        SELECT
+            faq_id,
+            category,
+            question,
+            answer,
+            is_visible,
+            created_at
+        FROM faq
+        WHERE faq_id = #{faq_id}
+    </select>
+
+    <!-- FAQ 수정 -->
+    <update id="updateFaq">
+        UPDATE faq
+        SET
+            category = #{category},
+            question = #{question},
+            answer = #{answer},
+            is_visible = #{is_visible}
+        WHERE faq_id = #{faq_id}
+    </update>
+
+    <!-- FAQ 삭제 -->
+    <delete id="deleteFaq">
+        DELETE FROM faq
+        WHERE faq_id = #{faq_id}
+    </delete>
+
+    <!-- FAQ 공개/숨김 변경 -->
+    <update id="updateVisible">
+        UPDATE faq
+        SET is_visible = #{is_visible}
+        WHERE faq_id = #{faq_id}
+    </update>
+
+</mapper>
