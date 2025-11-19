@@ -24,18 +24,24 @@
 		<div class="stats-container">
 			<div class="stat-card">
 				<h3>총 강사 수</h3>
-				<div class="stat-number">${tCount}</div>
+				<div class="stat-number">${count}</div>
 			</div>
 			<div class="stat-card orange">
-				<h3>총 클래스 수</h3>
-				<div class="stat-number">${clCount}</div>
+				<h3>활동 강사 수</h3>
+				<div class="stat-number">${tCount}</div>
 			</div>
 			<div class="stat-card green">
-				<h3>활성 강사</h3>
-				<div class="stat-number">${tCount}</div>
+				<h3>비활동 강사 수</h3>
+				<div class="stat-number">${intCount}</div>
 			</div>
 		</div>
 
+		<div class="search-box">
+			<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
+			<button>검색</button>
+			<button>전체회원</button>
+		</div>
+		
 		<div class="table-container">
 			<table>
 				<thead>
@@ -65,7 +71,7 @@
 							<td>${user.user_email}</td>
 							<td>
 								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
-								<button class="btn btn-delete">강제탈퇴</button>
+								<button class="btn btn-delete" data-num="${user.user_num}" data-name="${user.user_name}">강제탈퇴</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -92,13 +98,24 @@
 	</main>
 </body>
 <script type="text/javascript">
-
+let deletebtn = document.querySelectorAll(".btn-delete");
 let sumtc = document.querySelector(".stat-number");
 
 sumtc = function(){
 	href = "${pageContext.request.contextPath}/admin/sumTeacher"
 }
 
-
+deletebtn.forEach(function(btn){
+	btn.onclick = function(){
+		let userNum = this.getAttribute("data-num");
+        let userName = this.getAttribute("data-name"); 
+        
+        let result = confirm(userName + "님을 강제 탈퇴시키겠습니까?"); 
+        if(result) {
+            location.href = "${pageContext.request.contextPath}/admin/MemberAdminDelete?user_num=" + userNum + "&returnPage=teacher"	;
+			alert("탈퇴되었습니다.");
+        }
+    }
+});
 </script>
 </html>

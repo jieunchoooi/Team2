@@ -31,365 +31,371 @@ import com.itwillbs.service.UserService;
 @RequestMapping("/admin/*")
 public class AdminController {
 
-	@Inject
-	private AdminService adminService;
-
-	@Resource(name = "uploadPath1")
-	private String uploadPath1;
-
-	@GetMapping("/adminCategory")
-	public String adminCategory() {
-		System.out.println("AdminController adminCategory()");
-
-		return "admin/adminCategory";
-	}
-
-	// 클래스 등록
-	@GetMapping("/adminClassAdd")
-	public String adminClassAdd() {
-		System.out.println("AdminController adminClassAdd()");
-
-		return "admin/adminClassAdd";
-	}
+   @Inject
+   private AdminService adminService;
+
+   @Resource(name = "uploadPath1")
+   private String uploadPath1;
+
+   @GetMapping("/adminCategory")
+   public String adminCategory() {
+      System.out.println("AdminController adminCategory()");
+
+      return "admin/adminCategory";
+   }
+
+   // 클래스 등록
+   @GetMapping("/adminClassAdd")
+   public String adminClassAdd() {
+      System.out.println("AdminController adminClassAdd()");
+
+      return "admin/adminClassAdd";
+   }
 
-	// 클래스 등록
-	@PostMapping("/adminClassAddPro")
-	public String adminClassAddPro(HttpServletRequest request,
-			@RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
-		System.out.println("AdminController adminClassAddPro()");
-
-		LectureVO lectureVO = new LectureVO();
-		String lecture_title = request.getParameter("lecture_title");
-		String category_detail = request.getParameter("category_detail");
-		String lecture_author = request.getParameter("lecture_author");
-		String lecture_detail = request.getParameter("lecture_detail");
-
-		String priceParam = request.getParameter("lecture_price");
-		int lecture_price = 0; // 기본값 설정
-
-		if (priceParam != null && !priceParam.isEmpty()) {
-			lecture_price = Integer.parseInt(priceParam);
-		}
-
-		lectureVO.setLecture_title(lecture_title);
-		lectureVO.setCategory_detail(category_detail);
-		lectureVO.setLecture_detail(lecture_detail);
-		lectureVO.setLecture_author(lecture_author);
-		lectureVO.setLecture_price(lecture_price);
-
-		if (lecture_img != null && !lecture_img.isEmpty()) {
-			UUID uuid = UUID.randomUUID();
-			String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
-			System.out.println("파일명: " + filename);
-
-			FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
-
-			lectureVO.setLecture_img(filename);
-
-		}
-		System.out.println(lectureVO);
-		adminService.LectureUpdate(lectureVO);
-
-		return "redirect:/admin/adminClassList";
-	}
-
-	// 클래스 삭제
-	@GetMapping("/deleteClass")
-	public String deleteClass(@RequestParam("lecture_num") String lecture_num) {
-		System.out.println("AdminController deleteClass()");
-
-		adminService.deleteClass(lecture_num);
-
-		return "redirect:/admin/adminClassList";
-	}
-
-	@GetMapping("/adminClassList")
-	public String adminClassList(Model model, HttpServletRequest request) {
-		System.out.println("AdminController adminClassList()");
-
-		String pageNum = request.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1";
-		}
-		int currentPage = Integer.parseInt(pageNum);
-		int pageSize = 10;
-
-		PageVO pageVO = new PageVO();
-		pageVO.setPageNum(pageNum);
-		pageVO.setCurrentPage(currentPage);
-		pageVO.setPageSize(pageSize);
-
-		List<LectureVO> lectureList = adminService.listLecture(pageVO);
-
-		int count = adminService.countlectureList();
-		int pageBlock = 10;
-		int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
-		int endPage = startPage + (pageBlock - 1);
-		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		if (endPage > pageCount) {
-			endPage = pageCount;
-		}
-
-		pageVO.setCount(count);
-		pageVO.setPageBlock(pageBlock);
-		pageVO.setStartPage(startPage);
-		pageVO.setEndPage(endPage);
-		pageVO.setPageCount(pageCount);
-		pageVO.setCount(count);
-
-		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("lectureList", lectureList);
-
-		return "admin/adminClassList";
-	}
-
-	// 회원정보 조회
-	@GetMapping("/adminMemberList")
-	public String adminMemberList(Model model, HttpServletRequest request) {
-		System.out.println("AdminController adminMemberList()");
-
-		String pageNum = request.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1";
-		}
-		int currentPage = Integer.parseInt(pageNum);
-		int pageSize = 10;
-
-		PageVO pageVO = new PageVO();
-		pageVO.setPageNum(pageNum);
-		pageVO.setCurrentPage(currentPage);
-		pageVO.setPageSize(pageSize);
-
-		List<UserVO> memberList = adminService.listMember(pageVO);
-
-		int count = adminService.countMemberList();
-		int pageBlock = 10;
-		int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
-		int endPage = startPage + (pageBlock - 1);
-		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		if (endPage > pageCount) {
-			endPage = pageCount;
-		}
-
-		// pageVO 담기
-		pageVO.setCount(count);
-		pageVO.setPageBlock(pageBlock);
-		pageVO.setStartPage(startPage);
-		pageVO.setEndPage(endPage);
-		pageVO.setPageCount(pageCount);
-		pageVO.setCount(count);
-
-		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("memberList", memberList);
-
-		return "admin/adminMemberList";
-	}
-
-	@GetMapping("/MemberManagement")
-	public String MemberManagement(Model model, @RequestParam("user_num") int user_num) {
-		System.out.println("AdminController MemberManagement()");
-		UserVO user = adminService.insertMember(user_num);
-
-		model.addAttribute("user", user);
-		return "admin/MemberManagement";
-	}
-	
-	// 회원 강제 탈퇴
-	@GetMapping("/MemberAdminDelete")
-	public String MemberAdminDelete(@RequestParam("user_num") int user_num) {
-		System.out.println("AdminController deleteClass()");
-
-		adminService.deleteMember(user_num);
-
-		return "redirect:/admin/adminMemberList";
-	}
-	
-	// 탈퇴 회원 복구
-	@GetMapping("/MemberRevert")
-	public String MemberRevert(@RequestParam("user_num") int user_num) {
-		System.out.println("AdminController deleteClass()");
-		
-		adminService.RevertMember(user_num);
-		
-		return "redirect:/admin/adminMemberList";
-	}
-	
-	
-	
-
-	// 회원 권한 등록
-	@PostMapping("/managementPro")
-	public String managementPro(@RequestParam("user_role") String user_role, @RequestParam("user_num") int user_num) {
-		System.out.println("AdminController managementPro()");
-		UserVO userVO = new UserVO();
-
-		if (user_role != "" && !user_role.isEmpty()) {
-			userVO.setUser_role(user_role);
-		}
-		userVO.setUser_num(user_num);
-
-		System.out.println(userVO);
-		adminService.adminUserUpdate(userVO);
-		return "redirect:/admin/adminMemberList";
-	}
-
-	// 강사정보 조회
-	@GetMapping("/adminTeacherList")
-	public String adminTeacherList(Model model, HttpServletRequest request) {
-		System.out.println("AdminController adminTeacherList()");
-
-		String pageNum = request.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1";
-		}
-		int currentPage = Integer.parseInt(pageNum);
-		int pageSize = 10;
-
-		PageVO pageVO = new PageVO();
-		pageVO.setPageNum(pageNum);
-		pageVO.setCurrentPage(currentPage);
-		pageVO.setPageSize(pageSize);
-
-		List<UserVO> teacherList = adminService.listTeacher(pageVO);
-		
-		int count = adminService.countTeacherList();
-		int tCount = adminService.teacharCount();
-		int clCount = adminService.classCount();
-		
-		int pageBlock = 10;
-		int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
-		int endPage = startPage + (pageBlock - 1);
-		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		if (endPage > pageCount) {
-			endPage = pageCount;
-		}
-
-		// pageVO 담기
-		pageVO.setCount(count);
-		pageVO.setPageBlock(pageBlock);
-		pageVO.setStartPage(startPage);
-		pageVO.setEndPage(endPage);
-		pageVO.setPageCount(pageCount);
-		pageVO.setCount(count);
-
-		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("teacherList", teacherList);
-		model.addAttribute("tCount", tCount);
-		model.addAttribute("clCount", clCount);
-
-		return "admin/adminTeacherList";
-	}
-
-	// 회원정보 조회
-	@GetMapping("/adminWithdrawList")
-	public String adminWithdrawList(Model model, HttpServletRequest request) {
-		System.out.println("AdminController adminWithdrawList()");
-
-		String pageNum = request.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1";
-		}
-		int currentPage = Integer.parseInt(pageNum);
-		int pageSize = 10;
-
-		PageVO pageVO = new PageVO();
-		pageVO.setPageNum(pageNum);
-		pageVO.setCurrentPage(currentPage);
-		pageVO.setPageSize(pageSize);
-
-		List<UserVO> memberList = adminService.withDrawListMember(pageVO);
-
-		int count = adminService.countDrawMemberList();
-		int pageBlock = 10;
-		int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
-		int endPage = startPage + (pageBlock - 1);
-		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		if (endPage > pageCount) {
-			endPage = pageCount;
-		}
-
-		// pageVO 담기
-		pageVO.setCount(count);
-		pageVO.setPageBlock(pageBlock);
-		pageVO.setStartPage(startPage);
-		pageVO.setEndPage(endPage);
-		pageVO.setPageCount(pageCount);
-		pageVO.setCount(count);
-
-		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("memberList", memberList);
-
-		return "admin/adminWithdrawList";
-	}
-
-
-	// 클래스 수정
-	@GetMapping("/adminEditClass")
-	public String classEditpro(@RequestParam("lecture_num") int lecture_num, Model model) {
-		System.out.println("AdminController adminEditClass()");
-		LectureVO lectureVO = adminService.classEdit(lecture_num);
-
-		model.addAttribute("lectureVO", lectureVO);
-
-		return "admin/adminEditClass";
-	}
-
-	// 클래스 수정
-	@PostMapping("/adminClassEditPro")
-	public String adminClassEditPro(HttpServletRequest request, 
-			@RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
-		System.out.println("AdminController adminClassEditPro()");
-		LectureVO lectureVO = new LectureVO();
-		String lecture_title = request.getParameter("lecture_title");
-		String category_detail = request.getParameter("category_detail");
-		String lecture_author = request.getParameter("lecture_author");
-		String lecture_detail = request.getParameter("lecture_detail");
-		int lecture_num = Integer.parseInt(request.getParameter("lecture_num"));
-
-		String priceParam = request.getParameter("lecture_price");
-		int lecture_price = 0; // 기본값 설정
-
-		if (priceParam != null && !priceParam.isEmpty()) {
-			lecture_price = Integer.parseInt(priceParam);
-		}
-
-		lectureVO.setLecture_num(lecture_num);
-		lectureVO.setLecture_title(lecture_title);
-		lectureVO.setCategory_detail(category_detail);
-		lectureVO.setLecture_detail(lecture_detail);
-		lectureVO.setLecture_author(lecture_author);
-		lectureVO.setLecture_price(lecture_price);
-		
-		if(lecture_img.isEmpty()) {
-			lectureVO.setLecture_img(request.getParameter("oldfile"));
-		}else {
-			UUID uuid = UUID.randomUUID();
-			String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
-			System.out.println("파일명: " + filename);
-
-			FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
-
-			lectureVO.setLecture_img(filename);
-			
-			File oldfile = new File(uploadPath1, request.getParameter("oldfile"));
-			
-			if(oldfile.exists()) {
-				oldfile.delete();
-			}
-		
-		}
-		System.out.println(lectureVO);
-		adminService.adminEditClass(lectureVO);
-
-		return "redirect:/admin/adminClassList";
-	}
-	
-	
-	
-	
+   // 클래스 등록
+   @PostMapping("/adminClassAddPro")
+   public String adminClassAddPro(HttpServletRequest request,
+         @RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
+      System.out.println("AdminController adminClassAddPro()");
+
+      LectureVO lectureVO = new LectureVO();
+      String lecture_title = request.getParameter("lecture_title");
+      String category_detail = request.getParameter("category_detail");
+      String lecture_author = request.getParameter("lecture_author");
+      String lecture_detail = request.getParameter("lecture_detail");
+
+      String priceParam = request.getParameter("lecture_price");
+      int lecture_price = 0; // 기본값 설정
+
+      if (priceParam != null && !priceParam.isEmpty()) {
+         lecture_price = Integer.parseInt(priceParam);
+      }
+
+      lectureVO.setLecture_title(lecture_title);
+      lectureVO.setCategory_detail(category_detail);
+      lectureVO.setLecture_detail(lecture_detail);
+      lectureVO.setLecture_author(lecture_author);
+      lectureVO.setLecture_price(lecture_price);
+
+      if (lecture_img != null && !lecture_img.isEmpty()) {
+         UUID uuid = UUID.randomUUID();
+         String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
+         System.out.println("파일명: " + filename);
+
+         FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
+
+         lectureVO.setLecture_img(filename);
+
+      }
+      System.out.println(lectureVO);
+      adminService.LectureUpdate(lectureVO);
+
+      return "redirect:/admin/adminClassList";
+   }
+
+   // 클래스 삭제
+   @GetMapping("/deleteClass")
+   public String deleteClass(@RequestParam("lecture_num") String lecture_num) {
+      System.out.println("AdminController deleteClass()");
+
+      adminService.deleteClass(lecture_num);
+
+      return "redirect:/admin/adminClassList";
+   }
+
+   @GetMapping("/adminClassList")
+   public String adminClassList(Model model, HttpServletRequest request) {
+      System.out.println("AdminController adminClassList()");
+
+      String pageNum = request.getParameter("pageNum");
+
+      if (pageNum == null) {
+         pageNum = "1";
+      }
+      int currentPage = Integer.parseInt(pageNum);
+      int pageSize = 10;
+
+      PageVO pageVO = new PageVO();
+      pageVO.setPageNum(pageNum);
+      pageVO.setCurrentPage(currentPage);
+      pageVO.setPageSize(pageSize);
+
+      List<LectureVO> lectureList = adminService.listLecture(pageVO);
+
+      int count = adminService.countlectureList();
+      int pageBlock = 10;
+      int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+      int endPage = startPage + (pageBlock - 1);
+      int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+      if (endPage > pageCount) {
+         endPage = pageCount;
+      }
+
+      pageVO.setCount(count);
+      pageVO.setPageBlock(pageBlock);
+      pageVO.setStartPage(startPage);
+      pageVO.setEndPage(endPage);
+      pageVO.setPageCount(pageCount);
+      pageVO.setCount(count);
+
+      model.addAttribute("pageVO", pageVO);
+      model.addAttribute("lectureList", lectureList);
+
+      return "admin/adminClassList";
+   }
+
+   // 회원정보 조회
+   @GetMapping("/adminMemberList")
+   public String adminMemberList(Model model, HttpServletRequest request) {
+      System.out.println("AdminController adminMemberList()");
+
+      String pageNum = request.getParameter("pageNum");
+
+      if (pageNum == null) {
+         pageNum = "1";
+      }
+      int currentPage = Integer.parseInt(pageNum);
+      int pageSize = 10;
+
+      PageVO pageVO = new PageVO();
+      pageVO.setPageNum(pageNum);
+      pageVO.setCurrentPage(currentPage);
+      pageVO.setPageSize(pageSize);
+
+      List<UserVO> memberList = adminService.listMember(pageVO);
+
+      int dcount = adminService.deletecountMemberList();
+      int acount = adminService.activecountMemberList();
+      int count = adminService.countMemberList();
+      int pageBlock = 10;
+      int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+      int endPage = startPage + (pageBlock - 1);
+      int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+      if (endPage > pageCount) {
+         endPage = pageCount;
+      }
+
+      // pageVO 담기
+      pageVO.setCount(count);
+      pageVO.setPageBlock(pageBlock);
+      pageVO.setStartPage(startPage);
+      pageVO.setEndPage(endPage);
+      pageVO.setPageCount(pageCount);
+      pageVO.setCount(count);
+
+      model.addAttribute("pageVO", pageVO);
+      model.addAttribute("memberList", memberList);
+      model.addAttribute("count", count);
+      model.addAttribute("acount", acount);
+      model.addAttribute("dcount", dcount);
+
+      return "admin/adminMemberList";
+   }
+
+   @GetMapping("/MemberManagement")
+   public String MemberManagement(Model model, @RequestParam("user_num") int user_num) {
+      System.out.println("AdminController MemberManagement()");
+      UserVO user = adminService.insertMember(user_num);
+
+      model.addAttribute("user", user);
+      return "admin/MemberManagement";
+   }
+   
+   // 회원 강제 탈퇴
+   @GetMapping("/MemberAdminDelete")
+   public String MemberAdminDelete(@RequestParam("user_num") int user_num) {
+      System.out.println("AdminController deleteClass()");
+
+      adminService.deleteMember(user_num);
+
+      return "redirect:/admin/adminMemberList";
+   }
+   
+   // 탈퇴 회원 복구
+   @GetMapping("/MemberRevert")
+   public String MemberRevert(@RequestParam("user_num") int user_num) {
+      System.out.println("AdminController deleteClass()");
+      
+      adminService.RevertMember(user_num);
+      
+      return "redirect:/admin/adminMemberList";
+   }
+   
+   
+   
+
+   // 회원 권한 등록
+   @PostMapping("/managementPro")
+   public String managementPro(@RequestParam("user_role") String user_role, @RequestParam("user_num") int user_num) {
+      System.out.println("AdminController managementPro()");
+      UserVO userVO = new UserVO();
+
+      if (user_role != "" && !user_role.isEmpty()) {
+         userVO.setUser_role(user_role);
+      }
+      userVO.setUser_num(user_num);
+
+      System.out.println(userVO);
+      adminService.adminUserUpdate(userVO);
+      return "redirect:/admin/adminMemberList";
+   }
+
+   // 강사정보 조회
+   @GetMapping("/adminTeacherList")
+   public String adminTeacherList(Model model, HttpServletRequest request) {
+      System.out.println("AdminController adminTeacherList()");
+
+      String pageNum = request.getParameter("pageNum");
+
+      if (pageNum == null) {
+         pageNum = "1";
+      }
+      int currentPage = Integer.parseInt(pageNum);
+      int pageSize = 10;
+
+      PageVO pageVO = new PageVO();
+      pageVO.setPageNum(pageNum);
+      pageVO.setCurrentPage(currentPage);
+      pageVO.setPageSize(pageSize);
+
+      List<UserVO> teacherList = adminService.listTeacher(pageVO);
+      
+      int count = adminService.countTeacherList();
+      int tCount = adminService.teacharCount();
+      int intCount = adminService.inactiveTeacharCount();
+      
+      int pageBlock = 10;
+      int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+      int endPage = startPage + (pageBlock - 1);
+      int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+      if (endPage > pageCount) {
+         endPage = pageCount;
+      }
+
+      // pageVO 담기
+      pageVO.setCount(count);
+      pageVO.setPageBlock(pageBlock);
+      pageVO.setStartPage(startPage);
+      pageVO.setEndPage(endPage);
+      pageVO.setPageCount(pageCount);
+      pageVO.setCount(count);
+
+      model.addAttribute("pageVO", pageVO);
+      model.addAttribute("teacherList", teacherList);
+      model.addAttribute("tCount", tCount);
+      model.addAttribute("count", count);
+      model.addAttribute("intCount", intCount);
+
+      return "admin/adminTeacherList";
+   }
+
+   // 회원정보 조회
+   @GetMapping("/adminWithdrawList")
+   public String adminWithdrawList(Model model, HttpServletRequest request) {
+      System.out.println("AdminController adminWithdrawList()");
+
+      String pageNum = request.getParameter("pageNum");
+
+      if (pageNum == null) {
+         pageNum = "1";
+      }
+      int currentPage = Integer.parseInt(pageNum);
+      int pageSize = 10;
+
+      PageVO pageVO = new PageVO();
+      pageVO.setPageNum(pageNum);
+      pageVO.setCurrentPage(currentPage);
+      pageVO.setPageSize(pageSize);
+
+      List<UserVO> memberList = adminService.withDrawListMember(pageVO);
+
+      int count = adminService.countDrawMemberList();
+      int pageBlock = 10;
+      int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+      int endPage = startPage + (pageBlock - 1);
+      int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+      if (endPage > pageCount) {
+         endPage = pageCount;
+      }
+
+      // pageVO 담기
+      pageVO.setCount(count);
+      pageVO.setPageBlock(pageBlock);
+      pageVO.setStartPage(startPage);
+      pageVO.setEndPage(endPage);
+      pageVO.setPageCount(pageCount);
+      pageVO.setCount(count);
+
+      model.addAttribute("pageVO", pageVO);
+      model.addAttribute("memberList", memberList);
+
+      return "admin/adminWithdrawList";
+   }
+
+
+   // 클래스 수정
+   @GetMapping("/adminEditClass")
+   public String classEditpro(@RequestParam("lecture_num") int lecture_num, Model model) {
+      System.out.println("AdminController adminEditClass()");
+      LectureVO lectureVO = adminService.classEdit(lecture_num);
+
+      model.addAttribute("lectureVO", lectureVO);
+
+      return "admin/adminEditClass";
+   }
+
+   // 클래스 수정
+   @PostMapping("/adminClassEditPro")
+   public String adminClassEditPro(HttpServletRequest request, 
+         @RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
+      System.out.println("AdminController adminClassEditPro()");
+      LectureVO lectureVO = new LectureVO();
+      String lecture_title = request.getParameter("lecture_title");
+      String category_detail = request.getParameter("category_detail");
+      String lecture_author = request.getParameter("lecture_author");
+      String lecture_detail = request.getParameter("lecture_detail");
+      int lecture_num = Integer.parseInt(request.getParameter("lecture_num"));
+
+      String priceParam = request.getParameter("lecture_price");
+      int lecture_price = 0; // 기본값 설정
+
+      if (priceParam != null && !priceParam.isEmpty()) {
+         lecture_price = Integer.parseInt(priceParam);
+      }
+
+      lectureVO.setLecture_num(lecture_num);
+      lectureVO.setLecture_title(lecture_title);
+      lectureVO.setCategory_detail(category_detail);
+      lectureVO.setLecture_detail(lecture_detail);
+      lectureVO.setLecture_author(lecture_author);
+      lectureVO.setLecture_price(lecture_price);
+      
+      if(lecture_img.isEmpty()) {
+         lectureVO.setLecture_img(request.getParameter("oldfile"));
+      }else {
+         UUID uuid = UUID.randomUUID();
+         String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
+         System.out.println("파일명: " + filename);
+
+         FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
+
+         lectureVO.setLecture_img(filename);
+         
+         File oldfile = new File(uploadPath1, request.getParameter("oldfile"));
+         
+         if(oldfile.exists()) {
+            oldfile.delete();
+         }
+      
+      }
+      System.out.println(lectureVO);
+      adminService.adminEditClass(lectureVO);
+
+      return "redirect:/admin/adminClassList";
+   }
+   
+   
+   
+   
 
 }

@@ -5,125 +5,135 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminMapper">
 
-	<select id="listMember" resultType="com.itwillbs.domain.UserVO" > 
- 		select * 
-    	from user 
-    	where user_role = 'user'
-     	and user_status = 'active'
-   		order by user_num desc
-   		LIMIT #{startRow}, #{pageSize}
-	</select> 
-	
-	<select id="withDrawListMember" resultType="com.itwillbs.domain.UserVO" > 
- 		select * 
-    	from user 
-    	where user_role = 'user'
-     	and (user_status = 'self-withdraw' 
+   <select id="listMember" resultType="com.itwillbs.domain.UserVO" > 
+       select * 
+       from user 
+       where user_role = 'user'
+        and user_status = 'active'
+         order by user_num desc
+         LIMIT #{startRow}, #{pageSize}
+   </select> 
+   
+   <select id="withDrawListMember" resultType="com.itwillbs.domain.UserVO" > 
+       select * 
+       from user 
+       where user_role = 'user'
+        and (user_status = 'self-withdraw' 
              or user_status = 'withdraw')
-   		order by user_num desc
-   		LIMIT #{startRow}, #{pageSize}
-	</select> 
+         order by user_num desc
+         LIMIT #{startRow}, #{pageSize}
+   </select> 
 
-	<select id="countMemberList" resultType="java.lang.Integer" > 
- 		select count(*) from user
- 		WHERE user_status = 'active'
-	</select> 
-	
-	<select id="countDrawMemberList" resultType="java.lang.Integer" > 
- 		select count(*) from user
- 		WHERE user_status = 'self-withdraw' 
+   <select id="countMemberList" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_role = 'user'
+   </select> 
+   
+   <select id="activecountMemberList" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_status = 'active' and user_role = 'user'
+   </select> 
+   
+   <select id="deletecountMemberList" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_status != 'active' and user_role = 'user'
+   </select> 
+   
+   <select id="countDrawMemberList" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_status = 'self-withdraw' 
              or user_status = 'withdraw'
-	</select> 
+   </select> 
 
-	<select id="countTeacherList" resultType="java.lang.Integer" > 
- 		select count(*) from user
- 		WHERE user_role = 'instructor' 
-	</select> 
-	
-	<insert id="LectureUpdate">
-		INSERT INTO lecture 
-		(lecture_title, category_detail, lecture_detail, lecture_author, lecture_price, lecture_img)
-		values(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author}, #{lecture_price}, #{lecture_img})
-	</insert>
+   <select id="countTeacherList" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_role = 'instructor' 
+   </select> 
+   
+   <insert id="LectureUpdate">
+      INSERT INTO lecture 
+      (lecture_title, category_detail, lecture_detail, lecture_author, lecture_price, lecture_img)
+      values(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author}, #{lecture_price}, #{lecture_img})
+   </insert>
 
-	<select id="listLecture" resultType="com.itwillbs.domain.LectureVO" > 
- 		select * from lecture 
-   		order by lecture_num desc
-    	LIMIT #{startRow}, #{pageSize}
-	</select> 
-	
-	<select id="countlectureList" resultType="java.lang.Integer" > 
- 		select count(*) from lecture
-	</select> 
-	
-	<delete id="deleteClass">
-		delete from lecture
-		where lecture_num = #{lecture_num};
-	</delete>
-	
-	<select id="insertMember" resultType="com.itwillbs.domain.UserVO">
-		select * from user
-		where user_num = #{user_num}
-	</select>
-	
-	<update id="adminUserUpdate" parameterType="com.itwillbs.domain.UserVO">
-		update user
-		set user_role = #{user_role}
-		where user_num = #{user_num}
-	</update>
-	
-	<select id="classEdit" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
-		select * from lecture
-		where lecture_num = #{lecture_num}
-	</select>
+   <select id="listLecture" resultType="com.itwillbs.domain.LectureVO" > 
+       select * from lecture 
+         order by lecture_num desc
+       LIMIT #{startRow}, #{pageSize}
+   </select> 
+   
+   <select id="countlectureList" resultType="java.lang.Integer" > 
+       select count(*) from lecture
+   </select> 
+   
+   <delete id="deleteClass">
+      delete from lecture
+      where lecture_num = #{lecture_num};
+   </delete>
+   
+   <select id="insertMember" resultType="com.itwillbs.domain.UserVO">
+      select * from user
+      where user_num = #{user_num}
+   </select>
+   
+   <update id="adminUserUpdate" parameterType="com.itwillbs.domain.UserVO">
+      update user
+      set user_role = #{user_role}
+      where user_num = #{user_num}
+   </update>
+   
+   <select id="classEdit" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
+      select * from lecture
+      where lecture_num = #{lecture_num}
+   </select>
 
-	<update id="adminEditClass" parameterType="com.itwillbs.domain.LectureVO">
-		update lecture
-		set lecture_title = #{lecture_title}, category_detail = #{category_detail}, lecture_detail = #{lecture_detail},
-			lecture_author = #{lecture_author}, lecture_price = #{lecture_price}, lecture_img = #{lecture_img}
-		where lecture_num = #{lecture_num}
-	</update>
-	
-	<select id="listTeacher" resultType="com.itwillbs.domain.UserVO" > 
- 		select * from user 
- 		WHERE user_role = 'instructor'
- 		order by user_num desc
-    	LIMIT #{startRow}, #{pageSize}
-	</select> 
-	
-	<select id="teacharCount" resultType="java.lang.Integer" > 
- 		select count(*) from user
- 		WHERE user_role = 'instructor'
-	</select> 
-	
-	<select id="classCount" resultType="java.lang.Integer" > 
- 		select count(*) from lecture
-	</select> 
-	
-	<update id="deleteMember" parameterType="int">
-		update user
-   		set user_status = 'withdraw'
-    	where user_num = #{user_num}
-	</update>
-	
-	<update id="RevertMember" parameterType="int">
-		update user
-   		set user_status = 'active'
-    	where user_num = #{user_num}
-	</update>
-	
-<!-- 	<select id="classCount" parameterType="int" resultType="int"> -->
-<!--     	SELECT COUNT(*) -->
-<!--     	FROM lecture -->
-<!--     	WHERE user_num = #{user_num} -->
-<!-- 	</select> -->
-	
-	
-	
-	
-	
-	
-	
-	
-	
+   <update id="adminEditClass" parameterType="com.itwillbs.domain.LectureVO">
+      update lecture
+      set lecture_title = #{lecture_title}, category_detail = #{category_detail}, lecture_detail = #{lecture_detail},
+         lecture_author = #{lecture_author}, lecture_price = #{lecture_price}, lecture_img = #{lecture_img}
+      where lecture_num = #{lecture_num}
+   </update>
+   
+   <select id="listTeacher" resultType="com.itwillbs.domain.UserVO" > 
+       select * from user 
+       WHERE user_role = 'instructor'
+       order by user_num desc
+       LIMIT #{startRow}, #{pageSize}
+   </select> 
+   
+   <select id="teacharCount" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_role = 'instructor' and user_status = 'active'
+   </select> 
+   
+   <select id="inactiveTeacharCount" resultType="java.lang.Integer" > 
+       select count(*) from user
+       WHERE user_role = 'instructor' and user_status != 'active'
+   </select> 
+   
+   <select id="classCount" resultType="java.lang.Integer" > 
+       select count(*) from lecture
+   </select> 
+   
+   <update id="deleteMember" parameterType="int">
+      update user
+         set user_status = 'withdraw'
+       where user_num = #{user_num}
+   </update>
+   
+   <update id="RevertMember" parameterType="int">
+      update user
+         set user_status = 'active'
+       where user_num = #{user_num}
+   </update>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 </mapper>

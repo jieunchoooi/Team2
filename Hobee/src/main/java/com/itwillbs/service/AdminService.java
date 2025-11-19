@@ -17,14 +17,14 @@ public class AdminService {
 
 	@Inject
 	private AdminMapper adminMapper;
-	
+
 	public List<UserVO> listMember(PageVO pageVO) {
 		System.out.println("AdminService listMember()");
-		
+
 		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
-		
+
 		pageVO.setStartRow(startRow);
-		
+
 		return adminMapper.listMember(pageVO);
 	}
 
@@ -40,11 +40,11 @@ public class AdminService {
 
 	public List<LectureVO> listLecture(PageVO pageVO) {
 		System.out.println("AdminService listLecture()");
-		
+
 		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
-		
+
 		pageVO.setStartRow(startRow);
-		
+
 		return adminMapper.listLecture(pageVO);
 	}
 
@@ -56,7 +56,7 @@ public class AdminService {
 
 	public void deleteClass(String lecture_num) {
 		System.out.println("AdminService deleteClass()");
-		
+
 		adminMapper.deleteClass(lecture_num);
 	}
 
@@ -82,11 +82,11 @@ public class AdminService {
 
 	public List<UserVO> listTeacher(PageVO pageVO) {
 		System.out.println("AdminService listTeacher()");
-		
+
 		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
-		
+
 		pageVO.setStartRow(startRow);
-		
+
 		return adminMapper.listTeacher(pageVO);
 	}
 
@@ -125,5 +125,19 @@ public class AdminService {
 		adminMapper.RevertMember(user_num);
 	}
 
+	public int inactiveTeacharCount() {
+		System.out.println("AdminService inactiveTeacharCount()");
+		return adminMapper.inactiveTeacharCount();
+	}
+
+	public int activecountMemberList() {
+		System.out.println("AdminService inactiveTeacharCount()");
+		return adminMapper.activecountMemberList();
+	}
+
+	public int deletecountMemberList() {
+		System.out.println("AdminService deletecountMemberList()");
+		return adminMapper.deletecountMemberList();
+	}
 
 }

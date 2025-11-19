@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -379,7 +380,9 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 	                 alt="${lecture.lecture_title}">
 	            <div class="lecture-info">
 	              <div class="lecture-title">${lecture.lecture_title}</div>
-	              <div class="lecture-price">₩${lecture.lecture_price}</div>
+	              <div class="lecture-price">
+	              	<fmt:formatNumber value="${lectureVO.lecture_price}" type="number" />원
+	              </div>
 	            </div>
 	          </div>
 	        </c:forEach>
@@ -405,7 +408,9 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
        				     alt="${slecture.lecture_title}">
        				<div class="lecture-info">
        					<div class="lecture-title">${slecture.lecture_title}</div>
-       					<div class="lecture-price">${slecture.lecture_price}</div>
+       					<div class="lecture-price">
+       						<fmt:formatNumber value="${slecture.lecture_price}" type="number" />원
+       					</div>
        				</div>
        			</div>
        		</c:forEach>
@@ -447,7 +452,9 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
         <div class="price-section">
           <div class="discount-rate">42% ₩50,000원</div>
-          <div class="current-price">${lectureVO.lecture_price}원</div>
+          <div class="current-price">
+			  <fmt:formatNumber value="${lectureVO.lecture_price}" type="number" />원
+		  </div>
         </div>
 
         <button class="btn-purchase">구매하기</button>
