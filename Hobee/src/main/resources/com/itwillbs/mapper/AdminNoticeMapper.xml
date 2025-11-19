@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.AdminNoticeMapper">
+
+    <!-- 공지사항 전체 목록 -->
+    <select id="getNoticeList" resultType="com.itwillbs.domain.AdminNoticeVO">
+        SELECT 
+            notice_id,
+            admin_id,
+            title,
+            content,
+            is_visible,
+            view_count,
+            created_at,
+            updated_at
+        FROM notice
+        ORDER BY notice_id DESC
+    </select>
+
+    <!-- 공지사항 등록 -->
+    <insert id="insertNotice">
+        INSERT INTO notice (
+            admin_id,
+            title,
+            content,
+            is_visible
+        ) VALUES (
+            #{admin_id},
+            #{title},
+            #{content},
+            #{is_visible}
+        )
+    </insert>
+
+    <!-- 공지사항 상세 -->
+    <select id="getNoticeDetail" resultType="com.itwillbs.domain.AdminNoticeVO">
+        SELECT 
+            notice_id,
+            admin_id,
+            title,
+            content,
+            is_visible,
+            view_count,
+            created_at,
+            updated_at
+        FROM notice
+        WHERE notice_id = #{notice_id}
+    </select>
+
+    <!-- 조회수 증가 -->
+    <update id="updateViewCount">
+        UPDATE notice
+        SET view_count = view_count + 1
+        WHERE notice_id = #{notice_id}
+    </update>
+
+    <!-- 공지사항 수정 -->
+    <update id="updateNotice">
+        UPDATE notice
+        SET 
+            title = #{title},
+            content = #{content},
+            is_visible = #{is_visible},
+            updated_at = NOW()
+        WHERE notice_id = #{notice_id}
+    </update>
+
+    <!-- 공지사항 삭제 -->
+    <delete id="deleteNotice">
+        DELETE FROM notice
+        WHERE notice_id = #{notice_id}
+    </delete>
+
+    <!-- 공개 / 숨김 토글 -->
+    <update id="updateVisible">
+        UPDATE notice
+        SET is_visible = #{is_visible}
+        WHERE notice_id = #{notice_id}
+    </update>
+
+</mapper>

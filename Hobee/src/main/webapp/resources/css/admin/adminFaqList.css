@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+/* 테이블 스타일 */
+.faq-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.faq-table thead {
+    background: #f6f7fb;
+}
+
+.faq-table th,
+.faq-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 14px;
+}
+
+.faq-table a:hover {
+    text-decoration: underline;
+}
+
+/* 버튼 공통 스타일은 adminLayout.css 사용 */

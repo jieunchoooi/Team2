@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+/* 수정 테이블 */
+.edit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.edit-label {
+    width: 130px;
+    font-weight: 700;
+    color: #333;
+    padding: 14px 10px;
+    background: #f6f7fb;
+    border-bottom: 1px solid #eee;
+}
+
+.edit-table td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* input, select, textarea 디자인 */
+.edit-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccd3e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.edit-select {
+    padding: 8px 12px;
+    border: 1px solid #ccd3e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.edit-textarea {
+    width: 90%;
+    height: 220px;
+    padding: 12px;
+    border: 1px solid #ccd3e0;
+    border-radius: 10px;
+    resize: vertical;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 버튼 */
+.edit-btn-area {
+    text-align: right;
+    margin-top: 25px;
+}
