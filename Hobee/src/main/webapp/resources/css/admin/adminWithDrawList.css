@@ -17,19 +17,24 @@ body {
     color: white;
     border: none;
     border-radius: 10px;
-    padding: 12px 24px;
-    font-size: 1rem;
+    padding: 8px 18px;  /* 12px 24px에서 변경 */
+    font-size: 0.9rem;  /* 1rem에서 변경 */
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(37, 115, 255, 0.25);
     transition: background-color 0.2s, transform 0.1s;
     font-weight: 600;
     display: inline-block;
-    margin-left: 20px;
+    margin: 0 4px;  /* margin-left: 20px에서 변경 */
 }
 
 .btn-revert {
-	background-color: #ff7f00;
+	background-color: #808080;
     box-shadow: 0 3px 8px rgba(255, 77, 79, 0.2);
+}
+
+.btn-revert:hover {
+    background-color: #45a049 !important;
+    box-shadow: 0 5px 12px rgba(76, 175, 80, 0.3) !important;
 }
 
 .detail {
