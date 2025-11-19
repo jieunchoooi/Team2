@@ -8,31 +8,34 @@ import com.itwillbs.domain.UserVO;
 @Mapper
 public interface UserMapper {
 
-	// ✅ 회원가입
-	public void insertUser(UserVO userVO);
+    // ✅ 회원가입
+    void insertUser(UserVO userVO);
 
-	// ✅ 로그인
-	public UserVO loginUser(UserVO userVO);
-	
-	// ✅ 아이디로 회원 조회 (로그인, 중복확인 공용)
-	public UserVO selectUserById(String user_id);
+    // ✅ 로그인
+    UserVO loginUser(UserVO userVO);
 
-	// ✅ 이메일로 사용자 찾기
-	public UserVO findUserByEmail(String user_email);
+    // ✅ 아이디로 회원 조회 (로그인, 중복확인 공용)
+    UserVO selectUserById(@Param("user_id") String user_id);
 
-	// ✅ 임시 비밀번호 업데이트
-	public void updateTempPassword(@Param("user_id") String user_id, @Param("tempPw") String tempPw);
-	
-	// ✅ 이메일 중복 체크
-	public int checkEmail(String user_email);
+    // ✅ 이메일로 사용자 찾기
+    UserVO findUserByEmail(@Param("user_email") String user_email);
 
-	public UserVO findUserByIdAndEmail(@Param("user_id")String user_id,  @Param("user_email")String user_email);
+    // ✅ 임시 비밀번호 업데이트
+    void updateTempPassword(@Param("user_id") String user_id,
+                            @Param("tempPw") String tempPw);
 
-	public UserVO findIdByNameAndEmail(@Param("user_name")String user_name, @Param("user_email")String user_email);
-	
-	   // 회원 등급 업데이트
+    // ✅ 이메일 중복 체크
+    int checkEmail(@Param("user_email") String user_email);
+
+    // ✅ 아이디 + 이메일 → 회원 찾기
+    UserVO findUserByIdAndEmail(@Param("user_id") String user_id,
+                                @Param("user_email") String user_email);
+
+    // ✅ 이름 + 이메일 → 아이디 찾기
+    UserVO findIdByNameAndEmail(@Param("user_name") String user_name,
+                                @Param("user_email") String user_email);
+
+    // 회원 등급 업데이트
     void updateUserGrade(@Param("user_num") int userNum,
                          @Param("grade_id") int gradeId);
-
-	
 }
