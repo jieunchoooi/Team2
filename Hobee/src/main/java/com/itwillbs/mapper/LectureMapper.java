@@ -31,7 +31,9 @@ public interface LectureMapper {
 
 	ChapterVO getChapter(int lecture_num);
 
-	ChapterDetailVO getDetail(int lecture_num);
+	List<ChapterDetailVO> getDetail(int chapter_num);
+
+	List<ChapterVO> getChapterList(int lecture_num);
 
 	
 

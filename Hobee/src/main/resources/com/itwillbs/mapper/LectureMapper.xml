@@ -72,16 +72,17 @@
 			LIMIT 4
 		</select>
 		
-		<select id="getChapter" resultType="com.itwillbs.domain.ChapterVO">
-		   	select * from chapter
-		   	where lecture_num = #{lecture_num}
-		   	order by chapter_order
-		</select>
 		
 		<select id="getDetail" resultType="com.itwillbs.domain.ChapterDetailVO">
 		   	select * from chapter_detail
-		   	where lecture_num = #{lecture_num}
+		   	where chapter_num = #{chapter_num}
 		   	order by detail_order
+		</select>
+		
+		<select id="getChapterList" resultType="com.itwillbs.domain.ChapterVO">
+		   	select * from chapter
+		   	where lecture_num = #{lecture_num}
+		   	order by chapter_order
 		</select>
    
 

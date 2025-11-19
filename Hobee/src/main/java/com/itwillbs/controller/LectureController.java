@@ -54,13 +54,18 @@ public class LectureController {
 		UserVO userVO = lectureService.getUserImg(lecture_num);
 		List<LectureVO> authorLectures = lectureService.authorLectures(lectureVO);
 		List<LectureVO> similarLectures = lectureService.similarLectures(lectureVO);
-		ChapterVO chapterVO = lectureService.getChapter(lecture_num);
-		ChapterDetailVO detailVO = lectureService.getDetail(lecture_num);
+		List<ChapterVO> chapterList = lectureService.getChapterList(lecture_num);
+		    for (ChapterVO chapter : chapterList) {
+		        List<ChapterDetailVO> detailList = lectureService.getDetail(chapter.getChapter_num());
+		        chapter.setDetailList(detailList);
+		    }
 		
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userVO);
 		model.addAttribute("authorLectures", authorLectures);
 		model.addAttribute("similarLectures", similarLectures);
+		model.addAttribute("chapterList", chapterList);
+		
 		return "category/lecture";
 	}
 	

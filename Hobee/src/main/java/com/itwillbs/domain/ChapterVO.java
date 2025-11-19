@@ -1,5 +1,7 @@
 package com.itwillbs.domain;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,6 +15,7 @@ public class ChapterVO {
 	  private int lecture_num;      // lecture 테이블 fk
 	  private int chapter_order;    // 순서
 	  private String chapter_title; // 제목
-	
+	  
+	  private List<ChapterDetailVO> detailList;
 
 }

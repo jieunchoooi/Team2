@@ -223,56 +223,35 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     <div class="curriculum-section">
       <div class="curriculum-header">
         <div>
-          <h3>커리큘럼 <span class="curriculum-count">챕터 4개</span></h3>
+          <h3>커리큘럼 <span class="curriculum-count">챕터 ${chapterList.size()}개</span></h3>
         </div>
         <button class="expand-all-btn" onclick="toggleAllChapters()">전체 챕터 열기</button>
       </div>
-
-      <!-- 챕터 1 -->
-<!--       <div class="chapter-item"> -->
-<!--         <div class="chapter-header" onclick="toggleChapter(this)"> -->
-<!--           <div class="chapter-info"> -->
-<!--             <div class="chapter-label">CHAPTER 1</div> -->
-<!--             <div class="chapter-title">무작정 따라 그리며 기초 쌓기!</div> -->
-<!--           </div> -->
-<!--           <div class="chapter-meta"> -->
-<!--             <span>강의 4개</span> -->
-<!--             <i class="fas fa-chevron-down chapter-toggle"></i> -->
-<!--           </div> -->
-<!--         </div> -->
-<!--         <div class="chapter-content"> -->
-<!--           <div class="lecture-item"> -->
-<!--             <span class="lecture-number">1</span> -->
-<!--             <span class="lecture-title">기본 선 연습하기</span> -->
-<!--             <span class="lecture-duration">07:15</span> -->
-<!--           </div> -->
-<!--         </div> -->
-<!--       </div> -->
       
       <!-- 챕터 1 -->
-      <div class="chapter-item">
-      	<c:forEach var="chapter" items="${chapterList}">
-	        <div class="chapter-header" onclick="toggleChapter(this)">
-	          <div class="chapter-info">
-	          	<div class="chapter-label">CHAPTER ${chapter.chapter_order}</div>
-	            <div class="chapter-title">${chapter.chapter_title}</div>
-	          </div>
-	          <div class="chapter-meta">
-	            <span>강의 4개</span>
-	            <i class="fas fa-chevron-down chapter-toggle"></i>
-	          </div>
-	        </div>
-        </c:forEach>
-        <c:forEach var="detail" items="${detailList}">
-        	<div class="chapter-content">
-	          <div class="lecture-item">
-	            <span class="lecture-number">${detail.detail_order}</span>
-	            <span class="lecture-title">${detail.detail_title}</span>
-	            <span class="lecture-duration">${detail.detail_time}</span>
-	          </div>
-	        </div>
-        </c:forEach>
-      </div>
+      <c:forEach var="chapter" items="${chapterList}">
+	      <div class="chapter-item">
+			    <div class="chapter-header" onclick="toggleChapter(this)">
+			         <div class="chapter-info">
+			        	<div class="chapter-label">CHAPTER ${chapter.chapter_order}</div>
+			            <div class="chapter-title">${chapter.chapter_title}</div>
+			         </div>
+			         <div class="chapter-meta">
+			            <span>강의 ${chapter.detailList.size()}개</span>
+			            <i class="fas fa-chevron-down chapter-toggle"></i>
+			         </div>
+			    </div>
+		        <c:forEach var="detail" items="${chapter.detailList}">
+		        	<div class="chapter-content">
+			          <div class="lecture-item">
+			            <span class="lecture-number">${detail.detail_order}</span>
+			            <span class="lecture-title">${detail.detail_title}</span>
+			            <span class="lecture-duration">${detail.detail_time}분</span>
+			          </div>
+			        </div>
+		        </c:forEach>
+	      </div>
+      </c:forEach>
     </div>
 
     <!-- 강사의 다른 강의 -->
@@ -409,20 +388,27 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
   // 챕터 토글 기능
   function toggleChapter(header) {
-    const content = header.nextElementSibling;
+    const chapterItem = header.parentElement; // chapter-item
+    const contents = chapterItem.querySelectorAll('.chapter-content'); // 모든 lecture-item 포함
     const toggle = header.querySelector('.chapter-toggle');
-    const isActive = content.classList.contains('active');
+    const isActive = contents[0].classList.contains('active'); // 첫 번째 content로 상태 체크
 
-    if (isActive) {
-      content.classList.remove('active');
-      toggle.classList.remove('active');
-      header.classList.remove('active');
-    } else {
-      content.classList.add('active');
-      toggle.classList.add('active');
-      header.classList.add('active');
-    }
-  }
+    contents.forEach(content => {
+        if (isActive) {
+            content.classList.remove('active');
+        } else {
+            content.classList.add('active');
+        }
+    });
+
+	    if (isActive) {
+	        toggle.classList.remove('active');
+	        header.classList.remove('active');
+	    } else {
+	        toggle.classList.add('active');
+	        header.classList.add('active');
+	    }
+	}
 
   // 전체 챕터 열기/닫기
   let allExpanded = false;

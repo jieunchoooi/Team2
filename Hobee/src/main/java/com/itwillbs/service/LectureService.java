@@ -79,9 +79,14 @@ public class LectureService {
 		return lectureMapper.getChapter(lecture_num);
 	}
 
-	public ChapterDetailVO getDetail(int lecture_num) {
+	public List<ChapterDetailVO> getDetail(int chapter_num) {
 		System.out.println("LectureService getDetail()");
-		return lectureMapper.getDetail(lecture_num);
+		return lectureMapper.getDetail(chapter_num);
+	}
+
+	public List<ChapterVO> getChapterList(int lecture_num) {
+		System.out.println("LectureService getChapterList()");
+		return lectureMapper.getChapterList(lecture_num);
 	}
 
 
