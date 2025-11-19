@@ -43,49 +43,36 @@
   		</select>
   		
   		<select id="getUserImg" resultType="com.itwillbs.domain.UserVO">
-  			SELECT u.user_file
-    		FROM lecture l
-    		JOIN user u ON l.user_num = u.user_num
-    		WHERE l.lecture_num = #{lecture_num}
+  			select u.user_file
+    		from lecture l
+    		join user u on l.user_num = u.user_num
+    		where l.lecture_num = #{lecture_num}
   		</select>
   		
-  		<!-- 같은 강사의 다른 강의 조회 (현재 강의 제외) -->
 		<select id="authorLectures" resultType="com.itwillbs.domain.LectureVO">
-		    SELECT * FROM lecture 
-		    WHERE lecture_author = #{lecture_author} 
-		    AND lecture_num != #{lecture_num}
-		    ORDER BY readcount DESC
-		    LIMIT 4
+		    select * from lecture 
+		    where lecture_author = #{lecture_author} 
+		    and lecture_num != #{lecture_num}
+		    order by readcount desc
+		    limit 4
+		</select>
+		
+		<select id="similarLectures" resultType="com.itwillbs.domain.LectureVO">
+		    SELECT *
+			FROM lecture
+			WHERE lecture_num != #{lecture_num}
+			<if test="tagList != null and tagList.size() > 0">
+			    AND (
+			        <foreach collection="tagList" item="tag" separator=" OR ">
+			            lecture_tag LIKE CONCAT('%', #{tag}, '%')
+			        </foreach>
+			    )
+			</if>
+			ORDER BY readcount DESC
+			LIMIT 4
 		</select>
    
-<!--    <select id="loginMember" resultType="com.itwillbs.domain.MemberVO"> -->
-<!--    	select * from members -->
-<!--    	where id = #{id} and passwd = #{passwd} -->
-<!--    </select> -->
-   
-<!--    <select id="infoMember" resultType="com.itwillbs.domain.MemberVO"> -->
-<!--    	select * from members -->
-<!--    	where id = #{id} -->
-<!--    </select> -->
-   
-<!--    <update id="updateMember" > -->
-<!--    	update members -->
-<!--    	set -->
-<!--    	passwd = #{passwd}, -->
-<!--    	name = #{name} -->
-<!--    	where id = #{id} -->
-<!--    </update> -->
-   
-<!--    <delete id="deleteMember"> -->
-<!--    	delete from members -->
-<!--    	where id = #{id} -->
-<!--    </delete> -->
-   
-<!--    <select id="listMember" resultType="com.itwillbs.domain.MemberVO"> -->
-<!--    	select * from members -->
-<!--    </select> -->
-   
-   
+
 
 </mapper>
   

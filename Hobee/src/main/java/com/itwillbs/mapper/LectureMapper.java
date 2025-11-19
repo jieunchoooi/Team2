@@ -1,6 +1,7 @@
 package com.itwillbs.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,5 +24,9 @@ public interface LectureMapper {
 	UserVO getUserImg(int lecture_num);
 
 	List<LectureVO> authorLectures(LectureVO lectureVO);
+
+	List<LectureVO> similarLectures(Map<String, Object> param);
+
+	
 
 }

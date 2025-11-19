@@ -392,20 +392,30 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 	    </c:choose>
 	  </div>
 	</div>
-
-    <!-- 비슷한 강의 추천 -->
+  
+  	<!-- 비슷한 강의 추천 -->
     <div class="similar-section">
       <h3>비슷한 강의 추천</h3>
       <div class="lecture-grid">
-        <% for(int i=1; i<=4; i++){ %>
-        <div class="lecture-card">
-          <img src="https://picsum.photos/300/200?random=<%= i+50 %>" alt="추천 강의<%= i %>">
-          <div class="lecture-info">
-            <div class="lecture-title">디지털 드로잉 입문 <%= i %></div>
-            <div class="lecture-price">₩<%= 39000 + i*1500 %></div>
-          </div>
-        </div>
-        <% } %>
+       <c:choose>
+       	<c:when test="${not empty similarLectures}">
+       		<c:forEach var="slecture" items="${similarLectures}">
+       			<div class="lecture-card" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
+       				<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
+       				     alt="${slecture.lecture_title}">
+       				<div class="lecture-info">
+       					<div class="lecture-title">${slecture.lecture_title}</div>
+       					<div class="lecture-price">${slecture.lecture_price}</div>
+       				</div>
+       			</div>
+       		</c:forEach>
+       	</c:when>
+       	<c:otherwise>
+       		<p style="color: #888; text-align: center; width: 100%;">
+	          해당 강사의 다른 강의가 없습니다.
+	        </p>
+       	</c:otherwise>
+       </c:choose>
       </div>
     </div>
   </div>

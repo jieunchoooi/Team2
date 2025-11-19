@@ -1,6 +1,11 @@
 package com.itwillbs.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -49,6 +54,22 @@ public class LectureService {
 	public List<LectureVO> authorLectures(LectureVO lectureVO) {
 		System.out.println("LectureService authorLectures()");
 		return lectureMapper.authorLectures(lectureVO);
+	}
+
+	public List<LectureVO> similarLectures(LectureVO lectureVO) {
+		System.out.println("LectureService similarLectures()");
+		
+		String tags = lectureVO.getLecture_tag(); // "그림,드로잉,일러스트,캐릭터,초보자,드릉드릉"
+
+		List<String> tagList = Arrays.stream(tags.split(","))
+		                             .map(String::trim)
+		                             .collect(Collectors.toList());
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("lecture_num", lectureVO.getLecture_num());
+		param.put("tagList", tagList);
+		
+		return lectureMapper.similarLectures(param);
 	}
 
 
