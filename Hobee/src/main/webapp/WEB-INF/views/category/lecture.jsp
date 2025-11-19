@@ -75,8 +75,11 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .expand-all-btn { color: var(--primary); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: none; transition: color 0.2s; }
 .expand-all-btn:hover { color: #1f65e0; }
 
-.chapter-item { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; }
-.chapter-item:hover { border-color: var(--primary); }
+ .chapter-item { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; } 
+ .chapter-item:hover { border-color: var(--primary); } 
+
+
+
 
 .chapter-header { display: flex; align-items: center; gap: 15px; padding: 18px; cursor: pointer; background: #fff; transition: background 0.2s; }
 .chapter-header:hover { background: var(--hover-bg); }
@@ -231,18 +234,18 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       <!-- 챕터 1 -->
       <c:forEach var="chapter" items="${chapterList}">
 	      <div class="chapter-item">
-			    <div class="chapter-header" onclick="toggleChapter(this)">
+			    <div class="chapter-header active" onclick="toggleChapter(this)">
 			         <div class="chapter-info">
 			        	<div class="chapter-label">CHAPTER ${chapter.chapter_order}</div>
 			            <div class="chapter-title">${chapter.chapter_title}</div>
 			         </div>
 			         <div class="chapter-meta">
 			            <span>강의 ${chapter.detailList.size()}개</span>
-			            <i class="fas fa-chevron-down chapter-toggle"></i>
+			            <i class="fas fa-chevron-down chapter-toggle active"></i>
 			         </div>
 			    </div>
 		        <c:forEach var="detail" items="${chapter.detailList}">
-		        	<div class="chapter-content">
+		        	<div class="chapter-content active">
 			          <div class="lecture-item">
 			            <span class="lecture-number">${detail.detail_order}</span>
 			            <span class="lecture-title">${detail.detail_title}</span>
