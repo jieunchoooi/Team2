@@ -25,6 +25,22 @@
 			<h1>회원 목록</h1>
 		</div>
 
+		
+		<div class="stats-container">
+			<div class="stat-card">
+				<h3>총 회원 수</h3>
+				<div class="stat-number">${count}</div>
+			</div>
+			<div class="stat-card orange">
+				<h3>활동 회원 수</h3>
+				<div class="stat-number">${acount}</div>
+			</div>
+			<div class="stat-card green">
+				<h3>탈퇴 회원 수</h3>
+				<div class="stat-number">${dcount}</div>
+			</div>
+		</div>
+
 		<div class="search-box">
 			<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
 			<button>검색</button>
@@ -97,8 +113,8 @@ deletebtn.forEach(function(btn){
         
         let result = confirm(userName + "님을 강제 탈퇴시키겠습니까?"); 
         if(result) {
-            location.href = "${pageContext.request.contextPath}/admin/MemberAdminDelete?user_num=" + userNum;
-			alert("탈퇴되었습니다.");
+        	location.href = "${pageContext.request.contextPath}/admin/MemberAdminDelete?user_num=" + userNum + "&returnPage=member";	
+        	alert("탈퇴되었습니다.");
         }
     }
 });

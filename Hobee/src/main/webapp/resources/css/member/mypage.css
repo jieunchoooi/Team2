@@ -201,7 +201,7 @@ body {
 }
 
 .btn {
-    background-color: #2573ff;
+    background-color: #a7a7a7;
     color: white;
     border: none;
     border-radius: 10px;
@@ -218,7 +218,7 @@ body {
 }
 
 .btn:last-child{
-	background-color: #FF9226;
+	background-color: #2573ff;
 }
 
 .btn-primary {

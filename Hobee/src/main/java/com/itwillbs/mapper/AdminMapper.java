@@ -44,5 +44,10 @@ public interface AdminMapper {
 
 	public void RevertMember(int user_num);
 
+	public int inactiveTeacharCount();
+
+	public int activecountMemberList();
+
+	public int deletecountMemberList();
 
 }
