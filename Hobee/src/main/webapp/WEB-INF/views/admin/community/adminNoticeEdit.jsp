@@ -1,97 +1,79 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>공지 수정</title>
+    <title>공지 수정 | Hobee Admin</title>
 
-    <!-- 공통 관리자 CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminLayout.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
 
-    <!-- 공지 수정 전용 CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminNoticeEdit.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources/css/admin/adminNoticeEdit.css">
 </head>
 
 <body>
 
-<!-- 사이드바 -->
-<jsp:include page="/WEB-INF/views/include/adminSidebar.jsp">
-    <jsp:param name="page" value="noticeList"/>
-</jsp:include>
+<jsp:include page="/WEB-INF/views/include/header.jsp"/>
+<jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
-<div class="admin-main">
-<div class="admin-card">
+<main class="main-content">
 
-    <h2>✏️ 공지사항 수정</h2>
+    <div class="main-header">
+        <h1>공지사항 수정</h1>
+    </div>
 
-    <form action="${pageContext.request.contextPath}/admin/adminNoticeEditPro" method="post">
+    <div class="form-card">
 
-        <!-- 수정 시 반드시 notice_id 필요 -->
-        <input type="hidden" name="notice_id" value="${notice.notice_id}">
+        <form action="${pageContext.request.contextPath}/admin/adminNoticeEditPro"
+              method="post">
 
-        <table class="edit-table">
-            <tbody>
+            <input type="hidden" name="notice_id" value="${notice.notice_id}">
 
-                <!-- 제목 -->
-                <tr>
-                    <td class="edit-label">제목</td>
-                    <td>
-                        <input type="text" name="title"
-                               class="edit-input"
-                               value="${notice.title}" required>
-                    </td>
-                </tr>
+            <!-- 제목 -->
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" name="title" value="${notice.title}" required>
+            </div>
 
-                <!-- 작성자 -->
-                <tr>
-                    <td class="edit-label">작성자</td>
-                    <td>
-                        <input type="text" name="admin_id"
-                               value="${notice.admin_id}"
-                               class="edit-input" readonly>
-                    </td>
-                </tr>
+            <!-- 작성자 -->
+            <div class="form-group">
+                <label>작성자</label>
+                <input type="text" value="${notice.admin_id}" readonly>
+            </div>
 
-                <!-- 공개 여부 -->
-                <tr>
-                    <td class="edit-label">공개 여부</td>
-                    <td>
-                        <select name="is_visible" class="edit-select">
-                            <option value="1" ${notice.is_visible == 1 ? "selected" : ""}>공개</option>
-                            <option value="0" ${notice.is_visible == 0 ? "selected" : ""}>숨김</option>
-                        </select>
-                    </td>
-                </tr>
+            <!-- 공개 여부 -->
+            <div class="form-group">
+                <label>공개 여부</label>
+                <select name="is_visible">
+                    <option value="1" ${notice.is_visible == 1 ? "selected" : ""}>공개</option>
+                    <option value="0" ${notice.is_visible == 0 ? "selected" : ""}>숨김</option>
+                </select>
+            </div>
 
-                <!-- 내용 -->
-                <tr>
-                    <td class="edit-label" style="vertical-align:top;">내용</td>
-                    <td>
-                        <textarea name="content" class="edit-textarea" required>
-${notice.content}</textarea>
-                    </td>
-                </tr>
+            <!-- 내용 -->
+            <div class="form-group">
+                <label>내용</label>
+                <textarea name="content" required>${notice.content}</textarea>
+            </div>
 
-            </tbody>
-        </table>
+            <div class="btn-area">
+                <button type="submit" class="btn-blue">수정 완료</button>
 
-        <!-- 버튼 영역 -->
-        <div class="edit-btn-area">
-            <button type="submit" class="btn-blue">수정 완료</button>
+                <button type="button" class="btn-gray"
+                        onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeDetail?notice_id=${notice.notice_id}'">
+                    상세로
+                </button>
+            </div>
 
-            <button type="button" class="btn-gray"
-                onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeDetail?notice_id=${notice.notice_id}'">
-                상세로
-            </button>
-        </div>
+        </form>
 
-    </form>
+    </div>
 
-</div>
-</div>
+</main>
 
 </body>
 </html>

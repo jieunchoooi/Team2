@@ -1,90 +1,111 @@
 @charset "UTF-8";
 
-/* 전체 테이블 래퍼 (게시글 관리와 동일 스타일) */
-.table-wrapper {
+/* ================================
+      메인 레이아웃
+================================ */
+.main-content {
+    margin-left: 220px;
+    padding: 40px;
+    background: #f6f7fb;
+    min-height: 100vh;
+}
+
+.main-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* ================================
+      카드 박스 (테이블 래퍼)
+================================ */
+.table-card {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-/* 테이블 기본 디자인 */
-.comment-table {
-    width: 100%;
-    background: white;
-    border-collapse: collapse;
+    background: #fff;
+    padding: 30px;
     border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-.comment-table th {
-    background: #f8f9fa;
-    padding: 16px;
-    font-size: 15px;
-    color: #333;
-    font-weight: 700;
-    text-align: center;
+/* ================================
+      테이블 스타일
+================================ */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.comment-table td {
-    padding: 14px;
-    border-bottom: 1px solid #eee;
+.admin-table thead {
+    background: #e9efff;
+}
+
+.admin-table th {
+    padding: 14px 10px;
     text-align: center;
     font-size: 14px;
+    color: #333;
 }
 
-
-
-/* 게시글 제목 스타일 */
-.post-title a {
-    color: #2573ff;
-    font-weight: bold;
+.admin-table td {
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom: 1px solid #ececec;
 }
-.post-title a:hover {
+
+.empty-text {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+    font-size: 15px;
+}
+
+/* ================================
+      링크 스타일 (게시글 제목)
+================================ */
+.title-link {
+    color: #397dff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.title-link:hover {
     text-decoration: underline;
 }
 
-/* 내용 미리보기 왼쪽 정렬 */
-.content-preview {
-    text-align: left;
-    padding-left: 12px;
-    max-width: 280px;
-}
-
-/* 신고 배지 */
-.badge {
-    padding: 5px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: bold;
-}
-.badge-gray {
-    background: #dfe4ea;
-    color: #2f3542;
-}
-.badge-red {
-    background: #ff6b6b;
-    color: white;
-}
-
-/* 삭제 버튼 */
-.delete-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: 600;
+/* ================================
+      버튼 스타일
+================================ */
+button {
+    padding: 7px 14px;
+    border-radius: 6px;
     cursor: pointer;
-}
-.delete-btn:hover {
-    background: #c0392b;
+    border: none;
+    font-size: 13px;
 }
 
-/* 데이터 없을 때 */
-.no-data {
-    text-align: center;
-    padding: 30px;
-    color: #666;
-    font-size: 15px;
+.btn-blue {
+    background: #397dff;
+    color: #fff;
+}
+
+.btn-blue:hover {
+    background: #2f67d4;
+}
+
+.btn-red {
+    background: #e74a3b;
+    color: #fff;
+}
+
+.btn-red:hover {
+    background: #cf2f23;
+}
+
+.small {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
 }

@@ -1,98 +1,121 @@
-.@charset "UTF-8";
+@charset "UTF-8";
 
-/* 전체 테이블 래퍼 */
-.table-wrapper {
+/* ================================
+      메인 레이아웃
+================================ */
+.main-content {
+    margin-left: 220px; /* 사이드바 너비와 딱 맞음 */
+    padding: 40px;
+    background: #f6f7fb;
+    min-height: 100vh;
+}
+
+/* 페이지 제목 */
+.main-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* ================================
+      카드형 박스 (테이블 래퍼)
+================================ */
+.admin-card {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    margin-top: 20px;
 }
 
-/* 테이블 */
-.post-table {
-    width: 100%;
+.table-container {
     background: #fff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    width: 100%;
+}
+
+/* ================================
+      표 스타일
+================================ */
+table {
+    width: 100%;
     border-collapse: collapse;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
 
-.post-table th {
-    background: #f8f9fa;
-    padding: 16px;
-    font-size: 15px;
-    color: #333;
-    font-weight: 700;
-    text-align: center;
+thead {
+    background-color: #e9efff;
 }
 
-.post-table td {
-    padding: 14px;
-    border-bottom: 1px solid #eee;
-    text-align: center;
+th {
+    padding: 14px 10px;
     font-size: 14px;
+    text-align: center;
+    color: #333;
+}
+
+td {
+    padding: 12px 10px;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
 }
 
 /* 제목 링크 */
-.post-title-link {
-    color: #2573ff;
+.post-link {
+    color: #397dff;
     font-weight: 600;
     text-decoration: none;
 }
-.post-title-link:hover {
+
+.post-link:hover {
     text-decoration: underline;
 }
 
-/* 버튼 공통 */
+/* ================================
+      버튼들
+================================ */
 button {
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 13px;
     cursor: pointer;
     border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    padding: 6px 14px;
 }
 
-/* 공개/숨김 버튼 */
-.toggle-btn.on {
-    background: #2ecc71;
+/* 공개 버튼 */
+.btn-blue {
+    background-color: #397dff;
     color: white;
 }
-.toggle-btn.off {
-    background: #7f8c8d;
+
+.btn-blue:hover {
+    background-color: #2f67d4;
+}
+
+/* 숨김 버튼 */
+.btn-gray {
+    background-color: #aaa;
     color: white;
+}
+
+.btn-gray:hover {
+    background-color: #888;
 }
 
 /* 삭제 버튼 */
-.delete-btn {
-    background: #e74c3c;
+.btn-red {
+    background-color: #e74a3b;
     color: white;
 }
-.delete-btn:hover {
-    background: #c0392b;
+
+.btn-red:hover {
+    background-color: #cf2f23;
 }
 
-/* 게시글 리스트 전체 레이아웃 중앙 정렬 */
-.table-wrapper {
-    width: 85%;
-    max-width: 1100px;
-    margin: 0 auto;         /* 화면 가운데 배치 */
-    background: #ffffff;
-    padding: 25px 35px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    margin-top: 25px;
+td:nth-child(2),
+th:nth-child(2) {
+    text-align: left;
+    padding-left: 18px;
 }
-
-.post-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14.5px;
-}
-
-.post-table th, .post-table td {
-    padding: 14px 8px;
-    border-bottom: 1px solid #eee;
-}
-
 

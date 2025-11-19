@@ -1,32 +1,127 @@
 @charset "UTF-8";
 
-/* 테이블 스타일 */
-.admin-card table {
+/* ================================
+      메인 레이아웃
+================================ */
+.main-content {
+    margin-left: 220px;
+    padding: 40px;
+    min-height: 100vh;
+    background: #f6f7fb;
+}
+
+.main-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* ================================
+      상단 우측: 글쓰기 버튼
+================================ */
+.right-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+/* ================================
+      카드 박스
+================================ */
+.table-card {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* ================================
+      테이블 스타일
+================================ */
+.admin-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.admin-card thead {
-    background: #f6f7fb;
+.admin-table thead {
+    background: #e9efff;
 }
 
-.admin-card th, 
-.admin-card td {
-    padding: 14px 12px;
-    border-bottom: 1px solid #eee;
+.admin-table th {
+    padding: 14px 10px;
     text-align: center;
     font-size: 14px;
+    color: #333;
 }
 
-.admin-card a:hover {
+.admin-table td {
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom: 1px solid #ececec;
+}
+
+.empty-text {
+    text-align: center;
+    padding: 30px;
+    font-size: 15px;
+    color: #777;
+}
+
+/* ================================
+      제목 링크
+================================ */
+.title-link {
+    color: #397dff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.title-link:hover {
     text-decoration: underline;
 }
 
-/* 버튼 상자 레이아웃 동일 유지 */
-.btn-blue, .btn-gray, .btn-red {
-    padding: 6px 14px;
-    border-radius: 8px;
+/* ================================
+      버튼 스타일
+================================ */
+button {
+    padding: 7px 14px;
+    border-radius: 6px;
     cursor: pointer;
+    border: none;
     font-size: 13px;
-    font-weight: 600;
+}
+
+/* 파란 버튼 */
+.btn-blue {
+    background: #397dff;
+    color: #fff;
+}
+
+.btn-blue:hover {
+    background: #2f67d4;
+}
+
+/* 회색 버튼 */
+.btn-gray {
+    background: #aaa;
+    color: #fff;
+}
+
+.btn-gray:hover {
+    background: #888;
+}
+
+/* 빨간 버튼 */
+.btn-red {
+    background: #e74a3b;
+    color: #fff;
+}
+
+.btn-red:hover {
+    background: #cf2f23;
 }

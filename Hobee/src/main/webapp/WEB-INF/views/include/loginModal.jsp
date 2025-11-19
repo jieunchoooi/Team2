@@ -1,34 +1,34 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<!-- 🔹 로그인 모달 -->
+<!-- loginModal.jsp -->
 <div id="loginModal" class="modal" style="display:none;">
     <div class="modal-overlay"></div>
 
-    <div class="modal-content">
+    <div class="login-modal-content">
+
         <span class="login-close">×</span>
 
-        <h2 class="modal-title">로그인</h2>
+        <h2 class="login-title">로그인</h2>
 
         <form id="loginForm">
-            <div class="form-group">
-                <input type="text" name="user_id" placeholder="아이디" required />
+
+            <input type="text" name="user_id" class="login-input" placeholder="아이디">
+            <input type="password" name="user_password" class="login-input" placeholder="비밀번호">
+
+            <button type="button" id="loginBtn" class="login-submit-btn">로그인</button>
+
+            <div id="loginError" class="error-msg"></div>
+
+            <div class="login-links">
+                <a href="${pageContext.request.contextPath}/user/findId">아이디 찾기</a> |
+                <a href="${pageContext.request.contextPath}/user/findPw">비밀번호 찾기</a> |
+                <a href="#" class="openInsertFromLogin">회원가입</a>
             </div>
 
-            <div class="form-group">
-                <input type="password" name="user_password" placeholder="비밀번호" required />
-            </div>
-
-            <div id="loginError" class="error-text"></div>
-
-            <button type="button" id="loginBtn" class="btn-primary">로그인</button>
         </form>
 
-        <div class="modal-footer">
-            <a href="${pageContext.request.contextPath}/user/findId">아이디 찾기</a> |
-            <a href="${pageContext.request.contextPath}/user/findPw">비밀번호 찾기</a> |
-            <a href="#" id="openInsertModal">회원가입</a>
-        </div>
     </div>
 </div>
+
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/loginModal.css">

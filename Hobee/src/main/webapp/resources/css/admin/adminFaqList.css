@@ -1,25 +1,125 @@
 @charset "UTF-8";
 
-/* 테이블 스타일 */
-.faq-table {
+/* ================================
+      메인 레이아웃
+================================ */
+.main-content {
+    margin-left: 220px;
+    padding: 40px;
+    background: #f6f7fb;
+    min-height: 100vh;
+}
+
+.main-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* ================================
+      카드 박스
+================================ */
+.table-card {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* ================================
+      우측 버튼 (FAQ 작성)
+================================ */
+.right-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+/* ================================
+      테이블 공통
+================================ */
+.admin-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.faq-table thead {
-    background: #f6f7fb;
+.admin-table thead {
+    background: #e9efff;
 }
 
-.faq-table th,
-.faq-table td {
-    padding: 14px 12px;
-    border-bottom: 1px solid #eee;
+.admin-table th {
+    padding: 14px 10px;
     text-align: center;
     font-size: 14px;
+    color: #333;
 }
 
-.faq-table a:hover {
+.admin-table td {
+    padding: 12px 10px;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
+}
+
+/* 질문(Question)은 왼쪽 정렬 */
+td.left {
+    text-align: left;
+    padding-left: 12px;
+}
+
+.empty-text {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+    font-size: 15px;
+}
+
+/* ================================
+      제목 링크
+================================ */
+.title-link {
+    color: #397dff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.title-link:hover {
     text-decoration: underline;
 }
 
-/* 버튼 공통 스타일은 adminLayout.css 사용 */
+/* ================================
+      버튼 스타일
+================================ */
+button {
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 13px;
+    color: #fff;
+}
+
+.btn-blue {
+    background: #397dff;
+}
+.btn-blue:hover {
+    background: #2f67d4;
+}
+
+.btn-gray {
+    background: #aaa;
+}
+.btn-gray:hover {
+    background: #888;
+}
+
+.btn-red {
+    background: #e74a3b;
+}
+.btn-red:hover {
+    background: #cf2f23;
+}

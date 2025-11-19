@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.AdminBoardMapper">
+
+    <!-- ========== Result Map ========== -->
+    <resultMap id="boardMap" type="com.itwillbs.domain.AdminBoardVO">
+        <id property="board_id" column="board_id"/>
+        <result property="board_name" column="board_name"/>
+        <result property="board_desc" column="board_desc"/>
+        <result property="is_active" column="is_active"/>
+        <result property="created_at" column="created_at"/>
+    </resultMap>
+
+    <!-- ========== 목록 조회 ========== -->
+    <select id="getBoardList" resultMap="boardMap">
+        SELECT *
+        FROM board_category
+        ORDER BY board_id DESC
+    </select>
+
+    <!-- ========== 단일 조회 ========== -->
+    <select id="getBoard" resultMap="boardMap" parameterType="int">
+        SELECT *
+        FROM board_category
+        WHERE board_id = #{board_id}
+    </select>
+
+    <!-- ========== 추가 ========== -->
+    <insert id="insertBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
+        INSERT INTO board_category (board_name, board_desc, is_active, created_at)
+        VALUES (#{board_name}, #{board_desc}, #{is_active}, NOW())
+    </insert>
+
+    <!-- ========== 수정 ========== -->
+    <update id="updateBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
+        UPDATE board_category
+        SET 
+            board_name = #{board_name},
+            board_desc = #{board_desc},
+            is_active = #{is_active}
+        WHERE board_id = #{board_id}
+    </update>
+
+    <!-- ========== 삭제 ========== -->
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM board_category
+        WHERE board_id = #{board_id}
+    </delete>
+
+</mapper>

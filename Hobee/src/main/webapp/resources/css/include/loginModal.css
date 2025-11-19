@@ -1,185 +1,90 @@
 @charset "UTF-8";
 
-/* ===============================
-   🔥 로그인 모달 - 프리미엄 완성형
-================================ */
-
-#loginModal * {
-  font-family: 'Pretendard', sans-serif;
-  box-sizing: border-box;
+/* 로그인 모달 전체 영역 */
+#loginModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9990;
 }
 
-/* 배경 어둡게 */
-#loginModal.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+/* 모달 박스 (더 크고 시원하게 변경!) */
+.login-modal-content {
+    width: 540px;                 /* 🔥 540px로 크게 변경 */
+    background: #fff;
+    padding: 50px 40px;           /* 🔥 여백도 더 넓게 */
+    border-radius: 20px;
+    box-shadow: 0 12px 45px rgba(0,0,0,0.18);
+    position: relative;
+    animation: fadeDown 0.25s ease-in-out;
 }
 
-/* 오버레이 클릭 시 닫힘 */
-#loginModal .modal-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+/* 모달 애니메이션 */
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ===============================
-   🎨 모달 박스 (크기 500px)
-================================ */
-#loginModal .modal-content {
-  position: relative;
-  background: #ffffff;
-  width: 500px;                    /* 🔥 최적 사이즈 */
-  padding: 58px 48px;              /* 넉넉한 내부 여백 */
-  border-radius: 20px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-  animation: fadeInUp 0.25s ease;
-  z-index: 10000;
+/* 닫기 버튼 */
+.login-close {
+    position: absolute;
+    right: 26px;
+    top: 24px;
+    font-size: 28px;
+    cursor: pointer;
 }
 
-/* 닫기 버튼 X */
-#loginModal .close-btn {
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  font-size: 28px;
-  color: #666;
-  cursor: pointer;
-  border: none;
-  background: none;
-  transition: 0.25s;
+/* 제목 */
+.login-title {
+    text-align: center;
+    margin-bottom: 32px;
+    font-weight: 700;
+    font-size: 24px;
 }
 
-#loginModal .close-btn:hover {
-  color: #2573ff;
-}
-
-/* 제목 (로그인) */
-#loginModal .modal-title {
-  text-align: center;
-  font-size: 28px;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 40px;
-}
-
-/* ===============================
-   ✏ 입력창
-================================ */
-#loginModal .form-group {
-  margin-bottom: 28px;            /* 🔥 입력창 간격 증가 */
-}
-
-#loginModal input {
-  width: 100%;
-  height: 54px;
-  padding: 16px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 17px;
-  background: #fff;
-  transition: 0.2s ease;
-}
-
-#loginModal input:focus {
-  border-color: #2573ff;
-  box-shadow: 0 0 6px rgba(37,115,255,0.35);
-  outline: none;
-}
-
-/* 에러 메시지 */
-#loginError {
-  color: #e53935;
-  font-size: 15px;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-/* ===============================
-   🔵 로그인 버튼
-================================ */
-#loginModal #loginBtn {
-  width: 100%;
-  height: 56px;
-  border: none;
-  border-radius: 12px;
-  background: #2573ff;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: 0.15s ease-in-out;
-}
-
-#loginModal #loginBtn:hover {
-  background: #1e5edb;
-  transform: translateY(-2px);
-}
-
-/* ===============================
-   📎 하단 링크 (비밀번호 찾기 | 회원가입)
-================================ */
-#loginModal .modal-footer {
-  text-align: center;
-  margin-top: 24px;
-  font-size: 15px;
-  color: #666;
-}
-
-#loginModal .modal-footer a {
-  color: #2573ff;
-  text-decoration: none;
-  font-weight: 500;
-  margin: 0 8px;
-}
-
-#loginModal .modal-footer a:hover {
-  text-decoration: underline;
-}
-
-/* ===============================
-   🎞 애니메이션
-================================ */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===============================
-   📱 모바일 대응
-================================ */
-@media (max-width: 520px) {
-  #loginModal .modal-content {
-    width: 92%;
-    padding: 40px 28px;
-    border-radius: 16px;
-  }
-
-  #loginModal .modal-title {
-    font-size: 22px;
-  }
-
-  #loginModal input {
-    height: 50px;
-    font-size: 16px;
-  }
-
-  #loginModal #loginBtn {
+/* 인풋 */
+.login-input {
+    width: 100%;
     height: 52px;
+    margin-bottom: 16px;
+    padding: 13px 16px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
     font-size: 16px;
-  }
+}
+
+/* 로그인 버튼 */
+.login-submit-btn {
+    width: 100%;
+    height: 52px;
+    background: #3b7af0;
+    border: none;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-submit-btn:hover {
+    background: #2f66d6;
+}
+
+/* 아래 링크 */
+.login-links {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 14px;
+}
+
+.login-links a {
+    color: #888;
+    margin: 0 6px;
 }

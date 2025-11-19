@@ -133,9 +133,16 @@ $(document).ready(function(){
         $("#insertSuccess").text("");
     });
 
+    /* 로그인 모달 → 회원가입 */
+    $(document).on("click", ".openInsertFromLogin", function(e){
+        e.preventDefault();
+        $("#loginModal").fadeOut();
+        $("#insertModal").fadeIn().css("display","flex");
+    });
+
 
     /* ======================
-       로그인 기능 (AJAX)
+       3) 로그인 AJAX
     ======================= */
     $("#loginBtn").click(function(){
         loginRequest();
@@ -148,11 +155,10 @@ $(document).ready(function(){
             data: $("#loginForm").serialize(),
             dataType: "json",
             success: function(res) {
-
                 if (res.result === "success") {
+
                     $("#loginError")
                         .css("color", "#2ecc71")
-                        .hide()
                         .text(res.user_name + "님 환영합니다!")
                         .fadeIn(200);
 
@@ -166,7 +172,6 @@ $(document).ready(function(){
 
                 $("#loginError")
                     .css("color", "#e74c3c")
-                    .hide()
                     .text(res.message)
                     .fadeIn(200);
             },
@@ -178,12 +183,11 @@ $(document).ready(function(){
 
 
     /* ======================
-       회원가입 AJAX
+       4) 회원가입 중복확인
     ======================= */
     let insIdOk = false;
     let insEmailOk = false;
 
-    // 아이디 input 변경 → 다시 중복확인 필요
     $("#ins_user_id").on("input", () => {
         insIdOk = false;
         $("#ins_idCheckMsg").text("");
@@ -194,7 +198,6 @@ $(document).ready(function(){
         $("#ins_emailCheckMsg").text("");
     });
 
-    // 아이디 중복확인
     $("#ins_checkIdBtn").click(() => {
         const id = $("#ins_user_id").val().trim();
         const pattern = /^[A-Za-z0-9]{1,8}$/;
@@ -220,7 +223,7 @@ $(document).ready(function(){
         });
     });
 
-    // 이메일 중복확인
+
     $("#ins_checkEmailBtn").click(() => {
         const email = $("#ins_user_email").val();
         const pattern=/^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
@@ -247,7 +250,9 @@ $(document).ready(function(){
     });
 
 
-    /* 회원가입 실행 */
+    /* ======================
+       5) 회원가입 실행
+    ======================= */
     $("#insertBtn").click(function() {
 
         $("#insertError").text("");
@@ -282,7 +287,6 @@ $(document).ready(function(){
             data: $("#insertForm").serialize(),
             dataType: "json",
             success: function(res) {
-
                 if (res.result === "success") {
                     alert("회원가입 완료! 다시 로그인해주세요.");
                     $("#insertModal").fadeOut();
@@ -297,8 +301,23 @@ $(document).ready(function(){
         });
     });
 
-});
+
+    /* ======================
+       6) 약관 전체동의
+    ======================= */
+    $("#ins_agreeAll").on("change", function () {
+        $(".ins-agree-item").prop("checked", $(this).prop("checked"));
+    });
+
+    $(".ins-agree-item").on("change", function () {
+        const all = $(".ins-agree-item").length;
+        const checked = $(".ins-agree-item:checked").length;
+        $("#ins_agreeAll").prop("checked", all === checked);
+    });
+
+}); 
 </script>
+
 
 </body>
 </html>

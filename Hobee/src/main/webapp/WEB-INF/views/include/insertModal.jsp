@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
+<!-- insertModal.jsp -->
 <div id="insertModal" class="modal" style="display:none;">
     <div class="modal-overlay"></div>
 
@@ -11,44 +12,35 @@
 
         <form id="insertForm">
 
-            <!-- 아이디 -->
             <label>아이디</label>
             <div class="input-row">
-                <input type="text" id="ins_user_id" name="user_id" class="insert-input" placeholder="영문+숫자 8자 이내">
+                <input type="text" id="ins_user_id" name="user_id" class="insert-input">
                 <button type="button" id="ins_checkIdBtn" class="check-btn">중복확인</button>
             </div>
             <div id="ins_idCheckMsg" class="msg"></div>
 
-            <!-- 비밀번호 -->
             <label>비밀번호</label>
-            <input type="password" id="ins_user_password" name="user_password" class="insert-input"
-                   placeholder="영문+숫자+특수문자 8~12자">
+            <input type="password" id="ins_user_password" name="user_password" class="insert-input">
 
-            <!-- 비밀번호 확인 -->
             <label>비밀번호 확인</label>
-            <input type="password" id="ins_user_password2" class="insert-input" placeholder="비밀번호 확인">
+            <input type="password" id="ins_user_password2" class="insert-input">
 
-            <!-- 이름 -->
             <label>이름</label>
             <input type="text" id="ins_user_name" name="user_name" class="insert-input">
 
-            <!-- 이메일 -->
             <label>이메일</label>
             <div class="input-row">
-                <input type="text" id="ins_user_email" name="user_email" class="insert-input" placeholder="example@naver.com">
+                <input type="text" id="ins_user_email" name="user_email" class="insert-input">
                 <button type="button" id="ins_checkEmailBtn" class="check-btn">중복확인</button>
             </div>
             <div id="ins_emailCheckMsg" class="msg"></div>
 
-            <!-- 전화번호 -->
             <label>전화번호</label>
-            <input type="text" id="ins_user_phone" name="user_phone" class="insert-input" placeholder="010-0000-0000">
+            <input type="text" id="ins_user_phone" name="user_phone" class="insert-input">
 
-            <!-- 주소 -->
             <label>주소</label>
             <input type="text" id="ins_user_address" name="user_address" class="insert-input">
 
-            <!-- 성별 -->
             <label>성별</label>
             <select id="ins_user_gender" name="user_gender" class="insert-input">
                 <option value="">선택</option>
@@ -58,17 +50,20 @@
 
             <!-- 약관 -->
             <div class="insert-agree-box">
-                <label class="agree-item"><input type="checkbox" id="ins_agreeAll"> 전체동의</label>
-                <label class="agree-item"><input type="checkbox" class="ins-agree-item" required> 이용약관 동의(필수)</label>
-                <label class="agree-item"><input type="checkbox" class="ins-agree-item" required> 개인정보동의(필수)</label>
+                <label><input type="checkbox" id="ins_agreeAll"> 전체동의</label>
+                <label><input type="checkbox" class="ins-agree-item" required> 이용약관 동의(필수)</label>
+                <label><input type="checkbox" class="ins-agree-item" required> 개인정보동의(필수)</label>
             </div>
 
             <div id="insertError" class="error-msg"></div>
             <div id="insertSuccess" class="success-msg"></div>
 
             <button type="button" id="insertBtn" class="insert-submit-btn">회원가입</button>
+
         </form>
+
     </div>
 </div>
+
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/insertModal.css">

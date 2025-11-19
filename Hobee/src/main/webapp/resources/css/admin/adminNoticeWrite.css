@@ -1,54 +1,98 @@
 @charset "UTF-8";
 
-/* 입력 테이블 */
-.write-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.write-label {
-    width: 130px;
-    font-weight: 700;
-    color: #333;
-    padding: 14px 10px;
+/* ================================
+      메인 레이아웃
+================================ */
+.main-content {
+    margin-left: 220px;
+    padding: 40px;
+    min-height: 100vh;
     background: #f6f7fb;
-    border-bottom: 1px solid #eee;
 }
 
-.write-table td {
-    padding: 14px 10px;
-    border-bottom: 1px solid #eee;
+.main-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
 }
 
-/* 입력창 */
-.write-input {
-    width: 70%;
-    padding: 10px;
-    border: 1px solid #ccd3e0;
+/* ================================
+      입력 카드 박스
+================================ */
+.form-card {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* ================================
+      입력 폼 스타일
+================================ */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
 }
 
-.write-select {
-    padding: 8px 12px;
-    border: 1px solid #ccd3e0;
+.form-group textarea {
+    height: 180px;
+    resize: none;
+    line-height: 1.6;
+}
+
+/* ================================
+      버튼 영역
+================================ */
+.btn-area {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
     border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
     font-size: 14px;
 }
 
-.write-textarea {
-    width: 90%;
-    height: 200px;
-    padding: 12px;
-    font-size: 14px;
-    border: 1px solid #ccd3e0;
-    border-radius: 10px;
-    resize: vertical;
+/* 파란 버튼 */
+.btn-blue {
+    background: #397dff;
 }
 
-/* 버튼 */
-.write-btn-area {
-    text-align: right;
-    margin-top: 25px;
+.btn-blue:hover {
+    background: #2f67d4;
+}
+
+/* 회색 버튼 */
+.btn-gray {
+    background: #aaa;
+}
+
+.btn-gray:hover {
+    background: #888;
 }

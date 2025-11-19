@@ -1,88 +1,81 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>공지 작성</title>
+    <title>공지 작성 | Hobee Admin</title>
 
     <!-- 공통 관리자 CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminLayout.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
 
     <!-- 공지 작성 전용 CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminNoticeWrite.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources/css/admin/adminNoticeWrite.css">
 </head>
 
 <body>
 
-<!-- 사이드바 -->
-<jsp:include page="/WEB-INF/views/include/adminSidebar.jsp">
-    <jsp:param name="page" value="noticeList"/>
-</jsp:include>
+<!-- 상단 헤더 -->
+<jsp:include page="/WEB-INF/views/include/header.jsp"/>
 
-<div class="admin-main">
-<div class="admin-card">
+<!-- 왼쪽 사이드바 -->
+<jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
-    <h2>📝 공지사항 작성</h2>
+<!-- ⭐ 메인 -->
+<main class="main-content">
 
-    <form action="${pageContext.request.contextPath}/admin/adminNoticeWritePro" method="post">
+    <div class="main-header">
+        <h1>공지사항 작성</h1>
+    </div>
 
-        <table class="write-table">
-            <tbody>
+    <div class="form-card">
 
-                <!-- 제목 -->
-                <tr>
-                    <td class="write-label">제목</td>
-                    <td>
-                        <input type="text" name="title" class="write-input" required>
-                    </td>
-                </tr>
+        <form action="${pageContext.request.contextPath}/admin/adminNoticeWritePro"
+              method="post">
 
-                <!-- 작성자: 로그인 연동 시 세션에서 가져오지만 지금은 고정 -->
-                <tr>
-                    <td class="write-label">작성자</td>
-                    <td>
-                        <input type="text" name="admin_id" value="admin" class="write-input" readonly>
-                    </td>
-                </tr>
+            <!-- 제목 -->
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" name="title" required>
+            </div>
 
-                <!-- 공개 여부 -->
-                <tr>
-                    <td class="write-label">공개 여부</td>
-                    <td>
-                        <select name="is_visible" class="write-select">
-                            <option value="1">공개</option>
-                            <option value="0">숨김</option>
-                        </select>
-                    </td>
-                </tr>
+            <!-- 작성자 -->
+            <div class="form-group">
+                <label>작성자</label>
+                <input type="text" name="admin_id" value="admin" readonly>
+            </div>
 
-                <!-- 내용 -->
-                <tr>
-                    <td class="write-label" style="vertical-align:top;">내용</td>
-                    <td>
-                        <textarea name="content" class="write-textarea" required></textarea>
-                    </td>
-                </tr>
+            <!-- 공개 여부 -->
+            <div class="form-group">
+                <label>공개 여부</label>
+                <select name="is_visible" required>
+                    <option value="1">공개</option>
+                    <option value="0">숨김</option>
+                </select>
+            </div>
 
-            </tbody>
-        </table>
+            <!-- 내용 -->
+            <div class="form-group">
+                <label>내용</label>
+                <textarea name="content" required></textarea>
+            </div>
 
-        <!-- 버튼 -->
-        <div class="write-btn-area">
-            <button type="submit" class="btn-blue">등록하기</button>
-            <button type="button" class="btn-gray"
-                onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeList'">
-                목록
-            </button>
-        </div>
+            <div class="btn-area">
+                <button class="btn-blue" type="submit">등록하기</button>
+                <button class="btn-gray" type="button"
+                        onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeList'">
+                    목록
+                </button>
+            </div>
 
-    </form>
+        </form>
 
-</div>
-</div>
+    </div>
+</main>
 
 </body>
 </html>

@@ -38,9 +38,12 @@ public class AdminCommentController {
 	
 	@GetMapping("/adminCommentDetail")
 	public String commentDetail(@RequestParam("comment_id") int comment_id, Model model) {
-
+		System.out.println("AdminCommentController: commentDetail() 실행");
 	    // 서비스에서 상세 데이터 가져오기
 	    model.addAttribute("comment", adminCommentService.getCommentDetail(comment_id));
+	    
+	    // 사이드바 active 유지
+	    model.addAttribute("page", "commentList");
 
 	    return "admin/community/adminCommentDetail";
 	}

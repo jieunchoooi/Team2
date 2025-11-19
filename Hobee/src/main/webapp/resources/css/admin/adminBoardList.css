@@ -1,0 +1,154 @@
+@charset "UTF-8";
+/* ================================
+      공통 메인 콘텐츠 정렬
+================================ */
+
+.main-content {
+    margin-left: 230px;           /* 사이드바 너비 */
+    padding: 40px;
+    min-height: 100vh;
+    background-color: #f6f7fb;
+}
+
+/* ================================
+      메인 제목
+================================ */
+.main-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* ================================
+      카드 형태 컨테이너
+================================ */
+.table-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    width: 90%;
+}
+
+/* ================================
+      게시판 추가 박스
+================================ */
+.board-add-box {
+    margin-bottom: 35px;
+}
+
+.board-add-box h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.board-add-box form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.board-add-box input,
+.board-add-box select {
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 200px;
+}
+
+.board-add-box button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #397dff;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.board-add-box button:hover {
+    background-color: #2f67d4;
+}
+
+/* ================================
+      테이블 디자인
+================================ */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table thead {
+    background-color: #e9efff;
+}
+
+table th {
+    padding: 14px 8px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+table td {
+    padding: 12px 8px;
+    font-size: 14px;
+    border-bottom: 1px solid #ececec;
+}
+
+/* ================================
+      배지(사용/미사용)
+================================ */
+
+.badge-active {
+    padding: 6px 10px;
+    background-color: #3c8dff;
+    color: white;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.badge-inactive {
+    padding: 6px 10px;
+    background-color: #888;
+    color: white;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+/* ================================
+      버튼 (수정/삭제)
+================================ */
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 5px;
+    transition: 0.2s;
+}
+
+.detail {
+    background-color: #4e73df;
+    color: white;
+}
+
+.detail:hover {
+    background-color: #3a5dc9;
+}
+
+.btn-red {
+    background-color: #e74a3b;
+    color: white;
+}
+
+.btn-red:hover {
+    background-color: #cf2f23;
+}

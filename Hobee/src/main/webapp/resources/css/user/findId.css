@@ -2,34 +2,32 @@
 
 /* 전체 컨테이너 */
 .findid-container {
-    width: 420px;
-    margin: 80px auto;
+    width: 500px;              /* 🔥 오른쪽 여백 문제 해결 → 더 넓게 지정 */
+    margin: 70px auto;
+    padding: 40px 40px;        /* 🔥 좌우 동일하게 40px */
     background: #ffffff;
-    padding: 40px 32px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    font-family: "Pretendard", sans-serif;
+    border-radius: 18px;
+    box-shadow: 0 8px 35px rgba(0,0,0,0.1);
 }
 
 /* 제목 */
 .findid-container h2 {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 28px;
     font-weight: 700;
-    color: #222;
+    font-size: 26px;
+    margin-bottom: 12px;
 }
 
-/* 설명문 */
-.desc {
+/* 설명 문구 */
+.findid-container .desc {
     text-align: center;
-    font-size: 15px;
-    color: #555;
-    margin-bottom: 22px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 30px;
 }
 
-/* 입력 그룹 */
+/* 라벨 + 인풋 그룹 */
 .form-group {
     margin-bottom: 18px;
 }
@@ -39,66 +37,45 @@
     margin-bottom: 6px;
     font-size: 14px;
     font-weight: 600;
-    color: #222;
 }
 
-/* input */
-.form-group input {
+/* 입력 필드 */
+.findid-container input[type="text"],
+.findid-container input[type="email"] {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    height: 46px;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     font-size: 15px;
-    background: #fafafa;
-    transition: 0.2s;
+    box-sizing: border-box;
 }
 
-.form-group input:focus {
-    border-color: #2573ff;
-    background: #fff;
-    box-shadow: 0 0 4px rgba(37,115,255,0.3);
-    outline: none;
-}
-
-/* 버튼 */
+/* 아이디 찾기 버튼 */
 .findid-btn {
     width: 100%;
-    padding: 14px;
-    background: #2573ff;
+    height: 48px;
+    background: #3b7af0;
     border: none;
-    border-radius: 8px;
-    color: #fff;
+    color: white;
     font-size: 16px;
     font-weight: 600;
+    border-radius: 10px;
     cursor: pointer;
     margin-top: 10px;
-    transition: background 0.2s;
 }
 
 .findid-btn:hover {
-    background: #1e5edb;
-}
-
-/* 메시지 */
-.msg {
-    text-align: center;
-    font-size: 14px;
-    color: #d12f2f;
-    margin-bottom: 10px;
+    background: #2f66d6;
 }
 
 /* 하단 링크 */
 .bottom-link {
-    margin-top: 18px;
     text-align: center;
+    margin-top: 18px;
 }
 
 .bottom-link a {
-    color: #2573ff;
-    text-decoration: none;
+    color: #777;
     font-size: 14px;
-}
-
-.bottom-link a:hover {
-    text-decoration: underline;
 }

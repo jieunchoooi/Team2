@@ -1,54 +1,94 @@
 @charset "UTF-8";
 
-/* 수정 테이블 */
-.faq-edit-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.faq-label {
-    width: 130px;
-    font-weight: 700;
-    color: #333;
-    padding: 14px 10px;
+/* ================================
+      메인 레이아웃
+================================ */
+.main-content {
+    margin-left: 220px;
+    padding: 40px;
+    min-height: 100vh;
     background: #f6f7fb;
-    border-bottom: 1px solid #eee;
 }
 
-.faq-edit-table td {
-    padding: 14px 10px;
-    border-bottom: 1px solid #eee;
+.main-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
 }
 
-/* input, select, textarea 공통 */
-.faq-input {
-    width: 70%;
-    padding: 10px;
-    border: 1px solid #ccd3e0;
+/* ================================
+      폼 카드
+================================ */
+.form-card {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* ================================
+      입력 그룹
+================================ */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
 }
 
-.faq-select {
-    padding: 8px 12px;
-    border: 1px solid #ccd3e0;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-.faq-textarea {
-    width: 90%;
+.form-group textarea {
     height: 200px;
-    padding: 12px;
-    border: 1px solid #ccd3e0;
-    border-radius: 10px;
-    font-size: 14px;
-    resize: vertical;
+    resize: none;
+    line-height: 1.6;
 }
 
-/* 버튼 */
-.faq-btn-area {
-    text-align: right;
-    margin-top: 25px;
+/* ================================
+      버튼 영역
+================================ */
+.btn-area {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+}
+
+.btn-blue {
+    background-color: #397dff;
+}
+.btn-blue:hover {
+    background-color: #2f67d4;
+}
+
+.btn-gray {
+    background-color: #aaa;
+}
+.btn-gray:hover {
+    background-color: #888;
 }
