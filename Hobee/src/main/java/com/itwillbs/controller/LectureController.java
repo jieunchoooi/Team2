@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.LectureService;
 
@@ -59,12 +60,14 @@ public class LectureController {
 		        List<ChapterDetailVO> detailList = lectureService.getDetail(chapter.getChapter_num());
 		        chapter.setDetailList(detailList);
 		    }
+		List<ReviewVO> reviewList = lectureService.getReviewList(lecture_num);
 		
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userVO);
 		model.addAttribute("authorLectures", authorLectures);
 		model.addAttribute("similarLectures", similarLectures);
 		model.addAttribute("chapterList", chapterList);
+		model.addAttribute("reviewList", reviewList);
 		
 		return "category/lecture";
 	}

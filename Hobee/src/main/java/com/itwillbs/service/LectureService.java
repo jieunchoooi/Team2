@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.LectureMapper;
 
@@ -87,6 +88,11 @@ public class LectureService {
 	public List<ChapterVO> getChapterList(int lecture_num) {
 		System.out.println("LectureService getChapterList()");
 		return lectureMapper.getChapterList(lecture_num);
+	}
+
+	public List<ReviewVO> getReviewList(int lecture_num) {
+		System.out.println("LectureService getChapterList()");
+		return lectureMapper.getReviewList(lecture_num);
 	}
 
 

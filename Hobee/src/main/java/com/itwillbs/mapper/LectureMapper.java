@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.UserVO;
 
 @Mapper
@@ -34,6 +35,8 @@ public interface LectureMapper {
 	List<ChapterDetailVO> getDetail(int chapter_num);
 
 	List<ChapterVO> getChapterList(int lecture_num);
+
+	List<ReviewVO> getReviewList(int lecture_num);
 
 	
 

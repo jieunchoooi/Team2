@@ -165,8 +165,35 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 }
 
 .stars {
-  color: #ffc107;
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
   font-size: 0.9rem;
+  line-height: 1;
+}
+
+.stars .empty {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.stars .empty i {
+  color: #e0e0e0; /* 빈 별 색상 */
+}
+
+.stars .filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  gap: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: calc(var(--rating) * 20%);
+}
+
+.stars .filled i {
+  color: #ffc107; /* 채워진 별 색상 */
 }
 
 .rating-number {
@@ -328,7 +355,22 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
                     <div class="review-meta">수강평 ${review.review_count} · 평균 평점 ${review.avg_score}</div>
                   </div>
                   <div class="review-rating">
-                    <span class="stars">★★★★★</span>
+                    <span class="stars" style="--rating: ${review.review_score};">
+                      <span class="empty">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                      </span>
+                      <span class="filled">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </span>
                     <span class="rating-number">${review.review_score}</span>
                   </div>
                 </div>              
