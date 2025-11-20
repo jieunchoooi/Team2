@@ -95,5 +95,10 @@ public class LectureService {
 		return lectureMapper.getReviewList(lecture_num);
 	}
 
+	public int hasPurchased(int user_num, int lecture_num) {
+		System.out.println("LectureService hasPurchased()");
+		return lectureMapper.hasPurchased(user_num, lecture_num);
+	}
+
 
 }

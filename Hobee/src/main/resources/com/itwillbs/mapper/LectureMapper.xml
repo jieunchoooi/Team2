@@ -43,7 +43,7 @@
   		</select>
   		
   		<select id="getUserImg" resultType="com.itwillbs.domain.UserVO">
-  			select u.user_file
+  			select u.user_file, u.user_num
     		from lecture l
     		join user u on l.user_num = u.user_num
     		where l.lecture_num = #{lecture_num}
@@ -104,7 +104,13 @@
 		    WHERE r.lecture_num = #{lecture_num}
 		    ORDER BY r.review_score DESC
 		    LIMIT 4
-		   	
+		</select>
+		
+		<select id="hasPurchased" resultType="int">
+		    SELECT COUNT(*)
+		    FROM enrollment
+		    WHERE user_num = #{user_num}
+		    AND lecture_num = #{lecture_num}
 		</select>
    
 

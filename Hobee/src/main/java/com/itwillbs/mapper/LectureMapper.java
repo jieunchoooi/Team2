@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
@@ -37,6 +38,8 @@ public interface LectureMapper {
 	List<ChapterVO> getChapterList(int lecture_num);
 
 	List<ReviewVO> getReviewList(int lecture_num);
+
+	int hasPurchased(@Param("user_num") int user_num, @Param("lecture_num") int lecture_num);
 
 	
 

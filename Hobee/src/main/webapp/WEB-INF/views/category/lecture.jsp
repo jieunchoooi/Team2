@@ -379,7 +379,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     <div class="review-section">
       <div class="review-header-container">
         <h3>수강생들의 리뷰</h3>
-        <c:if test="${not empty sessionScope.user_id && hasPurchased}">
+        <c:if test="${not empty sessionScope.user_id && hasPurchased > 0}">
 	        <button class="btn-write-review" onclick="location.href='${pageContext.request.contextPath}/review/write?lecture_num=${lectureVO.lecture_num}'">
 	          리뷰 작성하기
 	        </button>

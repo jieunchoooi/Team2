@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,8 +49,14 @@ public class LectureController {
 	
 	@RequestMapping(value="/lecture")
 	public String lecture(@RequestParam("no") int lecture_num,
-            Model model) {
+            Model model, HttpSession session) {
 		System.out.println("LectureController lecture()");
+		
+		String user_id = (String) session.getAttribute("user_id");
+		
+//		if(user_id != null) {
+//			String loginUserNum = 
+//		}
 		
 		LectureVO lectureVO = lectureService.contentLecture(lecture_num);
 		UserVO userVO = lectureService.getUserImg(lecture_num);
@@ -61,6 +68,11 @@ public class LectureController {
 		        chapter.setDetailList(detailList);
 		    }
 		List<ReviewVO> reviewList = lectureService.getReviewList(lecture_num);
+		int hasPurchased = lectureService.hasPurchased(userVO.getUser_num(), lecture_num);
+		System.out.println("userVO.getUser_num ::::::: " + userVO.getUser_num());
+		System.out.println("hasPurchased ::::::::::: " + hasPurchased);
+
+		model.addAttribute("hasPurchased", hasPurchased);
 		
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userVO);
