@@ -50,4 +50,29 @@ public interface AdminMapper {
 
 	public int deletecountMemberList();
 
+	public List<UserVO> activeTeacherList(PageVO pageVO);
+
+	public List<UserVO> inactiveTeacherList(PageVO pageVO);
+
+	public List<UserVO> activeMemberList(PageVO pageVO);
+
+	public List<UserVO> inactiveMemberList(PageVO pageVO);
+
+	public List<UserVO> MemberList(PageVO pageVO);
+
+	public int memberCount();
+
+	public int inactiveMemberCount();
+
+	public int countMemberCount();
+
+	public List<UserVO> DrawinstructorListMember(PageVO pageVO);
+
+	public int instructorDeletecountList();
+
+	public int deleteAllMemberCount();
+
+	public List<UserVO> withDeleteUserMember(PageVO pageVO);
+
+
 }

@@ -17,7 +17,7 @@ body {
 .main-content {
     margin-left: 240px; /* 사이드바 폭만큼 밀기 */
     margin-top: 0;
-    padding: 30px;
+    padding: 15px 30px 30px 30px;
     width: calc(100% - 240px);
     background-color: #f9fafb;
     min-height: 100vh;
@@ -149,6 +149,17 @@ tbody tr:last-child td {
 .btn-delete:hover {
     background-color: #e04344;
     box-shadow: 0 5px 12px rgba(255,77,79,0.3);
+}
+
+/* 회원복구 버튼 스타일 */
+.btn-revert {
+    background-color: #808080!important;
+    box-shadow: 0 3px 8px rgba(76, 175, 80, 0.2) !important;
+}
+
+.btn-revert:hover {
+    background-color: #45a049 !important;
+    box-shadow: 0 5px 12px rgba(76, 175, 80, 0.3) !important;
 }
 
 /* =========================== 관리 버튼 컨테이너 =========================== */

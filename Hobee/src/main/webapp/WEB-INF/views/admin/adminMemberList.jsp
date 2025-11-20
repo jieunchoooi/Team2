@@ -27,15 +27,15 @@
 
 		
 		<div class="stats-container">
-			<div class="stat-card">
+			<div class="stat-card ${filter == 'all' ? 'active' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminMemberList?filter=all'">
 				<h3>총 회원 수</h3>
-				<div class="stat-number">${count}</div>
+				<div class="stat-number">${totalcount}</div>
 			</div>
-			<div class="stat-card orange">
+			<div class="stat-card orange ${filter == 'active' ? 'active' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminMemberList?filter=active'">
 				<h3>활동 회원 수</h3>
 				<div class="stat-number">${acount}</div>
 			</div>
-			<div class="stat-card green">
+			<div class="stat-card green  ${filter == 'inactive' ? 'active' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminMemberList?filter=inactive'">
 				<h3>탈퇴 회원 수</h3>
 				<div class="stat-number">${dcount}</div>
 			</div>
@@ -44,7 +44,6 @@
 		<div class="search-box">
 			<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
 			<button>검색</button>
-			<button>전체회원</button>
 		</div>
 		<div class="table-container">
 			<table>
@@ -68,7 +67,12 @@
 							<td>${user.created_at}</td>
 							<td>
 								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
-								<button class="btn btn-delete" data-num="${user.user_num}" data-name="${user.user_name}">강제탈퇴</button>
+								<c:if test="${user.user_status eq 'active'}">
+									<button class="btn btn-delete" data-num="${user.user_num}" data-name="${user.user_name}">강제탈퇴</button>
+								</c:if>
+								<c:if test="${user.user_status ne 'active'}">
+									<button class="btn btn-revert" data-num="${user.user_num}" data-name="${user.user_name}">회원복구</button>
+								</c:if>
 							</td>
 						</tr>
 					</c:forEach>
@@ -119,6 +123,20 @@ deletebtn.forEach(function(btn){
     }
 });
 
+//회원복구 버튼
+let revertbtn = document.querySelectorAll(".btn-revert");
+revertbtn.forEach(function(btn){
+	btn.onclick = function(){
+		let userNum = this.getAttribute("data-num");
+        let userName = this.getAttribute("data-name"); 
+        
+        let result = confirm(userName + "님을 복구하시겠습니까?"); 
+        if(result) {
+            location.href = "${pageContext.request.contextPath}/admin/MemberRevert?user_num=" + userNum;
+			alert("복구되었습니다.");
+        }
+    }
+});
 
 
 </script>

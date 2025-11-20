@@ -107,6 +107,10 @@ public class AdminService {
 
 	public List<UserVO> withDrawListMember(PageVO pageVO) {
 		System.out.println("AdminService withDrawListMember()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
 		return adminMapper.withDrawListMember(pageVO);
 	}
 
@@ -139,5 +143,98 @@ public class AdminService {
 		System.out.println("AdminService deletecountMemberList()");
 		return adminMapper.deletecountMemberList();
 	}
+
+	public List<UserVO> activeTeacherList(PageVO pageVO) {
+		System.out.println("AdminService activeTeacherList()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.activeTeacherList(pageVO);
+	}
+
+	public List<UserVO> inactiveTeacherList(PageVO pageVO) {
+		System.out.println("AdminService inactiveTeacherList()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.inactiveTeacherList(pageVO);
+	}
+
+	public List<UserVO> activeMemberList(PageVO pageVO) {
+		System.out.println("AdminService activeMemberList()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.activeMemberList(pageVO);
+	}
+
+	public List<UserVO> inactiveMemberList(PageVO pageVO) {
+		System.out.println("AdminService inactiveMemberList()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.inactiveMemberList(pageVO);
+		
+	}
+
+	public List<UserVO> MemberList(PageVO pageVO) {
+		System.out.println("AdminService MemberList()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.MemberList(pageVO);
+	}
+
+	public int memberCount() {
+		System.out.println("AdminService memberCount()");
+		return adminMapper.memberCount();
+	}
+
+	public int inactiveMemberCount() {
+		System.out.println("AdminService inactiveMemberCount()");
+		return adminMapper.inactiveMemberCount();
+	}
+
+	public int countMemberCount() {
+		System.out.println("AdminService countMemberCount()");
+		return adminMapper.countMemberCount();
+	}
+
+	public List<UserVO> DrawinstructorListMember(PageVO pageVO) {
+		System.out.println("AdminService DrawinstructorListMember()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.DrawinstructorListMember(pageVO);
+	}
+
+	public int instructorDeletecountList() {
+		System.out.println("AdminService instructorDeletecountList()");
+		return adminMapper.instructorDeletecountList();
+	}
+
+	public int deleteAllMemberCount() {
+		System.out.println("AdminService deleteAllMemberCount()");
+		return adminMapper.deleteAllMemberCount();
+	}
+
+	public List<UserVO> withDeleteUserMember(PageVO pageVO) {
+		System.out.println("AdminService withDeleteUserMember()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
+		return adminMapper.withDeleteUserMember(pageVO);
+	}
+
+
+
+	
 
 }

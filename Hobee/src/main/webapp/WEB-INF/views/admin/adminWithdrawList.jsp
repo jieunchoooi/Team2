@@ -22,6 +22,27 @@
 			<h1>탈퇴 회원 목록</h1>
 		</div>
 
+		<div class="stats-container">
+			<div class="stat-card ${filter == 'all' ? 'user' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminWithdrawList?filter=all'">
+				<h3>총 탈퇴 회원 수</h3>
+				<div class="stat-number">${totalCount}</div>
+			</div>
+			<div class="stat-card orange ${filter == 'user' ? 'user' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminWithdrawList?filter=user'">
+				<h3>탈퇴 회원 수</h3>
+				<div class="stat-number">${mdCount}</div>
+			</div>
+			<div class="stat-card green ${filter == 'instructor' ? 'user' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminWithdrawList?filter=instructor'">
+				<h3>탈퇴 강사 수</h3>
+				<div class="stat-number">${intCount}</div>
+			</div>
+		</div>
+
+		<div class="search-box">
+			<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
+			<button>검색</button>
+		</div>
+
+
 		<div class="table-container">
 			<table>
 				<thead>
@@ -31,6 +52,7 @@
 						<th>아이디</th>
 						<th>이메일</th>
 						<th>탈퇴일</th>
+						<th>회원</th>
 						<th>비고</th>
 						<th>관리</th>
 					</tr>
@@ -43,6 +65,8 @@
 							<td>${user.user_id}</td>
 							<td>${user.user_email}</td>
 							<td>${user.created_at}</td>
+							<td><c:if test="${user.user_role eq 'user'}">학생</c:if>
+								<c:if test="${user.user_role eq 'instructor'}">강사</c:if></td>
 							<td><c:choose>
 									<c:when test="${user.user_status == 'self-withdraw'}">
 										<span class="reason-badge user-request">본인 요청 탈퇴</span>
@@ -56,7 +80,7 @@
 								</c:choose></td>
 							<td>
 								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
-								<button class="btn btn-revert" data-num="${user.user_num}" ata-name="${user.user_name}">탈퇴 취소</button>
+								<button class="btn btn-revert" data-num="${user.user_num}" data-name="${user.user_name}">탈퇴 취소</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -66,19 +90,19 @@
 				<!-- 10 만큼 이전 -->
 				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
 					<a
-						href="${ pageContext.request.contextPath }/admin/adminMemberList?pageNum=${pageVO.startPage - pageVO.pageBlock}">[이전]</a>
+						href="${ pageContext.request.contextPath }/admin/adminWithdrawList?pageNum=${pageVO.startPage - pageVO.pageBlock}">[이전]</a>
 				</c:if>
 
 				<c:forEach var="i" begin="${pageVO.startPage}"
 					end="${pageVO.endPage}" step="1">
 					<a
-						href="${ pageContext.request.contextPath }/admin/adminMemberList?pageNum=${i}">${i}</a>
+						href="${ pageContext.request.contextPath }/admin/adminWithdrawList?pageNum=${i}">${i}</a>
 				</c:forEach>
 
 				<!-- 10만큼 다음 -->
 				<c:if test="${pageVO.endPage < pageVO.pageCount }">
 					<a
-						href="${ pageContext.request.contextPath }/admin/adminMemberList?pageNum=${pageVO.startPage + pageVO.pageBlock}">[다음]</a>
+						href="${ pageContext.request.contextPath }/admin/adminWithdrawList?pageNum=${pageVO.startPage + pageVO.pageBlock}">[다음]</a>
 				</c:if>
 			</div>
 		</div>

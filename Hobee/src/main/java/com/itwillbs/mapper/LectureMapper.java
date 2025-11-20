@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.itwillbs.domain.ChapterDetailVO;
+import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.UserVO;
 
@@ -26,6 +28,14 @@ public interface LectureMapper {
 	List<LectureVO> authorLectures(LectureVO lectureVO);
 
 	List<LectureVO> similarLectures(Map<String, Object> param);
+
+	ChapterVO getChapter(int lecture_num);
+
+	List<ChapterDetailVO> getDetail(int chapter_num);
+
+	List<ChapterVO> getChapterList(int lecture_num);
+
+	
 
 	
 

@@ -18,89 +18,142 @@
 
 </head>
 <body>
+	<!-- header -->
+	<jsp:include page="../include/header.jsp"></jsp:include>
+	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
+	<main class="main-content">
+		<div class="main-header">
+			<h1>강사 목록</h1>
+		</div>
+		
+		<div class="stats-container">
+			<div class="stat-card ${filter == 'all' ? 'active' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminTeacherList?filter=all'">
+				<h3>총 강사 수</h3>
+				<div class="stat-number">${totalCount}</div>
+			</div>
+			<div class="stat-card orange ${filter == 'active' ? 'active' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminTeacherList?filter=active'">
+				<h3>활동 강사 수</h3>
+				<div class="stat-number">${tCount}</div>
+			</div>
+			<div class="stat-card green ${filter == 'inactive' ? 'active' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminTeacherList?filter=inactive'">
+				<h3>비활동 강사 수</h3>
+				<div class="stat-number">${intCount}</div>
+			</div>
+		</div>
 
-<!-- 공통 header -->
-<jsp:include page="../include/header.jsp"/>
+		<div class="search-box">
+			<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
+			<button>검색</button>
+		</div>
+		
+		<div class="table-container">
+			<table>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>프로필</th>
+						<th>이름</th>
+						<th>아이디</th>
+						<th>이메일</th>
+						<th>상태</th>
+						<th>관리</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="user" items="${teacherList}">
+						<tr>
+							<td>${user.user_num}</td>
+							<td><c:choose>
+								<c:when test="${not empty user.user_file}">
+									<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}"
+										 alt="프로필" style="width: 80px; height: 80px;"></c:when>
+									<c:otherwise>
+										<span style="color: #999;">이미지 없음</span>
+									</c:otherwise>
+								</c:choose> </td>
+							<td>${user.user_name}</td>
+							<td>${user.user_id}</td>
+							<td>${user.user_email}</td>
+							<td>
+								<c:choose>
+									<c:when test="${user.user_status eq 'active'}">
+										<span class="badge badge-active">활동중</span>
+									</c:when>
+									<c:otherwise>
+										<span class="badge badge-inactive">비활동</span>
+									</c:otherwise>
+								</c:choose>
+							</td>
+							
+							<td>
+								<button class="btn detail" data-num="${user.user_num}">상세보기</button>
+								<c:if test="${user.user_status eq 'active'}">
+									<button class="btn btn-delete" data-num="${user.user_num}" data-name="${user.user_name}">강제탈퇴</button>
+								</c:if>
+								<c:if test="${user.user_status ne 'active'}">
+									<button class="btn btn-revert" data-num="${user.user_num}" data-name="${user.user_name}">회원복구</button>
+								</c:if>
+							</td>
+						</tr>
+					</c:forEach>
+					
+				</tbody>
+			</table>
+		</div>
+		<div class="pagination">
+				<!-- 10 만큼 이전 -->
+				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
+					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${pageVO.startPage - pageVO.pageBlock}">[이전]</a>
+				</c:if>
+				
+				<c:forEach var="i" begin="${pageVO.startPage}"
+					end="${pageVO.endPage}" step="1">
+					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${i}">${i}</a>
+				</c:forEach>
 
-<!-- 공통 sidebar -->
-<jsp:include page="../include/adminSidebar.jsp"/>
-
-<main class="main-content">
-
-    <!-- 제목 영역 -->
-    <div class="main-header">
-        <h1>게시판 목록 관리</h1>
-    </div>
-
-    <div class="table-container">
-        
-        <!-- 게시판 추가 영역 -->
-        <div class="board-add-box">
-            <h3>게시판 추가</h3>
-
-            <form action="${pageContext.request.contextPath}/admin/adminBoardInsert" method="post">
-                <input type="text" name="board_name" placeholder="게시판 이름" required>
-                <input type="text" name="board_desc" placeholder="게시판 설명" required>
-
-                <select name="is_active">
-                    <option value="1">사용</option>
-                    <option value="0">미사용</option>
-                </select>
-
-                <button class="btn-blue" type="submit">추가</button>
-            </form>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>게시판 이름</th>
-                    <th>설명</th>
-                    <th>사용 여부</th>
-                    <th>관리</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <c:if test="${empty boardList}">
-                    <tr>
-                        <td colspan="5" style="text-align:center; padding:20px;">등록된 게시판이 없습니다.</td>
-                    </tr>
-                </c:if>
-
-                <c:forEach var="board" items="${boardList}">
-                    <tr>
-                        <td>${board.board_id}</td>
-                        <td>${board.board_name}</td>
-                        <td>${board.board_desc}</td>
-
-                        <td>
-                            <span class="${board.is_active == 1 ? 'badge-active' : 'badge-inactive'}">
-                                ${board.is_active == 1 ? '사용' : '미사용'}
-                            </span>
-                        </td>
-
-                        <td>
-                            <a class="btn detail"
-                               href="${pageContext.request.contextPath}/admin/adminBoardEdit?board_id=${board.board_id}">
-                               수정
-                            </a>
-
-                            <form action="${pageContext.request.contextPath}/admin/adminBoardDelete"
-                                  method="post"
-                                  style="display:inline-block"
-                                  onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                                <input type="hidden" name="board_id" value="${board.board_id}">
-                                <button class="btn btn-red">삭제</button>
-                            </form>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-
-    </div>
-</main>
+				<!-- 10만큼 다음 -->
+				<c:if test="${pageVO.endPage < pageVO.pageCount }">
+					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${pageVO.startPage + pageVO.pageBlock}">[다음]</a>
+				</c:if>
+			</div>
+	</main>
 </body>
+<script type="text/javascript">
+let deletebtn = document.querySelectorAll(".btn-delete");
+let sumtc = document.querySelector(".stat-number");
+
+//강제 탈퇴 버튼
+sumtc = function(){
+	href = "${pageContext.request.contextPath}/admin/sumTeacher"
+}
+
+deletebtn.forEach(function(btn){
+	btn.onclick = function(){
+		let userNum = this.getAttribute("data-num");
+        let userName = this.getAttribute("data-name"); 
+        
+        let result = confirm(userName + "님을 강제 탈퇴시키겠습니까?"); 
+        if(result) {
+            location.href = "${pageContext.request.contextPath}/admin/MemberAdminDelete?user_num=" + userNum + "&returnPage=teacher";
+			alert("탈퇴되었습니다.");
+        }
+    }
+});
+
+// 회원복구 버튼
+let revertbtn = document.querySelectorAll(".btn-revert");
+revertbtn.forEach(function(btn){
+	btn.onclick = function(){
+		let userNum = this.getAttribute("data-num");
+        let userName = this.getAttribute("data-name"); 
+        
+        let result = confirm(userName + "님을 복구하시겠습니까?"); 
+        if(result) {
+            location.href = "${pageContext.request.contextPath}/admin/MemberRevert?user_num=" + userNum;
+			alert("복구되었습니다.");
+        }
+    }
+});
+
+</script>
 </html>

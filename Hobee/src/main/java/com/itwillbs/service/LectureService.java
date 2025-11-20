@@ -11,6 +11,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.ChapterDetailVO;
+import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.LectureMapper;
@@ -59,7 +61,7 @@ public class LectureService {
 	public List<LectureVO> similarLectures(LectureVO lectureVO) {
 		System.out.println("LectureService similarLectures()");
 		
-		String tags = lectureVO.getLecture_tag(); // "그림,드로잉,일러스트,캐릭터,초보자,드릉드릉"
+		String tags = lectureVO.getLecture_tag(); 
 
 		List<String> tagList = Arrays.stream(tags.split(","))
 		                             .map(String::trim)
@@ -70,6 +72,21 @@ public class LectureService {
 		param.put("tagList", tagList);
 		
 		return lectureMapper.similarLectures(param);
+	}
+
+	public ChapterVO getChapter(int lecture_num) {
+		System.out.println("LectureService getChapter()");
+		return lectureMapper.getChapter(lecture_num);
+	}
+
+	public List<ChapterDetailVO> getDetail(int chapter_num) {
+		System.out.println("LectureService getDetail()");
+		return lectureMapper.getDetail(chapter_num);
+	}
+
+	public List<ChapterVO> getChapterList(int lecture_num) {
+		System.out.println("LectureService getChapterList()");
+		return lectureMapper.getChapterList(lecture_num);
 	}
 
 
