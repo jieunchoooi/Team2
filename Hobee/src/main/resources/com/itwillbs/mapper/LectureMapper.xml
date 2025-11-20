@@ -106,6 +106,12 @@
 		    LIMIT 4
 		</select>
 		
+		<select id="getUserNum" resultType="int">
+		    SELECT user_num
+		    FROM user
+		    WHERE user_id = #{user_id}
+		</select>
+		
 		<select id="hasPurchased" resultType="int">
 		    SELECT COUNT(*)
 		    FROM enrollment

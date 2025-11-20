@@ -38,8 +38,12 @@ public interface LectureMapper {
 	List<ChapterVO> getChapterList(int lecture_num);
 
 	List<ReviewVO> getReviewList(int lecture_num);
+	
+	int getUserNum(String user_id);
 
-	int hasPurchased(@Param("user_num") int user_num, @Param("lecture_num") int lecture_num);
+	int hasPurchased(@Param("user_num") int loginUserNum, @Param("lecture_num") int lecture_num);
+
+	
 
 	
 

@@ -94,11 +94,18 @@ public class LectureService {
 		System.out.println("LectureService getChapterList()");
 		return lectureMapper.getReviewList(lecture_num);
 	}
-
-	public int hasPurchased(int user_num, int lecture_num) {
-		System.out.println("LectureService hasPurchased()");
-		return lectureMapper.hasPurchased(user_num, lecture_num);
+	
+	public int getUserNum(String user_id) {
+		System.out.println("LectureService getUserNum()");
+		return lectureMapper.getUserNum(user_id);
 	}
 
+
+	public int hasPurchased(int loginUserNum, int lecture_num) {
+		System.out.println("LectureService hasPurchased()");
+		return lectureMapper.hasPurchased(loginUserNum, lecture_num);
+	}
+
+	
 
 }

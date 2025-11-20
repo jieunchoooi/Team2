@@ -334,6 +334,90 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
   .lecture-grid { grid-template-columns: repeat(2, 1fr); }
   .review-grid { grid-template-columns: 1fr; }
 }
+
+/* 모달 배경 */
+.modal-background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* 모달 박스 */
+.modal-box {
+    background: #fff;
+    width: 380px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+/* 타이틀 */
+.modal-title {
+    margin-bottom: 15px;
+    font-size: 20px;
+    text-align: center;
+}
+
+/* 별점 */
+.star-rating {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.star {
+    font-size: 32px;
+    color: #ddd;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.star.selected,
+.star:hover,
+.star:hover ~ .star {
+    color: #ffcc00;
+}
+
+/* textarea */
+#reviewContent {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    resize: none;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+/* 버튼 */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-submit {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: #bbb;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -379,11 +463,17 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     <div class="review-section">
       <div class="review-header-container">
         <h3>수강생들의 리뷰</h3>
-        <c:if test="${not empty sessionScope.user_id && hasPurchased > 0}">
-	        <button class="btn-write-review" onclick="location.href='${pageContext.request.contextPath}/review/write?lecture_num=${lectureVO.lecture_num}'">
-	          리뷰 작성하기
-	        </button>
-        </c:if>
+<%--         <c:if test="${not empty sessionScope.user_id && hasPurchased > 0}"> --%>
+<%-- 	        <button class="btn-write-review" onclick="location.href='${pageContext.request.contextPath}/review/write?lecture_num=${lectureVO.lecture_num}'"> --%>
+<!-- 	          리뷰 작성하기 -->
+<!-- 	        </button> -->
+<%--         </c:if> --%>
+
+	    <c:if test="${not empty sessionScope.user_id && hasPurchased > 0}">
+		  <button class="btn-write-review" onclick="$('#reviewModal').show()">
+		    리뷰 작성하기
+		  </button>
+		</c:if>
       </div>
       <div class="review-grid">
         <c:choose>
@@ -571,6 +661,33 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
 
+<!-- 리뷰 작성 모달 -->
+<div id="reviewModal" class="modal-background" style="display:none;">
+  <div class="modal-box">
+
+    <h2 class="modal-title">리뷰 작성</h2>
+
+    <!-- ⭐ 별점 영역 -->
+    <div class="star-rating">
+      <span class="star" data-value="1">★</span>
+      <span class="star" data-value="2">★</span>
+      <span class="star" data-value="3">★</span>
+      <span class="star" data-value="4">★</span>
+      <span class="star" data-value="5">★</span>
+    </div>
+
+    <!-- 입력창 -->
+    <textarea id="reviewContent" placeholder="강의는 어떠셨나요? 내용을 입력해주세요."></textarea>
+
+    <!-- 버튼 -->
+    <div class="modal-buttons">
+      <button id="submitReviewBtn" class="btn-submit">작성하기</button>
+      <button class="btn-cancel" onclick="$('#reviewModal').hide()">취소</button>
+    </div>
+
+  </div>
+</div>
+
 <script>
   // 탭 클릭 시 스크롤 이동
   const tabs = document.querySelectorAll('.tab-item');
@@ -644,6 +761,56 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       allHeaders.forEach(header => header.classList.remove('active'));
     }
   }
+  
+
+  /* ⭐ 별 선택 이벤트 */
+  $(".star").on("click", function() {
+      selectedStar = $(this).data("value");
+      $(".star").removeClass("selected");
+
+      for (let i = 1; i <= selectedStar; i++) {
+          $('.star[data-value="' + i + '"]').addClass("selected");
+      }
+  });
+
+  /* 리뷰 제출 */
+  $("#submitReviewBtn").click(function() {
+
+      if (selectedStar === 0) {
+          alert("별점을 선택해주세요.");
+          return;
+      }
+
+      if ($("#reviewContent").val().trim() === "") {
+          alert("리뷰 내용을 입력해주세요.");
+          return;
+      }
+
+      $.ajax({
+          url: "/lecture/insertReview",
+          type: "POST",
+          data: {
+              lecture_num: lectureNum,      // JSP에서 받아오는 강의번호
+              user_num: userNum,            // 로그인 유저 번호
+              rating: selectedStar,
+              content: $("#reviewContent").val()
+          },
+          success: function(result) {
+              alert("리뷰가 등록되었습니다.");
+              $("#reviewModal").hide();
+              $("#reviewContent").val("");
+              selectedStar = 0;
+              $(".star").removeClass("selected");
+
+              // 리뷰 목록 새로고침
+              loadReviews();
+          },
+          error: function() {
+              alert("리뷰 등록 중 오류가 발생했습니다.");
+          }
+      });
+  });
+
 </script>
 
 </body>

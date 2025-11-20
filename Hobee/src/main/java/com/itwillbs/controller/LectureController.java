@@ -54,9 +54,12 @@ public class LectureController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		
-//		if(user_id != null) {
-//			String loginUserNum = 
-//		}
+		if(user_id != null) {
+			int loginUserNum = lectureService.getUserNum(user_id);
+			int hasPurchased = lectureService.hasPurchased(loginUserNum, lecture_num);
+			
+			model.addAttribute("hasPurchased", hasPurchased);
+		}
 		
 		LectureVO lectureVO = lectureService.contentLecture(lecture_num);
 		UserVO userVO = lectureService.getUserImg(lecture_num);
@@ -68,11 +71,6 @@ public class LectureController {
 		        chapter.setDetailList(detailList);
 		    }
 		List<ReviewVO> reviewList = lectureService.getReviewList(lecture_num);
-		int hasPurchased = lectureService.hasPurchased(userVO.getUser_num(), lecture_num);
-		System.out.println("userVO.getUser_num ::::::: " + userVO.getUser_num());
-		System.out.println("hasPurchased ::::::::::: " + hasPurchased);
-
-		model.addAttribute("hasPurchased", hasPurchased);
 		
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userVO);
