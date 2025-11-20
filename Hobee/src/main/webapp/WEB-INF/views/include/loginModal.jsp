@@ -13,17 +13,26 @@
         <form id="loginForm">
 
             <input type="text" name="user_id" class="login-input" placeholder="아이디">
-            <input type="password" name="user_password" class="login-input" placeholder="비밀번호">
+         <div class="pw-row">
+   			<input type="password" name="user_password" id="login_pw" class="login-input" placeholder="비밀번호">
+    		<span id="togglePw" class="pw-icon">👁</span>
+		</div>
+
 
             <button type="button" id="loginBtn" class="login-submit-btn">로그인</button>
+            
+            <div id="loginSpinner" class="spinner" style="display:none;"></div>
 
             <div id="loginError" class="error-msg"></div>
 
             <div class="login-links">
-                <a href="${pageContext.request.contextPath}/user/findId">아이디 찾기</a> |
-                <a href="${pageContext.request.contextPath}/user/findPw">비밀번호 찾기</a> |
-                <a href="#" class="openInsertFromLogin">회원가입</a>
-            </div>
+   				 <a href="${pageContext.request.contextPath}/user/findId" class="login-link-item">🔍 아이디 찾기</a>
+    			 <span class="sep">|</span>
+    			 <a href="${pageContext.request.contextPath}/user/findPw" class="login-link-item">🔐 비밀번호 찾기</a>
+    			 <span class="sep">|</span>
+    			 <a href="#" class="openInsertFromLogin login-link-item">📝 회원가입</a>
+			</div>
+
 
         </form>
 

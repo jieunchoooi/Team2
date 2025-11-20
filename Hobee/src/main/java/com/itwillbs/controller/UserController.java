@@ -178,6 +178,7 @@ public class UserController {
         session.setAttribute("userVO", dbUser);
         session.setAttribute("user_id", dbUser.getUser_id());
         session.setAttribute("user_name", dbUser.getUser_name());
+        session.setAttribute("user_role", dbUser.getUser_role()); 
 
         result.put("result", "success");
         result.put("user_name", dbUser.getUser_name());

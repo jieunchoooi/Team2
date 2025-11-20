@@ -142,45 +142,99 @@ $(document).ready(function(){
 
 
     /* ======================
-       3) 로그인 AJAX
-    ======================= */
-    $("#loginBtn").click(function(){
-        loginRequest();
-    });
+    3) 로그인 AJAX
+ ======================= */
+ $("#loginBtn").click(function(){
+     loginRequest();
+ });
 
-    function loginRequest() {
-        $.ajax({
-            type: "POST",
-            url: contextPath + "/user/loginPro",
-            data: $("#loginForm").serialize(),
-            dataType: "json",
-            success: function(res) {
-                if (res.result === "success") {
+ function loginRequest() {
+     $.ajax({
+         type: "POST",
+         url: contextPath + "/user/loginPro",
+         data: $("#loginForm").serialize(),
+         dataType: "json",
+         success: function(res) {
+        	 
 
-                    $("#loginError")
-                        .css("color", "#2ecc71")
-                        .text(res.user_name + "님 환영합니다!")
-                        .fadeIn(200);
+        	  /* ============================
+        	    3- 1)비밀번호 보이기 / 숨기기 (👁)
+        	 ============================ */
+        	 $(document).on("click", "#togglePw", function () {
 
-                    setTimeout(() => {
-                        $("#loginModal").fadeOut();
-                        location.href = contextPath + "/main/main";
-                    }, 700);
+        	     const pwField = $("#login_pw");
 
-                    return;
-                }
+        	     if (pwField.attr("type") === "password") {
+        	         pwField.attr("type", "text");
+        	         $(this).text("🙈");   // 아이콘 변경
+        	     } else {
+        	         pwField.attr("type", "password");
+        	         $(this).text("👁");   // 아이콘 변경
+        	     }
+        	 });
 
-                $("#loginError")
-                    .css("color", "#e74c3c")
-                    .text(res.message)
-                    .fadeIn(200);
-            },
-            error: function() {
-                $("#loginError").text("서버 오류가 발생했습니다.");
-            }
-        });
-    }
+             /* ======================
+               3-1) 로그인 성공
+             ====================== */
+             if (res.result === "success") {
 
+                 // 입력칸 테두리 원래대로 복원
+                 $("#loginForm .login-input").css("border-color", "#d1d1d1");
+
+                 $("#loginError")
+                     .css("color", "#2ecc71")
+                     .text(res.user_name + "님 환영합니다!")
+                     .fadeIn(200);
+                 
+                 // 🔵 스피너 표시
+                 $("#loginSpinner").fadeIn(150);
+
+                 setTimeout(() => {
+                     $("#loginModal").fadeOut();
+                     location.href = contextPath + "/main/main";
+                 }, 700);
+
+                 return;
+             }
+
+             /* ======================
+                3-2)로그인 실패 (UX 개선)
+             ====================== */
+
+             // 오류 메시지 표시
+             $("#loginError")
+                 .text(res.message)
+                 .css({
+                     "color": "#e74c3c",
+                     "font-weight": "600"
+                 })
+                 .fadeIn(200);
+
+             // 입력창 테두리 빨간색
+             $("#loginForm .login-input").css("border-color", "#e74c3c");
+
+             // 모달 흔들기 애니메이션
+             $(".login-modal-content").addClass("shake");
+             setTimeout(() => {
+                 $(".login-modal-content").removeClass("shake");
+             }, 400);
+
+             // 비밀번호 초기화
+             $("[name='user_password']").val("");
+
+             return;
+         },
+
+         /* ======================
+           3-3) AJAX 오류
+         ====================== */
+         error: function() {
+             $("#loginError")
+                 .text("서버 오류가 발생했습니다.")
+                 .css("color", "#e74c3c");
+         }
+     });
+ }
 
     /* ======================
        4) 회원가입 중복확인
@@ -248,10 +302,76 @@ $(document).ready(function(){
             }
         });
     });
+    
+ /* ================================
+  	5) 비밀번호 강도 체크
+ 	================================ */
+ $("#ins_user_password").on("keyup", function() {
+
+     let pw = $(this).val();
+     let msg = "";
+     let color = "";
+
+     const hasLetter = /[A-Za-z]/.test(pw);
+     const hasNumber = /[0-9]/.test(pw);
+     const hasSpecial = /[!@#$%^*]/.test(pw);
+
+     // 강도 계산
+     if (pw.length === 0) {
+         msg = "";
+     }
+     else if (pw.length < 8) {
+         msg = "🔴 너무 약함 (8자 이상 입력)";
+         color = "#e74c3c";
+     }
+     else {
+
+         let strength = hasLetter + hasNumber + hasSpecial;  // true → 1 합산
+
+         if (strength === 1) {
+             msg = "🟡 보통 (문자 종류가 부족해요)";
+             color = "#f1c40f";
+         } 
+         else if (strength === 2) {
+             msg = "🔵 강함!";
+             color = "#3498db";
+         } 
+         else if (strength === 3) {
+             if (pw.length >= 10) {
+                 msg = "🟢 매우 강함!";
+                 color = "#2ecc71";
+             } else {
+                 msg = "🔵 강함!";
+                 color = "#3498db";
+             }
+         }
+     }
+
+     $("#pwStrengthMsg").text(msg).css("color", color);
+ });
+
+  /* ======================
+ 	6) 비밀번호 실시간 체크 기능
+ ======================= */
+    $("#ins_user_password, #ins_user_password2").on("keyup", function() {
+        let pw = $("#ins_user_password").val();
+        let pw2 = $("#ins_user_password2").val();
+
+        if (pw === "" || pw2 === "") {
+            $("#pwCheckMsg").text("").css("color", "");
+            return;
+        }
+
+        if (pw === pw2) {
+            $("#pwCheckMsg").text("비밀번호가 일치합니다 😊").css("color", "#2e7d32");
+        } else {
+            $("#pwCheckMsg").text("비밀번호가 일치하지 않습니다 ❌").css("color", "#d9534f");
+        }
+    });
 
 
     /* ======================
-       5) 회원가입 실행
+       7) 회원가입 실행
     ======================= */
     $("#insertBtn").click(function() {
 
@@ -280,7 +400,20 @@ $(document).ready(function(){
             $("#insertError").text("비밀번호가 일치하지 않습니다.");
             return;
         }
-
+        
+        if (!$("#ins_user_zipcode").val()) {
+            $("#insertError").text("우편번호를 입력해주세요.");
+            return;
+        }
+        if (!$("#ins_user_address").val()) {
+            $("#insertError").text("주소를 입력해주세요.");
+            return;
+        }
+        if (!$("#ins_user_detail").val().trim()) {
+            $("#insertError").text("상세주소를 입력해주세요.");
+            return;
+        }
+        
         $.ajax({
             type: "POST",
             url: contextPath + "/user/insertAjax",
@@ -300,10 +433,81 @@ $(document).ready(function(){
             }
         });
     });
+    
+   /* ======================
+       8) 전화번호 자동 하이픈
+    ======================= */
+    $("#ins_user_phone").on("input", function () {
+
+        let value = $(this).val().replace(/[^0-9]/g, ""); // 숫자만
+
+        if (value.length < 4) {
+            $(this).val(value);
+        } else if (value.length < 7) {
+            $(this).val(value.substring(0, 3) + "-" + value.substring(3));
+        } else if (value.length < 11) {
+            $(this).val(value.substring(0, 3) + "-" + value.substring(3, 6) + "-" + value.substring(6));
+        } else {
+            $(this).val(value.substring(0, 3) + "-" + value.substring(3, 7) + "-" + value.substring(7, 11));
+        }
+    });
+
+       /* ==========================================================
+       9) 주소검색 (카카오 API)
+    ========================================================== */
+    $("#btnFindAddress, #ins_user_zipcode, #ins_user_address").click(function () {
+        new daum.Postcode({
+            oncomplete: function (data) {
+
+                // 1) 우편번호
+                $("#ins_user_zipcode").val(data.zonecode);
+
+                // 2) 기본주소 (도로명 우선, 없으면 지번)
+                let fullAddress = data.roadAddress ? data.roadAddress : data.jibunAddress;
+                $("#ins_user_address").val(fullAddress);
+
+                // 3) 상세주소로 포커스 이동
+                $("#ins_user_detail").focus();
+
+                // UI 강조 효과
+                $("#ins_user_address").css({
+                    "border-color": "#3d6fff",
+                    "background-color": "#eef3ff",
+                    "transition": "0.2s"
+                });
+            }
+        }).open();
+    });
 
 
+    /* ==========================================================
+       10) 상세주소 입력 시 강조
+    ========================================================== */
+    $("#ins_user_detail").on("input", function () {
+        if ($(this).val().trim().length > 0) {
+            $(this).css("border-color", "#3d6fff");
+        }
+    });
+
+	
+    /*================================
+      11)약관 펼치기 / 접기
+    ================================ */
+    $(document).on("click", ".toggle-term-btn", function() {
+
+        const target = $(this).data("target");
+        const box = $(target);
+
+        if (box.is(":visible")) {
+            box.slideUp(200);
+            $(this).text("보기 ▼");
+        } else {
+            box.slideDown(200);
+            $(this).text("닫기 ▲");
+        }
+    });
     /* ======================
-       6) 약관 전체동의
+       12) 약관 전체동의
     ======================= */
     $("#ins_agreeAll").on("change", function () {
         $(".ins-agree-item").prop("checked", $(this).prop("checked"));

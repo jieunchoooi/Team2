@@ -1,12 +1,12 @@
 @charset "UTF-8";
 
-/* 로그인 모달 전체 영역 */
+/* ================================
+   로그인 모달 전체 배경
+================================ */
 #loginModal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
     background: rgba(0,0,0,0.45);
     display: none;
     justify-content: center;
@@ -14,20 +14,23 @@
     z-index: 9990;
 }
 
-/* 모달 박스 (더 크고 시원하게 변경!) */
+/* ================================
+   모달 박스
+================================ */
 .login-modal-content {
-    width: 540px;                 /* 🔥 540px로 크게 변경 */
+    width: 480px;
     background: #fff;
-    padding: 50px 40px;           /* 🔥 여백도 더 넓게 */
-    border-radius: 20px;
-    box-shadow: 0 12px 45px rgba(0,0,0,0.18);
+    padding: 45px 40px 50px;
+    border-radius: 14px;                  
+    border: 2px solid #9aa1b1;            /* 🔥 강조된 테두리 */
+    box-shadow: 0 18px 40px rgba(0,0,0,0.22);  /* 깊은 그림자 */
     position: relative;
-    animation: fadeDown 0.25s ease-in-out;
+    animation: fadeDown 0.3s ease-in-out;
 }
 
-/* 모달 애니메이션 */
+/* 모달 오픈 애니메이션 */
 @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-15px); }
+    from { opacity: 0; transform: translateY(-12px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -48,18 +51,60 @@
     font-size: 24px;
 }
 
-/* 인풋 */
+/* ================================
+   입력창 스타일
+================================ */
 .login-input {
     width: 100%;
     height: 52px;
-    margin-bottom: 16px;
-    padding: 13px 16px;
-    border: 1px solid #ddd;
+    padding: 0 16px;
+    border: 2px solid #bfc7d6; 
     border-radius: 12px;
     font-size: 16px;
+    margin-bottom: 16px;
+    transition: 0.25s;
 }
 
-/* 로그인 버튼 */
+.login-input:focus {
+    border-color: #3d6fff;
+    box-shadow: 0 0 0 2px rgba(61,111,255,0.25);
+    outline: none;
+}
+
+/* 입력 오류 표시 */
+.login-input.error {
+    border-color: #e74c3c !important;
+}
+
+#error {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+/* ================================
+   비밀번호 보기 아이콘
+================================ */
+.pw-row {
+    position: relative;
+}
+
+.pw-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+}
+
+.pw-icon:hover {
+    color: #3d6fff;
+}
+
+/* ================================
+   로그인 버튼
+================================ */
 .login-submit-btn {
     width: 100%;
     height: 52px;
@@ -71,20 +116,67 @@
     font-weight: 600;
     cursor: pointer;
     margin-top: 10px;
+    transition: 0.25s;
 }
 
 .login-submit-btn:hover {
     background: #2f66d6;
 }
 
-/* 아래 링크 */
+/* ================================
+   하단 링크
+================================ */
 .login-links {
     text-align: center;
     margin-top: 22px;
-    font-size: 14px;
+    font-size: 15px;
 }
 
-.login-links a {
-    color: #888;
+.login-link-item {
+    color: #555;
     margin: 0 6px;
+    font-weight: 500;
+    transition: 0.25s;
+}
+
+.login-link-item:hover {
+    color: #3d6fff;
+    font-weight: 700;
+}
+
+.sep {
+    margin: 0 6px;
+    color: #aaa;
+}
+
+/* ================================
+   흔들기 애니메이션
+================================ */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-6px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+/* ================================
+   로딩 스피너
+================================ */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #3d6fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
