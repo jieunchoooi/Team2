@@ -270,7 +270,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 	            <div class="lecture-info">
 	              <div class="lecture-title">${lecture.lecture_title}</div>
 	              <div class="lecture-price">
-	              	<fmt:formatNumber value="${lectureVO.lecture_price}" type="number" />원
+	              	<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
 	              </div>
 	            </div>
 	          </div>
