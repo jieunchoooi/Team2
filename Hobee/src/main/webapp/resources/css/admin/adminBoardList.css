@@ -1,154 +1,183 @@
 @charset "UTF-8";
-/* ================================
-      공통 메인 콘텐츠 정렬
-================================ */
 
+/* ===========================
+   메인 콘텐츠 (사이드바 보정)
+   =========================== */
 .main-content {
-    margin-left: 230px;           /* 사이드바 너비 */
-    padding: 40px;
-    min-height: 100vh;
-    background-color: #f6f7fb;
+    margin-left: 260px !important;   /* 사이드바와 겹침 방지 */
+    padding-top: 40px !important;    /* 헤더 아래 여백 */
+    padding-right: 40px;
 }
 
-/* ================================
-      메인 제목
-================================ */
-.main-header h1 {
-    font-size: 26px;
-    font-weight: 700;
+/* ===========================
+   페이지 최상단 제목
+   =========================== */
+.page-title {
+    font-size: 30px;
+    font-weight: 800;
     margin-bottom: 25px;
-    color: #333;
+    text-align: left;
+    padding-left: 5px;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1000;
 }
 
-/* ================================
-      카드 형태 컨테이너
-================================ */
-.table-container {
+/* ===========================
+   카드 박스
+   =========================== */
+.card-box {
     background: #fff;
     padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    width: 90%;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    max-width: 1150px;
+    margin: 0 auto;
 }
 
-/* ================================
-      게시판 추가 박스
-================================ */
-.board-add-box {
-    margin-bottom: 35px;
-}
-
-.board-add-box h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    color: #444;
-}
-
-.board-add-box form {
+/* ===========================
+   추가 폼
+   =========================== */
+.add-form {
     display: flex;
-    gap: 12px;
-    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
-.board-add-box input,
-.board-add-box select {
-    padding: 10px 12px;
+.add-form input,
+.add-form select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
     font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 200px;
 }
 
-.board-add-box button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    background-color: #397dff;
+.btn-blue {
+    background: #4a74ff;
     color: #fff;
-    font-size: 14px;
+    padding: 10px 18px;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.board-add-box button:hover {
-    background-color: #2f67d4;
-}
-
-/* ================================
-      테이블 디자인
-================================ */
-
-table {
+/* ===========================
+   테이블 기본 스타일
+   =========================== */
+.styled-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
-table thead {
-    background-color: #e9efff;
+.styled-table thead tr {
+    background-color: #eef3ff;
 }
 
-table th {
-    padding: 14px 8px;
+.styled-table th,
+.styled-table td {
+    padding: 14px 12px;
+    font-size: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+/* ===========================
+   테이블 열 폭 + 정렬 규칙
+   =========================== */
+
+/* 1️⃣ ID: 가운데 */
+.styled-table th:nth-child(1),
+.styled-table td:nth-child(1) {
+    width: 80px;
+    text-align: center;
+}
+
+/* 2️⃣ 게시판 이름: 왼쪽 */
+.styled-table th:nth-child(2),
+.styled-table td:nth-child(2) {
+    width: 230px;
     text-align: left;
-    font-size: 14px;
-    color: #333;
+    padding-left: 10px;
 }
 
-table td {
-    padding: 12px 8px;
-    font-size: 14px;
-    border-bottom: 1px solid #ececec;
+/* 3️⃣ 설명: 가운데 */
+.styled-table th:nth-child(3),
+.styled-table td:nth-child(3) {
+    width: 350px;
+    text-align: center;
 }
 
-/* ================================
-      배지(사용/미사용)
-================================ */
+/* 4️⃣ 사용 여부: 가운데 */
+.styled-table th:nth-child(4),
+.styled-table td:nth-child(4) {
+    width: 120px;
+    text-align: center;
+}
 
+/* 5️⃣ 관리 버튼: 가운데 + 폭 고정 */
+.styled-table th:nth-child(5),
+.styled-table td:nth-child(5) {
+    width: 180px;
+    text-align: center;
+}
+
+td.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    min-width: 180px !important;
+}
+
+/* ===========================
+   버튼 스타일
+   =========================== */
+.btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn.detail {
+    background: #4a74ff;
+    color: #fff;
+}
+
+.btn.btn-red {
+    background: #ff4d4d;
+    color: #fff;
+}
+
+.btn.btn-green {
+    background: #28a745;
+    color: #fff;
+}
+
+/* ===========================
+   배지
+   =========================== */
 .badge-active {
-    padding: 6px 10px;
-    background-color: #3c8dff;
-    color: white;
-    border-radius: 6px;
-    font-size: 12px;
+    background: #28a745;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 12px;
 }
 
 .badge-inactive {
-    padding: 6px 10px;
-    background-color: #888;
-    color: white;
-    border-radius: 6px;
-    font-size: 12px;
+    background: #6c757d;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 12px;
 }
 
-/* ================================
-      버튼 (수정/삭제)
-================================ */
-
-.btn {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-size: 13px;
-    margin-right: 5px;
-    transition: 0.2s;
-}
-
-.detail {
-    background-color: #4e73df;
-    color: white;
-}
-
-.detail:hover {
-    background-color: #3a5dc9;
-}
-
-.btn-red {
-    background-color: #e74a3b;
-    color: white;
-}
-
-.btn-red:hover {
-    background-color: #cf2f23;
+/* ===========================
+   No data
+   =========================== */
+.no-data {
+    padding: 25px;
+    text-align: center;
+    font-size: 15px;
+    color: #666;
 }

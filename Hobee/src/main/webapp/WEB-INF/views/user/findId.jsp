@@ -47,7 +47,10 @@
 
   <div class="bottom-link">
     <!-- 🔥 로그인 페이지 이동 → 모달 열기로 변경 -->
-    <a href="#" id="backToLoginModal">로그인으로 돌아가기</a>
+    <a href="${pageContext.request.contextPath}/main/main?openLogin=true">
+    로그인으로 돌아가기
+	</a>
+
   </div>
 </div>
 
@@ -76,11 +79,6 @@ $("#findIdForm").on("submit", function(e){
   }
 });
 
-// 🔥 로그인 모달 열기 추가
-$("#backToLoginModal").click(function(e){
-    e.preventDefault();
-    $("#loginModal").fadeIn().css("display","flex");
-});
 </script>
 
 </body>

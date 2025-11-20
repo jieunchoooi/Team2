@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+@charset "UTF-8";
+
+/* 메인 콘텐츠 */
+.main-content {
+    margin-left: 260px;
+    padding: 40px;
+}
+
+/* 페이지 제목 */
+.page-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    padding-left: 10px;
+}
+
+/* 카드 박스 — 보더 제거, 그림자 강조 */
+.card-box {
+    background: #fff;
+    padding: 45px 55px;
+    border-radius: 18px;
+
+    /* 테두리 제거 */
+    border: none;
+
+    /* 그림자 강화 */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+
+    /* 크기 확대 */
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* 내부 제목 */
+.edit-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* 폼 */
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.edit-form input,
+.edit-form select {
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #d0d0d0;
+    background: #fafafa;
+    font-size: 15px;
+}
+
+/* 버튼 */
+.btn-area {
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-blue {
+    background: #4a74ff;
+    color: #fff;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-gray {
+    background: #6b6b6b;
+    color: #fff;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}

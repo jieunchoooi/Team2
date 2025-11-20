@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.AdminBoardVO;
 import com.itwillbs.service.AdminBoardService;
@@ -51,11 +52,22 @@ public class AdminBoardController {
         return "redirect:/admin/adminBoardList";
     }
 
-    // 📌 삭제 처리
-    @GetMapping("/adminBoardDelete")
-    public String adminBoardDelete(@RequestParam("board_id") int boardId) {
-        System.out.println("AdminBoardController: adminBoardDelete() 실행");
-        adminBoardService.deleteBoard(boardId);
+    @PostMapping("/adminBoardDisable")
+    public String adminBoardDisable(@RequestParam("board_id") int boardId, RedirectAttributes rttr) {
+        System.out.println("AdminBoardController: adminBoardDisable() 실행");
+        adminBoardService.disableBoard(boardId);
+        rttr.addFlashAttribute("msg", "게시판을 숨김 처리했습니다.");
         return "redirect:/admin/adminBoardList";
     }
-}
+    
+    @PostMapping("/adminBoardEnable")
+    public String adminBoardEnable(@RequestParam("board_id") int boardId, RedirectAttributes rttr) {
+    	System.out.println("AdminBoardController: adminBoardEnable() 실행");
+        adminBoardService.enableBoard(boardId);
+        rttr.addFlashAttribute("msg", "게시판을 표시했습니다.");
+        return "redirect:/admin/adminBoardList";
+    }
+
+    
+  }
+

@@ -48,7 +48,10 @@
 
   <!-- 🔥 로그인 모달로 돌아가기 버튼 -->
   <div class="bottom-link">
-    <a href="#" id="backToLoginModal">로그인으로 돌아가기</a>
+    <a href="${pageContext.request.contextPath}/main/main?openLogin=true">
+    	로그인으로 돌아가기
+	</a>
+
   </div>
 
 </div>
@@ -81,14 +84,6 @@ $("#findPwForm").on("submit", function(e){
   }
 });
 
-
-/* ======================
-   로그인 모달 열기
-====================== */
-$("#backToLoginModal").click(function(e){
-    e.preventDefault();
-    $("#loginModal").fadeIn().css("display","flex");
-});
 </script>
 
 </body>

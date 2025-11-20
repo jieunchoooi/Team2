@@ -518,10 +518,18 @@ $(document).ready(function(){
         const checked = $(".ins-agree-item:checked").length;
         $("#ins_agreeAll").prop("checked", all === checked);
     });
+    
+    /* ======================
+    13) 메인에서 로그인 모달 자동 오픈
+ ======================= */
+ const params = new URLSearchParams(window.location.search);
 
-}); 
-</script>
+ if (params.get("openLogin") === "true") {
+     $("#loginModal").fadeIn().css("display","flex");
+ }
 
+ });  // ← document.ready 끝
+ </script>
 
 </body>
 </html>

@@ -43,5 +43,16 @@ public class AdminBoardService {
     	System.out.println(" AdminBoardService : deleteBoard() 실행");
     	adminBoardMapper.deleteBoard(board_id);
     }
+    
+    // 삭제 → 숨기기
+    public void disableBoard(int board_id) {
+    	System.out.println(" AdminBoardService : disableBoard() 실행");
+    	adminBoardMapper.disableBoard(board_id);
+    }
+    
+    public void enableBoard(int board_id) {
+    	System.out.println(" AdminBoardService : enableBoard() 실행");
+    	adminBoardMapper.enableBoard(board_id);
+    }
 
 }

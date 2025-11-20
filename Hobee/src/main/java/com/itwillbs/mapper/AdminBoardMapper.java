@@ -23,5 +23,10 @@ public interface AdminBoardMapper {
 
     // 게시판 삭제
     public void deleteBoard(int board_id);
+    
+    // 삭제 → 숨기기
+	public void disableBoard(int board_id);
+
+	public void enableBoard(int board_id);
 
 }

@@ -44,9 +44,16 @@
     </update>
 
     <!-- ========== 삭제 ========== -->
-    <delete id="deleteBoard" parameterType="int">
-        DELETE FROM board_category
-        WHERE board_id = #{board_id}
-    </delete>
-
+    <update id="disableBoard" parameterType="int">
+    	UPDATE board_category
+    	SET is_active = 0
+   		WHERE board_id = #{board_id}
+	</update>
+	
+	<update id="enableBoard" parameterType="int">
+    	UPDATE board_category
+    	SET is_active = 1
+    	WHERE board_id = #{board_id}
+    </update>
+	
 </mapper>
