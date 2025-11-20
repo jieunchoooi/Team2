@@ -48,6 +48,12 @@ public class PaymentService {
             throw new IllegalStateException("이미 처리된 결제입니다.");
         }
 
+        // ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+        // 🔥🔥🔥 반드시 필요한 부분 (status NULL 방지)
+        // ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+        paymentVO.setStatus("PAID");   // ★ 반드시 insert 전에 넣어야 함
+        System.out.println("📌 [PaymentService] status=PAID 설정됨");
+
         // 2️⃣ 결제 저장
         paymentMapper.insertPayment(paymentVO);
         int paymentId = paymentVO.getPayment_id();
@@ -67,9 +73,9 @@ public class PaymentService {
             System.out.println("💸 포인트 차감 완료");
         }
 
-        // 4️⃣ 포인트 적립
+        // 4️⃣ 포인트 적립 계산 + 반영
         int savedPoints = (int) Math.floor(paymentVO.getAmount() * (gradeVO.getReward_rate() / 100.0));
-        paymentVO.setSaved_points(savedPoints);
+        paymentVO.setSaved_points(savedPoints);  // ★ 결제 적립 기록을 위해 VO도 업데이트
 
         PointHistoryVO saveVO = new PointHistoryVO();
         saveVO.setUser_num(userNum);
@@ -100,12 +106,12 @@ public class PaymentService {
         GradeVO newGrade = gradeMapper.getGradeByTotalPayment(totalPayments);
 
         if (newGrade != null) {
-           	
             System.out.println("🏅 등급 업데이트 → " + newGrade.getGrade_name());
         }
 
         System.out.println("✅ [PaymentService] 결제 프로세스 정상 종료");
     }
+
 
     
     @Transactional
@@ -172,8 +178,9 @@ public class PaymentService {
         System.out.println("🔄 Payment 상태 → CANCELLED");
 
         // 4️⃣ 수강 등록 취소 (enrollment status update)
-        enrollmentMapper.cancelEnrollmentByPaymentId(paymentId);
-        System.out.println("🎓 해당 결제의 수강 전체 취소 완료");
+     // 1) 수강등록 삭제
+        enrollmentMapper.deleteEnrollmentByPaymentId(paymentId);
+        System.out.println("🗑 수강등록 삭제 완료");
 
         int userNum = original.getUser_num();
 

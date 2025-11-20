@@ -32,10 +32,11 @@ public interface EnrollmentMapper {
     int checkEnrollmentExists(EnrollmentVO enrollVO);
     
     /** 
-     * 환불 시 수강 상태를 cancelled 로 변경
-     * - payment_id 기준으로 전체 강의 취소
+     
+     * - payment_id 기준으로 전체 수강기록 삭제
      */
-    int cancelEnrollmentByPaymentId(int payment_id);
+    int deleteEnrollmentByPaymentId(int paymentId);
+
     
     
 }
