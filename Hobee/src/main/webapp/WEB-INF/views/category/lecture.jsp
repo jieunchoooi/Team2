@@ -78,9 +78,6 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
  .chapter-item { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; } 
  .chapter-item:hover { border-color: var(--primary); } 
 
-
-
-
 .chapter-header { display: flex; align-items: center; gap: 15px; padding: 18px; cursor: pointer; background: #fff; transition: background 0.2s; }
 .chapter-header:hover { background: var(--hover-bg); }
 .chapter-header.active { background: var(--hover-bg); }
@@ -102,6 +99,99 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .lecture-title { flex: 1; font-size: 0.95rem; color: #333; }
 .lecture-duration { font-size: 0.85rem; color: var(--gray); }
 .lecture-play-icon { color: var(--primary); font-size: 1rem; }
+
+/* 수강생 리뷰 섹션 */
+.review-section { 
+  background: #fff; 
+  border-radius: 16px; 
+  padding: 30px; 
+  margin-bottom: 20px; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+}
+.review-section h3 { 
+  font-size: 1.3rem; 
+  font-weight: 700; 
+  margin-bottom: 25px; 
+  color: #222; 
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.review-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.review-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reviewer-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #222;
+}
+
+.review-meta {
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stars {
+  color: #ffc107;
+  font-size: 0.9rem;
+}
+
+.rating-number {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #222;
+}
+
+.recommend-badge {
+  display: inline-block;
+  background: #eef5ff;
+  color: var(--primary);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.review-content {
+  line-height: 1.7;
+  color: #444;
+  font-size: 0.95rem;
+  margin-top: 12px;
+}
 
 .purchase-sidebar { 
   background: #fff; 
@@ -181,6 +271,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
   main { flex-direction: column; align-items: center; }
   .right-sidebar { width: 100%; max-width: 870px; position: relative; top: 0; }
   .lecture-grid { grid-template-columns: repeat(2, 1fr); }
+  .review-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -217,9 +308,41 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
     <div class="tab-menu">
       <div class="tab-item active">강의 소개</div>
+      <div class="tab-item">수강생 리뷰</div>
       <div class="tab-item">커리큘럼</div>
       <div class="tab-item">강사의 다른강의</div>
       <div class="tab-item">비슷한 강의 추천</div>
+    </div>
+    
+    <!-- 수강생 리뷰 섹션 -->
+    <div class="review-section">
+      <h3>수강생들의 리뷰</h3>
+      <div class="review-grid">
+        <c:choose>
+          <c:when test="${not empty reviewList}">
+            <c:forEach var="review" items="${reviewList}">
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-name">${review.user_name}</div>
+                    <div class="review-meta">수강평 ${review.review_count} · 평균 평점 ${review.avg_score}</div>
+                  </div>
+                  <div class="review-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-number">${review.review_score}</span>
+                  </div>
+                </div>              
+                <p class="review-content">${review.review_content}</p>
+              </div>
+            </c:forEach>
+          </c:when>
+          <c:otherwise>
+            <p style="color: #888; text-align: center; width: 100%; grid-column: 1 / -1;">
+              아직 등록된 수강평이 없습니다.
+            </p>
+          </c:otherwise>
+        </c:choose>
+      </div>
     </div>
 
     <!-- 커리큘럼 섹션 - 새로운 디자인 -->
@@ -369,6 +492,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
   // 탭 클릭 시 스크롤 이동
   const tabs = document.querySelectorAll('.tab-item');
   const curriculumSection = document.querySelector('.curriculum-section');
+  const reviewSection = document.querySelector('.review-section');
   const instructorSection = document.querySelector('.instructor-section');
   const similarSection = document.querySelector('.similar-section');
 
@@ -379,6 +503,8 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
       if(tab.textContent.includes('커리큘럼')){
         curriculumSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if(tab.textContent.includes('수강생 리뷰')){
+        reviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else if(tab.textContent.includes('다른강의')){
         instructorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else if(tab.textContent.includes('추천')){
