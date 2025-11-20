@@ -31,27 +31,27 @@
 					<div class="mega-column">
 						<h3>ART</h3>
 						<ul>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList">디지털 드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">공예</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉">디지털드로잉</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉">드로잉</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예">공예</a></li>
 						</ul>
 					</div>
 
 					<div class="mega-column">
 						<h3>IT</h3>
 						<ul>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">AI 스킬업</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">프로그래밍</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">데이터사이언스</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업">AI 스킬업</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍">프로그래밍</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스">데이터사이언스</a></li>
 						</ul>
 					</div>
 
 					<div class="mega-column">
 						<h3>외국어</h3>
 						<ul>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">영어</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">외국어 시험</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/drawingList">제2 외국어</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어">영어</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험">외국어 시험</a></li>
+							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어">제2외국어</a></li>
 						</ul>
 					</div>
 
