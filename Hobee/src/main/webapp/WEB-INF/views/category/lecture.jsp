@@ -108,11 +108,45 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   margin-bottom: 20px; 
   box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
 }
+
+.review-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
 .review-section h3 { 
   font-size: 1.3rem; 
   font-weight: 700; 
-  margin-bottom: 25px; 
-  color: #222; 
+  color: #222;
+  margin: 0;
+}
+
+.btn-write-review {
+  background: #eef5ff;
+  color: var(--primary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-write-review:hover {
+  background: var(--primary);  /* hover 시 파란색 배경 */
+  color: #fff;  /* hover 시 흰색 텍스트 */
+  transform: translateY(-2px);
+}
+
+
+.btn-write-review i {
+  font-size: 0.9rem;
 }
 
 .review-grid {
@@ -343,7 +377,14 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     
     <!-- 수강생 리뷰 섹션 -->
     <div class="review-section">
-      <h3>수강생들의 리뷰</h3>
+      <div class="review-header-container">
+        <h3>수강생들의 리뷰</h3>
+        <c:if test="${not empty sessionScope.user_id && hasPurchased}">
+	        <button class="btn-write-review" onclick="location.href='${pageContext.request.contextPath}/review/write?lecture_num=${lectureVO.lecture_num}'">
+	          리뷰 작성하기
+	        </button>
+        </c:if>
+      </div>
       <div class="review-grid">
         <c:choose>
           <c:when test="${not empty reviewList}">
