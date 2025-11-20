@@ -19,5 +19,44 @@
         FROM grade
         ORDER BY grade_id ASC;
     </select>
+  <!-- 
+        ==============================================================
+            회원 번호로 등급 조회
+            - user.grade_id → grade.grade_id JOIN
+            - 페이지 진입 시 할인율/적립률 계산에 필요
+        ==============================================================
+    -->
+    <select id="getGradeByUser" resultType="com.itwillbs.domain.GradeVO">
+        SELECT 
+            g.grade_id,
+            g.grade_name,
+            g.min_payment,
+            g.max_payment,
+            g.discount_rate,
+            g.reward_rate,
+            g.created_at,
+            g.updated_at
+        FROM grade g
+        JOIN user u ON g.grade_id = u.grade_id
+        WHERE u.user_num = #{user_num}
+    </select>
 
+    <!-- 
+        ==============================================================
+            등급 ID로 단일 등급 조회
+        ==============================================================
+    -->
+    <select id="getGradeById" resultType="com.itwillbs.domain.GradeVO">
+        SELECT 
+            grade_id,
+            grade_name,
+            min_payment,
+            max_payment,
+            discount_rate,
+            reward_rate,
+            created_at,
+            updated_at
+        FROM grade
+        WHERE grade_id = #{grade_id}
+    </select>
 </mapper>

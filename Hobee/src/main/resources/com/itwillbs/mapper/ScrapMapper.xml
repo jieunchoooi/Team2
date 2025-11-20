@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.ScrapMapper">
+
+    <!-- 🟦 스크랩 추가 (중복 시 INSERT IGNORE) -->
+    <insert id="addScrap">
+        INSERT IGNORE INTO scrap (user_num, lecture_num)
+        VALUES (#{user_num}, #{lecture_num})
+    </insert>
+
+    <!-- 🟩 특정 회원의 스크랩 목록 조회 -->
+    <select id="getScrapList" resultType="com.itwillbs.domain.ScrapVO">
+        SELECT
+            s.scrap_id,
+            s.user_num,
+            s.lecture_num,
+            s.created_at,
+            
+            l.lecture_title,
+            l.lecture_author,
+            l.lecture_price,
+            l.lecture_img
+
+        FROM scrap s
+        JOIN lecture l ON s.lecture_num = l.lecture_num
+        WHERE s.user_num = #{user_num}
+        ORDER BY s.scrap_id DESC
+    </select>
+
+    <!-- 🟥 스크랩 삭제 -->
+    <delete id="deleteScrap">
+        DELETE FROM scrap
+        WHERE user_num = #{user_num}
+          AND lecture_num = #{lecture_num}
+    </delete>
+
+    <!-- ⬜ 해당 스크랩 존재 여부 확인 -->
+    <select id="existsScrap" resultType="int">
+        SELECT COUNT(*)
+        FROM scrap
+        WHERE user_num = #{user_num}
+          AND lecture_num = #{lecture_num}
+    </select>
+
+</mapper>

@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.GradeVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.GradeService;
 import com.itwillbs.service.UserService;
 
 @Controller
@@ -28,6 +30,9 @@ public class UserController {
 
     @Inject
     private UserService userService;
+    @Inject
+    private GradeService gradeService;
+
 
     @Inject
     private JavaMailSender mailSender;
@@ -173,8 +178,13 @@ public class UserController {
             result.put("message", "현재 비활성화된 계정입니다.\n관리자에게 문의하세요.");
             return result;
         }
+        // 🔥 login 성공 → 등급 정보 가져오기
+        GradeVO gradeVO = gradeService.getGradeByUser(userVO.getUser_num());
 
+       
+       
         // 5) 로그인 성공 → 세션 저장
+        session.setAttribute("gradeVO", gradeVO);
         session.setAttribute("userVO", dbUser);
         session.setAttribute("user_id", dbUser.getUser_id());
         session.setAttribute("user_name", dbUser.getUser_name());

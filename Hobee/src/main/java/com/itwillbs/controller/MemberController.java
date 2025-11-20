@@ -24,10 +24,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ �
 import com.itwillbs.domain.EnrollmentVO;
 import com.itwillbs.domain.EnrollmentViewVO;
 import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.EnrollmentService;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.PaymentService;
+import com.itwillbs.service.ScrapService;
 import com.mysql.cj.Session;
 
 
@@ -41,6 +43,8 @@ public class MemberController {
 	private EnrollmentService enrollmentService;
 	@Inject
     private PaymentService paymentService;
+	@Inject
+    private ScrapService scrapService;
 	// 업로드 경로
 	@Resource(name = "uploadPath")
 	private String uploadPath;
@@ -185,11 +189,28 @@ public class MemberController {
 	
 	// 스크랩	
 	@GetMapping("/scrap")
-	public String scrap() {
-		System.out.println("MemberController scrap()");
-		
-		return "member/scrap";  
+	public String scrapList(HttpSession session, Model model) {
+	    UserVO userVO = (UserVO) session.getAttribute("userVO");
+
+	    if (userVO == null) return "redirect:/member/login";
+
+	    List<ScrapVO> scrapList = scrapService.getScrapList(userVO.getUser_num());
+	    model.addAttribute("scrapList", scrapList);
+
+	    return "member/scrap";
 	}
+	
+	/** 스크랩 삭제 (단일) */
+    @PostMapping("/scrap/delete")
+    @ResponseBody
+    public String deleteScrap(@RequestParam int lecture_num, HttpSession session) {
+
+        UserVO userVO = (UserVO) session.getAttribute("userVO");
+        if (userVO == null) return "LOGIN_REQUIRED";
+
+        boolean result = scrapService.deleteScrap(userVO.getUser_num(), lecture_num);
+        return result ? "OK" : "FAIL";
+    }
 	
 	// 회원정보수정 들어가기전 비밀번호 확인
 	@GetMapping("/updatePassWord") 
