@@ -116,6 +116,8 @@ public class MemberController {
 	    String name = request.getParameter("user_name");
 	    String email = request.getParameter("user_email");
 	    String address = request.getParameter("user_address");
+	    String address1 = request.getParameter("user_address1");
+	    String address2 = request.getParameter("user_address2");
 	    int user_num = Integer.parseInt(request.getParameter("user_num"));
 	    
 	    System.out.println("📝 받은 데이터: " + password + ", " + phone + ", " + name + ", " + email + ", " + address);
@@ -134,6 +136,8 @@ public class MemberController {
 	    userVO.setUser_name(name);
 	    userVO.setUser_email(email);
 	    userVO.setUser_address(address);
+	    userVO.setUser_address1(address1);
+	    userVO.setUser_address2(address2);
 	    
 	    if(user_picture == null || user_picture.isEmpty()) {
 	    	userVO.setUser_file(request.getParameter("oldfile"));

@@ -41,6 +41,7 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
+						
 						<div class="profile-info">
 							<p>
 								<c:choose>
@@ -77,28 +78,39 @@
 
 
 						</div>
-						<label class="file-input-label" for="profilePic">사진 변경</label> 
-						<input type="hidden" name="oldfile" value="${user.user_file}" readonly>
-						
+						<label class="file-input-label" for="profilePic">사진 변경</label> <input
+							type="hidden" name="oldfile" value="${user.user_file}" readonly>
+
 						<input type="file" id="profilePic" class="file-input"
 							name="user_file" accept="image/*">
-							
+
 					</div>
 					<div class="form-group">
-						<input type="hidden" name="user_num" value="${user.user_num}" readonly>
-						<label for="userId">아이디</label> <input type="text" name="user_id"
-							id="user_id" value="${user.user_id}" readonly>
+						<input type="hidden" name="user_num" value="${user.user_num}"
+							readonly> <label for="userId">아이디</label> <input
+							type="text" name="user_id" id="user_id" value="${user.user_id}"
+							readonly>
 					</div>
 					<div class="form-group">
 						<label for="password">비밀번호</label> <input type="password"
 							name="user_password" id="user_password"
 							value="${user.user_password}"> <span id="checkPassword"></span>
 					</div>
-					<div class="form-group">
-						<label for="adress">주소</label> <input type="text"
-							id="user_address" name="user_address"
-							value="${user.user_address}">
+					<div class="address-row">
+						<input type="text" id="user_address" name="user_address"
+							class="insert-input address-zip" placeholder="우편번호" readonly />
+						<button type="button"
+							class="btn-find-address check-btn address-btn">검색</button>
 					</div>
+
+					<!-- 기본주소 -->
+					<input type="text" id="user_address1" name="user_address1"
+						class="insert-input address-main" placeholder="도로명/지번 주소" readonly />
+
+					<!-- 상세주소 -->
+					<input type="text" id="user_address2" name="user_address2"
+						class="insert-input address-detail" placeholder="상세주소를 입력하세요" />
+
 					<div class="form-group">
 						<label for="tel">휴대폰 번호</label> <input type="tel" id="user_phone"
 							name="user_phone" value="${user.user_phone}"> <span
@@ -110,12 +122,15 @@
 							id="checkemail"></span>
 					</div>
 					<button type="submit" class="btn" id="submitBtn">정보 수정</button>
-					<button class="btn btn-delete" data-num="${user.user_num}">회원 탈퇴</button>
+					<button class="btn btn-delete" data-num="${user.user_num}">회원
+						탈퇴</button>
 				</div>
 			</section>
 		</form>
 	</main>
 
+	<script
+		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	
 	// 회원 탈퇴	
@@ -259,6 +274,29 @@ updateForm.onsubmit = function(e){
     
     return true;  
 }
+
+/* 다음 주소 API 활용 */
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector(".btn-find-address").addEventListener("click", function() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = '';
+                if (data.userSelectedType === 'R') addr = data.roadAddress;
+                else addr = data.jibunAddress;
+
+                document.getElementById('user_address').value = data.zonecode;
+                document.getElementById('user_address1').value = addr;
+                document.getElementById('user_address2').focus();
+            }
+        }).open();
+    });
+});
+
+
+
+
+
+
 
 
 </script>

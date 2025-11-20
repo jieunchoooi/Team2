@@ -9,7 +9,9 @@
 		update user
 		set user_phone = #{user_phone},
 		user_email = #{user_email},
-		user_address = #{user_address}
+		user_address = #{user_address},
+		user_address1 = #{user_address1},
+		user_address2 = #{user_address2}
 		<if test="user_password != null and user_password != ''">
 			, user_password = #{user_password}
 		</if>
