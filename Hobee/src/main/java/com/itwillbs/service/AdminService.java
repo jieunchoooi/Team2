@@ -6,6 +6,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.ChapterDetailVO;
+import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
@@ -231,6 +233,16 @@ public class AdminService {
 		pageVO.setStartRow(startRow);
 		
 		return adminMapper.withDeleteUserMember(pageVO);
+	}
+
+	public void insertChapter(ChapterVO chapterVO) {
+		System.out.println("AdminService insertChapter()");
+		adminMapper.insertChapter(chapterVO);
+	}
+
+	public void insertChapterDetail(ChapterDetailVO detailVO) {
+		System.out.println("AdminService insertChapterDetail()");
+		adminMapper.insertChapterDetail(detailVO);
 	}
 
 

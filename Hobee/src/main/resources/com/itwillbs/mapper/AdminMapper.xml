@@ -8,116 +8,159 @@
 	<select id="listMember" resultType="com.itwillbs.domain.UserVO">
 		select *
 		from user
-		where user_role = 'user'
+		where
+		user_role = 'user'
 		and user_status = 'active'
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
 
-	<select id="withDrawListMember" resultType="com.itwillbs.domain.UserVO">
+	<select id="withDrawListMember"
+		resultType="com.itwillbs.domain.UserVO">
 		SELECT *
 		FROM user
-		WHERE (user_role = 'user' OR user_role = 'instructor')
-		AND (user_status = 'self-withdraw' OR user_status = 'withdraw')
+		WHERE (user_role = 'user' OR user_role =
+		'instructor')
+		AND (user_status = 'self-withdraw' OR user_status =
+		'withdraw')
 		ORDER BY user_num DESC
 		LIMIT #{startRow}, #{pageSize}
-	</select> 
+	</select>
 
 	<select id="countMemberList" resultType="java.lang.Integer">
-		select count(*) from user
+		select count(*) from
+		user
 		WHERE user_role = 'user'
-	</select> 
+	</select>
 
-	<select id="activecountMemberList" resultType="java.lang.Integer">
+	<select id="activecountMemberList"
+		resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status = 'active' and user_role = 'user'
-	</select> 
-	
-	<select id="instructorDeletecountList" resultType="java.lang.Integer">
-		select count(*) from user
-		WHERE user_status != 'active' and user_role = 'instructor'
-	</select> 
+		WHERE user_status = 'active' and
+		user_role = 'user'
+	</select>
 
-	<select id="deletecountMemberList" resultType="java.lang.Integer">
+	<select id="instructorDeletecountList"
+		resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status != 'active' and user_role = 'user'
+		WHERE user_status != 'active' and
+		user_role = 'instructor'
+	</select>
+
+	<select id="deletecountMemberList"
+		resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_status != 'active' and
+		user_role = 'user'
 	</select>
 
 	<select id="countDrawMemberList" resultType="java.lang.Integer">
-		select count(*) from user
+		select count(*) from
+		user
 		WHERE user_status = 'self-withdraw'
 		or user_status = 'withdraw'
 	</select>
 
-	<select id="DrawinstructorListMember" resultType="com.itwillbs.domain.UserVO">
+	<select id="DrawinstructorListMember"
+		resultType="com.itwillbs.domain.UserVO">
 		SELECT *
 		FROM user
 		WHERE user_role = 'instructor'
-		AND (user_status = 'self-withdraw' OR user_status = 'withdraw')
-		ORDER BY user_num DESC
+		AND
+		(user_status = 'self-withdraw' OR user_status = 'withdraw')
+		ORDER BY
+		user_num DESC
 		LIMIT #{startRow}, #{pageSize}
-	</select> 
-	
-	<select id="withDeleteUserMember" resultType="com.itwillbs.domain.UserVO">
+	</select>
+
+	<select id="withDeleteUserMember"
+		resultType="com.itwillbs.domain.UserVO">
 		SELECT *
 		FROM user
 		WHERE user_role = 'user'
-		AND (user_status = 'self-withdraw' OR user_status = 'withdraw')
+		AND (user_status =
+		'self-withdraw' OR user_status = 'withdraw')
 		ORDER BY user_num DESC
 		LIMIT #{startRow}, #{pageSize}
-	</select> 
-	
+	</select>
+
 	<select id="countTeacherList" resultType="java.lang.Integer">
-		select count(*) from user
+		select count(*) from
+		user
 		WHERE user_role = 'instructor'
 	</select>
-	
-	<select id="deleteAllMemberCount" resultType="java.lang.Integer">
-		select count(*) from user
-		WHERE user_status != 'active'
-	</select> 
-	
-	<select id="countMemberCount" resultType="java.lang.Integer">
-		select count(*) from user
-		WHERE user_role = 'user'
-	</select> 
 
-	<insert id="LectureUpdate">
+	<select id="deleteAllMemberCount" resultType="java.lang.Integer">
+		select count(*)
+		from user
+		WHERE user_status != 'active'
+	</select>
+
+	<select id="countMemberCount" resultType="java.lang.Integer">
+		select count(*) from
+		user
+		WHERE user_role = 'user'
+	</select>
+
+	<insert id="LectureUpdate"
+		parameterType="com.itwillbs.domain.LectureVO" useGeneratedKeys="true"
+		keyProperty="lecture_num">
 		INSERT INTO lecture
 		(lecture_title, category_detail, lecture_detail, lecture_author, lecture_price,
 		lecture_img)
-		values(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author},
+		VALUES(#{lecture_title}, #{category_detail}, #{lecture_detail}, #{lecture_author},
 		#{lecture_price}, #{lecture_img})
-	</insert> 
+	</insert>
+
+	<!-- chapter 저장 - useGeneratedKeys 확인 -->
+	<insert id="insertChapter"
+		parameterType="com.itwillbs.domain.ChapterVO" useGeneratedKeys="true"
+		keyProperty="chapter_num">
+		INSERT INTO chapter (lecture_num, chapter_order, chapter_title)
+		VALUES (#{lecture_num}, #{chapter_order}, #{chapter_title})
+	</insert>
+
+	<!-- chapter_detail 저장 - useGeneratedKeys 확인 -->
+	<insert id="insertChapterDetail"
+		parameterType="com.itwillbs.domain.ChapterDetailVO"
+		useGeneratedKeys="true" keyProperty="detail_num">
+		INSERT INTO chapter_detail (chapter_num, detail_order, detail_title,
+		detail_time)
+		VALUES (#{chapter_num}, #{detail_order}, #{detail_title}, #{detail_time})
+	</insert>
 
 	<select id="listLecture"
 		resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
 		order by lecture_num desc
-		LIMIT #{startRow}, #{pageSize}
-	</select> 
+		LIMIT
+		#{startRow}, #{pageSize}
+	</select>
 
 	<select id="countlectureList" resultType="java.lang.Integer">
-		select count(*) from lecture
-	</select>  
+		select count(*) from
+		lecture
+	</select>
 
 	<delete id="deleteClass">
 		delete from lecture
-		where lecture_num = #{lecture_num};
-	</delete> 
+		where lecture_num =
+		#{lecture_num};
+	</delete>
 
 	<select id="insertMember"
 		resultType="com.itwillbs.domain.UserVO">
 		select * from user
 		where user_num = #{user_num}
-	</select> 
+	</select>
 
 	<update id="adminUserUpdate"
 		parameterType="com.itwillbs.domain.UserVO">
 		update user
 		set user_role = #{user_role}
-		where user_num = #{user_num}
-	</update> 
+		where user_num =
+		#{user_num}
+	</update>
 
 	<select id="classEdit" parameterType="int"
 		resultType="com.itwillbs.domain.LectureVO">
@@ -128,23 +171,30 @@
 	<update id="adminEditClass"
 		parameterType="com.itwillbs.domain.LectureVO">
 		update lecture
-		set lecture_title = #{lecture_title}, category_detail =
-		#{category_detail}, lecture_detail = #{lecture_detail},
-		lecture_author = #{lecture_author}, lecture_price = #{lecture_price}, lecture_img =
+		set lecture_title = #{lecture_title},
+		category_detail =
+		#{category_detail}, lecture_detail =
+		#{lecture_detail},
+		lecture_author = #{lecture_author}, lecture_price =
+		#{lecture_price}, lecture_img =
 		#{lecture_img}
-		where lecture_num = #{lecture_num}
+		where lecture_num =
+		#{lecture_num}
 	</update>
 
 	<select id="listTeacher" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'instructor'
+		WHERE
+		user_role = 'instructor'
 		order by user_num desc
-		LIMIT #{startRow}, #{pageSize}
+		LIMIT #{startRow},
+		#{pageSize}
 	</select>
 
 	<select id="MemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user'
+		WHERE
+		user_role = 'user'
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
@@ -152,34 +202,40 @@
 	<select id="activeTeacherList"
 		resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'instructor' and user_status = 'active'
+		WHERE user_role = 'instructor' and
+		user_status = 'active'
 		order by user_num desc
-		LIMIT #{startRow}, #{pageSize}
+		LIMIT #{startRow},
+		#{pageSize}
 	</select>
 
 	<select id="activeMemberList"
 		resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user' and user_status = 'active'
+		WHERE user_role = 'user' and user_status
+		= 'active'
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
-	</select> 
+	</select>
 
 	<select id="inactiveTeacherList"
 		resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'instructor' and user_status != 'active'
+		WHERE user_role = 'instructor' and
+		user_status != 'active'
 		order by user_num desc
-		LIMIT #{startRow}, #{pageSize}
+		LIMIT #{startRow},
+		#{pageSize}
 	</select>
 
 	<select id="inactiveMemberList"
 		resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user' and user_status != 'active'
+		WHERE user_role = 'user' and user_status
+		!= 'active'
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
-	</select> 
+	</select>
 
 	<select id="teacharCount" resultType="java.lang.Integer">
 		select count(*) from user
@@ -189,17 +245,19 @@
 	<select id="memberCount" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_role = 'user' and user_status = 'active'
-	</select> 
+	</select>
 
 	<select id="inactiveTeacharCount" resultType="java.lang.Integer">
-		select count(*) from user
+		select count(*)
+		from user
 		WHERE user_role = 'instructor' and user_status != 'active'
 	</select>
 
 	<select id="inactiveMemberCount" resultType="java.lang.Integer">
-		select count(*) from user
+		select count(*) from
+		user
 		WHERE user_role = 'user' and user_status != 'active'
-	</select> 
+	</select>
 
 	<select id="classCount" resultType="java.lang.Integer">
 		select count(*) from lecture
@@ -207,15 +265,17 @@
 
 	<update id="deleteMember" parameterType="int">
 		update user
-		set user_status = 'withdraw'
+		set
+		user_status = 'withdraw'
 		where user_num = #{user_num}
-	</update> 
+	</update>
 
 	<update id="RevertMember" parameterType="int">
 		update user
-		set user_status = 'active'
+		set
+		user_status = 'active'
 		where user_num = #{user_num}
-	</update> 
+	</update>
 
 
 

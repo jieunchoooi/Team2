@@ -12,9 +12,7 @@
 
 </head>
 <body>
-
 	<!-- header -->
-
 	<jsp:include page="../include/header.jsp"></jsp:include>
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
@@ -22,9 +20,7 @@
 			<h1>클래스 등록</h1>
 		</div>
 
-		<form class="form-container"
-			action="${pageContext.request.contextPath}/admin/adminClassAddPro"
-			method="post" enctype="multipart/form-data">
+		<form class="form-container" action="${pageContext.request.contextPath}/admin/adminClassAddPro" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<label>썸네일 이미지</label> <input type="file" name="lecture_img">
 			</div>
@@ -82,9 +78,23 @@
 						<button type="button" class="btn-add-detail">+ 강의 추가</button>
 					</div>
 				</div>
-				<button type="button" id="add-chapter" class="btn-add">+ 챕터
-					추가</button>
+				<button type="button" id="add-chapter" class="btn-add">+ 챕터 추가</button>
+					
+					<!-- ✅ 태그 섹션 -->
+			<div class="form-group">
+				<label>태그 (최대 10개)</label>
+				<div class="tag-input-wrapper">
+					<input type="text" id="tag-input" placeholder="태그를 입력하세요" class="lecture_tag">
+					<button type="button" id="add-tag-btn" class="btn-add-detail1">+ 태그 추가</button>
+				</div>
+				<!-- 태그들이 표시될 영역 -->
+				<div id="tag-container" class="tag-display-area">
+					<!-- 여기에 #태그 형태로 추가됨 -->
+				</div>
+				<!-- 서버로 전송할 hidden input (쉼표로 구분된 태그들) -->
+				<input type="hidden" name="lecture_tag" id="lecture_tag_hidden">
 			</div>
+
 
 			<button class="btn" type="submit">등록하기</button>
 		</form>
@@ -238,6 +248,101 @@ window.addEventListener('load', function () {
 
  updateChapterOrders(); // 로드 시 번호 재정렬
 });
+
+
+//==================== 태그 추가/삭제 기능 ====================
+// 태그 추가 버튼
+document.addEventListener("DOMContentLoaded", function () {
+	console.log("태그 스크립트 시작");
+	
+	let tagInput = document.getElementById("tag-input"); // 태그 입력하는 곳
+	let addTagBtn = document.getElementById("add-tag-btn"); // +
+	let tagContainer = document.getElementById("tag-container"); // 태그 추가되는곳
+	let hiddenInput = document.getElementById("lecture_tag_hidden"); // 서버로 전송 hidden 
+	
+	  console.log("tagInput:", tagInput);
+	    console.log("addTagBtn:", addTagBtn);
+	    console.log("tagContainer:", tagContainer);
+	    console.log("hiddenInput:", hiddenInput);
+	
+	let tags = [];
+	
+	function updateHiddenInput() {
+	    hiddenInput.value = tags.join(",");
+	    console.log("Hidden input 업데이트:", hiddenInput.value);
+	}
+	
+	function addTag(tagText) {
+        tagText = tagText.trim();
+        console.log("addTag 호출됨, 입력값:", tagText);
+        
+        if (tagText === "") {
+            alert("태그를 입력하세요.");
+            return;
+    	}
+
+		if (tags.length >= 10){
+			alert("최대 10개까지 입력 가능합니다.");
+            return;
+		}
+		
+		if (tags.includes(tagText)){
+			alert("이미 추가된 태그 입니다.");
+            return;
+		}
+		
+		tags.push(tagText); // 태그 배열 추가
+		
+		// 태그 칩 생성
+		let tagChip = document.createElement("div");
+		tagChip.className = "tag-chip";
+		tagChip.innerHTML = '<span class="tag-text">#' + tagText + '</span>' + '<button type="button" class="tag-remove-btn">×</button>';
+		
+            			      console.log("태그 칩 생성됨:", tagChip);
+            				 
+        // 삭제 버튼 이벤트
+		tagChip.querySelector(".tag-remove-btn").addEventListener("click", function(){
+			let index = tags.indexOf(tagText);
+			if(index > -1) {
+				tags.splice(index, 1); // 지정요소 삭제 (index 1번 삭제) , 정보제거
+			}
+			tagChip.remove(); // 화면에서 제거
+			updateHiddenInput(); // 백엔드로 보내기 위한 최신 태그로 초기화
+			
+		});  				 
+		
+		tagContainer.appendChild(tagChip); // 테그 컨테이너 추가
+		
+		console.log("태그 컨테이너에 추가됨");
+        console.log("tagContainer의 현재 HTML:", tagContainer.innerHTML);
+		
+		updateHiddenInput(); // 백엔드로 보내기 위한 최신 태그로 초기화
+        
+        // 입력창 초기화
+		tagInput.value = "";
+		tagInput.focus();
+        
+	}
+	
+	addTagBtn.addEventListener("click", function(){
+		console.log("태그 추가 버튼 클릭됨");
+		addTag(tagInput.value);
+	});
+	
+	 // Enter 키로도 추가 가능하게
+    tagInput.addEventListener("keypress", function(e){
+        if(e.key === "Enter"){
+            e.preventDefault();
+            addTag(tagInput.value);
+        }
+    });
+});
+console.log("태그 스크립트 로드됨");
+
+
+
+
+
 
 </script>
 </body>

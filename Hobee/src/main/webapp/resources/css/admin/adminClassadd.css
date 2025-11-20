@@ -287,7 +287,37 @@ body {
     border: 2px solid #d3ddff;
 }
 
+/* =================== 태그 스타일 ======================= */
+.tag-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.tag-item input {
+    flex: 1;
+}
+.deleteBtn {
+    background-color: #ff5b5b;
+    border: none;
+    color: white;
+    padding: 2px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+
+
+
 .chapter-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.tag-group {
     display: flex;
     gap: 10px;
     align-items: center;
@@ -386,7 +416,7 @@ body {
     color: #999;
 }
 
-.btn-remove-detail {
+.btn-remove-detail, .btn-remove-detail1 {
     background-color: #ff6b6b;
     color: white;
     border: none;
@@ -399,7 +429,7 @@ body {
     min-width: 36px;
 }
 
-.btn-remove-detail:hover {
+.btn-remove-detail:hover, .btn-remove-detail1:hover {
     background-color: #ff5252;
 }
 
@@ -419,9 +449,28 @@ body {
     margin-right: 0;        /* 추가 */
 }
 
+.btn-add-detail1 {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
 .btn-add-detail:hover {
     background-color: #45a049;
     transform: translateY(-2px);
+}
+
+.btn-add-detail1:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 .btn-add {
@@ -473,3 +522,123 @@ body {
     margin-right: 10px;
     white-space: nowrap;
 }
+
+
+/* =================== 태그 입력 래퍼 ======================= */
+.tag-input-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.tag-input-wrapper input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #d3ddff;
+    border-radius: 8px;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.tag-input-wrapper input:focus {
+    border-color: #2573ff;
+    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+}
+
+/* =================== 태그 표시 영역 ======================= */
+.tag-display-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 40px;
+    padding: 10px;
+/*     background-color: #f8f9ff; */
+/*     border: 1px solid #d3ddff; */
+    border-radius: 4px;
+}
+
+.tag-display-area:empty::before {
+    content: "추가된 태그가 없습니다.";
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* =================== 태그 칩 스타일 ======================= */
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+/*     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    background: #f1f1f1;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(102, 126, 234, 0.3);
+    transition: all 0.2s;
+    animation: tagAppear 0.3s ease;
+    
+}
+
+.tag-text {
+    font-weight: 500;
+}
+
+.tag-chip .tag-text {
+    color: #333;   /* ✨ 글자색 추가 */
+}
+
+
+.tag-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
+@keyframes tagAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.tag-text {
+    user-select: none;
+}
+
+.tag-remove-btn {
+    background: rgba(255, 255, 255, 0.3);
+	background: none;
+    border: none;
+    color: #000000;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+
+
+.tag-remove-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+	background: #808080; 
+    transform: rotate(90deg);
+}
+
+
+
+
+

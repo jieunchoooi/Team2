@@ -2,6 +2,8 @@ package com.itwillbs.mapper;
 
 import java.util.List;
 
+import com.itwillbs.domain.ChapterDetailVO;
+import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
@@ -73,6 +75,10 @@ public interface AdminMapper {
 	public int deleteAllMemberCount();
 
 	public List<UserVO> withDeleteUserMember(PageVO pageVO);
+
+	public void insertChapter(ChapterVO chapterVO);
+
+	public void insertChapterDetail(ChapterDetailVO detailVO);
 
 
 }
