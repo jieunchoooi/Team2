@@ -354,7 +354,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
         <button class="expand-all-btn" onclick="toggleAllChapters()">전체 챕터 열기</button>
       </div>
       
-      <!-- 챕터 1 -->
+      <!-- 커리큘럼 챕터  -->
       <c:forEach var="chapter" items="${chapterList}">
 	      <div class="chapter-item">
 			    <div class="chapter-header active" onclick="toggleChapter(this)">
