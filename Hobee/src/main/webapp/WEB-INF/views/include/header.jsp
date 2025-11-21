@@ -15,74 +15,84 @@
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 카카오 우편번호 -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </head>
 <body>
 
 <header>
-	<h1><a href="${pageContext.request.contextPath}/main/main">Hobee</a></h1>
+    <h1><a href="${pageContext.request.contextPath}/main/main">Hobee</a></h1>
 
-	<nav>
-		<div class="nav-left">
-			<div class="mega-dropdown">
-				<a href="#">카테고리 ▾</a>
+    <nav>
+        <div class="nav-left">
 
-				<div class="mega-content">
-					<div class="mega-column">
-						<h3>ART</h3>
-						<ul>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉">디지털드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉">드로잉</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예">공예</a></li>
-						</ul>
-					</div>
+            <!-- 카테고리 -->
+            <div class="mega-dropdown">
+                <a href="#">카테고리 ▾</a>
 
-					<div class="mega-column">
-						<h3>IT</h3>
-						<ul>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업">AI 스킬업</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍">프로그래밍</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스">데이터사이언스</a></li>
-						</ul>
-					</div>
+                <div class="mega-content">
 
-					<div class="mega-column">
-						<h3>외국어</h3>
-						<ul>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어">영어</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험">외국어 시험</a></li>
-							<li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어">제2외국어</a></li>
-						</ul>
-					</div>
+                    <div class="mega-column">
+                        <h3>ART</h3>
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉">디지털드로잉</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉">드로잉</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예">공예</a></li>
+                        </ul>
+                    </div>
 
-				</div>
-			</div>
+                    <div class="mega-column">
+                        <h3>IT</h3>
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업">AI 스킬업</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍">프로그래밍</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스">데이터사이언스</a></li>
+                        </ul>
+                    </div>
 
-			<a href="${pageContext.request.contextPath}/board/comunityList">커뮤니티</a>
-			<a href="${pageContext.request.contextPath}/recommend/recoList">베스트 & 추천강의</a>
-		</div>
+                    <div class="mega-column">
+                        <h3>외국어</h3>
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어">영어</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험">외국어 시험</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어">제2외국어</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <a href="${pageContext.request.contextPath}/board/comunityList">커뮤니티</a>
+            <a href="${pageContext.request.contextPath}/recommend/recoList">베스트 & 추천강의</a>
+        </div>
+
+        <div class="nav-right">
+
+            <c:choose>
+              
+                <c:when test="${empty sessionScope.user_id}">
+                    <a href="#" id="openLoginModal" class="auth-link">로그인</a>
+                    <a href="#" id="openInsertModal" class="auth-link">회원가입</a>
+                </c:when>
+
+              
+                <c:otherwise>
+                    <span class="welcome-text">${sessionScope.user_name}님</span>
+                    <a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
+
+                    <c:if test="${sessionScope.user_role eq 'admin' or sessionScope.user_role eq 'super_admin'}">
+    				<a href="${pageContext.request.contextPath}/admin/adminCategory" class="auth-link">관리자페이지</a>
+				</c:if>
 
 
-		<div class="nav-right">
-			<c:choose>
-   <c:when test="${empty sessionScope.user_id}">
-      <a href="#" id="openLoginModal" class="auth-link">로그인</a>
-      <a href="#" id="openInsertModal" class="auth-link">회원가입</a>
-   </c:when>
+                    <a href="${pageContext.request.contextPath}/user/logout" class="auth-link">로그아웃</a>
+                </c:otherwise>
+            </c:choose>
 
-   <c:otherwise>
-      <span class="welcome-text">${sessionScope.user_name}님</span>
-      <a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
+        </div>
+    </nav>
 
-      <c:if test="${sessionScope.user_id eq 'admin'}">
-         <a href="${pageContext.request.contextPath}/admin/adminCategory" class="auth-link">관리자페이지</a>
-      </c:if>
-
-      <a href="${pageContext.request.contextPath}/user/logout" class="auth-link">로그아웃</a>
-   </c:otherwise>
-</c:choose>
-		</div>
-	</nav>
 </header>
 
 
@@ -93,58 +103,49 @@
 <jsp:include page="/WEB-INF/views/include/insertModal.jsp"/>
 
 
-<!-- ========================================
+<!-- ===========================================
      SCRIPT (로그인 + 회원가입)
 =========================================== -->
 <script>
-$(document).ready(function(){
+$(document).ready(function () {
 
     const contextPath = "${pageContext.request.contextPath}";
 
-    /* ======================
-       1) 로그인 모달 열기
-    ======================= */
-    $("#openLoginModal").click(function(e){
+    /* --------------------------------------------------
+       1) 로그인 모달 열기 / 닫기
+    -------------------------------------------------- */
+    $("#openLoginModal").click(function (e) {
         e.preventDefault();
-        $("#loginModal").fadeIn().css("display","flex");
+        $("#loginModal").fadeIn().css("display", "flex");
     });
 
-    /* 로그인 모달 닫기 */
-    $(document).on("click", ".login-close, #loginModal .modal-overlay", function(){
+    $(document).on("click", ".login-close, #loginModal .modal-overlay", function () {
         $("#loginModal").fadeOut();
         $("#loginForm")[0].reset();
         $("#loginError").text("");
     });
 
 
-    /* ======================
-       2) 회원가입 모달 열기
-    ======================= */
-    $("#openInsertModal").click(function(e){
+    /* --------------------------------------------------
+       2) 회원가입 모달 열기 / 닫기
+    -------------------------------------------------- */
+    $("#openInsertModal").click(function (e) {
         e.preventDefault();
-        $("#insertModal").fadeIn().css("display","flex");
+        $("#insertModal").fadeIn().css("display", "flex");
     });
 
-    /* 회원가입 모달 닫기 */
-    $(document).on("click", ".insert-close, #insertModal .modal-overlay", function(){
+    $(document).on("click", ".insert-close, #insertModal .modal-overlay", function () {
         $("#insertModal").fadeOut();
         $("#insertForm")[0].reset();
         $("#insertError").text("");
         $("#insertSuccess").text("");
     });
 
-    /* 로그인 모달 → 회원가입 */
-    $(document).on("click", ".openInsertFromLogin", function(e){
-        e.preventDefault();
-        $("#loginModal").fadeOut();
-        $("#insertModal").fadeIn().css("display","flex");
-    });
 
-
-    /* ======================
+    /* --------------------------------------------------
     3) 로그인 AJAX
- ======================= */
- $("#loginBtn").click(function(){
+ -------------------------------------------------- */
+ $("#loginBtn").click(function () {
      loginRequest();
  });
 
@@ -154,39 +155,14 @@ $(document).ready(function(){
          url: contextPath + "/user/loginPro",
          data: $("#loginForm").serialize(),
          dataType: "json",
-         success: function(res) {
-        	 
 
-        	  /* ============================
-        	    3- 1)비밀번호 보이기 / 숨기기 (👁)
-        	 ============================ */
-        	 $(document).on("click", "#togglePw", function () {
-
-        	     const pwField = $("#login_pw");
-
-        	     if (pwField.attr("type") === "password") {
-        	         pwField.attr("type", "text");
-        	         $(this).text("🙈");   // 아이콘 변경
-        	     } else {
-        	         pwField.attr("type", "password");
-        	         $(this).text("👁");   // 아이콘 변경
-        	     }
-        	 });
-
-             /* ======================
-               3-1) 로그인 성공
-             ====================== */
+         success: function (res) {
              if (res.result === "success") {
-
-                 // 입력칸 테두리 원래대로 복원
-                 $("#loginForm .login-input").css("border-color", "#d1d1d1");
 
                  $("#loginError")
                      .css("color", "#2ecc71")
-                     .text(res.user_name + "님 환영합니다!")
-                     .fadeIn(200);
-                 
-                 // 🔵 스피너 표시
+                     .text(res.user_name + "님 환영합니다!").fadeIn(200);
+
                  $("#loginSpinner").fadeIn(150);
 
                  setTimeout(() => {
@@ -197,38 +173,18 @@ $(document).ready(function(){
                  return;
              }
 
-             /* ======================
-                3-2)로그인 실패 (UX 개선)
-             ====================== */
-
-             // 오류 메시지 표시
              $("#loginError")
                  .text(res.message)
-                 .css({
-                     "color": "#e74c3c",
-                     "font-weight": "600"
-                 })
+                 .css("color", "#e74c3c")
                  .fadeIn(200);
 
-             // 입력창 테두리 빨간색
-             $("#loginForm .login-input").css("border-color", "#e74c3c");
-
-             // 모달 흔들기 애니메이션
              $(".login-modal-content").addClass("shake");
-             setTimeout(() => {
-                 $(".login-modal-content").removeClass("shake");
-             }, 400);
+             setTimeout(() => $(".login-modal-content").removeClass("shake"), 400);
 
-             // 비밀번호 초기화
              $("[name='user_password']").val("");
-
-             return;
          },
 
-         /* ======================
-           3-3) AJAX 오류
-         ====================== */
-         error: function() {
+         error: function () {
              $("#loginError")
                  .text("서버 오류가 발생했습니다.")
                  .css("color", "#e74c3c");
@@ -236,9 +192,10 @@ $(document).ready(function(){
      });
  }
 
-    /* ======================
-       4) 회원가입 중복확인
-    ======================= */
+
+    /* --------------------------------------------------
+       4) 회원가입 — 아이디 중복 체크
+    -------------------------------------------------- */
     let insIdOk = false;
     let insEmailOk = false;
 
@@ -247,118 +204,131 @@ $(document).ready(function(){
         $("#ins_idCheckMsg").text("");
     });
 
-    $("#ins_user_email").on("input", () => {
-        insEmailOk = false;
-        $("#ins_emailCheckMsg").text("");
-    });
-
     $("#ins_checkIdBtn").click(() => {
         const id = $("#ins_user_id").val().trim();
         const pattern = /^[A-Za-z0-9]{1,8}$/;
 
-        if(!pattern.test(id)){
-            $("#ins_idCheckMsg").text("영문+숫자 8자").css("color","red");
+        if (!pattern.test(id)) {
+            $("#ins_idCheckMsg").text("영문+숫자 8자").css("color", "red");
             return;
         }
 
         $.ajax({
             url: contextPath + "/user/checkId",
-            type:"GET",
-            data:{ user_id:id },
-            success:function(res){
-                if(res==="available"){
-                    $("#ins_idCheckMsg").text("사용 가능").css("color","green");
-                    insIdOk=true;
+            type: "GET",
+            data: { user_id: id },
+            success: function (res) {
+                if (res === "available") {
+                    $("#ins_idCheckMsg").text("사용 가능").css("color", "green");
+                    insIdOk = true;
                 } else {
-                    $("#ins_idCheckMsg").text("이미 사용중").css("color","red");
-                    insIdOk=false;
+                    $("#ins_idCheckMsg").text("이미 사용중").css("color", "red");
+                    insIdOk = false;
                 }
             }
         });
     });
 
 
+    /* --------------------------------------------------
+       5) 회원가입 — 이메일 중복 체크
+    -------------------------------------------------- */
+    $("#ins_user_email").on("input", () => {
+        insEmailOk = false;
+        $("#ins_emailCheckMsg").text("");
+    });
+
     $("#ins_checkEmailBtn").click(() => {
         const email = $("#ins_user_email").val();
-        const pattern=/^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+        const pattern = /^[0-9a-zA-Z._%+-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
 
-        if(!pattern.test(email)){
-            $("#ins_emailCheckMsg").text("이메일 형식 오류").css("color","red");
+        if (!pattern.test(email)) {
+            $("#ins_emailCheckMsg").text("이메일 형식 오류").css("color", "red");
             return;
         }
 
         $.ajax({
             url: contextPath + "/user/checkEmail",
-            type:"GET",
-            data:{ user_email:email },
-            success:function(res){
-                if(res==="available"){
-                    $("#ins_emailCheckMsg").text("사용 가능").css("color","green");
-                    insEmailOk=true;
+            type: "GET",
+            data: { user_email: email },
+            success: function (res) {
+                if (res === "available") {
+                    $("#ins_emailCheckMsg").text("사용 가능").css("color", "green");
+                    insEmailOk = true;
                 } else {
-                    $("#ins_emailCheckMsg").text("이미 사용중").css("color","red");
-                    insEmailOk=false;
+                    $("#ins_emailCheckMsg").text("이미 사용중").css("color", "red");
+                    insEmailOk = false;
                 }
             }
         });
     });
-    
- /* ================================
-  	5) 비밀번호 강도 체크
- 	================================ */
- $("#ins_user_password").on("keyup", function() {
 
-     let pw = $(this).val();
-     let msg = "";
-     let color = "";
 
-     const hasLetter = /[A-Za-z]/.test(pw);
-     const hasNumber = /[0-9]/.test(pw);
-     const hasSpecial = /[!@#$%^*]/.test(pw);
+    /* --------------------------------------------------
+       6) 비밀번호 강도 체크
+    -------------------------------------------------- */
+    $("#ins_user_password").on("keyup", function () {
 
-     // 강도 계산
-     if (pw.length === 0) {
-         msg = "";
-     }
-     else if (pw.length < 8) {
-         msg = "🔴 너무 약함 (8자 이상 입력)";
-         color = "#e74c3c";
-     }
-     else {
+        let pw = $(this).val();
+        let msg = "";
+        let color = "";
 
-         let strength = hasLetter + hasNumber + hasSpecial;  // true → 1 합산
+        // 1) 숫자로 시작하면 즉시 오류
+        if (/^[0-9]/.test(pw)) {
+            $("#pwStrengthMsg")
+                .text("❌ 비밀번호는 숫자로 시작할 수 없습니다.")
+                .css("color", "#e74c3c");
+            return;
+        }
 
-         if (strength === 1) {
-             msg = "🟡 보통 (문자 종류가 부족해요)";
-             color = "#f1c40f";
-         } 
-         else if (strength === 2) {
-             msg = "🔵 강함!";
-             color = "#3498db";
-         } 
-         else if (strength === 3) {
-             if (pw.length >= 10) {
-                 msg = "🟢 매우 강함!";
-                 color = "#2ecc71";
-             } else {
-                 msg = "🔵 강함!";
-                 color = "#3498db";
-             }
-         }
-     }
+        const hasLetter = /[A-Za-z]/.test(pw);
+        const hasNumber = /[0-9]/.test(pw);
+        const hasSpecial = /[!@#$%^*]/.test(pw);
 
-     $("#pwStrengthMsg").text(msg).css("color", color);
- });
+        if (pw.length === 0) {
+            msg = "";
+        }
+        else if (pw.length < 8) {
+            msg = "🔴 너무 약함 (8자 이상 입력)";
+            color = "#e74c3c";
+        }
+        else {
+            let strength = hasLetter + hasNumber + hasSpecial;
 
-  /* ======================
- 	6) 비밀번호 실시간 체크 기능
- ======================= */
-    $("#ins_user_password, #ins_user_password2").on("keyup", function() {
+            if (strength === 1) {
+                msg = "🟡 보통 (문자 종류가 부족해요)";
+                color = "#f1c40f";
+            } 
+            else if (strength === 2) {
+                msg = "🔵 강함!";
+                color = "#3498db";
+            } 
+            else if (strength === 3) {
+                if (pw.length >= 10) {
+                    msg = "🟢 매우 강함!";
+                    color = "#2ecc71";
+                } else {
+                    msg = "🔵 강함!";
+                    color = "#3498db";
+                }
+            }
+        }
+
+        $("#pwStrengthMsg").text(msg).css("color", color);
+    });
+
+
+
+    /* --------------------------------------------------
+       7) 비밀번호 일치 체크
+    -------------------------------------------------- */
+    $("#ins_user_password, #ins_user_password2").on("keyup", function () {
+
         let pw = $("#ins_user_password").val();
         let pw2 = $("#ins_user_password2").val();
 
         if (pw === "" || pw2 === "") {
-            $("#pwCheckMsg").text("").css("color", "");
+            $("#pwCheckMsg").text("");
             return;
         }
 
@@ -370,10 +340,46 @@ $(document).ready(function(){
     });
 
 
-    /* ======================
-       7) 회원가입 실행
-    ======================= */
-    $("#insertBtn").click(function() {
+    /* --------------------------------------------------
+       8) 전화번호 자동 하이픈 처리
+    -------------------------------------------------- */
+    $("#ins_user_phone").on("input", function () {
+
+        let v = $(this).val().replace(/[^0-9]/g, "");
+
+        if (v.length < 4) $(this).val(v);
+        else if (v.length < 7) $(this).val(v.substring(0, 3) + "-" + v.substring(3));
+        else if (v.length < 11) $(this).val(v.substring(0, 3) + "-" + v.substring(3, 6) + "-" + v.substring(6));
+        else $(this).val(v.substring(0, 3) + "-" + v.substring(3, 7) + "-" + v.substring(7, 11));
+    });
+
+
+    /* --------------------------------------------------
+       9) 카카오 주소검색
+    -------------------------------------------------- */
+    $(document).on("click", "#btnFindAddress", function () {
+
+        new daum.Postcode({
+            oncomplete: function (data) {
+
+                // 우편번호
+                $("#ins_user_zipcode").val(data.zonecode);
+
+                // 기본주소
+                const full = data.roadAddress ? data.roadAddress : data.jibunAddress;
+                $("#ins_user_address1").val(full);
+
+                // 상세주소 이동
+                $("#ins_user_address2").focus();
+            }
+        }).open();
+    });
+
+
+    /* --------------------------------------------------
+       10) 회원가입 실행
+    -------------------------------------------------- */
+    $("#insertBtn").click(function () {
 
         $("#insertError").text("");
 
@@ -389,10 +395,11 @@ $(document).ready(function(){
 
         const pw = $("#ins_user_password").val();
         const pw2 = $("#ins_user_password2").val();
-        const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
 
-        if (!pattern.test(pw)) {
-            $("#insertError").text("비밀번호 형식 오류입니다.");
+        const regex = /^(?![0-9])(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
+
+        if (!regex.test(pw)) {
+            $("#insertError").text("비밀번호는 숫자로 시작할 수 없으며, 영문/숫자/특수문자 포함 8~12자여야 합니다.");
             return;
         }
 
@@ -400,26 +407,29 @@ $(document).ready(function(){
             $("#insertError").text("비밀번호가 일치하지 않습니다.");
             return;
         }
-        
-        if (!$("#ins_user_zipcode").val()) {
+
+        if (!$("#ins_user_zipcode").val().trim()) {
             $("#insertError").text("우편번호를 입력해주세요.");
             return;
         }
-        if (!$("#ins_user_address").val()) {
+
+        if (!$("#ins_user_address1").val().trim()) {
             $("#insertError").text("주소를 입력해주세요.");
             return;
         }
-        if (!$("#ins_user_detail").val().trim()) {
+
+        if (!$("#ins_user_address2").val().trim()) {
             $("#insertError").text("상세주소를 입력해주세요.");
             return;
         }
-        
+
         $.ajax({
             type: "POST",
             url: contextPath + "/user/insertAjax",
             data: $("#insertForm").serialize(),
             dataType: "json",
-            success: function(res) {
+
+            success: function (res) {
                 if (res.result === "success") {
                     alert("회원가입 완료! 다시 로그인해주세요.");
                     $("#insertModal").fadeOut();
@@ -428,72 +438,18 @@ $(document).ready(function(){
                     $("#insertError").text(res.message);
                 }
             },
-            error: function() {
+
+            error: function () {
                 $("#insertError").text("회원가입 중 오류가 발생했습니다.");
             }
         });
     });
-    
-   /* ======================
-       8) 전화번호 자동 하이픈
-    ======================= */
-    $("#ins_user_phone").on("input", function () {
-
-        let value = $(this).val().replace(/[^0-9]/g, ""); // 숫자만
-
-        if (value.length < 4) {
-            $(this).val(value);
-        } else if (value.length < 7) {
-            $(this).val(value.substring(0, 3) + "-" + value.substring(3));
-        } else if (value.length < 11) {
-            $(this).val(value.substring(0, 3) + "-" + value.substring(3, 6) + "-" + value.substring(6));
-        } else {
-            $(this).val(value.substring(0, 3) + "-" + value.substring(3, 7) + "-" + value.substring(7, 11));
-        }
-    });
-
-       /* ==========================================================
-       9) 주소검색 (카카오 API)
-    ========================================================== */
-    $("#btnFindAddress, #ins_user_zipcode, #ins_user_address").click(function () {
-        new daum.Postcode({
-            oncomplete: function (data) {
-
-                // 1) 우편번호
-                $("#ins_user_zipcode").val(data.zonecode);
-
-                // 2) 기본주소 (도로명 우선, 없으면 지번)
-                let fullAddress = data.roadAddress ? data.roadAddress : data.jibunAddress;
-                $("#ins_user_address").val(fullAddress);
-
-                // 3) 상세주소로 포커스 이동
-                $("#ins_user_detail").focus();
-
-                // UI 강조 효과
-                $("#ins_user_address").css({
-                    "border-color": "#3d6fff",
-                    "background-color": "#eef3ff",
-                    "transition": "0.2s"
-                });
-            }
-        }).open();
-    });
 
 
-    /* ==========================================================
-       10) 상세주소 입력 시 강조
-    ========================================================== */
-    $("#ins_user_detail").on("input", function () {
-        if ($(this).val().trim().length > 0) {
-            $(this).css("border-color", "#3d6fff");
-        }
-    });
-
-	
-    /*================================
-      11)약관 펼치기 / 접기
-    ================================ */
-    $(document).on("click", ".toggle-term-btn", function() {
+    /* --------------------------------------------------
+       11) 약관 펼치기 / 접기
+    -------------------------------------------------- */
+    $(document).on("click", ".toggle-term-btn", function () {
 
         const target = $(this).data("target");
         const box = $(target);
@@ -506,30 +462,32 @@ $(document).ready(function(){
             $(this).text("닫기 ▲");
         }
     });
-    /* ======================
-       12) 약관 전체동의
-    ======================= */
+
+
+    /* --------------------------------------------------
+       12) 약관 전체 동의
+    -------------------------------------------------- */
     $("#ins_agreeAll").on("change", function () {
         $(".ins-agree-item").prop("checked", $(this).prop("checked"));
     });
 
     $(".ins-agree-item").on("change", function () {
-        const all = $(".ins-agree-item").length;
+        const total = $(".ins-agree-item").length;
         const checked = $(".ins-agree-item:checked").length;
-        $("#ins_agreeAll").prop("checked", all === checked);
+        $("#ins_agreeAll").prop("checked", total === checked);
     });
-    
-    /* ======================
-    13) 메인에서 로그인 모달 자동 오픈
- ======================= */
- const params = new URLSearchParams(window.location.search);
 
- if (params.get("openLogin") === "true") {
-     $("#loginModal").fadeIn().css("display","flex");
- }
 
- });  // ← document.ready 끝
- </script>
+    /* --------------------------------------------------
+       13) 특정 상황에서 로그인 모달 자동 오픈
+    -------------------------------------------------- */
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("openLogin") === "true") {
+        $("#loginModal").fadeIn().css("display", "flex");
+    }
+
+});
+</script>
 
 </body>
 </html>

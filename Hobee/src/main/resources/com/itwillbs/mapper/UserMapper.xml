@@ -8,20 +8,40 @@
     <!-- ✅ 회원 가입 -->
     <insert id="insertUser" parameterType="com.itwillbs.domain.UserVO">
         INSERT INTO user (
-            user_id, user_password, user_name,
-            user_phone, user_email, user_address,
-            user_gender, user_file, user_role,
-            user_status, grade_id, points
+            user_id,
+            user_password,
+            user_name,
+            user_phone,
+            user_email,
+            user_zipcode,
+            user_address1,
+            user_address2,
+            user_gender,
+            user_file,
+            user_role,
+            user_status,
+            grade_id,
+            points
         )
         VALUES (
-            #{user_id}, #{user_password}, #{user_name},
-            #{user_phone}, #{user_email}, #{user_address},
-            #{user_gender}, #{user_file}, 'user',
-            'active', 1, 0
+            #{user_id},
+            #{user_password},
+            #{user_name},
+            #{user_phone},
+            #{user_email},
+            #{user_zipcode},
+            #{user_address1},
+            #{user_address2},
+            #{user_gender},
+            #{user_file},
+            'user',
+            'active',
+            1,
+            0
         )
     </insert>
 
-    <!-- ✅ 로그인 (상태 조건 제거 — Controller에서 체크) -->
+    <!-- ✅ 로그인 -->
     <select id="loginUser" parameterType="com.itwillbs.domain.UserVO"
             resultType="com.itwillbs.domain.UserVO">
         SELECT *
@@ -72,12 +92,12 @@
         WHERE user_name = #{user_name}
           AND user_email = #{user_email}
     </select>
-    
-     <!-- 회원 등급 업데이트 -->
+
+    <!-- 회원 등급 업데이트 -->
     <update id="updateUserGrade">
         UPDATE user
         SET grade_id = #{grade_id}
-        WHERE user_num = #{user_num};
+        WHERE user_num = #{user_num}
     </update>
 
 </mapper>
