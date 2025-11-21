@@ -122,22 +122,28 @@
          - payment_detail 저장용
          - 강의 가격, 제목, 썸네일 등
        =============================== -->
-    
-    <select id="getLectureById" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
-    SELECT
-        lecture_num,
-        user_num,
-        lecture_title,
-        lecture_author,
-        lecture_price,
-        category_detail,
-        readcount,
-        lecture_img,
-        lecture_detail,
-        lecture_tag
-    FROM lecture
-    WHERE lecture_num = #{lecture_num}
-</select>
+	    
+	    <select id="getLectureById" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
+		    SELECT
+		        lecture_num,
+		        user_num,
+		        lecture_title,
+		        lecture_author,
+		        lecture_price,
+		        category_detail,
+		        readcount,
+		        lecture_img,
+		        lecture_detail,
+		        lecture_tag
+		    FROM lecture
+		    WHERE lecture_num = #{lecture_num}
+		</select>
+		
+		<select id="getAllReviewList" resultType="com.itwillbs.domain.ReviewVO">
+	          SELECT *
+	          FROM review
+	          WHERE lecture_num = #{lecture_num}
+	   </select>
 
 
 </mapper>
