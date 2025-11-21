@@ -15,41 +15,74 @@ public class AdminPostService {
 	@Inject
 	private AdminPostMapper adminPostMapper;
 	
-	 /* ===============================================================
-    📌 1. 게시글 전체 조회
-    - 관리자 게시판 목록에서 사용
-    - community_content 테이블 전체 글 불러오기
-    =============================================================== */
-	public List<AdminPostVO> getPostList() {
-		System.out.println("AdminPostService: getPostList() 실행");
-        return adminPostMapper.getPostList();
+	
+	 public List<AdminPostVO> getPostListPaging(int page, int amount) {
+		System.out.println("AdminPostService: getPostListPaging() 실행");
+		int start = (page - 1) * amount;
+        return adminPostMapper.getPostListPaging(start, amount);
 	}
-	 /* ===============================================================
-    📌 2. 게시글 상세 조회
-    - 관리자 상세 페이지(adminPostDetail.jsp)에서 사용
-    - post_id로 한 게시글만 조회
-    =============================================================== */
+	 
+	public int getTotalCount() {
+		System.out.println("AdminPostService: getTotalCount() 실행");
+	        return adminPostMapper.getTotalCount();
+	}
+	
 	public AdminPostVO getPostDetail(int post_id) {
 		System.out.println("AdminPostService: getPostDetail() 실행");
 		return adminPostMapper.getPostDetail(post_id);
 	}
-	/* ===============================================================
-    📌 3. 게시글 공개/숨김 토글
-    - is_visible이 1이면 0으로, 0이면 1로 변경
-    - 관리자 게시글 관리에서 노출 제어 기능
-    =============================================================== */
+	
 	public void togglePostVisible(int post_id) {
 		System.out.println("AdminPostService: togglePostVisible() 실행");
 		adminPostMapper.togglePostVisible(post_id);
 	}
-	 /* ===============================================================
-    📌 4. 게시글 삭제
-    - 관리자 기능: 글을 DB에서 완전 삭제
-    - 사용자 글도 함께 사라짐
-    =============================================================== */
+	
 	public void deletePost(int post_id) {
 		System.out.println("AdminPostService: deletePost() 실행");
 		adminPostMapper.deletePost(post_id);
+	}
+	
+	public List<AdminPostVO> getSearchPostList(int pageNum, int amount, String type, String keyword) {
+		System.out.println("AdminPostService: getSearchPostList() 실행");
+	    int start = (pageNum - 1) * amount;
+	    return adminPostMapper.getSearchPostList(start, amount, type, keyword);
+	}
+
+	public int getSearchTotalCount(String type, String keyword) {
+		System.out.println("AdminPostService: getSearchTotalCount() 실행");
+		return adminPostMapper.getSearchTotalCount(type, keyword);
+	}
+
+	public List<AdminPostVO> getPostListPaging(int pageNum, int amount, String sort) {
+		System.out.println("AdminPostService: getPostListPaging() 실행");
+		int start = (pageNum - 1) * amount;
+        return adminPostMapper.getPostListPagingSorted(start, amount, sort);
+    }
+
+	public List<AdminPostVO> getSearchPostList(int pageNum, int amount, String type, String keyword, String sort) {
+		System.out.println("AdminPostService: getSearchPostList() 실행");
+	     int start = (pageNum - 1) * amount;
+	        return adminPostMapper.getSearchPostListSorted(start, amount, type, keyword, sort);
+	}
+
+	public void batchHide(List<Integer> ids) {
+		System.out.println("AdminPostService: batchHidet() 실행");
+			adminPostMapper.batchHide(ids);
+	}
+
+	public void batchShow(List<Integer> ids) {
+		System.out.println("AdminPostService: batchShow() 실행");
+		adminPostMapper.batchShow(ids);
+	}
+
+	public void batchDelete(List<Integer> ids) {
+		System.out.println("AdminPostService: batchDelete() 실행");
+		adminPostMapper.batchDelete(ids);
+	}
+
+	public void updatePost(AdminPostVO vo) {
+		System.out.println("AdminPostService: updatePost() 실행");
+		adminPostMapper.updatePost(vo);
 	}
 
 }

@@ -82,5 +82,8 @@ public interface AdminMapper {
 
 	public List<UserVO> getInstructorList();
 
+	public String classSearch();
+
+
 
 }

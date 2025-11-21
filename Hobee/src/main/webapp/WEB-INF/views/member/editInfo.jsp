@@ -122,9 +122,12 @@
 							name="user_email" value="${user.user_email}"> <span
 							id="checkemail"></span>
 					</div>
+<!-- 					<button type="submit" class="btn" id="submitBtn">정보 수정</button> -->
+<%-- 					<button class="btn btn-delete" data-num="${user.user_num}">회원 --%>
+<!-- 						탈퇴</button> -->
+				<!-- button-group 없이 직접 배치 -->
 					<button type="submit" class="btn" id="submitBtn">정보 수정</button>
-					<button class="btn btn-delete" data-num="${user.user_num}">회원
-						탈퇴</button>
+					<button type="button" class="btn btn-delete" data-num="${user.user_num}">회원 탈퇴</button>
 				</div>
 			</section>
 		</form>

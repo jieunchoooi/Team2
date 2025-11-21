@@ -250,6 +250,12 @@ public class AdminService {
 		return adminMapper.getInstructorList();
 	}
 
+	public String classSearch() {
+		System.out.println("AdminService classSearch()");
+		return adminMapper.classSearch();
+	}
+
+
 
 
 	

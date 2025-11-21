@@ -7,28 +7,26 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
 public class AdminPostVO {
-	
-	
-     // 📌 기본 게시글 정보 (사용자 작성)
-   
-	 private int post_id;     // 게시글 고유 번호 (Primary Key, AI)
-	 private int board_id;
-	 private String title;    // 게시글 제목
-	 private String content;  // 게시글 내용
-	 private String author;   // 작성자 (사용자 ID 또는 닉네임)
-	 private String tag;      // 게시글 태그 (ex. #잡담, #질문)
 
-	 // 📌 관리자 기능에 필요한 정보
-	 private int views;        // 조회수
-	 private int is_visible;   // 게시글 공개 상태 (1 = 공개, 0 = 숨김)
+    // 📌 기본 게시글 정보
+    private int post_id;       // 게시글 번호 (PK)
+    private int board_id;      // 게시판 ID
+    private String title;      // 제목
+    private String content;    // 내용
+    private String author;     // 작성자
+    private String tag;        // 태그
 
-	 // 📌 날짜 정보
-	 private String created_at;   // 게시글 등록 날짜 (생성일)
-	 
-	// 게시판 이름까지 JOIN하여 가져올 때 사용
-	 private String board_name;
-	}
+    // 📌 관리자용 정보
+    private int views;         // 조회수
+    private int is_visible;    // 공개(1) / 숨김(0)
+
+    // 📌 날짜 정보
+    private String created_at; // 생성일
+    private String updated_at; // ★ 수정일(추가됨)
+
+    // 📌 JOIN용
+    private String board_name; // 게시판 이름
+}
 
 

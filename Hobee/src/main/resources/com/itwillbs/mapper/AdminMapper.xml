@@ -276,6 +276,7 @@
 		WHERE user_role = 'user' and user_status != 'active'
 	</select>
 
+<!-- 	강의 갯수 카운트 -->
 	<select id="classCount" resultType="java.lang.Integer">
 		select count(*) from lecture
 	</select>
@@ -294,7 +295,11 @@
 		where user_num = #{user_num}
 	</update>
 
-
+<!-- 	강의 검색 -->
+<!-- 	<select id="classSearch"> -->
+<!-- 		select * from lecture  -->
+<!-- 		where -->
+<!-- 	</select> -->
 
 
 

@@ -139,5 +139,17 @@
 		    WHERE lecture_num = #{lecture_num}
 		</select>
 		
+		<insert id="insertReview">
+	       insert into review(user_id, lecture_num, review_score, review_content)
+	       values(#{user_id},#{lecture_num},#{review_score},#{review_content})
+	    </insert>
+	    
+	    <select id="hasWrittenReview" resultType="java.lang.Integer">
+		    SELECT COUNT(*)
+		    FROM review
+		    WHERE user_id = #{user_id}
+		    AND lecture_num = #{lecture_num}
+		</select>
+		
 </mapper>
   

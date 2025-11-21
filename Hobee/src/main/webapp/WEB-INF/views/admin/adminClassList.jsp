@@ -19,11 +19,30 @@
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
 		<div class="main-header">
-			<h1>클래스 목록</h1>
+			<h1>강의 목록</h1>
 		</div>
-
+		
+		<div class="stats-container">
+			<div class="stat-card">
+				<h3>총 강의 수</h3>
+				<div class="stat-number">${classCount}</div>
+			</div>
+			<div class="stat-card orange">
+				<h3>활동 강사 수</h3>
+				<div class="stat-number">${tCount}</div>
+			</div>
+		</div>
+		
+		
+		
 		<div class="table-container">
+			<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search_form" id="search_form">
 			<table>
+				<div class="search-box">
+					<input type="text" class="search_box" id="search_box" placeholder="이름, 아이디, 이메일로 검색...">
+					<button class="search" id="search">검색</button>
+				</div>
+			
 				<thead>
 					<tr>
 						<th>번호</th>
@@ -60,6 +79,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			</form>
 			<div class="pagination">
 				<!-- 10 만큼 이전 -->
 				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
@@ -80,6 +100,32 @@
 	</main>
 </body>
 <script type="text/javascript">
+let search = document.querySelector(".search");
+let search_box = document.querySelector(".search_box");
+
+search.onclick = function(e){
+	
+	if(search_box.value == ""){
+		alert("검색어를 입력해주세요.");
+		search_box.focus();
+		return false;
+	}else{
+		location.href = "${pageContext.request.contextPath}/admin/classSearch";
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 클래스 삭제	
 let deleteBtn = document.querySelectorAll('.btn-delete');
 
