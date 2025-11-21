@@ -97,7 +97,7 @@
 							value="${user.user_password}"> <span id="checkPassword"></span>
 					</div>
 					<div class="address-row">
-						<input type="text" id="user_address" name="user_address"
+						<input type="text" id="user_zipcode" name="user_zipcode"
 							class="insert-input address-zip" placeholder="우편번호" readonly />
 						<button type="button"
 							class="btn-find-address check-btn address-btn">검색</button>
@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (data.userSelectedType === 'R') addr = data.roadAddress;
                 else addr = data.jibunAddress;
 
-                document.getElementById('user_address').value = data.zonecode;
+                document.getElementById('user_zipcode').value = data.zonecode;
                 document.getElementById('user_address1').value = addr;
                 document.getElementById('user_address2').focus();
             }
