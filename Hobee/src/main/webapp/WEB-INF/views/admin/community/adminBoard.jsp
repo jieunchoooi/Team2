@@ -27,7 +27,7 @@
 
 
     <!-- 최상단 큰 제목 -->
-    <div class="page-title">게시판 추가</div>
+    <div class="page-title">게시판 목록</div>
 
     <!-- 카드형 컨테이너 -->
     <div class="card-box">

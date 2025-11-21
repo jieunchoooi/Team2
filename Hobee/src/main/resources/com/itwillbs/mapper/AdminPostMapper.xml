@@ -5,39 +5,25 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminPostMapper">
 
-    <!-- 📌 1. 게시글 전체 목록 -->
-    <select id="getPostList" resultType="com.itwillbs.domain.AdminPostVO">
-        SELECT 
-            post_id,
-            title,
-            content,
-            author,
-            tag,
-            views,
-            is_visible,
-            created_at
-        FROM community_content
-        ORDER BY post_id DESC
-    </select>
-
-
-    <!-- 📌 2. 게시글 상세 조회 -->
+    <!-- 📌 1. 게시글 상세 조회 -->
     <select id="getPostDetail" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT 
-            post_id,
-            title,
-            content,
-            author,
-            tag,
-            views,
-            is_visible,
-            created_at
-        FROM community_content
-        WHERE post_id = #{post_id}
+            c.post_id,
+            c.title,
+            c.content,
+            c.author,
+            c.tag,
+            c.views,
+            c.is_visible,
+            c.created_at,
+            b.board_name
+        FROM community_content c
+        LEFT JOIN board_category b
+            ON c.board_id = b.board_id
+        WHERE c.post_id = #{post_id}
     </select>
 
-
-    <!-- 📌 3. 게시글 공개/숨김 토글 -->
+    <!-- 📌 2. 게시글 공개/숨김 토글 -->
     <update id="togglePostVisible">
         UPDATE community_content
         SET is_visible = CASE 
@@ -47,11 +33,155 @@
         WHERE post_id = #{post_id}
     </update>
 
-
-    <!-- 📌 4. 게시글 삭제 -->
+    <!-- 📌 3. 게시글 삭제 -->
     <delete id="deletePost">
         DELETE FROM community_content
         WHERE post_id = #{post_id}
     </delete>
+
+    <!-- 📌 4. 전체 게시글 개수 -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM community_content
+    </select>
+
+
+    <!-- ===========================================================
+         🔥 5. 정렬 포함 전체 목록 (페이징 + 정렬)
+    ============================================================ -->
+    <select id="getPostListPagingSorted" resultType="com.itwillbs.domain.AdminPostVO">
+        SELECT 
+            c.post_id,
+            c.title,
+            c.content,
+            c.author,
+            c.tag,
+            c.views,
+            c.is_visible,
+            c.created_at,
+            b.board_name,
+            (SELECT COUNT(*) FROM comment cm WHERE cm.post_id = c.post_id) AS reply_count
+        FROM community_content c
+        LEFT JOIN board_category b
+            ON c.board_id = b.board_id
+        
+        <!-- 🔥 정렬 조건 -->
+        <choose>
+            <when test="sort == 'views'">
+                ORDER BY c.views DESC
+            </when>
+            <when test="sort == 'reply'">
+                ORDER BY reply_count DESC, c.post_id DESC
+            </when>
+            <when test="sort == 'visible'">
+                ORDER BY c.is_visible DESC, c.post_id DESC
+            </when>
+            <otherwise>
+                ORDER BY c.post_id DESC  <!-- 최신순 -->
+            </otherwise>
+        </choose>
+
+        LIMIT #{start}, #{amount}
+    </select>
+
+
+    <!-- ===========================================================
+         🔥 6. 정렬 포함 검색된 목록 (페이징 + 검색 + 정렬)
+    ============================================================ -->
+    <select id="getSearchPostListSorted" resultType="com.itwillbs.domain.AdminPostVO">
+        SELECT 
+            c.post_id,
+            c.title,
+            c.content,
+            c.author,
+            c.tag,
+            c.views,
+            c.is_visible,
+            c.created_at,
+            b.board_name,
+            (SELECT COUNT(*) FROM comment cm WHERE cm.post_id = c.post_id) AS reply_count
+        FROM community_content c
+        LEFT JOIN board_category b
+            ON c.board_id = b.board_id
+
+        WHERE 
+            (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
+            OR
+            (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
+            OR
+            (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+
+        <!-- 🔥 정렬 조건 -->
+        <choose>
+            <when test="sort == 'views'">
+                ORDER BY c.views DESC
+            </when>
+            <when test="sort == 'reply'">
+                ORDER BY reply_count DESC, c.post_id DESC
+            </when>
+            <when test="sort == 'visible'">
+                ORDER BY c.is_visible DESC, c.post_id DESC
+            </when>
+            <otherwise>
+                ORDER BY c.post_id DESC  <!-- 최신순 -->
+            </otherwise>
+        </choose>
+
+        LIMIT #{start}, #{amount}
+    </select>
+
+
+    <!-- 📌 7. 검색된 게시글 개수 -->
+    <select id="getSearchTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM community_content c
+        LEFT JOIN board_category b 
+            ON c.board_id = b.board_id
+        WHERE 
+            (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
+            OR
+            (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
+            OR
+            (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+    </select>
+    
+    <!-- 🔥 일괄 숨김 -->
+<update id="batchHide">
+    UPDATE community_content
+    SET is_visible = 0
+    WHERE post_id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+</update>
+
+<!-- 🔥 일괄 표시 -->
+<update id="batchShow">
+    UPDATE community_content
+    SET is_visible = 1
+    WHERE post_id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+</update>
+
+<!-- 🔥 일괄 삭제 -->
+<delete id="batchDelete">
+    DELETE FROM community_content
+    WHERE post_id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+</delete>
+
+<update id="updatePost">
+    UPDATE community_content
+    SET 
+        title = #{title},
+        content = #{content},
+        updated_at = NOW()
+    WHERE post_id = #{post_id}
+</update>
+
 
 </mapper>
