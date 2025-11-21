@@ -572,7 +572,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     <div class="review-section">
       <div class="review-header-container">
         <h3>수강생들의 리뷰</h3>
-	    <c:if test="${not empty sessionScope.user_id && hasPurchased > 0}">
+	    <c:if test="${not empty sessionScope.user_id && hasPurchased > 0 && !hasWrittenReview}">
 		  <button class="btn-write-review" onclick="openReviewModal()">
 		    리뷰 작성하기
 		  </button>
@@ -978,33 +978,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
         }
       });
     } 
-    
-//     else {
-//       // jQuery가 없는 경우 fetch API 사용
-//       fetch("/lecture/insertReview", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/x-www-form-urlencoded",
-//         },
-//         body: new URLSearchParams({
-//           lecture_num: lectureNum,
-//           user_num: userNum,
-//           rating: selectedStar,
-//           content: document.getElementById('reviewContent').value
-//         })
-//       })
-//       .then(response => response.json())
-//       .then(result => {
-//         alert("리뷰가 등록되었습니다.");
-//         closeReviewModal();
-//         location.reload();
-//       })
-//       .catch(error => {
-//         alert("리뷰 등록 중 오류가 발생했습니다.");
-//       });
-//     }
   });
-
 
    // 전체 리뷰 리스트 모달 열기  
 	function openReviewListModal(lectureNum) {

@@ -111,6 +111,11 @@ public class LectureService {
 		lectureMapper.insertReview(reviewVO);
 	}
 
+	public int hasWrittenReview(String user_id, int lecture_num) {
+		System.out.println("LectureService hasWrittenReview()");
+		return lectureMapper.hasWrittenReview(user_id, lecture_num);
+	}
+
 
 
 

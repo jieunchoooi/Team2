@@ -62,6 +62,9 @@ public class LectureController {
 			model.addAttribute("hasPurchased", hasPurchased);
 		}
 		
+		boolean hasWrittenReview = lectureService.hasWrittenReview(user_id, lecture_num) > 0;
+
+		
 		LectureVO lectureVO = lectureService.contentLecture(lecture_num);
 		UserVO userVO = lectureService.getUserImg(lecture_num);
 		List<LectureVO> authorLectures = lectureService.authorLectures(lectureVO);
@@ -79,6 +82,7 @@ public class LectureController {
 		model.addAttribute("similarLectures", similarLectures);
 		model.addAttribute("chapterList", chapterList);
 		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("hasWrittenReview", hasWrittenReview);
 		
 		return "category/lecture";
 	}

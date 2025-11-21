@@ -47,6 +47,8 @@ public interface LectureMapper {
 
 	void insertReview(ReviewVO reviewVO);
 
+	int hasWrittenReview(@Param("user_id") String user_id, @Param("lecture_num") int lecture_num);
+
 	
 
 
