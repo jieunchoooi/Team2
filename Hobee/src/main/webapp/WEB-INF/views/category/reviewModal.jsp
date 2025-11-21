@@ -115,7 +115,7 @@ body {
   margin-bottom: 12px;
 }
 
-.reviewer-info {
+.reviewer-info-modal {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -140,7 +140,7 @@ body {
   gap: 4px;
 }
 
-.reviewer-name {
+.reviewer-name-modal {
   font-weight: 600;
   font-size: 1rem;
   color: var(--text-color);
@@ -151,7 +151,7 @@ body {
   color: var(--gray);
 }
 
-.review-rating {
+.review-rating-modal {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -195,10 +195,10 @@ body {
   color: var(--text-color);
 }
 
-.review-content {
+.review-content-modal {
   line-height: 1.7;
   color: #444;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   margin-top: 12px;
   word-break: break-word;
 }
@@ -287,15 +287,15 @@ body {
         <c:forEach var="review" items="${reviewList}">
           <div class="review-item">
             <div class="review-item-header">
-              <div class="reviewer-info">
+              <div class="reviewer-info-modal">
                 <div class="reviewer-avatar">
                   ${fn:substring(review.user_name, 0, 1)}
                 </div>
                 <div class="reviewer-details">
-                  <div class="reviewer-name">${review.user_name}</div>
+                  <div class="reviewer-name-modal">${review.user_name}</div>
                 </div>
               </div>
-              <div class="review-rating">
+              <div class="review-rating-modal">
                 <span class="stars" style="--rating: ${review.review_score};">
                   <span class="empty">
                     <i class="fas fa-star"></i>
@@ -316,7 +316,7 @@ body {
               </div>
             </div>
             
-            <div class="review-content">
+            <div class="review-content-modal">
               ${review.review_content}
             </div>
 
