@@ -123,6 +123,24 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   margin: 0;
 }
 
+.btn-more-reviews {
+  display: inline-block;
+  color: #878787;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: right;
+  margin-top: 15px;
+  transition: all 0.2s;
+}
+
+.btn-more-reviews:hover {
+  color: #1f65e0;
+  text-decoration: none;
+}
+
 .btn-write-review {
   background: #eef5ff;
   color: var(--primary);
@@ -160,6 +178,10 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   border-radius: 12px;
   padding: 20px;
   transition: all 0.2s;
+  height: 180px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .review-card:hover {
@@ -184,6 +206,10 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   font-weight: 600;
   font-size: 1rem;
   color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
 }
 
 .review-meta {
@@ -249,8 +275,14 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .review-content {
   line-height: 1.7;
   color: #444;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   margin-top: 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .purchase-sidebar { 
@@ -523,7 +555,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       <div class="review-grid">
         <c:choose>
           <c:when test="${not empty reviewList}">
-            <c:forEach var="review" items="${reviewList}">
+            <c:forEach var="review" items="${reviewList}" begin="0" end="3">
               <div class="review-card">
                 <div class="review-header">
                   <div class="reviewer-info">
@@ -561,6 +593,15 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
           </c:otherwise>
         </c:choose>
       </div>
+      
+      <!-- 더보기 버튼 -->
+      <c:if test="${not empty reviewList && fn:length(reviewList) > 4}">
+        <div style="text-align: right;">
+          <button class="btn-more-reviews" onclick="openReviewListModal()">
+            더보기
+          </button>
+        </div>
+      </c:if>
     </div>
 
     <!-- 커리큘럼 섹션 - 새로운 디자인 -->
@@ -938,6 +979,11 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       closeReviewModal();
     }
   });
+
+  // 리뷰 리스트 모달 열기
+  function openReviewListModal() {
+    window.location.href = '${pageContext.request.contextPath}/category/reviewList?no=${lectureVO.lecture_num}';
+  }
 
 </script>
 

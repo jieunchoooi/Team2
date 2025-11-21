@@ -106,6 +106,11 @@ public class LectureService {
 		return lectureMapper.hasPurchased(loginUserNum, lecture_num);
 	}
 
+	public List<ReviewVO> getAllReviewList(int lecture_num) {
+		System.out.println("LectureService getAllReviewList()");
+		return lectureMapper.getAllReviewList(lecture_num);
+	}
+
 	
 
 }
