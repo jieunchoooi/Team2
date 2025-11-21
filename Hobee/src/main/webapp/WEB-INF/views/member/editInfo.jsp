@@ -96,13 +96,14 @@
 							name="user_password" id="user_password"
 							value="${user.user_password}"> <span id="checkPassword"></span>
 					</div>
+					<label for="password">주소</label> 
 					<div class="address-row">
 						<input type="text" id="user_zipcode" name="user_zipcode"
 							class="insert-input address-zip" value="${user.user_zipcode}" readonly />
 						<button type="button"
 							class="btn-find-address check-btn address-btn">검색</button>
 					</div>
-
+					
 					<!-- 기본주소 -->
 					<input type="text" id="user_address1" name="user_address1"
 						class="insert-input address-main" value="${user.user_address1}" readonly />
