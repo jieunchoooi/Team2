@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+.card-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.edit-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.edit-row label {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.edit-input {
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 15px;
+}
+
+.edit-textarea {
+    height: 250px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    resize: none;
+    background: #fafafa;
+}
+
+.btn-area {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* 버튼 */
+.btn-blue {
+    background: #4C7DF5;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-gray {
+    background: #999;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
