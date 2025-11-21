@@ -245,6 +245,11 @@ public class AdminService {
 		adminMapper.insertChapterDetail(detailVO);
 	}
 
+	public List<UserVO> getInstructorList() {
+		System.out.println("AdminService insertChapterDetail()");
+		return adminMapper.getInstructorList();
+	}
+
 
 
 	

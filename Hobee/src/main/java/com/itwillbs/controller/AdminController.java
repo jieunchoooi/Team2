@@ -49,88 +49,135 @@ public class AdminController {
 
    // 클래스 등록
    @GetMapping("/adminClassAdd")
-   public String adminClassAdd() {
+   public String adminClassAdd(Model model) {
       System.out.println("AdminController adminClassAdd()");
-
+      
+      // ✅ 강사 목록 조회
+      List<UserVO> instructorList = adminService.getInstructorList();
+      
+      System.out.println("강사 수: " + (instructorList != null ? instructorList.size() : 0));
+      if (instructorList != null) {
+          for (UserVO user : instructorList) {
+              System.out.println("강사: " + user.getUser_name() + " (" + user.getUser_id() + ")");
+          }
+      }
+      
+      model.addAttribute("instructorList", instructorList);
+      
       return "admin/adminClassAdd";
    }
 
 // 클래스 등록
-@PostMapping("/adminClassAddPro")
-public String adminClassAddPro(HttpServletRequest request,
-                              @RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
-    System.out.println("AdminController adminClassAddPro()");
+   @PostMapping("/adminClassAddPro")
+   public String adminClassAddPro(HttpServletRequest request,
+                                 @RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
+	   System.out.println("AdminController adminClassAddPro()");
 
-    LectureVO lectureVO = new LectureVO();
-    String lecture_title = request.getParameter("lecture_title");
-    String category_detail = request.getParameter("category_detail");
-    String lecture_author = request.getParameter("lecture_author");
-    String lecture_detail = request.getParameter("lecture_detail");
-    String priceParam = request.getParameter("lecture_price");
+	    LectureVO lectureVO = new LectureVO();
+	    String lecture_title = request.getParameter("lecture_title");
+	    String category_detail = request.getParameter("category_detail");
+	    String lecture_author = request.getParameter("lecture_author"); // 강사 이름
+	    String lecture_detail = request.getParameter("lecture_detail");
+	    String priceParam = request.getParameter("lecture_price");
+	    String lecture_tag = request.getParameter("lecture_tag");
+	    
+	    // ✅ user_num 가져오기
+	    String userNumParam = request.getParameter("user_num");
+	    int user_num = 0;
+	    if (userNumParam != null && !userNumParam.isEmpty()) {
+	        user_num = Integer.parseInt(userNumParam);
+	    }
+	    
+	    int lecture_price = 0;
+	    if (priceParam != null && !priceParam.isEmpty()) {
+	        lecture_price = Integer.parseInt(priceParam);
+	    }
+	    
+	    System.out.println(lecture_author);
+	    String lec[] = lecture_author.split(":");
+	    System.out.println(lec.length);
+	    System.out.println(lec[0]);
+	    System.out.println(lec[1]);
+	    
+	    lectureVO.setLecture_title(lecture_title);
+	    lectureVO.setCategory_detail(category_detail);
+	    lectureVO.setLecture_detail(lecture_detail);
+	    lectureVO.setLecture_author(lec[1]);
+	    lectureVO.setLecture_price(lecture_price);
+	    lectureVO.setLecture_tag(lecture_tag);
+	    lectureVO.setUser_num(Integer.parseInt(lec[0])); // ✅ user_num 설정
 
-    int lecture_price = 0; // 기본값 설정
-    if (priceParam != null && !priceParam.isEmpty()) {
-        lecture_price = Integer.parseInt(priceParam);
-    }
+	    if (lecture_img != null && !lecture_img.isEmpty()) {
+	        UUID uuid = UUID.randomUUID();
+	        String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
+	        System.out.println("파일명: " + filename);
+	        FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
+	        lectureVO.setLecture_img(filename);
+	    }
+	    
+	    System.out.println(lectureVO);
+	    adminService.LectureUpdate(lectureVO);
+	    
+       
+       int lectureNum = lectureVO.getLecture_num(); 
+       System.out.println("생성된 lecture_num: " + lectureNum);
 
-    lectureVO.setLecture_title(lecture_title);
-    lectureVO.setCategory_detail(category_detail);
-    lectureVO.setLecture_detail(lecture_detail);
-    lectureVO.setLecture_author(lecture_author);
-    lectureVO.setLecture_price(lecture_price);
-
-    if (lecture_img != null && !lecture_img.isEmpty()) {
-        UUID uuid = UUID.randomUUID();
-        String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
-        System.out.println("파일명: " + filename);
-
-        FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
-
-        lectureVO.setLecture_img(filename);
-    }
-    
-    System.out.println(lectureVO);
-    adminService.LectureUpdate(lectureVO);
-    
-    int lectureNum = lectureVO.getLecture_num(); 
-    System.out.println("생성된 lecture_num: " + lectureNum);
-
-    // ✅ request.getParameterValues()로 챕터 제목 배열 가져오기
-    String[] chapterTitles = request.getParameterValues("chapter_title[]");
-    
-    if (chapterTitles != null && chapterTitles.length > 0) {
-        for(int i = 0; i < chapterTitles.length; i++) {
-            ChapterVO chapterVO = new ChapterVO();
-            chapterVO.setLecture_num(lectureNum);
-            chapterVO.setChapter_order(i + 1);
-            chapterVO.setChapter_title(chapterTitles[i]);
-            
-            adminService.insertChapter(chapterVO);
-            int chapterNum = chapterVO.getChapter_num();
-            
-            System.out.println("생성된 chapter_num: " + chapterNum + ", 챕터명: " + chapterTitles[i]);
-            
-            // ✅ request.getParameterValues()로 강의 정보 배열 가져오기
-            String[] detailTitles = request.getParameterValues("detail_title_" + i + "[]");
-            String[] detailTimes = request.getParameterValues("detail_time_" + i + "[]");
-            
-            if(detailTitles != null && detailTitles.length > 0) {
-                for(int j = 0; j < detailTitles.length; j++) {
-                    ChapterDetailVO detailVO = new ChapterDetailVO();
-                    detailVO.setChapter_num(chapterNum);
-                    detailVO.setDetail_order(j + 1);
-                    detailVO.setDetail_title(detailTitles[j]);
-                    detailVO.setDetail_time(detailTimes != null && j < detailTimes.length ? detailTimes[j] : "00:00");
-                    
-                    adminService.insertChapterDetail(detailVO);
-                    System.out.println("강의 " + (j + 1) + " 저장: " + detailTitles[j] + " (" + detailVO.getDetail_time() + ")");
-                }
-            }
-        }
-    }
-    
-    return "redirect:/admin/adminClassList";
-}
+       // ✅ 챕터 제목 배열 가져오기
+       String[] chapterTitles = request.getParameterValues("chapter_title[]");
+       
+       // ✅ 디버깅: 챕터 개수 확인
+       System.out.println("=== 챕터 저장 시작 ===");
+       System.out.println("총 챕터 개수: " + (chapterTitles != null ? chapterTitles.length : 0));
+       
+       if (chapterTitles != null && chapterTitles.length > 0) {
+           for(int i = 0; i < chapterTitles.length; i++) {
+               System.out.println("\n--- 챕터 " + (i+1) + " 처리 중 ---");
+               System.out.println("챕터 제목: " + chapterTitles[i]);
+               
+               ChapterVO chapterVO = new ChapterVO();
+               chapterVO.setLecture_num(lectureNum);
+               chapterVO.setChapter_order(i + 1);
+               chapterVO.setChapter_title(chapterTitles[i]);
+               
+               adminService.insertChapter(chapterVO);
+               int chapterNum = chapterVO.getChapter_num();
+               
+               System.out.println("생성된 chapter_num: " + chapterNum);
+               
+               // ✅ 디버깅: 어떤 파라미터를 찾는지 출력
+               String detailTitleParam = "detail_title_" + i + "[]";
+               String detailTimeParam = "detail_time_" + i + "[]";
+               System.out.println("찾는 파라미터: " + detailTitleParam);
+               
+               String[] detailTitles = request.getParameterValues(detailTitleParam);
+               String[] detailTimes = request.getParameterValues(detailTimeParam);
+               
+               // ✅ 디버깅: 강의 개수 확인
+               System.out.println("강의 개수: " + (detailTitles != null ? detailTitles.length : 0));
+               
+               if(detailTitles != null && detailTitles.length > 0) {
+                   for(int j = 0; j < detailTitles.length; j++) {
+                       System.out.println("  강의 " + (j+1) + ": " + detailTitles[j] + " (" + 
+                           (detailTimes != null && j < detailTimes.length ? detailTimes[j] : "00:00") + ")");
+                       
+                       ChapterDetailVO detailVO = new ChapterDetailVO();
+                       detailVO.setChapter_num(chapterNum);
+                       detailVO.setDetail_order(j + 1);
+                       detailVO.setDetail_title(detailTitles[j]);
+                       detailVO.setDetail_time(detailTimes != null && j < detailTimes.length ? detailTimes[j] : "00:00");
+                       
+                       adminService.insertChapterDetail(detailVO);
+                   }
+               } else {
+                   System.out.println("  ⚠️ 강의를 찾을 수 없습니다!");
+               }
+           }
+       }
+       
+       System.out.println("=== 챕터 저장 완료 ===\n");
+       
+       return "redirect:/admin/adminClassList";
+   }
    // 클래스 삭제
    @GetMapping("/deleteClass")
    public String deleteClass(@RequestParam("lecture_num") String lecture_num) {

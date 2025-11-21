@@ -96,20 +96,21 @@
 							name="user_password" id="user_password"
 							value="${user.user_password}"> <span id="checkPassword"></span>
 					</div>
+					<label for="password">주소</label> 
 					<div class="address-row">
 						<input type="text" id="user_zipcode" name="user_zipcode"
-							class="insert-input address-zip" placeholder="우편번호" readonly />
+							class="insert-input address-zip" value="${user.user_zipcode}" readonly />
 						<button type="button"
 							class="btn-find-address check-btn address-btn">검색</button>
 					</div>
-
+					
 					<!-- 기본주소 -->
 					<input type="text" id="user_address1" name="user_address1"
-						class="insert-input address-main" placeholder="도로명/지번 주소" readonly />
+						class="insert-input address-main" value="${user.user_address1}" readonly />
 
 					<!-- 상세주소 -->
 					<input type="text" id="user_address2" name="user_address2"
-						class="insert-input address-detail" placeholder="상세주소를 입력하세요" />
+						class="insert-input address-detail" value="${user.user_address2}" />
 
 					<div class="form-group">
 						<label for="tel">휴대폰 번호</label> <input type="tel" id="user_phone"
@@ -121,9 +122,12 @@
 							name="user_email" value="${user.user_email}"> <span
 							id="checkemail"></span>
 					</div>
+<!-- 					<button type="submit" class="btn" id="submitBtn">정보 수정</button> -->
+<%-- 					<button class="btn btn-delete" data-num="${user.user_num}">회원 --%>
+<!-- 						탈퇴</button> -->
+				<!-- button-group 없이 직접 배치 -->
 					<button type="submit" class="btn" id="submitBtn">정보 수정</button>
-					<button class="btn btn-delete" data-num="${user.user_num}">회원
-						탈퇴</button>
+					<button type="button" class="btn btn-delete" data-num="${user.user_num}">회원 탈퇴</button>
 				</div>
 			</section>
 		</form>
@@ -198,6 +202,7 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
     let user_phone = document.querySelector('#user_phone');
     let user_email = document.querySelector('#user_email');
     let user_password = document.querySelector("#user_password");
+    let user_address2 = document.querySelector("#user_address2");
     let checkPassword = document.querySelector("#checkPassword");
     let checkPhone = document.querySelector("#checkPhone");
     let checkemail = document.querySelector("#checkemail");
@@ -262,6 +267,13 @@ updateForm.onsubmit = function(e){
         e.preventDefault();  
         alert('전화번호 형식이 올바르지 않습니다.');
         user_phone.focus();
+        return false;
+    }
+    
+    if(user_address2.value.trim().length <= 0){
+        e.preventDefault();  
+        alert('상세주소를 적어주세요.');
+        user_address2.focus();
         return false;
     }
     

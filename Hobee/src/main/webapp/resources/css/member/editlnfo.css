@@ -228,15 +228,27 @@ main {
    ✅ 버튼 스타일
    =============================== */
 .btn {
-  width: 100%;
-  padding: 16px;
+  background-color: #a7a7a7;
+  color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 10px;
+  padding: 12px 30px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 12px;
+  box-shadow: 0 3px 8px rgba(37, 115, 255, 0.2);
+  transition: all 0.2s;
+  font-weight: 600;
+  display: inline-block;
+  margin: 30px 6px 0;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(107, 114, 128, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .btn:first-of-type {
@@ -259,21 +271,33 @@ main {
    ✅ 회원 탈퇴 버튼
    =============================== */
 .btn-delete {
-  background-color: #ffffff;
-  color: #ef4444;
-  border: 2px solid #ef4444;
-  margin-top: 16px;
+  background-color: #ef4444;
+  margin-top: 30px;
 }
 
 .btn-delete:hover {
-  background-color: #ef4444;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-  transform: translateY(-2px);
+  background-color: #dc2626;
+  box-shadow: 0 5px 12px rgba(239, 68, 68, 0.3);
 }
 
 .btn-delete:active {
   transform: translateY(0);
+}
+
+/* ✅ 첫 번째 버튼 중앙 정렬 */
+.form-container > #submitBtn {
+  margin-left: calc(50% - 110px);
+}
+/* ===============================
+   ✅ 정보 수정 버튼 (파란색)
+   =============================== */
+#submitBtn {
+  background-color: #2573ff;
+}
+
+#submitBtn:hover {
+  background-color: #1f65e0;
+  box-shadow: 0 5px 12px rgba(37, 115, 255, 0.3);
 }
 
 /* ===============================
@@ -395,4 +419,9 @@ main {
     padding: 13px;
     font-size: 14px;
   }
+  
+
+  
+  
+  
 }

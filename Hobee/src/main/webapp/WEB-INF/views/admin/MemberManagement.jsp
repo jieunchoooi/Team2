@@ -55,7 +55,7 @@
 							${user.user_name}</p>
 						<p>${user.user_email}</p>
 						<p>🪙  &nbsp;${user.points} P</p>
-												</div>
+					</div>
 				</div>
 			</div>
 
@@ -68,7 +68,10 @@
       				<select name="user_role" id="category" required>
         				<option value="user" ${user.user_role == 'user' ? 'selected' : ''}>유저</option>
         				<option value="instructor" ${user.user_role == 'instructor' ? 'selected' : ''}>강사</option>
-        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option>
+        				<c:if test="${userVO.user_role == 'super_admin'}">
+	        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option>
+        				</c:if>
+        				
       				</select>
    			    </div>
 				<div class="form-group">
@@ -79,8 +82,9 @@
 					<label for="password">비밀번호</label> <span class="form-value">${user.user_password}</span>
 				</div>
 				<div class="form-group">
-					<label for="adress">주소</label> <span class="form-value">${user.user_address}</span>
+					<label for="adress">주소</label> <span class="form-value">${user.user_address1}, ${user.user_address2}</span>
 				</div>
+				
 				<div class="form-group">
 					<label for="tel">휴대폰 번호</label> <span class="form-value">${user.user_phone}</span>
 				</div>
