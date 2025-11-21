@@ -93,11 +93,57 @@
           AND user_email = #{user_email}
     </select>
 
-    <!-- 회원 등급 업데이트 -->
-    <update id="updateUserGrade">
+   
+   
+    <!-- 회원 정보 조회 -->
+    <select id="getUserByNum" parameterType="int" resultType="com.itwillbs.domain.UserVO">
+        SELECT 
+            user_num,
+            user_id,
+            user_password,
+            user_name,
+            user_phone,
+            user_email,
+            user_zipcode,
+            user_address1,
+            user_address2,
+            user_gender,
+            user_role,
+            user_status,
+            grade_id,
+            points,
+            user_file,
+            created_at,
+            updated_at
+        FROM user
+        WHERE user_num = #{user_num}
+    </select>
+
+    <!-- 포인트 업데이트 -->
+    <update id="updateUserPoints" parameterType="com.itwillbs.domain.UserVO">
         UPDATE user
-        SET grade_id = #{grade_id}
+        SET points = #{points},
+            updated_at = NOW()
         WHERE user_num = #{user_num}
     </update>
+
+    <!-- 등급 업데이트 -->
+    <update id="updateUserGrade" parameterType="com.itwillbs.domain.UserVO">
+        UPDATE user
+        SET grade_id = #{grade_id},
+            updated_at = NOW()
+        WHERE user_num = #{user_num}
+    </update>
+
+    <!-- =======================================
+         🔹 유저 보유 포인트 조회
+         ======================================= -->
+    <select id="getUserPoints" parameterType="int" resultType="int">
+        SELECT points
+        FROM user
+        WHERE user_num = #{userNum}
+    </select>
+
+
 
 </mapper>

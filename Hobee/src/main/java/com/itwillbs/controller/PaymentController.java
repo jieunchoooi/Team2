@@ -28,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.GradeVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.PaymentResultVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.PaymentService;
@@ -43,6 +44,7 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+    
 
     @Value("${pay.API_KEY}")
     private String apiKey;
@@ -171,47 +173,49 @@ public class PaymentController {
 
 
     /**
-    * ✅ 결제 완료 처리 (검증 이후 호출)
-    */
-   @PostMapping("/payment/complete")
-   @ResponseBody
-   public Map<String, Object> completePayment(
-           @ModelAttribute PaymentVO paymentVO,
-           @ModelAttribute GradeVO gradeVO,
-           @RequestParam("lectureNums") List<Integer> lectureNums) {
+     * ✅ 결제 완료 처리 (검증 이후 AJAX로 호출)
+     */
+    @PostMapping("/complete")
+    @ResponseBody
+    public Map<String, Object> completePayment(
+            @ModelAttribute PaymentVO paymentVO,
+            @ModelAttribute GradeVO gradeVO,
+            @RequestParam("lectureNums") List<Integer> lectureNums,
+            HttpSession session) {
 
-       Map<String, Object> result = new HashMap<>();
+        Map<String, Object> res = new HashMap<>();
 
-       System.out.println("🟢 [PaymentController] 결제 완료 요청 도착");
-       System.out.println("📦 imp_uid=" + paymentVO.getImp_uid());
-       System.out.println("📦 merchant_uid=" + paymentVO.getMerchant_uid());
-       System.out.println("📦 amount=" + paymentVO.getAmount());
-       System.out.println("📦 lectureNums=" + lectureNums);
-       System.out.println("📦 grade 할인율=" + gradeVO.getDiscount_rate() + "%, 적립률=" + gradeVO.getReward_rate() + "%");
+        UserVO userVO = (UserVO) session.getAttribute("userVO");
+        if (userVO == null) {
+            res.put("status", "fail");
+            res.put("message", "로그인이 필요합니다.");
+            return res;
+        }
 
-       try {
-           // ✅ 서비스 호출 (중복 체크, 포인트 처리, 수강 등록 등)
-           paymentService.processPayment(paymentVO, lectureNums, gradeVO);
+        paymentVO.setUser_num(userVO.getUser_num());
 
-           result.put("status", "success");
-           result.put("message", "결제가 정상 처리되었습니다.");
-           System.out.println("✅ [PaymentController] 결제 프로세스 완료");
+        PaymentResultVO resultVO = paymentService.processPayment(paymentVO, lectureNums, gradeVO);
 
-       } catch (IllegalStateException e) {
-           // 중복 결제 등 로직상 예외
-           result.put("status", "duplicate");
-           result.put("message", e.getMessage());
-           System.out.println("⚠️ [PaymentController] " + e.getMessage());
+        // 🔥 최신 userVO 세션에 저장 (Controller는 DB 몰라도 됨)
+        session.setAttribute("userVO", resultVO.getUpdatedUserVO());
 
-       } catch (Exception e) {
-           // 기타 오류
-           result.put("status", "fail");
-           result.put("message", "결제 처리 중 오류 발생: " + e.getMessage());
-           e.printStackTrace();
-       }
+        res.put("status", resultVO.isSuccess() ? "success" : "fail");
+        res.put("message", resultVO.getMessage());
 
-       return result;
-   }
+        if (resultVO.isGradeChanged()) {
+            String msg = resultVO.isGradeUp()
+                    ? "🎉 축하합니다! [" + resultVO.getNewGradeName() + "] 등급으로 승급되었습니다!"
+                    : "⚠️ 등급이 [" + resultVO.getNewGradeName() + "] 등급으로 조정되었습니다.";
+
+            res.put("gradeMessage", msg);
+        }
+
+        return res;
+    }
+
+
+
+
     
     // ✅ 결제 성공 페이지 이동
     @GetMapping("/success")

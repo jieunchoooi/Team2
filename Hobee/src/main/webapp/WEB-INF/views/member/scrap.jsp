@@ -65,7 +65,7 @@
                    value="${lecture.lecture_num}"
                    data-price="${lecture.lecture_price}" />
 
-            <img src="${lecture.lecture_img}" alt="썸네일">
+            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" alt="썸네일">
 
             <div class="info">
               <p class="title">${lecture.lecture_title}</p>
@@ -91,33 +91,64 @@
          우측 결제 요약
     ============================================ --%>
     <div class="cart-summary">
-      <h2>결제 요약</h2>
+  <h2>결제 요약</h2>
 
-      <div class="summary-line">
-        <span>총 강의 금액</span>
-        <strong id="totalPrice">₩0</strong>
-      </div>
+  <div class="summary-line">
+    <span>총 강의 금액</span>
+    <strong id="totalPrice">₩0</strong>
+  </div>
 
-      <div class="summary-line">
-        <span>멤버십 할인 (<%= grade.getDiscount_rate() %>%)</span>
-        <strong id="discountPrice">-₩0</strong>
-      </div>
+  <div class="summary-line">
+    <span>멤버십 할인 (<%= grade.getDiscount_rate() %>%)</span>
+    <strong id="discountPrice">-₩0</strong>
+  </div>
 
-      <div class="summary-line">
-        <span>적립 예정 포인트 (<%= grade.getReward_rate() %>%)</span>
-        <strong id="rewardPoints">+0 P</strong>
-      </div>
+  <%-- 🔥 포인트 입력 영역 --%>
+  <div class="point-box">
 
-      <hr>
-
-      <div class="summary-total">
-        <span>최종 결제 금액</span>
-        <strong id="finalPrice">₩0</strong>
-      </div>
-
-      <%-- 🔥 여기서 바로 IMP 결제 → verify → complete --%>
-      <button class="btn-primary" type="button" onclick="requestPayment()">결제하기</button>
+    <div class="point-row">
+      <span>보유 포인트</span>
+      <strong id="myPoints">
+        <fmt:formatNumber value="${sessionScope.userVO.points}" /> P
+      </strong>
     </div>
+
+    <div class="point-row">
+      <span>포인트 사용</span>
+      <div class="point-input-area">
+        <input type="number" id="usedPointsInput"
+               min="0"
+               max="${sessionScope.userVO.points}"
+               placeholder="0"
+               class="point-input">
+        <button type="button" class="btn-use-all" onclick="useAllPoints()">모두 사용</button>
+      </div>
+    </div>
+
+    <div class="point-row">
+      <span>사용 후 잔여 포인트</span>
+      <strong id="remainPoints">0 P</strong>
+    </div>
+
+  </div>
+
+  <div class="summary-line">
+    <span>적립 예정 포인트</span>
+    <strong id="rewardPoints">+0 P</strong>
+  </div>
+
+  <hr>
+
+  <div class="summary-total">
+    <span>최종 결제 금액</span>
+    <strong id="finalPrice">₩0</strong>
+  </div>
+
+  <button class="btn-primary" type="button" onclick="requestPayment()">결제하기</button>
+</div>
+
+
+
 
   </div>
 </main>
@@ -136,24 +167,56 @@ IMP.init("imp77215860"); // 너가 쓰던 가맹점 코드 그대로 사용
 const discountRate = <%= grade.getDiscount_rate() %>;
 const rewardRate   = <%= grade.getReward_rate() %>;
 
+
 /* ======================================================
-   금액 계산
+업그레이드 결제 요약 계산
 ====================================================== */
 function updateSummary() {
-  const selected = [...document.querySelectorAll("input[name='selectItem']:checked")];
+const selected = [...document.querySelectorAll("input[name='selectItem']:checked")];
 
-  const totalPrice = selected.reduce((sum, cb) =>
-    sum + parseInt(cb.dataset.price), 0);
+const totalPrice = selected.reduce((sum, cb) =>
+ sum + parseInt(cb.dataset.price), 0);
 
-  const discount = Math.floor(totalPrice * (discountRate / 100));
-  const reward   = Math.floor(totalPrice * (rewardRate / 100));
-  const finalAmount = totalPrice - discount;
+const discount = Math.floor(totalPrice * (discountRate / 100));
+const priceAfterDiscount = totalPrice - discount;
 
-  $("#totalPrice").text("₩" + totalPrice.toLocaleString());
-  $("#discountPrice").text("-₩" + discount.toLocaleString());
-  $("#rewardPoints").text("+" + reward.toLocaleString() + " P");
-  $("#finalPrice").text("₩" + finalAmount.toLocaleString());
+const userPoints = parseInt("<c:out value='${sessionScope.userVO.points}'/>");
+
+// 🔥 입력한 사용 포인트
+let usedPoints = parseInt($("#usedPointsInput").val() || "0");
+
+if (usedPoints > userPoints) usedPoints = userPoints;
+if (usedPoints > priceAfterDiscount) usedPoints = priceAfterDiscount;
+if (usedPoints < 0) usedPoints = 0;
+
+$("#usedPointsInput").val(usedPoints);
+
+// 🔥 잔여 포인트
+const remain = userPoints - usedPoints;
+$("#remainPoints").text(remain.toLocaleString() + " P");
+
+// 🔥 적립 예정 포인트 (포인트 사용 후 결제 금액 기준)
+const reward = Math.floor((priceAfterDiscount - usedPoints) * (rewardRate / 100));
+
+$("#rewardPoints").text("+" + reward.toLocaleString() + " P");
+
+// 🔥 최종 결제 금액
+const finalAmount = priceAfterDiscount - usedPoints;
+$("#finalPrice").text("₩" + finalAmount.toLocaleString());
 }
+
+/* 모두 사용 버튼 */
+function useAllPoints() {
+const userPoints = parseInt("<c:out value='${sessionScope.userVO.points}'/>");
+$("#usedPointsInput").val(userPoints);
+updateSummary();
+}
+
+/* 포인트 입력 시 즉시 반영 */
+$("#usedPointsInput").on("input", function () {
+updateSummary();
+});
+
 
 /* 전체 선택 */
 $("#selectAll").on("change", function() {
@@ -297,7 +360,7 @@ function requestPayment() {
 	              imp_uid: rsp.imp_uid,
 	              merchant_uid: rsp.merchant_uid,
 	              amount: finalAmount,
-	              used_points: 0,
+	              used_points: parseInt($("#usedPointsInput").val() || "0"),
 	              saved_points: savedPoints,
 	              lectureNums: lectureNums,
 	              "grade.discount_rate": discountRate,
@@ -305,11 +368,20 @@ function requestPayment() {
 	            },
 	            success: function(completeResult) {
 
-	              if (completeResult.status === "success") {
-	                alert("결제가 완료되었습니다!");
-	                location.href = "${pageContext.request.contextPath}/payment/success";
+	            	if (completeResult.status === "success") {
 
-	              } else if (completeResult.status === "duplicate") {
+	            	    let msg = "결제가 완료되었습니다!";
+
+	            	    // 🔥 등급 변경 메시지는 alert에서 단 1번만 출력
+	            	    if (completeResult.gradeChanged && completeResult.gradeMessage) {
+	            	        msg += "\n\n" + completeResult.gradeMessage;
+	            	    }
+
+	            	    alert(msg);
+
+	            	    // 👉 success 페이지로 이동 (여기서는 단순 안내만)
+	            	    location.href = "${pageContext.request.contextPath}/payment/success";
+	            	} else if (completeResult.status === "duplicate") {
 	                alert("이미 처리된 결제입니다.\n" + completeResult.message);
 	                location.href = "${pageContext.request.contextPath}/payment/success";
 

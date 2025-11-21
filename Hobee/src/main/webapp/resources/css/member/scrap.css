@@ -102,3 +102,48 @@ body {font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif; back
   .cart-container{flex-direction:column;}
   .cart-summary{width:100%;}
 }
+
+/* 포인트 박스 디자인 */
+.point-box {
+  background: #f7f8fc;
+  padding: 14px 16px;
+  margin: 14px 0;
+  border-radius: 10px;
+  border: 1px solid #e0e3eb;
+}
+
+.point-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.point-input-area {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.point-input {
+  width: 110px;
+  padding: 6px 10px;
+  text-align: right;
+  border: 1px solid #d0d4df;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.btn-use-all {
+  padding: 6px 10px;
+  font-size: 13px;
+  background: #e8ecff;
+  border: 1px solid #c3ccff;
+  color: #4a57e8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-use-all:hover {
+  background: #d8e0ff;
+}
