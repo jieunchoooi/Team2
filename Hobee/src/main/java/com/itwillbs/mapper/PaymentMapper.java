@@ -48,4 +48,6 @@ public interface PaymentMapper {
      * 🔹 (선택) 결제 테스트용
      * ---------------------------------------------- */
     void insertPaymentForTest();
+    
+  
 }

@@ -18,4 +18,48 @@
     WHERE payment_id = #{paymentId}
 </select>
 
+   <!-- 🔹 detail_id로 디테일 조회 -->
+    <select id="getDetailById" parameterType="int" resultType="com.itwillbs.domain.PaymentDetailVO">
+        SELECT *
+        FROM payment_detail
+        WHERE detail_id = #{detail_id}
+    </select>
+
+
+    <!-- 🔹 부분 환불 시 해당 detail 상태 변경 -->
+    <update id="updateDetailStatusRefund" parameterType="int">
+        UPDATE payment_detail
+        SET status = 'refunded'
+        WHERE detail_id = #{detail_id}
+    </update>
+
+
+    <!-- 🔹 남아있는 paid detail 개수(부분 환불 후 전체 취소 여부 판단용) -->
+    <select id="countPaidDetails" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM payment_detail
+        WHERE payment_id = #{payment_id}
+          AND status = 'paid'
+    </select>
+    
+        <!-- ==========================================================
+         🔥 부분 환불에 필요한 특정 딱 1개의 detail 조회
+         (payment_id + lecture_num 조합)
+    ========================================================== -->
+    <select id="getDetailByPaymentAndLecture" resultType="com.itwillbs.domain.PaymentDetailVO">
+        SELECT
+            detail_id,
+            payment_id,
+            lecture_num,
+            original_price,
+            sale_price,
+            used_points,
+            saved_points,
+            status
+        FROM payment_detail
+        WHERE payment_id = #{payment_id}
+          AND lecture_num = #{lecture_num}
+        LIMIT 1
+    </select>
+
 </mapper>

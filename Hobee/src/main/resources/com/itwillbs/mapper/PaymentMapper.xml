@@ -1,12 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.PaymentMapper">
 
-    <!-- =========================================================
+    <!-- ============================================================
+         📌 PaymentList 전용 ResultMap (리스트 페이지)
+         - payment 1건에 여러 강의가 JOIN되므로 리스트로 매핑
+       ============================================================ -->
+    <resultMap id="PaymentListMap" type="com.itwillbs.domain.PaymentVO">
+
+        <!-- 단일 결제 정보 -->
+        <id property="payment_id" column="payment_id"/>
+        <result property="user_num" column="user_num"/>
+        <result property="amount" column="amount"/>
+        <result property="used_points" column="used_points"/>
+        <result property="saved_points" column="saved_points"/>
+        <result property="status" column="status"/>
+        <result property="imp_uid" column="imp_uid"/>
+        <result property="merchant_uid" column="merchant_uid"/>
+        <result property="created_at" column="created_at"/>
+
+        <!-- 회원 정보 -->
+        <result property="user_name" column="user_name"/>
+        <result property="user_email" column="user_email"/>
+
+        <!-- 강의 정보 리스트 -->
+        <collection property="lectureNumList" ofType="int">
+            <result column="lecture_num"/>
+        </collection>
+
+        <collection property="lectureTitleList" ofType="string">
+            <result column="lecture_title"/>
+        </collection>
+
+        <collection property="lecturePriceList" ofType="int">
+            <result column="lecture_price"/>
+        </collection>
+
+    </resultMap>
+
+
+
+    <!-- ============================================================
+         📌 상세 조회 전용 ResultMap (모달 상세)
+         - 리스트 페이지와 동일하게 리스트 매핑
+       ============================================================ -->
+    <resultMap id="PaymentDetailMap" type="com.itwillbs.domain.PaymentVO">
+
+        <!-- 단일 결제 정보 -->
+        <id property="payment_id" column="payment_id"/>
+        <result property="user_num" column="user_num"/>
+        <result property="amount" column="amount"/>
+        <result property="used_points" column="used_points"/>
+        <result property="saved_points" column="saved_points"/>
+        <result property="status" column="status"/>
+        <result property="imp_uid" column="imp_uid"/>
+        <result property="merchant_uid" column="merchant_uid"/>
+        <result property="created_at" column="created_at"/>
+
+        <!-- 회원 정보 -->
+        <result property="user_name" column="user_name"/>
+        <result property="user_email" column="user_email"/>
+
+        <!-- 강의 정보 리스트 -->
+        <collection property="lectureNumList" ofType="int">
+            <result column="lecture_num"/>
+        </collection>
+
+        <collection property="lectureTitleList" ofType="string">
+            <result column="lecture_title"/>
+        </collection>
+
+        <collection property="lecturePriceList" ofType="int">
+            <result column="lecture_price"/>
+        </collection>
+
+    </resultMap>
+
+
+
+    <!-- ============================================================
          결제 INSERT
-         ========================================================= -->
+       ============================================================ -->
     <insert id="insertPayment" parameterType="com.itwillbs.domain.PaymentVO">
         INSERT INTO payment (
             user_num, amount, used_points, saved_points,
@@ -22,31 +99,22 @@
     </insert>
 
 
-    <!-- =========================================================
+
+    <!-- ============================================================
          imp_uid 중복 체크
-         ========================================================= -->
+       ============================================================ -->
     <select id="checkDuplicateImpUid" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM payment WHERE imp_uid = #{impUid};
     </select>
 
 
-    <!-- =========================================================
-         특정 회원 전체 누적 결제 금액 (등급 계산용)
-         ========================================================= -->
-    <select id="getUserTotalPayment" parameterType="int" resultType="int">
-        SELECT COALESCE(SUM(amount), 0)
-        FROM payment
-        WHERE user_num = #{userNum}
-          AND status = 'paid';
-    </select>
 
+    <!-- ============================================================
+         📌 결제 리스트 조회 (PaymentListMap 적용)
+       ============================================================ -->
+    <select id="getPaymentList" parameterType="int" resultMap="PaymentListMap">
 
-    <!-- =========================================================
-         특정 회원 결제 목록 (리스트 페이지용)
-         ========================================================= -->
-    <select id="getPaymentList" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
-
-        SELECT 
+        SELECT
             p.payment_id,
             p.user_num,
             p.amount,
@@ -60,64 +128,59 @@
             u.user_name,
             u.user_email,
 
-            (
-                SELECT GROUP_CONCAT(l.lecture_title SEPARATOR ', ')
-                FROM enrollment e
-                LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
-                WHERE e.payment_id = p.payment_id
-            ) AS lectureTitles
+            l.lecture_num,
+            l.lecture_title,
+            l.lecture_price
 
         FROM payment p
         LEFT JOIN user u ON p.user_num = u.user_num
+        LEFT JOIN enrollment e ON p.payment_id = e.payment_id
+        LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+
         WHERE p.user_num = #{user_num}
         ORDER BY p.payment_id DESC;
+
     </select>
 
 
-    <!-- =========================================================
-         특정 결제 상세 (상세페이지)
-         ========================================================= -->
-    <select id="getPayment" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
 
-    SELECT 
-        p.payment_id,
-        p.user_num,
-        p.amount,
-        p.used_points,
-        p.saved_points,
-        p.status,
-        p.imp_uid,
-        p.merchant_uid,
-        p.created_at,
+    <!-- ============================================================
+         📌 상세 조회 — PaymentDetailMap 사용
+       ============================================================ -->
+    <select id="getPayment" parameterType="int" resultMap="PaymentDetailMap">
 
-        u.user_name,
-        u.user_email,
+        SELECT
+            p.payment_id,
+            p.user_num,
+            p.amount,
+            p.used_points,
+            p.saved_points,
+            p.status,
+            p.imp_uid,
+            p.merchant_uid,
+            p.created_at,
 
-        (
-            SELECT GROUP_CONCAT(l.lecture_title SEPARATOR ', ')
-            FROM enrollment e
-            LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
-            WHERE e.payment_id = p.payment_id
-        ) AS lectureTitles,
+            u.user_name,
+            u.user_email,
 
-        (
-            SELECT GROUP_CONCAT(l.lecture_price SEPARATOR ',')
-            FROM enrollment e
-            LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
-            WHERE e.payment_id = p.payment_id
-        ) AS lecturePrices
+            l.lecture_num,
+            l.lecture_title,
+            l.lecture_price
 
-    FROM payment p
-    LEFT JOIN user u ON p.user_num = u.user_num
-    WHERE p.payment_id = #{payment_id};
+        FROM payment p
+        LEFT JOIN user u ON p.user_num = u.user_num
+        LEFT JOIN enrollment e ON p.payment_id = e.payment_id
+        LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
 
-</select>
+        WHERE p.payment_id = #{payment_id};
+
+    </select>
 
 
 
-    <!-- =========================================================
-         환불 트랜잭션용 단건 조회 (created_at 포함)
-         ========================================================= -->
+    <!-- ============================================================
+         환불 verify 용 단건 조회
+       ============================================================ -->
     <select id="getPaymentById" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
         SELECT *
         FROM payment
@@ -125,13 +188,26 @@
     </select>
 
 
-    <!-- =========================================================
-         결제 상태 → cancelled
-         ========================================================= -->
+
+    <!-- ============================================================
+         결제 상태 변경 → refunded
+       ============================================================ -->
     <update id="updatePaymentStatusRefund" parameterType="int">
         UPDATE payment
-        SET status = 'cancelled'
+        SET status = 'refunded'
         WHERE payment_id = #{payment_id};
     </update>
+
+
+
+    <!-- ============================================================
+         유저 총 결제 금액
+       ============================================================ -->
+    <select id="getUserTotalPayment" parameterType="int" resultType="int">
+        SELECT COALESCE(SUM(amount), 0)
+        FROM payment
+        WHERE user_num = #{user_num}
+          AND status = 'paid';
+    </select>
 
 </mapper>

@@ -274,7 +274,7 @@ public class MemberController {
 
 	        List<PaymentVO> paymentList =
 	                paymentService.getPaymentList(loginUser.getUser_num());
-
+	        System.out.println(paymentList);
 	        model.addAttribute("paymentList", paymentList);
 	        
 

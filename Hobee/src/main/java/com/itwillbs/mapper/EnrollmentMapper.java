@@ -36,7 +36,16 @@ public interface EnrollmentMapper {
      * - payment_id 기준으로 전체 수강기록 삭제
      */
     int deleteEnrollmentByPaymentId(int paymentId);
+    
 
+    void deleteEnrollmentByUserAndLecture(EnrollmentVO enrollmentVO);
+    
+    
+
+    // 🔥 부분 환불용: 특정 payment_id + lecture_num 1개 삭제
+    void deleteByPaymentAndLecture(
+            @Param("payment_id") int paymentId,
+            @Param("lecture_num") int lectureNum);
     
     
 }

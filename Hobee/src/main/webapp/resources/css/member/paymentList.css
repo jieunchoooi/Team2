@@ -11,6 +11,9 @@ body {
     background: #f4f6fa;
 }
 
+/* ===============================
+   메인 컨테이너
+================================ */
 .main-content {
     margin-left: 240px;
     padding: 40px 30px;
@@ -21,7 +24,7 @@ body {
 ================================ */
 .payment-card {
     background: #fff;
-    padding: 25px 30px;
+    padding: 24px 28px;
     margin-bottom: 18px;
     border-radius: 14px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -29,42 +32,46 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
 
     min-height: 140px;
-    transition: .15s ease;
+    transition: background .18s ease, transform .15s ease;
 }
 
 .payment-card:hover {
     background: #f3f4f6;
-    transform: translateY(-2px);
+    transform: translateY(-1.5px);
 }
 
-/* 🔥 충돌 방지: 기존 left → card-left */
+/* 🔵 왼쪽 */
 .card-left {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    flex: 1;
+    min-width: 0; /* 🔥 flex 오버플로우 방지 */
 }
 
-/* 🔥 충돌 방지: 기존 right → card-right */
+/* 🔵 오른쪽 */
 .card-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 8px;
+    gap: 10px;
 
-    min-width: 150px;
+    min-width: 160px; /* 🔥 버튼들이 줄바꿈되지 않게 고정 */
 }
 
-/* 텍스트 기본 */
+/* ===============================
+   텍스트 스타일
+================================ */
 .order-no {
     font-size: 0.95rem;
     color: #444;
 }
 
 .date-status {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: #666;
     display: flex;
     gap: 6px;
@@ -73,43 +80,72 @@ body {
 .lecture-title {
     font-size: 1.1rem;
     font-weight: 700;
-    max-width: 400px;
+    max-width: 420px;
+
+    /* 🔥 텍스트 오버플로우 안정화 */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.status-paid { color: #16a34a; font-weight: 700; }
-.status-cancelled { color: #dc2626; font-weight: 700; }
-.status-etc { color: #999; }
+.status-paid {
+    color: #16a34a;
+    font-weight: 700;
+}
 
-/* 버튼 */
+.status-cancelled {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.status-etc {
+    color: #999;
+}
+
+/* ===============================
+   버튼 스타일
+================================ */
 .action-btn {
     background: none;
     border: none;
+    padding: 4px 0;
+
     font-size: 0.95rem;
     color: #555;
+    font-weight: 500;
+
     cursor: pointer;
+    transition: .13s ease;
 }
 
 .action-btn:hover {
     text-decoration: underline;
 }
 
-.refund-btn { color: #dc2626; }
-.refund-btn:hover { color: #b91c1c; }
+.refund-btn {
+    color: #dc2626;
+    font-weight: 700;
+}
+.refund-btn:hover {
+    color: #b91c1c;
+}
 
-.detail-btn { color: #666; }
-.detail-btn:hover { color: #2563eb; }
+.detail-btn {
+    color: #555;
+}
+.detail-btn:hover {
+    color: #2563eb;
+}
 
 .disabled-btn {
     color: #bbb;
     cursor: default;
+    text-decoration: none !important;
 }
 
-/* ==========================
-   모달 기본 스타일
-=========================== */
+/* ===============================
+   모달 스타일
+================================ */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -119,15 +155,20 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 999;
+
+    padding: 20px; /* 🔥 작은 화면에서 튐 방지 */
 }
 
 .modal-box {
-    width: 720px; /* 🔥 480 → 720 으로 확대 */
-    max-height: 80vh;
+    width: 720px;
+    max-width: 90%;           /* 🔥 작은 화면 대응 */
+    max-height: 85vh;
+
     padding: 32px 40px;
     border-radius: 16px;
     background: #fff;
     box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+
     position: relative;
     overflow: hidden;
 }
@@ -136,15 +177,21 @@ body {
     position: absolute;
     top: 16px;
     right: 20px;
+
     border: none;
     background: none;
     font-size: 22px;
     cursor: pointer;
+
+    color: #444;
+}
+.modal-close:hover {
+    color: #000;
 }
 
 .modal-frame {
     width: 100%;
-    height: 74vh; /* 🔥 더 많은 내용을 표시 */
+    height: 72vh; /* 🔥 전체 모달 대비 적절한 높이 */
     border: none;
     border-radius: 12px;
 }

@@ -1,23 +1,29 @@
 /***********************************************
- 🔵 payment.jsp + 모달 전용 스타일
+ 🔵 payment.jsp + 모달 전용 스타일 (최종 개선본)
 ************************************************/
 
 html, body {
     background: #fff;
 }
 
-/* 전체 wrapper */
+/* =====================================
+   전체 wrapper
+===================================== */
 .payment-detail-container {
     width: 100%;
-    max-width: 650px; /* 🔥 모달 720px에 딱 맞는 내부 폭 */
+    max-width: 650px; 
     margin: 0 auto;
+    padding: 10px 8px;       /* 🔥 모달 내부 여백 추가 */
+    box-sizing: border-box;
 }
 
-
-/* 🧾 영수증 스타일 */
+/* =====================================
+   영수증 기본 스타일
+===================================== */
 .receipt-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;     /* 🔥 텍스트 수직 가운데 정렬 */
     margin: 12px 0;
 }
 
@@ -39,12 +45,17 @@ html, body {
 .minus { color: #dc2626; }
 .plus { color: #2563eb; }
 
+/* =====================================
+   Divider
+===================================== */
 .divider {
     border-top: 1px dashed #d4d4d4;
     margin: 22px 0;
 }
 
-/* 🔸 강의 리스트 */
+/* =====================================
+   강의 섹션
+===================================== */
 .section-title {
     font-size: 1.15rem;
     font-weight: 700;
@@ -53,34 +64,54 @@ html, body {
 
 .lecture-list {
     list-style: none;
-    padding-left: 4px;
+    padding-left: 2px;
     margin-bottom: 18px;
 }
 
+/* 🔥 강의 1줄構造 강화 */
 .lecture-item {
     display: flex;
     justify-content: space-between;
-    padding: 6px 0;
+    align-items: center;               /* 🔥 버튼 세로 정렬 */
+    padding: 10px 0;
+    gap: 8px;
+}
+
+/* 🔥 강의 제목 + 가격을 하나의 블록으로 묶음 */
+.lecture-title-left {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;                    /* 🔥 버튼과 충돌 방지 */
 }
 
 .lecture-title-text {
     color: #333;
     font-size: 0.95rem;
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .lecture-price-text {
     color: #2563eb;
     font-weight: 600;
+    margin-top: 2px;
+    font-size: 0.88rem;
 }
 
-/* 최종결제금액 */
+/* =====================================
+   최종 금액
+===================================== */
 .total-amount {
     font-size: 1.35rem;
     font-weight: 800;
     color: #2563eb;
 }
 
-/* 환불 버튼 */
+/* =====================================
+   전체 환불 버튼 (리스트 페이지 전용)
+===================================== */
 .refund-btn {
     display: inline-block;
     margin-top: 24px;
@@ -103,12 +134,23 @@ html, body {
     background: rgba(220,38,38,0.1);
 }
 
-.lecture-title-text, 
-.lecture-item span:first-child {
-    max-width: 420px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: inline-block;
+/* =====================================
+   부분 환불 버튼 (mini)
+===================================== */
+.mini-refund-btn {
+    padding: 6px 12px;
+    background: #ff7878;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    flex-shrink: 0;            /* 🔥 강제 줄바꿈 방지 */
+}
+
+.mini-refund-btn:hover {
+    background: #ff4d4d;
 }
 

@@ -1,6 +1,8 @@
 package com.itwillbs.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -44,14 +46,16 @@ public class PaymentVO {
 
     /** 결제 생성 일시 (MySQL NOW() 기반 자동 입력) */
     private Timestamp created_at;
+    private int refunded_amount;  
     
     
     // 환불 가능 여부 (DB에는 없음, 화면 표시용)
     private boolean refundable;
     /** [조회 전용] 여러 강의 제목 표시용 (ex. "수채화 기초, 캘리그래피 입문") */
-    private String lectureTitles;
-    private String lecturePrices;   // 추가
-    private String lectureNums;     // 선택 추가
+    // 🔥 배열 기반으로 변경!
+    private List<Integer> lectureNumList;
+    private List<String> lectureTitleList;
+    private List<Integer> lecturePriceList;
 
     /** [조회 전용] 회원 이름, 이메일 표시용 (JOIN 시 활용) */
     private String user_name;

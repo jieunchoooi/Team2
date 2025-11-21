@@ -28,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.GradeVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.PaymentDetailVO;
 import com.itwillbs.domain.PaymentResultVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.UserVO;
@@ -240,96 +241,208 @@ public class PaymentController {
     }
     
     
-    @PostMapping("/refund")
+    @PostMapping("/refund/verify")
     @ResponseBody
-    public Map<String, Object> refundPayment(@ModelAttribute PaymentVO paymentVO) {
+    public Map<String, Object> verifyRefund(
+            @RequestParam("payment_id") int paymentId,
+            @RequestParam(value = "lecture_num", required = false) Integer lectureNum) {
 
         Map<String, Object> result = new HashMap<>();
 
+        System.out.println("🟣 [RefundVerify] 요청 도착 payment_id=" + paymentId + ", lecture_num=" + lectureNum);
+
         try {
-
-            System.out.println("🟣 환불 요청: payment_id = " + paymentVO.getPayment_id());
-
-            // 1) 기존 결제 정보 조회 (created_at, imp_uid 등 필요)
-            PaymentVO original = paymentService.getPayment(paymentVO.getPayment_id());
-            if (original == null) {
-                result.put("status", "fail");
+            // 1️⃣ 기본 결제 정보 조회
+            PaymentVO paymentVO = paymentService.getPayment(paymentId);
+            if (paymentVO == null) {
+                result.put("verify_result", "fail");
                 result.put("message", "결제 정보를 찾을 수 없습니다.");
                 return result;
             }
 
-            // 2) 3일 이내 환불 가능 여부 체크
-            if (!paymentService.isRefundable(original.getCreated_at())) {
-                result.put("status", "fail");
+            // 2️⃣ 3일 환불 제한 검사
+            if (!paymentService.isRefundable(paymentVO.getCreated_at())) {
+                result.put("verify_result", "fail");
                 result.put("message", "결제일 기준 3일이 지나 환불이 불가능합니다.");
                 return result;
             }
 
-            // 3) 포트원 Access Token 발급
+            // 디폴트는 전체 환불
+            String refundType = "full";
+            int refundAmount = paymentVO.getAmount();
+            PaymentDetailVO detail = null;
+
+            // 🔥 부분 환불인 경우
+            if (lectureNum != null) {
+                refundType = "partial";
+                int ln = lectureNum; // ✔ null 아님 → auto-unboxing 안전
+                // 해당 강의의 결제 상세 조회
+                detail = paymentService.getPaymentDetailByPaymentAndLecture(paymentId, ln);
+             
+              
+
+                if (detail == null) {
+                    result.put("verify_result", "fail");
+                    result.put("message", "부분 환불 대상 강의를 찾을 수 없습니다.");
+                    return result;
+                }
+
+                if (!"PAID".equalsIgnoreCase(detail.getStatus())) {
+                    result.put("verify_result", "fail");
+                    result.put("message", "이미 환불 처리된 강의입니다.");
+                    return result;
+                }
+
+                refundAmount = detail.getSale_price();
+            }
+
+            // 3️⃣ 포트원 Access Token 발급
             RestTemplate restTemplate = new RestTemplate();
 
             HttpHeaders tokenHeaders = new HttpHeaders();
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-            Map<String, String> tokenReq = new HashMap<>();
-            tokenReq.put("imp_key", apiKey);
-            tokenReq.put("imp_secret", apiSecret);
+            Map<String, String> tokenBody = new HashMap<>();
+            tokenBody.put("imp_key", apiKey);
+            tokenBody.put("imp_secret", apiSecret);
 
-            HttpEntity<Map<String, String>> tokenEntity = new HttpEntity<>(tokenReq, tokenHeaders);
-
-            ResponseEntity<Map> tokenRes = restTemplate.postForEntity(
+            HttpEntity<Map<String, String>> tokenEntity = new HttpEntity<>(tokenBody, tokenHeaders);
+            ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(
                     "https://api.iamport.kr/users/getToken",
                     tokenEntity,
-                    Map.class	
-            );
-
-            String accessToken =
-                (String)((Map)tokenRes.getBody().get("response")).get("access_token");
-
-            // 4) 포트원 실제 환불 요청
-            HttpHeaders refundHeaders = new HttpHeaders();
-            refundHeaders.setContentType(MediaType.APPLICATION_JSON);
-            refundHeaders.set("Authorization", accessToken);
-
-            Map<String, Object> refundReq = new HashMap<>();
-            refundReq.put("imp_uid", original.getImp_uid());
-            refundReq.put("reason", "사용자 요청 환불");
-
-            HttpEntity<Map<String, Object>> refundEntity =
-                    new HttpEntity<>(refundReq, refundHeaders);
-
-            ResponseEntity<Map> refundRes = restTemplate.postForEntity(
-                    "https://api.iamport.kr/payments/cancel",
-                    refundEntity,
                     Map.class
             );
 
-            Map<String, Object> refundResponse = (Map<String, Object>) refundRes.getBody();
+            if (tokenResponse.getBody() == null || tokenResponse.getBody().get("response") == null) {
+                return fail(result, "포트원 토큰 발급 실패");
+            }
 
-            int code = (int) refundResponse.get("code");
+            Map tokenResp = (Map) tokenResponse.getBody().get("response");
+            String accessToken = (String) tokenResp.get("access_token");
 
-            if (code != 0) {
-                result.put("status", "fail");
-                result.put("message", "포트원 환불 실패: " + refundResponse.get("message"));
+            // 4️⃣ 포트원 결제 상태 조회
+            HttpHeaders payHeaders = new HttpHeaders();
+            payHeaders.set("Authorization", accessToken);
+
+            HttpEntity<Void> payEntity = new HttpEntity<>(payHeaders);
+            ResponseEntity<Map> payResponse = restTemplate.exchange(
+                    "https://api.iamport.kr/payments/" + paymentVO.getImp_uid(),
+                    HttpMethod.GET,
+                    payEntity,
+                    Map.class
+            );
+
+            if (payResponse.getBody() == null || payResponse.getBody().get("response") == null) {
+                return fail(result, "포트원 결제 상태 조회 실패");
+            }
+
+            Map payResp = (Map) payResponse.getBody().get("response");
+            String paymentStatus = (String) payResp.get("status");
+
+            if (!"paid".equalsIgnoreCase(paymentStatus)) {
+                result.put("verify_result", "fail");
+                result.put("message", "이미 취소되었거나 환불된 결제입니다.");
                 return result;
             }
 
-            System.out.println("🟢 포트원 환불 성공");
+            // 🎉 모두 통과 → 환불 가능
+            result.put("verify_result", "success");
+            result.put("refund_type", refundType);
+            result.put("refund_amount", refundAmount);
+            result.put("message", "환불 가능");
 
-            // 5) 실제 DB 환불 처리 → 트랜잭션 적용됨
-            paymentService.refundPayment(original);
+            System.out.println("✅ [RefundVerify] 환불 가능 확인 완료");
 
-            result.put("status", "success");
-            result.put("message", "환불이 완료되었습니다.");
+            return result;
 
         } catch (Exception e) {
             e.printStackTrace();
-            result.put("status", "fail");
-            result.put("message", "서버 오류가 발생했습니다.");
+            result.put("verify_result", "fail");
+            result.put("message", "환불 검증 중 오류: " + e.getMessage());
+            return result;
+        }
+    }
+
+    
+    /**
+     * ✅ 환불 완료 처리 (포트원 refund/verify 성공 이후 AJAX로 호출)
+     */
+    @PostMapping("/refund/complete")
+    @ResponseBody
+    public Map<String, Object> completeRefund(
+            @RequestParam("payment_id") int paymentId,
+            @RequestParam("type") String type,              // full / partial
+            @RequestParam(value = "lecture_num", required = false) Integer lectureNum,
+            HttpSession session) {
+
+        Map<String, Object> res = new HashMap<>();
+
+        UserVO userVO = (UserVO) session.getAttribute("userVO");
+        if (userVO == null) {
+            res.put("status", "fail");
+            res.put("message", "로그인이 필요합니다.");
+            return res;
         }
 
-        return result;
+        int userNum = userVO.getUser_num();
+
+        PaymentResultVO resultVO;
+
+        try {
+            // 🔥 내부 정산 로직은 Service로만 위임
+            if ("full".equalsIgnoreCase(type)) {
+                resultVO = paymentService.refundFull(userNum, paymentId);
+            } else if ("partial".equalsIgnoreCase(type)) {
+                if (lectureNum == null) {
+                    res.put("status", "fail");
+                    res.put("message", "부분 환불에 필요한 강의 정보가 없습니다.");
+                    return res;
+                }
+                resultVO = paymentService.refundPartial(userNum, paymentId, lectureNum);
+            } else {
+                res.put("status", "fail");
+                res.put("message", "알 수 없는 환불 타입입니다.");
+                return res;
+            }
+
+        } catch (IllegalStateException e) {
+            // 비즈니스 로직에서 던진 예외
+            res.put("status", "fail");
+            res.put("message", e.getMessage());
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "환불 처리 중 오류가 발생했습니다.");
+            return res;
+        }
+
+        // 🔥 내부 로직 자체에서 실패 처리한 경우
+        if (!resultVO.isSuccess()) {
+            res.put("status", "fail");
+            res.put("message", resultVO.getMessage());
+            return res;
+        }
+
+        // 🔥 최신 userVO 세션에 저장 (결제 complete와 동일)
+        session.setAttribute("userVO", resultVO.getUpdatedUserVO());
+
+        res.put("status", "success");
+        res.put("message", resultVO.getMessage());
+
+        // 등급 메시지 구성 (결제 complete와 동일 패턴)
+        if (resultVO.isGradeChanged()) {
+            String msg = resultVO.isGradeUp()
+                    ? "🎉 환불 이후에도 [" + resultVO.getNewGradeName() + "] 등급으로 유지/승급되었습니다."
+                    : "⚠️ 환불 처리로 등급이 [" + resultVO.getNewGradeName() + "] 등급으로 조정되었습니다.";
+
+            res.put("gradeMessage", msg);
+        }
+
+        return res;
     }
+
+
     
    
 }

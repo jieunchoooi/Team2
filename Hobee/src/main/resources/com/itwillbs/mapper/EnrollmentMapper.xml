@@ -101,4 +101,24 @@
     WHERE payment_id = #{payment_id}
 </delete>
 
+
+    <!-- 🔹 부분 환불 시: user_num + lecture_num 기준 삭제 -->
+    <delete id="deleteEnrollmentByUserAndLecture" parameterType="com.itwillbs.domain.EnrollmentVO">
+        DELETE FROM enrollment
+        WHERE user_num = #{user_num}
+          AND lecture_num = #{lecture_num}
+    </delete>
+    
+        <!-- ============================================================
+         부분 환불 시 특정 강의(enrollment) 1건 삭제
+         - payment_id + lecture_num 조합으로 정확히 1개 삭제
+         - LIMIT 1: 혹시 중복 데이터 있을 경우 안전장치
+       ============================================================ -->
+    <delete id="deleteByPaymentAndLecture">
+        DELETE FROM enrollment
+        WHERE payment_id = #{payment_id}
+          AND lecture_num = #{lecture_num}
+        LIMIT 1;
+    </delete>
+
 </mapper>

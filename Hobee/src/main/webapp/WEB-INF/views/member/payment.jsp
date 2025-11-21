@@ -2,82 +2,89 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!-- 🔥 iframe 전용 CSS 반드시 필요 -->
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/payment.css">
-<!-- ===============================
-     📌 계산 변수
-==================================-->
+
+<%-- ======================================
+     총 금액 계산 (포인트 + 실제 결제)
+====================================== --%>
 <c:set var="grossPrice" value="${payment.amount + payment.used_points}" />
 
 <div class="payment-detail-container">
 
-    <!-- 결제 상태 -->
+    <%-- 결제 상태 --%>
     <div class="receipt-row status-row">
         <span class="label">결제 상태</span>
         <span class="value">
             <c:choose>
-                <c:when test="${payment.status eq 'paid'}">
-                    <span class="status-paid">결제완료</span>
-                </c:when>
-                <c:when test="${payment.status eq 'cancelled'}">
-                    <span class="status-cancelled">환불완료</span>
-                </c:when>
-                <c:otherwise>
-                    <span class="status-etc">기타</span>
-                </c:otherwise>
+                <c:when test="${payment.status eq 'paid'}"><span class="status-paid">결제완료</span></c:when>
+                <c:when test="${payment.status eq 'refunded'}"><span class="status-cancelled">환불완료</span></c:when>
+                <c:otherwise><span class="status-etc">기타</span></c:otherwise>
             </c:choose>
         </span>
     </div>
 
-    <!-- 주문번호 -->
+    <%-- 주문번호 --%>
     <div class="receipt-row">
         <span class="label">주문번호</span>
         <span class="value">${payment.merchant_uid}</span>
     </div>
 
-    <!-- 결제일시 -->
+    <%-- 결제일시 --%>
     <div class="receipt-row">
         <span class="label">결제일시</span>
-        <span class="value">
-            <fmt:formatDate value="${payment.created_at}" pattern="yyyy-MM-dd HH:mm" />
-        </span>
+        <span class="value"><fmt:formatDate value="${payment.created_at}" pattern="yyyy-MM-dd HH:mm" /></span>
     </div>
 
     <div class="divider"></div>
 
-    <!-- 수강 강의 -->
+    <%-- ==========================
+         📌 수강 강의 리스트
+    =========================== --%>
     <div class="section-title">수강 강의</div>
 
-    <c:choose>
-        <c:when test="${not empty payment.lectureTitles}">
-            <c:set var="titles" value="${fn:split(payment.lectureTitles, ',')}" />
-            <c:set var="prices" value="${fn:split(payment.lecturePrices, ',')}" />
+    <%-- 실제 리스트 존재 여부 체크 --%>
+    <c:if test="${not empty payment.lectureTitleList}">
+        <ul class="lecture-list">
 
-            <ul class="lecture-list">
-                <c:forEach var="t" items="${titles}" varStatus="s">
-                    <li class="lecture-item">
+            <c:forEach var="t" items="${payment.lectureTitleList}" varStatus="s">
+
+                <li class="lecture-item">
+
+                    <%-- 강의 제목 + 가격 --%>
+                    <div class="lecture-title-left">
                         <span class="lecture-title-text">${t}</span>
                         <span class="lecture-price-text">
-                            ₩ <fmt:formatNumber value="${prices[s.index]}" type="number" />
+                            ₩ <fmt:formatNumber value="${payment.lecturePriceList[s.index]}" type="number" />
                         </span>
-                    </li>
-                </c:forEach>
-            </ul>
-        </c:when>
+                    </div>
 
-        <c:otherwise>
-            <p class="empty-lecture">강의 정보가 없습니다.</p>
-        </c:otherwise>
-    </c:choose>
+                    <%-- 🔥 부분 환불 버튼 --%>
+                    <c:if test="${payment.status eq 'paid' && payment.refundable}">
+                        <button type="button"
+                                class="mini-refund-btn"
+                                onclick="parent.requestPartialRefund(${payment.payment_id}, ${payment.lectureNumList[s.index]})">
+                            부분 환불
+                        </button>
+                    </c:if>
+
+                </li>
+
+            </c:forEach>
+
+        </ul>
+    </c:if>
+
+    <c:if test="${empty payment.lectureTitleList}">
+        <p class="empty-lecture">강의 정보가 없습니다.</p>
+    </c:if>
 
     <div class="divider"></div>
 
-    <!-- 결제금 -->
+    <%-- 결제금액 정보 --%>
     <div class="receipt-row">
-        <span class="label">결제금액</span>
-        <span class="value">
-            ₩ <fmt:formatNumber value="${grossPrice}" type="number" />
-        </span>
+        <span class="label">총 금액</span>
+        <span class="value">₩ <fmt:formatNumber value="${grossPrice}" type="number" /></span>
     </div>
 
     <div class="receipt-row">
@@ -96,21 +103,12 @@
 
     <div class="divider"></div>
 
-    <!-- 최종금 -->
+    <%-- 최종 결제금액 --%>
     <div class="receipt-row total">
         <span class="label">최종 결제금액</span>
         <span class="value total-amount">
             ₩ <fmt:formatNumber value="${payment.amount}" type="number" />
         </span>
     </div>
-
-    <!-- 환불버튼 -->
-    <c:if test="${payment.status eq 'paid' && payment.refundable}">
-        <button class="refund-btn"
-            onclick="if(confirm('환불을 요청하시겠습니까?\n포인트도 회수됩니다.')) 
-                     location.href='${pageContext.request.contextPath}/payment/refund?payment_id=${payment.payment_id}'">
-            환불 요청하기 ❯
-        </button>
-    </c:if>
 
 </div>
