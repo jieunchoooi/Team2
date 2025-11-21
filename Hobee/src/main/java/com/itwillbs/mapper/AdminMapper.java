@@ -80,5 +80,7 @@ public interface AdminMapper {
 
 	public void insertChapterDetail(ChapterDetailVO detailVO);
 
+	public List<UserVO> getInstructorList();
+
 
 }

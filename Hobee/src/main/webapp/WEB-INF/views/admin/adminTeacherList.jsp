@@ -14,8 +14,7 @@
 
 <!-- 게시판 목록 전용 CSS -->
 <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/resources/css/admin/adminBoardList.css">
-
+	href="${ pageContext.request.contextPath }/resources/css/admin/adminTeacherList.css">
 </head>
 <body>
 	<!-- header -->
