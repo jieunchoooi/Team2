@@ -288,9 +288,6 @@ body {
           <div class="review-item">
             <div class="review-item-header">
               <div class="reviewer-info-modal">
-                <div class="reviewer-avatar">
-                  ${review.user_name}
-                </div>
                 <div class="reviewer-details">
                   <div class="reviewer-name-modal">${review.user_name}</div>
                 </div>
