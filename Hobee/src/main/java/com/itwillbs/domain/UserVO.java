@@ -17,7 +17,6 @@ public class UserVO {
     private String user_zipcode;
     private String user_address1;
     private String user_address2;
-    private String user_zipcode;
     private String user_gender;
 
 
