@@ -118,7 +118,24 @@
 		    WHERE user_num = #{user_num}
 		    AND lecture_num = #{lecture_num}
 		</select>
-   
+   		 <!-- ===============================
+         🔍 특정 강의 상세 조회
+         - payment_detail 저장용
+         - 강의 가격, 제목, 썸네일 등
+       =============================== -->
+    <select id="getLectureById" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
+        SELECT 
+            lecture_num,
+            lecture_title,
+            lecture_price,
+            teacher_name,
+            lecture_thumbnail,
+            category,
+            difficulty,
+            created_at
+        FROM lecture
+        WHERE lecture_num = #{lecture_num}
+    </select>
 
 
 </mapper>
