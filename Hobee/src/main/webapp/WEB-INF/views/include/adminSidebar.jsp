@@ -13,11 +13,11 @@
 				</div>
 				<div class="menu-item ${page eq 'classAdd' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminClassAdd'">
-					➕ <span>클래스 등록</span>
+					➕ <span>강의 등록</span>
 				</div>
 				<div class="menu-item ${page eq 'classList' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList'">
-					📋 <span>클래스 목록</span>
+					📋 <span>강의 목록</span>
 				</div>
 			</div>
 		</div>

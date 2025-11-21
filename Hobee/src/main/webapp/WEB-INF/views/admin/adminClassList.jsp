@@ -19,11 +19,28 @@
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
 		<div class="main-header">
-			<h1>클래스 목록</h1>
+			<h1>강의 목록</h1>
 		</div>
-
+		
+		<div class="stats-container">
+			<div class="stat-card">
+				<h3>총 강의 수</h3>
+				<div class="stat-number">${classCount}</div>
+			</div>
+			<div class="stat-card orange">
+				<h3>활동 강사 수</h3>
+				<div class="stat-number">${tCount}</div>
+			</div>
+		</div>
+		
+		
+		
 		<div class="table-container">
 			<table>
+			<div class="search-box">
+				<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
+				<button>검색</button>
+			</div>
 				<thead>
 					<tr>
 						<th>번호</th>

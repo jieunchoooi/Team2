@@ -188,6 +188,7 @@ public class AdminController {
       return "redirect:/admin/adminClassList";
    }
 
+   // 강의 목록
    @GetMapping("/adminClassList")
    public String adminClassList(Model model, HttpServletRequest request) {
       System.out.println("AdminController adminClassList()");
@@ -205,6 +206,8 @@ public class AdminController {
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
 
+      int tCount = adminService.teacharCount();
+      int classCount = adminService.classCount();
       List<LectureVO> lectureList = adminService.listLecture(pageVO);
 
       int count = adminService.countlectureList();
@@ -225,6 +228,8 @@ public class AdminController {
 
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("lectureList", lectureList);
+      model.addAttribute("classCount", classCount);
+      model.addAttribute("tCount", tCount);
 
       return "admin/adminClassList";
    }
