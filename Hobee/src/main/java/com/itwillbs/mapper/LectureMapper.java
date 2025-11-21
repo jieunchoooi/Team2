@@ -45,7 +45,6 @@ public interface LectureMapper {
 	
 	LectureVO getLectureById(int lectureNum);
 
-	List<ReviewVO> getAllReviewList(int lecture_num);
 
 	
 

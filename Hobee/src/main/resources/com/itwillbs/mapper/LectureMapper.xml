@@ -139,12 +139,5 @@
 		    WHERE lecture_num = #{lecture_num}
 		</select>
 		
-		<select id="getAllReviewList" resultType="com.itwillbs.domain.ReviewVO">
-	          SELECT *
-	          FROM review
-	          WHERE lecture_num = #{lecture_num}
-	   </select>
-
-
 </mapper>
   

@@ -289,7 +289,7 @@ body {
             <div class="review-item-header">
               <div class="reviewer-info-modal">
                 <div class="reviewer-avatar">
-                  ${fn:substring(review.user_name, 0, 1)}
+                  ${review.user_name}
                 </div>
                 <div class="reviewer-details">
                   <div class="reviewer-name-modal">${review.user_name}</div>
@@ -340,6 +340,7 @@ body {
 </div>
 
 <script>
+
 // ESC 키로 창 닫기
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
