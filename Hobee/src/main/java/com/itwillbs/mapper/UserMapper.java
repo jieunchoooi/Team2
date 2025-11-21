@@ -36,6 +36,16 @@ public interface UserMapper {
                                 @Param("user_email") String user_email);
 
     // 회원 등급 업데이트
-    void updateUserGrade(@Param("user_num") int userNum,
-                         @Param("grade_id") int gradeId);
+    int updateUserGrade(UserVO userVO);
+    
+    // 특정 회원 정보 조회 (로그인/세션 재로딩용) */
+    UserVO getUserByNum(int user_num);
+
+    // 회원 포인트 조회 */
+    int getUserPoints(int userNum);
+
+    // 회원 포인트 업데이트 */
+    int updateUserPoints(UserVO userVO);
+
+    
 }

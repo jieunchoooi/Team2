@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.PaymentDetailMapper">
+
+
+<insert id="insert" parameterType="com.itwillbs.domain.PaymentDetailVO">
+    INSERT INTO payment_detail
+    (payment_id, lecture_num, original_price, sale_price, used_points, saved_points)
+    VALUES
+    (#{payment_id}, #{lecture_num}, #{original_price}, #{sale_price}, #{used_points}, #{saved_points});
+</insert>
+
+<select id="getDetailsByPaymentId" resultType="com.itwillbs.domain.PaymentDetailVO">
+    SELECT *
+    FROM payment_detail
+    WHERE payment_id = #{paymentId}
+</select>
+
+</mapper>

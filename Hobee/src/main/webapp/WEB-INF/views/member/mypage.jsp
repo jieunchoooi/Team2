@@ -71,7 +71,7 @@
 					<label for="password">비밀번호</label> <span class="form-value">${user.user_password}</span>
 				</div>
 				<div class="form-group">
-					<label for="adress">주소</label> <span class="form-value">${user.user_address}</span>
+					<label for="adress">주소</label> <span class="form-value">${user.user_address1}, ${user.user_address2}</span>
 				</div>
 				<div class="form-group">
 					<label for="tel">휴대폰 번호</label> <span class="form-value">${user.user_phone}</span>
