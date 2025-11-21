@@ -501,6 +501,32 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     background: #e0e0e0;
 }
 
+/*전체리뷰리스트 모달 css*/
+.modal-overlay {
+  position: fixed; /* 화면 전체를 덮음 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 900px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  position: relative;
+  padding: 20px;
+}
+
 </style>
 </head>
 <body>
@@ -597,7 +623,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       <!-- 더보기 버튼 -->
       <c:if test="${not empty reviewList && fn:length(reviewList) > 4}">
         <div style="text-align: right;">
-          <button class="btn-more-reviews" onclick="openReviewListModal()">
+          <button class="btn-more-reviews" onclick="openReviewListModal(${lectureVO.lecture_num})">
             더보기
           </button>
         </div>
@@ -631,7 +657,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 			          <div class="lecture-item">
 			            <span class="lecture-number">${detail.detail_order}</span>
 			            <span class="lecture-title">${detail.detail_title}</span>
-			            <span class="lecture-duration">${detail.detail_time}분</span>
+			            <span class="lecture-duration">${detail.detail_time}</span>
 			          </div>
 			        </div>
 		        </c:forEach>
@@ -777,6 +803,9 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
   </div>
 </div>
+
+<!-- 전체리뷰리스트 모달 영역 -->
+<div id="reviewModalContainer" style="display:none;"></div>
 
 <script>
   // 탭 클릭 시 스크롤 이동
@@ -973,17 +1002,40 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     }
   });
 
-  // 모달 외부 클릭 시 닫기
-  document.getElementById('reviewModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-      closeReviewModal();
-    }
-  });
 
-  // 리뷰 리스트 모달 열기
-  function openReviewListModal() {
-    window.location.href = '${pageContext.request.contextPath}/category/reviewList?no=${lectureVO.lecture_num}';
-  }
+   // 전체 리뷰 리스트 모달 열기  
+	function openReviewListModal(lectureNum) {
+		console.log("lectureNum :: "+lectureNum);
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/category/reviewList',
+	        type: 'GET',
+	        data: { no: lectureNum },
+	        success: function(data) {
+ 	            // 모달 컨테이너에 JSP 내용 삽입 후 표시
+	        	 $('#reviewModalContainer').html(data).addClass('modal-overlay').fadeIn();
+	        },
+	        error: function() {
+	            alert('리뷰를 불러오는 데 실패했습니다.');
+	        }
+	    });
+	}
+	
+	// 모달 닫기 함수
+	function closeReviewListModal() {
+	    $('#reviewModalContainer').fadeOut().html('');
+	}
+
+	// 닫기 버튼 클릭
+	$('#reviewModalContainer').on('click', '.btn-close', function() {
+	    closeReviewListModal();
+	});
+
+	// 모달 외부 클릭 시 닫기
+	$(document).on('click', '#reviewModalContainer', function(e) {
+	    if (e.target.id === 'reviewModalContainer') {
+	        closeReviewListModal();
+	    }
+	});
 
 </script>
 

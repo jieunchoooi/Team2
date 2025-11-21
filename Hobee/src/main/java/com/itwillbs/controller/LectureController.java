@@ -85,6 +85,7 @@ public class LectureController {
 	@RequestMapping(value="/reviewList")
 	public String reviewList(@RequestParam("no") int lecture_num, Model model) {
 		//해당강의의 모든리뷰 조회
+		System.out.println("lecture_num :::: "+ lecture_num);
 		List<ReviewVO> reviewList = lectureService.getAllReviewList(lecture_num);
 		
 		model.addAttribute("reviewList", reviewList);
