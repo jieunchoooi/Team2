@@ -295,7 +295,11 @@
 		where user_num = #{user_num}
 	</update>
 
-
+<!-- 	강의 검색 -->
+<!-- 	<select id="classSearch"> -->
+<!-- 		select * from lecture  -->
+<!-- 		where -->
+<!-- 	</select> -->
 
 
 

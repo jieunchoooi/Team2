@@ -234,6 +234,16 @@ public class AdminController {
       return "admin/adminClassList";
    }
 
+   @GetMapping("/classSearch")
+   public String classSearch(Model model) {
+	   System.out.println("AdminController classSearch()");
+	   
+	   String classSearch = adminService.classSearch();
+	   
+	   return classSearch;
+   }
+   
+   
    // 회원정보 조회
    @GetMapping("/adminMemberList")
    public String adminMemberList(Model model, HttpServletRequest request) {
