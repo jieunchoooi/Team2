@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>클래스, 이렇게 들었어요!</title>
+<title>수강생들의 리뷰</title>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -52,7 +52,7 @@ body {
   background: #fff;
 }
 
-.modal-title {
+.review-modal-title {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-color);
@@ -263,9 +263,6 @@ body {
     max-height: 80vh;
   }
 
-  .modal-title {
-    font-size: 1.3rem;
-  }
 }
 </style>
 </head>
@@ -274,7 +271,7 @@ body {
 <div class="modal-container">
   <!-- 헤더 -->
   <div class="modal-header">
-    <h2 class="modal-title">클래스, 이렇게 들었어요!</h2>
+    <h2 class="review-modal-title">수강생들의 리뷰</h2>
     <button class="btn-close" onclick="window.close()">
       <i class="fas fa-times"></i>
     </button>
