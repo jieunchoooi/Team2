@@ -42,6 +42,8 @@ public interface LectureMapper {
 	int getUserNum(String user_id);
 
 	int hasPurchased(@Param("user_num") int loginUserNum, @Param("lecture_num") int lecture_num);
+	
+	LectureVO getLectureById(int lectureNum);
 
 	
 
