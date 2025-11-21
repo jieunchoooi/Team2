@@ -36,7 +36,7 @@
         WHERE user_num = #{user_num}
           AND lecture_num = #{lecture_num}
     </delete>
-
+	
     <!-- ⬜ 해당 스크랩 존재 여부 확인 -->
     <select id="existsScrap" resultType="int">
         SELECT COUNT(*)
@@ -44,5 +44,14 @@
         WHERE user_num = #{user_num}
           AND lecture_num = #{lecture_num}
     </select>
+<!--     결제 후 스크랩 삭제 -->
+    <delete id="deleteScrapAfterPayment">
+    DELETE FROM scrap
+    WHERE user_num = #{userNum}
+      AND lecture_num IN
+      <foreach collection="lectureNums" item="lec" open="(" close=")" separator=",">
+        #{lec}
+      </foreach>
+</delete>
 
 </mapper>

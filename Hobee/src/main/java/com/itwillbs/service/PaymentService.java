@@ -15,6 +15,7 @@ import com.itwillbs.mapper.EnrollmentMapper;
 import com.itwillbs.mapper.GradeMapper;
 import com.itwillbs.mapper.PaymentMapper;
 import com.itwillbs.mapper.PointHistoryMapper;
+import com.itwillbs.mapper.ScrapMapper;
 import com.itwillbs.mapper.UserMapper;
 
 @Service
@@ -30,7 +31,8 @@ public class PaymentService {
     private GradeMapper gradeMapper;
     @Autowired
     private UserMapper userMapper;
-  
+    @Autowired
+    private ScrapMapper scrapMapper;
   
    
     /**
@@ -100,6 +102,8 @@ public class PaymentService {
                 System.out.println("🎓 수강 등록 완료: " + lectureNum);
             }
         }
+     // 🔹 결제 완료 후 스크랩 자동 삭제
+        scrapMapper.deleteScrapAfterPayment(userNum, lectureNums);
 
         // 6️⃣ 등급 자동 조정
         int totalPayments = paymentMapper.getUserTotalPayment(userNum);
