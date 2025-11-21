@@ -139,11 +139,10 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 }
 
 .btn-write-review:hover {
-  background: var(--primary);  /* hover 시 파란색 배경 */
-  color: #fff;  /* hover 시 흰색 텍스트 */
+  background: var(--primary);
+  color: #fff;
   transform: translateY(-2px);
 }
-
 
 .btn-write-review i {
   font-size: 0.9rem;
@@ -212,7 +211,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 }
 
 .stars .empty i {
-  color: #e0e0e0; /* 빈 별 색상 */
+  color: #e0e0e0;
 }
 
 .stars .filled {
@@ -227,7 +226,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 }
 
 .stars .filled i {
-  color: #ffc107; /* 채워진 별 색상 */
+  color: #ffc107;
 }
 
 .rating-number {
@@ -265,7 +264,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  overflow: hidden;       /* 이미지가 영역 밖으로 나오지 않도록 */
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -275,7 +274,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .instructor-avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;      /* 이미지 비율 유지하며 꽉 채우기 */
+  object-fit: cover;
   display: block;
 }
 
@@ -340,7 +339,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -350,72 +349,124 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 /* 모달 박스 */
 .modal-box {
     background: #fff;
-    width: 380px;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+    width: 494px;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    font-family: 'Pretendard', sans-serif;
 }
 
 /* 타이틀 */
 .modal-title {
-    margin-bottom: 15px;
-    font-size: 20px;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 700;
     text-align: center;
+    color: var(--text-color);
 }
 
-/* 별점 */
+/* 별점 - 반개 선택 가능 */
 .star-rating {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+    padding: 15px 0;
+}
+
+.star-wrapper {
+    display: inline-block;
+    position: relative;
+    margin: 0 3px;
+    cursor: pointer;
 }
 
 .star {
-    font-size: 32px;
-    color: #ddd;
-    cursor: pointer;
-    margin: 0 5px;
+    font-size: 2.2rem;
+    color: #e0e0e0;
+    transition: all 0.2s ease;
+    display: block;
 }
 
-.star.selected,
-.star:hover,
-.star:hover ~ .star {
-    color: #ffcc00;
+.star.full {
+    color: #ffc107;
+}
+
+.star.half {
+    background: linear-gradient(90deg, #ffc107 50%, #e0e0e0 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.star-wrapper:hover .star {
+    transform: scale(1.1);
 }
 
 /* textarea */
 #reviewContent {
     width: 100%;
-    height: 100px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
+    height: 130px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
     resize: none;
     margin-top: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: border-color 0.2s;
+}
+
+#reviewContent:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+#reviewContent::placeholder {
+    color: var(--gray);
 }
 
 /* 버튼 */
 .modal-buttons {
     display: flex;
-    justify-content: space-between;
+    gap: 12px;
+    justify-content: center;
 }
 
 .btn-submit {
-    background: #4CAF50;
+    background: var(--primary);
     color: #fff;
     border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
+    padding: 14px 30px;
+    border-radius: 10px;
     cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-submit:hover {
+    background: #1f65e0;
+    transform: translateY(-2px);
 }
 
 .btn-cancel {
-    background: #bbb;
-    color: #fff;
+    background: #f0f0f0;
+    color: #666;
     border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
+    padding: 14px 30px;
+    border-radius: 10px;
     cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
 }
 
 </style>
@@ -463,14 +514,8 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     <div class="review-section">
       <div class="review-header-container">
         <h3>수강생들의 리뷰</h3>
-<%--         <c:if test="${not empty sessionScope.user_id && hasPurchased > 0}"> --%>
-<%-- 	        <button class="btn-write-review" onclick="location.href='${pageContext.request.contextPath}/review/write?lecture_num=${lectureVO.lecture_num}'"> --%>
-<!-- 	          리뷰 작성하기 -->
-<!-- 	        </button> -->
-<%--         </c:if> --%>
-
 	    <c:if test="${not empty sessionScope.user_id && hasPurchased > 0}">
-		  <button class="btn-write-review" onclick="$('#reviewModal').show()">
+		  <button class="btn-write-review" onclick="openReviewModal()">
 		    리뷰 작성하기
 		  </button>
 		</c:if>
@@ -629,7 +674,6 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
           </div>
           <div>
           	<div class="instructor-name">${lectureVO.lecture_author}</div>
-<!--           	<div class="instructor-category">🔥 드로잉 1위</div> -->
           </div>
         </div>
 
@@ -643,11 +687,6 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
         </div>
 
         <button class="btn-purchase">구매하기</button>
-
-<!--         <div class="class-plus-info"> -->
-<!--           이 클래스는 부분유료 5,400개 강의를<br> -->
-<!--           월 22,400원에 무제한 수강해 보세요. -->
-<!--         </div> -->
 
         <div class="action-icons">
           <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div>
@@ -667,13 +706,23 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
     <h2 class="modal-title">리뷰 작성</h2>
 
-    <!-- ⭐ 별점 영역 -->
+    <!-- ⭐ 별점 영역 - 반개 선택 가능 -->
     <div class="star-rating">
-      <span class="star" data-value="1">★</span>
-      <span class="star" data-value="2">★</span>
-      <span class="star" data-value="3">★</span>
-      <span class="star" data-value="4">★</span>
-      <span class="star" data-value="5">★</span>
+      <span class="star-wrapper" data-value="1">
+        <i class="fas fa-star star"></i>
+      </span>
+      <span class="star-wrapper" data-value="2">
+        <i class="fas fa-star star"></i>
+      </span>
+      <span class="star-wrapper" data-value="3">
+        <i class="fas fa-star star"></i>
+      </span>
+      <span class="star-wrapper" data-value="4">
+        <i class="fas fa-star star"></i>
+      </span>
+      <span class="star-wrapper" data-value="5">
+        <i class="fas fa-star star"></i>
+      </span>
     </div>
 
     <!-- 입력창 -->
@@ -682,7 +731,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     <!-- 버튼 -->
     <div class="modal-buttons">
       <button id="submitReviewBtn" class="btn-submit">작성하기</button>
-      <button class="btn-cancel" onclick="$('#reviewModal').hide()">취소</button>
+      <button class="btn-cancel" onclick="closeReviewModal()">취소</button>
     </div>
 
   </div>
@@ -717,10 +766,10 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 
   // 챕터 토글 기능
   function toggleChapter(header) {
-    const chapterItem = header.parentElement; // chapter-item
-    const contents = chapterItem.querySelectorAll('.chapter-content'); // 모든 lecture-item 포함
+    const chapterItem = header.parentElement;
+    const contents = chapterItem.querySelectorAll('.chapter-content');
     const toggle = header.querySelector('.chapter-toggle');
-    const isActive = contents[0].classList.contains('active'); // 첫 번째 content로 상태 체크
+    const isActive = contents[0].classList.contains('active');
 
     contents.forEach(content => {
         if (isActive) {
@@ -730,14 +779,14 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
         }
     });
 
-	    if (isActive) {
-	        toggle.classList.remove('active');
-	        header.classList.remove('active');
-	    } else {
-	        toggle.classList.add('active');
-	        header.classList.add('active');
-	    }
-	}
+    if (isActive) {
+        toggle.classList.remove('active');
+        header.classList.remove('active');
+    } else {
+        toggle.classList.add('active');
+        header.classList.add('active');
+    }
+  }
 
   // 전체 챕터 열기/닫기
   let allExpanded = false;
@@ -762,53 +811,132 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     }
   }
   
+  // ⭐ 별점 선택 (반개 단위)
+  let selectedStar = 0;
 
-  /* ⭐ 별 선택 이벤트 */
-  $(".star").on("click", function() {
-      selectedStar = $(this).data("value");
-      $(".star").removeClass("selected");
+  function openReviewModal() {
+    document.getElementById('reviewModal').style.display = 'flex';
+    selectedStar = 0;
+    updateStars(0);
+  }
 
-      for (let i = 1; i <= selectedStar; i++) {
-          $('.star[data-value="' + i + '"]').addClass("selected");
+  function closeReviewModal() {
+    document.getElementById('reviewModal').style.display = 'none';
+    document.getElementById('reviewContent').value = '';
+    selectedStar = 0;
+    updateStars(0);
+  }
+
+  // 별 업데이트 함수
+  function updateStars(rating) {
+    const starWrappers = document.querySelectorAll('.star-wrapper');
+    const ratingDisplay = document.getElementById('ratingDisplay');
+    
+    starWrappers.forEach((wrapper, index) => {
+      const star = wrapper.querySelector('.star');
+      const starValue = index + 1;
+      
+      star.classList.remove('full', 'half');
+      
+      if (rating >= starValue) {
+        // 완전히 채워진 별
+        star.classList.add('full');
+      } else if (rating > starValue - 1 && rating < starValue) {
+        // 반만 채워진 별
+        star.classList.add('half');
       }
+    });
+    
+    ratingDisplay.textContent = rating.toFixed(1);
+  }
+
+  // 별 클릭 이벤트
+  document.querySelectorAll('.star-wrapper').forEach(wrapper => {
+    wrapper.addEventListener('click', function(e) {
+      const starValue = parseInt(this.getAttribute('data-value'));
+      const rect = this.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const starWidth = rect.width;
+      
+      // 별의 왼쪽 절반을 클릭하면 0.5점, 오른쪽 절반을 클릭하면 1점
+      if (clickX < starWidth / 2) {
+        selectedStar = starValue - 0.5;
+      } else {
+        selectedStar = starValue;
+      }
+      
+      updateStars(selectedStar);
+    });
   });
 
   /* 리뷰 제출 */
-  $("#submitReviewBtn").click(function() {
+  document.getElementById('submitReviewBtn').addEventListener('click', function() {
+    if (selectedStar === 0) {
+      alert("별점을 선택해주세요.");
+      return;
+    }
 
-      if (selectedStar === 0) {
-          alert("별점을 선택해주세요.");
-          return;
-      }
+    if (document.getElementById('reviewContent').value.trim() === "") {
+      alert("리뷰 내용을 입력해주세요.");
+      return;
+    }
 
-      if ($("#reviewContent").val().trim() === "") {
-          alert("리뷰 내용을 입력해주세요.");
-          return;
-      }
-
+    // AJAX 요청 (jQuery 사용 시)
+    if (typeof $ !== 'undefined') {
       $.ajax({
-          url: "/lecture/insertReview",
-          type: "POST",
-          data: {
-              lecture_num: lectureNum,      // JSP에서 받아오는 강의번호
-              user_num: userNum,            // 로그인 유저 번호
-              rating: selectedStar,
-              content: $("#reviewContent").val()
-          },
-          success: function(result) {
-              alert("리뷰가 등록되었습니다.");
-              $("#reviewModal").hide();
-              $("#reviewContent").val("");
-              selectedStar = 0;
-              $(".star").removeClass("selected");
-
-              // 리뷰 목록 새로고침
-              loadReviews();
-          },
-          error: function() {
-              alert("리뷰 등록 중 오류가 발생했습니다.");
+        url: "/lecture/insertReview",
+        type: "POST",
+        data: {
+          lecture_num: lectureNum,
+          user_num: userNum,
+          rating: selectedStar,
+          content: $("#reviewContent").val()
+        },
+        success: function(result) {
+          alert("리뷰가 등록되었습니다.");
+          closeReviewModal();
+          // 리뷰 목록 새로고침
+          if (typeof loadReviews === 'function') {
+            loadReviews();
+          } else {
+            location.reload();
           }
+        },
+        error: function() {
+          alert("리뷰 등록 중 오류가 발생했습니다.");
+        }
       });
+    } else {
+      // jQuery가 없는 경우 fetch API 사용
+      fetch("/lecture/insertReview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          lecture_num: lectureNum,
+          user_num: userNum,
+          rating: selectedStar,
+          content: document.getElementById('reviewContent').value
+        })
+      })
+      .then(response => response.json())
+      .then(result => {
+        alert("리뷰가 등록되었습니다.");
+        closeReviewModal();
+        location.reload();
+      })
+      .catch(error => {
+        alert("리뷰 등록 중 오류가 발생했습니다.");
+      });
+    }
+  });
+
+  // 모달 외부 클릭 시 닫기
+  document.getElementById('reviewModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeReviewModal();
+    }
   });
 
 </script>
