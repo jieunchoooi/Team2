@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -80,6 +81,27 @@ public class LectureController {
 		model.addAttribute("reviewList", reviewList);
 		
 		return "category/lecture";
+	}
+	
+	@RequestMapping(value="/insertReview")
+	public String insertReview(HttpSession session, HttpServletRequest request) {
+		//해당강의의 모든리뷰 조회
+		System.out.println("LectureController insertReview()");
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String review_content = request.getParameter("review_content");
+		double review_score = Double.parseDouble(request.getParameter("review_score"));
+		int lecture_num = Integer.parseInt(request.getParameter("lecture_num"));
+		
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setUser_id(user_id);
+		reviewVO.setReview_content(review_content);
+		reviewVO.setReview_score(review_score);
+		reviewVO.setLecture_num(lecture_num);
+		
+		lectureService.insertReview(reviewVO);
+		
+		return "category/reviewModal";
 	}
 	
 	@RequestMapping(value="/reviewList")

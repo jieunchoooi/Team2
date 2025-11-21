@@ -45,6 +45,12 @@ public interface LectureMapper {
 	
 	LectureVO getLectureById(int lectureNum);
 
+	void insertReview(ReviewVO reviewVO);
+
+	
+
+
+
 
 	
 

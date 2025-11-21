@@ -106,4 +106,12 @@ public class LectureService {
 		return lectureMapper.hasPurchased(loginUserNum, lecture_num);
 	}
 
+	public void insertReview(ReviewVO reviewVO) {
+		System.out.println("LectureService insertReview()");
+		lectureMapper.insertReview(reviewVO);
+	}
+
+
+
+
 }
