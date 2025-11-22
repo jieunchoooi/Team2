@@ -29,7 +29,7 @@
 
             <!-- 카테고리 -->
             <div class="mega-dropdown">
-                <a href="#">카테고리 ▾</a>
+                <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체">카테고리 ▾</a>
 
                 <div class="mega-content">
 
@@ -55,8 +55,8 @@
                         <h3>외국어</h3>
                         <ul>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어">영어</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험">외국어 시험</a></li>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어">제2외국어</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험">외국어 시험</a></li>
                         </ul>
                     </div>
 

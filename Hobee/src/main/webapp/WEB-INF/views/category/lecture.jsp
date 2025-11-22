@@ -352,11 +352,11 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   margin-bottom: 4px;
 }
 
-.tag-badge:hover {
-  background: var(--primary);
-  color: #fff;
-  cursor: pointer;
-}
+/* .tag-badge:hover { */
+/*   background: var(--primary); */
+/*   color: #fff; */
+/*   cursor: pointer; */
+/* } */
 
 footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem; color: #777; border-radius: 20px 20px 0 0; box-shadow: 0 -2px 6px rgba(0,0,0,0.05); margin-top: 60px; }
 
