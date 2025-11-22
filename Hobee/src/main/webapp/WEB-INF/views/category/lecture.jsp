@@ -41,7 +41,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 
 .course-thumbnail { 
   width: 100%;
-  height: auto;
+  height: 240px;
   border-radius: 16px; 
   box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
 }
@@ -67,7 +67,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .course-meta i { color: var(--primary); }
 .course-description { line-height: 1.7; color: #444;  margin-top: 5px;}
 
-/* 커리큘럼 섹션 - 새로운 디자인 */
+/* 커리큘럼 섹션 */
 .curriculum-section { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .curriculum-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .curriculum-header h3 { font-size: 1.3rem; font-weight: 700; color: #222; }
@@ -75,8 +75,8 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .expand-all-btn { color: var(--primary); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: none; transition: color 0.2s; }
 .expand-all-btn:hover { color: #1f65e0; }
 
- .chapter-item { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; } 
- .chapter-item:hover { border-color: var(--primary); } 
+.chapter-item { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; } 
+.chapter-item:hover { border-color: var(--primary); } 
 
 .chapter-header { display: flex; align-items: center; gap: 15px; padding: 18px; cursor: pointer; background: #fff; transition: background 0.2s; }
 .chapter-header:hover { background: var(--hover-bg); }
@@ -366,30 +366,32 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
   .review-grid { grid-template-columns: 1fr; }
 }
 
-/* 모달 배경 */
-.modal-background {
+/* ============================================
+   리뷰 작성 모달 - ID 선택자로 명확하게 구분
+   ============================================ */
+#reviewModal {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 9998; /* header 로그인 모달(9990)보다 높게 */
 }
 
-/* 모달 박스 */
-.modal-box {
+#reviewModal .modal-box {
     background: #fff;
     width: 494px;
     padding: 35px;
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     font-family: 'Pretendard', sans-serif;
 }
 
-/* 타이틀 */
-.modal-title {
+#reviewModal .modal-title {
     margin-bottom: 25px;
     font-size: 1.5rem;
     font-weight: 700;
@@ -397,44 +399,42 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     color: var(--text-color);
 }
 
-/* 별점 - 반개 선택 가능 */
-.star-rating {
+#reviewModal .star-rating {
     text-align: center;
     margin-bottom: 25px;
     padding: 15px 0;
 }
 
-.star-wrapper {
+#reviewModal .star-wrapper {
     display: inline-block;
     position: relative;
     margin: 0 3px;
     cursor: pointer;
 }
 
-.star {
+#reviewModal .star {
     font-size: 2.2rem;
     color: #e0e0e0;
     transition: all 0.2s ease;
     display: block;
 }
 
-.star.full {
+#reviewModal .star.full {
     color: #ffc107;
 }
 
-.star.half {
+#reviewModal .star.half {
     background: linear-gradient(90deg, #ffc107 50%, #e0e0e0 50%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-.star-wrapper:hover .star {
+#reviewModal .star-wrapper:hover .star {
     transform: scale(1.1);
 }
 
-/* textarea */
-#reviewContent {
+#reviewModal #reviewContent {
     width: 100%;
     height: 130px;
     border: 1px solid #e0e0e0;
@@ -450,23 +450,22 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     transition: border-color 0.2s;
 }
 
-#reviewContent:focus {
+#reviewModal #reviewContent:focus {
     outline: none;
     border-color: var(--primary);
 }
 
-#reviewContent::placeholder {
+#reviewModal #reviewContent::placeholder {
     color: var(--gray);
 }
 
-/* 버튼 */
-.modal-buttons {
+#reviewModal .modal-buttons {
     display: flex;
     gap: 12px;
     justify-content: center;
 }
 
-.btn-submit {
+#reviewModal .btn-submit {
     background: var(--primary);
     color: #fff;
     border: none;
@@ -479,12 +478,12 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     transition: all 0.2s;
 }
 
-.btn-submit:hover {
+#reviewModal .btn-submit:hover {
     background: #1f65e0;
     transform: translateY(-2px);
 }
 
-.btn-cancel {
+#reviewModal .btn-cancel {
     background: #f0f0f0;
     color: #666;
     border: none;
@@ -497,34 +496,41 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     transition: all 0.2s;
 }
 
-.btn-cancel:hover {
+#reviewModal .btn-cancel:hover {
     background: #e0e0e0;
 }
 
-/*전체리뷰리스트 모달 css*/
-.modal-overlay {
-  position: fixed; /* 화면 전체를 덮음 */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5); /* 반투명 배경 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+/* ============================================
+   전체 리뷰 리스트 모달
+   ============================================ */
+#reviewModalContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9997;
 }
 
-.modal-content {
-  background: #fff;
-  border-radius: 16px;
-  max-width: 900px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  position: relative;
-  padding: 20px;
+#reviewModalContainer .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    padding: 20px;
+}
+
+/* body 스크롤 방지 */
+body.modal-open {
+    overflow: hidden;
 }
 
 </style>
@@ -630,7 +636,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       </c:if>
     </div>
 
-    <!-- 커리큘럼 섹션 - 새로운 디자인 -->
+    <!-- 커리큘럼 섹션 -->
     <div class="curriculum-section">
       <div class="curriculum-header">
         <div>
@@ -768,7 +774,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
 
 <!-- 리뷰 작성 모달 -->
-<div id="reviewModal" class="modal-background" style="display:none;">
+<div id="reviewModal" style="display:none;">
   <div class="modal-box">
 
     <h2 class="modal-title">리뷰 작성</h2>
@@ -881,26 +887,28 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     }
   }
   
-  // ⭐ 별점 선택 (반개 단위)
+  // ⭐ 별점 선택 변수
   let selectedStar = 0;
 
+  // ⭐ 리뷰 작성 모달 열기/닫기 - 수정된 버전
   function openReviewModal() {
-    document.getElementById('reviewModal').style.display = 'flex';
-    selectedStar = 0;
-    updateStars(0);
+      document.body.classList.add('modal-open');
+      document.getElementById('reviewModal').style.display = 'flex';
+      selectedStar = 0;
+      updateStars(0);
   }
 
   function closeReviewModal() {
-    document.getElementById('reviewModal').style.display = 'none';
-    document.getElementById('reviewContent').value = '';
-    selectedStar = 0;
-    updateStars(0);
+      document.body.classList.remove('modal-open');
+      document.getElementById('reviewModal').style.display = 'none';
+      document.getElementById('reviewContent').value = '';
+      selectedStar = 0;
+      updateStars(0);
   }
 
   // 별 업데이트 함수
   function updateStars(rating) {
-    const starWrappers = document.querySelectorAll('.star-wrapper');
-    const ratingDisplay = document.getElementById('ratingDisplay');
+    const starWrappers = document.querySelectorAll('#reviewModal .star-wrapper');
     
     starWrappers.forEach((wrapper, index) => {
       const star = wrapper.querySelector('.star');
@@ -909,26 +917,21 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       star.classList.remove('full', 'half');
       
       if (rating >= starValue) {
-        // 완전히 채워진 별
         star.classList.add('full');
       } else if (rating > starValue - 1 && rating < starValue) {
-        // 반만 채워진 별
         star.classList.add('half');
       }
     });
-    
-    ratingDisplay.textContent = rating.toFixed(1);
   }
 
   // 별 클릭 이벤트
-  document.querySelectorAll('.star-wrapper').forEach(wrapper => {
+  document.querySelectorAll('#reviewModal .star-wrapper').forEach(wrapper => {
     wrapper.addEventListener('click', function(e) {
       const starValue = parseInt(this.getAttribute('data-value'));
       const rect = this.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const starWidth = rect.width;
       
-      // 별의 왼쪽 절반을 클릭하면 0.5점, 오른쪽 절반을 클릭하면 1점
       if (clickX < starWidth / 2) {
         selectedStar = starValue - 0.5;
       } else {
@@ -937,6 +940,28 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
       
       updateStars(selectedStar);
     });
+  });
+
+  // 모달 배경 클릭 시 닫기
+  document.addEventListener('click', function(e) {
+      if (e.target.id === 'reviewModal') {
+          closeReviewModal();
+      }
+      if (e.target.id === 'reviewModalContainer') {
+          closeReviewListModal();
+      }
+  });
+
+  // ESC 키로 모달 닫기
+  document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+          if (document.getElementById('reviewModal').style.display === 'flex') {
+              closeReviewModal();
+          }
+          if (document.getElementById('reviewModalContainer').style.display === 'flex') {
+              closeReviewListModal();
+          }
+      }
   });
 
   /* 리뷰 제출 */
@@ -953,7 +978,6 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     
     let lectureNum = ${lectureVO.lecture_num};
 
-    // AJAX 요청 (jQuery 사용 시)
     if (typeof $ !== 'undefined') {
       $.ajax({
         url: "${pageContext.request.contextPath}/category/insertReview",
@@ -966,12 +990,7 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
         success: function(result) {
           alert("리뷰가 등록되었습니다.");
           closeReviewModal();
-          // 리뷰 목록 새로고침
-          if (typeof loadReviews === 'function') {
-            loadReviews();
-          } else {
-            location.reload();
-          }
+          location.reload();
         },
         error: function() {
           alert("리뷰 등록 중 오류가 발생했습니다.");
@@ -980,39 +999,39 @@ footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem;
     } 
   });
 
-   // 전체 리뷰 리스트 모달 열기  
-	function openReviewListModal(lectureNum) {
-		console.log("lectureNum :: "+lectureNum);
-	    $.ajax({
-	        url: '${pageContext.request.contextPath}/category/reviewList',
-	        type: 'GET',
-	        data: { no: lectureNum },
-	        success: function(data) {
- 	            // 모달 컨테이너에 JSP 내용 삽입 후 표시
-	        	 $('#reviewModalContainer').html(data).addClass('modal-overlay').fadeIn();
-	        },
-	        error: function() {
-	            alert('리뷰를 불러오는 데 실패했습니다.');
-	        }
-	    });
-	}
-	
-	// 모달 닫기 함수
-	function closeReviewListModal() {
-	    $('#reviewModalContainer').fadeOut().html('');
-	}
+  // 전체 리뷰 리스트 모달 열기 - 수정된 버전
+  function openReviewListModal(lectureNum) {
+      console.log("lectureNum :: " + lectureNum);
+      $.ajax({
+          url: '${pageContext.request.contextPath}/category/reviewList',
+          type: 'GET',
+          data: { no: lectureNum },
+          success: function(data) {
+              document.body.classList.add('modal-open');
+              $('#reviewModalContainer')
+                  .html(data)
+                  .css('display', 'flex')
+                  .hide()
+                  .fadeIn();
+          },
+          error: function() {
+              alert('리뷰를 불러오는 데 실패했습니다.');
+          }
+      });
+  }
 
-	// 닫기 버튼 클릭
-	$('#reviewModalContainer').on('click', '.btn-close', function() {
-	    closeReviewListModal();
-	});
+  // 전체 리뷰 모달 닫기 - 수정된 버전
+  function closeReviewListModal() {
+      $('#reviewModalContainer').fadeOut(function() {
+          $(this).html('');
+          document.body.classList.remove('modal-open');
+      });
+  }
 
-	// 모달 외부 클릭 시 닫기
-	$(document).on('click', '#reviewModalContainer', function(e) {
-	    if (e.target.id === 'reviewModalContainer') {
-	        closeReviewListModal();
-	    }
-	});
+  // jQuery 닫기 버튼
+  $(document).on('click', '.btn-close', function() {
+      closeReviewListModal();
+  });
 
 </script>
 
