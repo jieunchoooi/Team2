@@ -170,6 +170,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  cursor: pointer;
 }
 
 .review-card {
@@ -533,6 +534,45 @@ body.modal-open {
     overflow: hidden;
 }
 
+/*강의 상세설명 더보기 버튼*/
+.course-description {
+  line-height: 1.7;
+  color: #444;
+  margin-top: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.course-description.collapsed {
+  max-height: 3.4em; /* line-height(1.7) × 2줄 = 3.4em */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.description-more-btn {
+  display: inline-block;
+  color: #a9a9ab;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  padding: 4px 0;
+  transition: all 0.2s;
+}
+
+.description-more-btn:hover {
+  color: #1f65e0;
+}
+
+.description-more-btn i {
+  font-size: 0.8rem;
+  margin-left: 4px;
+}
+
 </style>
 </head>
 <body>
@@ -561,9 +601,13 @@ body.modal-open {
       	<span><i class="fa-solid fa-clipboard-user"></i> &nbsp;${lectureVO.lecture_author} &nbsp;강사</span>&nbsp;
         <span><i class="fas fa-users"></i> &nbsp;조회수 ${lectureVO.readcount}</span>
       </div>
-      <p class="course-description">
+      <p class="course-description collapsed" id="courseDescription">
         ${lectureVO.lecture_detail}
       </p>
+      <button class="description-more-btn" id="descriptionMoreBtn" style="display:none;">
+		  <span class="btn-text">더보기</span>
+		  <i class="fas fa-chevron-down"></i>
+	  </button>
     </div>
 
     <div class="tab-menu">
@@ -584,7 +628,7 @@ body.modal-open {
 		  </button>
 		</c:if>
       </div>
-      <div class="review-grid">
+      <div class="review-grid" onclick="openReviewListModal(${lectureVO.lecture_num})">
         <c:choose>
           <c:when test="${not empty reviewList}">
             <c:forEach var="review" items="${reviewList}" begin="0" end="3">
@@ -1032,7 +1076,78 @@ body.modal-open {
   $(document).on('click', '.btn-close', function() {
       closeReviewListModal();
   });
-
+  
+  //강의 상세설명 더보기 
+  document.addEventListener('DOMContentLoaded', function() {
+    const description = document.querySelector('.course-description');
+    const moreBtn = document.getElementById('descriptionMoreBtn');
+    
+    if (!description || !moreBtn) return;
+    
+    // 실제 컨텐츠 높이 체크
+    function checkDescriptionHeight() {
+      // 원래 스타일 저장
+      const originalMaxHeight = description.style.maxHeight;
+      const originalDisplay = description.style.display;
+      
+      // collapsed 클래스 제거하고 실제 높이 측정
+      description.classList.remove('collapsed');
+      description.style.maxHeight = 'none';
+      description.style.display = 'block';
+      
+      const fullHeight = description.scrollHeight;
+      
+      // collapsed 클래스 다시 추가
+      description.classList.add('collapsed');
+      description.style.maxHeight = originalMaxHeight;
+      description.style.display = originalDisplay;
+      
+      // 2줄 높이 계산 (line-height 1.7 × 2 = 3.4em ≈ 51px 정도)
+      const twoLineHeight = parseFloat(getComputedStyle(description).lineHeight) * 2;
+      
+      console.log('전체 높이:', fullHeight, '2줄 높이:', twoLineHeight);
+      
+      // 2줄 높이를 초과하면 더보기 버튼 표시
+      if (fullHeight > twoLineHeight + 5) { // 여유값 5px 추가
+        moreBtn.style.display = 'inline-block';
+        console.log('더보기 버튼 표시!');
+      } else {
+        moreBtn.style.display = 'none';
+        console.log('더보기 버튼 숨김');
+      }
+    }
+    
+    // 더보기/접기 토글
+    let isExpanded = false;
+    moreBtn.addEventListener('click', function() {
+      isExpanded = !isExpanded;
+      
+      if (isExpanded) {
+        description.classList.remove('collapsed');
+        moreBtn.querySelector('.btn-text').textContent = '접기';
+        moreBtn.querySelector('i').style.transform = 'rotate(180deg)';
+      } else {
+        description.classList.add('collapsed');
+        moreBtn.querySelector('.btn-text').textContent = '더보기';
+        moreBtn.querySelector('i').style.transform = 'rotate(0deg)';
+      }
+    });
+    
+    // 폰트 로드 후 체크 (중요!)
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function() {
+        setTimeout(checkDescriptionHeight, 100);
+      });
+    } else {
+      // 폴백: window.load 이벤트 사용
+      window.addEventListener('load', function() {
+        setTimeout(checkDescriptionHeight, 100);
+      });
+    }
+    
+    // 윈도우 리사이즈 시 재체크
+    window.addEventListener('resize', checkDescriptionHeight);
+  });
 </script>
 
 </body>
