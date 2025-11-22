@@ -190,7 +190,9 @@ public class AdminController {
 
    // 강의 목록
    @GetMapping("/adminClassList")
-   public String adminClassList(Model model, HttpServletRequest request) {
+   public String adminClassList(Model model, HttpServletRequest request,
+	   							@RequestParam(value = "search", required = false) String search,
+	   						    @RequestParam(value = "searchList", required = false) String searchList) {
       System.out.println("AdminController adminClassList()");
 
       String pageNum = request.getParameter("pageNum");
@@ -205,7 +207,15 @@ public class AdminController {
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
-
+      if(search == null) {
+    	  search = "";
+    	  pageVO.setSearch(search);
+    	  pageVO.setSearchList(searchList);
+      }else {
+    	  pageVO.setSearch(search);
+    	  pageVO.setSearchList(searchList);
+      }
+      
       int tCount = adminService.teacharCount();
       int classCount = adminService.classCount();
       List<LectureVO> lectureList = adminService.listLecture(pageVO);
@@ -246,7 +256,9 @@ public class AdminController {
    
    // 회원정보 조회
    @GetMapping("/adminMemberList")
-   public String adminMemberList(Model model, HttpServletRequest request) {
+   public String adminMemberList(Model model, HttpServletRequest request,
+		   						 @RequestParam(value = "search", required = false) String search,
+		   						 @RequestParam(value = "searchList", required = false) String searchList) {
       System.out.println("AdminController adminMemberList()");
 
       String filter = request.getParameter("filter");
@@ -265,7 +277,9 @@ public class AdminController {
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
-
+      pageVO.setSearch(search);
+      pageVO.setSearchList(searchList);
+      
       List<UserVO> memberList;
       int count;
       
@@ -275,7 +289,7 @@ public class AdminController {
       }else if("inactive".equals(filter)) {
     	  memberList = adminService.inactiveMemberList(pageVO);
     	  count = adminService.inactiveMemberCount();
-      }else {
+      }else{
     	  memberList = adminService.MemberList(pageVO);
     	  count = adminService.countMemberCount();
       }

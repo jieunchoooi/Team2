@@ -20,5 +20,6 @@ public class LectureVO {
     private String lecture_detail;
     private String lecture_tag;
     
+    
 }
 

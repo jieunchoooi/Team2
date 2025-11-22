@@ -20,4 +20,6 @@ public class PageVO {
 	private int startPage;
 	private int endPage;
 	private int pageCount;
+	private String search;
+	private String searchList;
 }

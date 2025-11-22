@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>클래스 목록 | Hobee Admin</title>
+<title>강의 목록 | Hobee Admin</title>
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
@@ -36,13 +36,21 @@
 		
 		
 		<div class="table-container">
-			<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search_form" id="search_form">
-			<table>
-				<div class="search-box">
-					<input type="text" class="search_box" id="search_box" placeholder="이름, 아이디, 이메일로 검색...">
-					<button class="search" id="search">검색</button>
-				</div>
+			<!-- 검색 영역 -->
+			<div class="search-wrapper">
+				<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search-form" id="search_form">
+					<select name="searchList" id="searchList">
+						<option value="전체"	${pageVO.searchList == '전체' ? 'selected' : ''}>전체 검색</option>
+						<option value="강사" ${pageVO.searchList == '강사' ? 'selected' : ''}>강사 검색</option>
+						<option value="강의" ${pageVO.searchList == '강의' ? 'selected' : ''}>강의 검색</option>
+					</select>
+					<input type="text" name="search" class="search-input" id="search_box" value="${pageVO.search}" placeholder="강의명, 강사 이름으로 검색..."> 
+					<button type="submit" class="search-btn" id="search">검색</button>
+					<a href="${ pageContext.request.contextPath }/admin/adminClassList" class="search-btn">전체 강의</a>
+				</form>
+			</div>
 			
+			<table>
 				<thead>
 					<tr>
 						<th>번호</th>
@@ -79,7 +87,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			</form>
+			
 			<div class="pagination">
 				<!-- 10 만큼 이전 -->
 				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
@@ -100,21 +108,25 @@
 	</main>
 </body>
 <script type="text/javascript">
-let search = document.querySelector(".search");
-let search_box = document.querySelector(".search_box");
+let search = document.querySelector(".search-btn");
+let search_box = document.querySelector(".search-input");
+let search_form = document.querySelector("#search_form");
+let stat_card = document.querySelector(".stat-card");
 
 search.onclick = function(e){
+	e.preventDefault();
 	
 	if(search_box.value == ""){
 		alert("검색어를 입력해주세요.");
 		search_box.focus();
 		return false;
-	}else{
-		location.href = "${pageContext.request.contextPath}/admin/classSearch";
 	}
+	search_form.submit();
 }
 
-
+stat_card.onclick = function(){
+	location.href = "${ pageContext.request.contextPath }/admin/adminClassList";
+}
 
 
 

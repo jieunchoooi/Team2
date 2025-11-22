@@ -10,8 +10,8 @@ import lombok.ToString;
 public class CategoryVO {
 
 	private int category_num;
-	private String category_detail;
-	
+	private String category_detail; // 카테고리 소분류
+	private String category_main; // 카테고리 대분류
 	
 	
 }

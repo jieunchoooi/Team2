@@ -146,9 +146,21 @@
 		(#{chapter_num}, #{detail_order}, #{detail_title}, #{detail_time})
 	</insert>
 
-	<select id="listLecture"
-		resultType="com.itwillbs.domain.LectureVO">
+<!-- 강의 리스트 -->
+	<select id="listLecture" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
+		<if test="search != null">
+			<if test="searchList == '전체'">
+				where lecture_title LIKE  CONCAT('%', #{search}, '%')
+				or lecture_author LIKE  CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강사'">
+				where lecture_author LIKE  CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강의'">
+				where lecture_title LIKE  CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 		order by lecture_num desc
 		LIMIT
 		#{startRow}, #{pageSize}
@@ -189,14 +201,12 @@
 		parameterType="com.itwillbs.domain.LectureVO">
 		update lecture
 		set lecture_title = #{lecture_title},
-		category_detail =
-		#{category_detail}, lecture_detail =
-		#{lecture_detail},
-		lecture_author = #{lecture_author}, lecture_price =
-		#{lecture_price}, lecture_img =
-		#{lecture_img}
-		where lecture_num =
-		#{lecture_num}
+		category_detail = #{category_detail}, 
+		lecture_detail = #{lecture_detail},
+		lecture_author = #{lecture_author}, 
+		lecture_price = #{lecture_price}, 
+		lecture_img = #{lecture_img}
+		where lecture_num = #{lecture_num}
 	</update>
 
 	<select id="listTeacher" resultType="com.itwillbs.domain.UserVO">
@@ -208,10 +218,27 @@
 		#{pageSize}
 	</select>
 
+<!-- 회원 목록 -->
 	<select id="MemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
 		WHERE
 		user_role = 'user'
+		<if test="search != null">
+			<if test="searchList == '전체'">
+				and user_name LIKE  CONCAT('%', #{search}, '%')
+				or user_id LIKE  CONCAT('%', #{search}, '%')
+				or user_email LIKE  CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE  CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE  CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE  CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
