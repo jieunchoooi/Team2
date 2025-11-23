@@ -216,7 +216,7 @@ public class AdminController {
     	  pageVO.setSearchList(searchList);
       }
       
-      int tCount = adminService.teacharCount();
+      int tCount = adminService.teacharCount(pageVO);
       int classCount = adminService.classCount();
       List<LectureVO> lectureList = adminService.listLecture(pageVO);
 
@@ -285,19 +285,19 @@ public class AdminController {
       
       if("active".equals(filter)) {
     	  memberList = adminService.activeMemberList(pageVO);
-    	  count = adminService.memberCount();
+    	  count = adminService.memberCount(pageVO);
       }else if("inactive".equals(filter)) {
     	  memberList = adminService.inactiveMemberList(pageVO);
-    	  count = adminService.inactiveMemberCount();
+    	  count = adminService.inactiveMemberCount(pageVO);
       }else{
     	  memberList = adminService.MemberList(pageVO);
-    	  count = adminService.countMemberCount();
+    	  count = adminService.countMemberList(pageVO);
       }
       
       
-      int dcount = adminService.deletecountMemberList();
-      int acount = adminService.activecountMemberList();
-      int totalcount = adminService.countMemberList();
+      int dcount = adminService.inactiveMemberCount(pageVO);
+      int acount = adminService.memberCount(pageVO);
+      int totalcount = adminService.countMemberList(pageVO);
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
@@ -318,6 +318,7 @@ public class AdminController {
       model.addAttribute("acount", acount);
       model.addAttribute("dcount", dcount);
       model.addAttribute("totalcount",totalcount);
+      model.addAttribute("filter",filter);
 
       return "admin/adminMemberList";
    }
@@ -372,7 +373,9 @@ public class AdminController {
 
    // 강사정보 조회
    @GetMapping("/adminTeacherList")
-   public String adminTeacherList(Model model, HttpServletRequest request) {
+   public String adminTeacherList(Model model, HttpServletRequest request,
+		   						  @RequestParam(value = "search", required = false) String search,
+		   						  @RequestParam(value = "searchList", required = false) String searchList) {
       System.out.println("AdminController adminTeacherList()");
       
       String filter = request.getParameter("filter");
@@ -391,25 +394,27 @@ public class AdminController {
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
-
+      pageVO.setSearch(search);
+      pageVO.setSearchList(searchList);
+      
       List<UserVO> teacherList;
 
       int count;
       
       if ("active".equals(filter)) {
           teacherList = adminService.activeTeacherList(pageVO);
-          count = adminService.teacharCount();
+          count = adminService.teacharCount(pageVO);
       } else if ("inactive".equals(filter)) {
           teacherList = adminService.inactiveTeacherList(pageVO);
-          count = adminService.inactiveTeacharCount();
+          count = adminService.inactiveTeacharCount(pageVO);
       } else {
           teacherList = adminService.listTeacher(pageVO);
-          count = adminService.countTeacherList();
+          count = adminService.countTeacherList(pageVO);
       }
       
-      int totalCount = adminService.countTeacherList();
-      int tCount = adminService.teacharCount();
-      int intCount = adminService.inactiveTeacharCount();
+      int totalCount = adminService.countTeacherList(pageVO);
+      int tCount = adminService.teacharCount(pageVO);
+      int intCount = adminService.inactiveTeacharCount(pageVO);
       
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
@@ -431,14 +436,16 @@ public class AdminController {
       model.addAttribute("tCount", tCount);
       model.addAttribute("intCount", intCount);
       model.addAttribute("totalCount", totalCount);
-//      model.addAttribute("filter", filter);
+      model.addAttribute("filter", filter);
 
       return "admin/adminTeacherList";
    }
 
    // 탈퇴 회원 조회
    @GetMapping("/adminWithdrawList")
-   public String adminWithdrawList(Model model, HttpServletRequest request) {
+   public String adminWithdrawList(Model model, HttpServletRequest request,
+		   						   @RequestParam(value = "search", required = false) String search,
+		   						   @RequestParam(value = "searchList", required = false) String searchList) {
       System.out.println("AdminController adminWithdrawList()");
 
       String filter = request.getParameter("filter");
@@ -457,26 +464,26 @@ public class AdminController {
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
-
-//      List<UserVO> memberList = adminService.withDrawListMember(pageVO);
+      pageVO.setSearch(search);
+      pageVO.setSearchList(searchList);
+      
       List<UserVO> memberList;
       
       int count;
-//      int count = adminService.countDrawMemberList();
       if("user".equals(filter)) {
     	  memberList = adminService.withDeleteUserMember(pageVO);
-    	  count = adminService.deletecountMemberList();
+    	  count = adminService.deletecountMemberList(pageVO);
       }else if("instructor".equals(filter)) {
     	  memberList = adminService.DrawinstructorListMember(pageVO);
-    	  count = adminService.instructorDeletecountList();
+    	  count = adminService.instructorDeletecountList(pageVO);
       }else {
     	  memberList = adminService.withDrawListMember(pageVO);
-    	  count = adminService.deleteAllMemberCount();
+    	  count = adminService.deleteAllMemberCount(pageVO);
       }
       
-      int totalCount = adminService.deleteAllMemberCount();
-      int mdCount = adminService.deletecountMemberList();
-      int intCount = adminService.instructorDeletecountList();
+      int totalCount = adminService.deleteAllMemberCount(pageVO);
+      int mdCount = adminService.deletecountMemberList(pageVO);
+      int intCount = adminService.instructorDeletecountList(pageVO);
       
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
@@ -502,18 +509,6 @@ public class AdminController {
       model.addAttribute("filter", filter);
 
       return "admin/adminWithdrawList";
-   }
-
-
-   // 클래스 수정
-   @GetMapping("/adminEditClass")
-   public String classEditpro(@RequestParam("lecture_num") int lecture_num, Model model) {
-      System.out.println("AdminController adminEditClass()");
-      LectureVO lectureVO = adminService.classEdit(lecture_num);
-
-      model.addAttribute("lectureVO", lectureVO);
-
-      return "admin/adminEditClass";
    }
 
    // 클래스 수정
@@ -566,7 +561,17 @@ public class AdminController {
       return "redirect:/admin/adminClassList";
    }
    
-   
+//   강의 수정
+   @GetMapping("/adminClassEditinfo")
+   public String adminClassEditinfo(@RequestParam("lecture_num") int lecture_num, Model model) {
+	    System.out.println("AdminController adminClassEditPro()");
+	    
+	    LectureVO lectureVO = adminService.classEdit(lecture_num);
+
+	    model.addAttribute("lectureVO", lectureVO);
+	    
+	    return "admin/adminClassEditinfo";
+   }
    
    
 

@@ -19,51 +19,67 @@
 		resultType="com.itwillbs.domain.UserVO">
 		SELECT *
 		FROM user
-		WHERE (user_role = 'user' OR user_role =
-		'instructor')
-		AND (user_status = 'self-withdraw' OR user_status =
-		'withdraw')
+		WHERE (user_role = 'user' OR user_role = 'instructor')
+		AND (user_status = 'self-withdraw' OR user_status = 'withdraw')
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				AND (user_name LIKE CONCAT('%', #{search}, '%')
+				OR user_id LIKE CONCAT('%', #{search}, '%')
+				OR user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				AND user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				AND user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				AND user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 		ORDER BY user_num DESC
 		LIMIT #{startRow}, #{pageSize}
 	</select>
 
 	<select id="countMemberList" resultType="java.lang.Integer">
-		select count(*) from
-		user
+		select count(*) from user
 		WHERE user_role = 'user'
 	</select>
 
-	<select id="activecountMemberList"
-		resultType="java.lang.Integer">
+<!-- 활동 회원 -->
+	<select id="memberCount" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status = 'active' and
-		user_role = 'user'
+		WHERE user_status = 'active' and user_role = 'user'
 	</select>
 
-	<select id="instructorDeletecountList"
-		resultType="java.lang.Integer">
+	<!-- 검색 조건이 반영된 탈퇴 회원 카운트 쿼리들 -->
+	<select id="instructorDeletecountList" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status != 'active' and
-		user_role = 'instructor'
+		WHERE user_status != 'active' and user_role = 'instructor'
 	</select>
 
-	<select id="deletecountMemberList"
-		resultType="java.lang.Integer">
+	<select id="inactiveMemberCount" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status != 'active' and
-		user_role = 'user'
+		WHERE user_role = 'user' and user_status != 'active'
+	</select>
+
+	<select id="deletecountMemberList" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_status != 'active' and user_role = 'user'
+	</select>
+
+	<select id="deleteAllMemberCount" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_status != 'active'
 	</select>
 
 	<select id="countDrawMemberList" resultType="java.lang.Integer">
-		select count(*) from
-		user
-		WHERE user_status = 'self-withdraw'
-		or user_status = 'withdraw'
+		select count(*) from user
+		WHERE user_status = 'self-withdraw' or user_status = 'withdraw'
 	</select>
 
 	<!-- 활성화된 강사 목록 조회 -->
-	<select id="getInstructorList"
-		resultType="com.itwillbs.domain.UserVO">
+	<select id="getInstructorList" resultType="com.itwillbs.domain.UserVO">
 		SELECT user_num, user_name
 		FROM user
 		WHERE user_role = 'instructor'
@@ -71,134 +87,122 @@
 		ORDER BY user_num DESC
 	</select>
 
-	<select id="DrawinstructorListMember"
-		resultType="com.itwillbs.domain.UserVO">
+	<select id="DrawinstructorListMember" resultType="com.itwillbs.domain.UserVO">
 		SELECT *
 		FROM user
 		WHERE user_role = 'instructor'
-		AND
-		(user_status = 'self-withdraw' OR user_status = 'withdraw')
-		ORDER BY
-		user_num DESC
+		AND (user_status = 'self-withdraw' OR user_status = 'withdraw')
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				AND (user_name LIKE CONCAT('%', #{search}, '%')
+				OR user_id LIKE CONCAT('%', #{search}, '%')
+				OR user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				AND user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				AND user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				AND user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+		ORDER BY user_num DESC
 		LIMIT #{startRow}, #{pageSize}
 	</select>
 
-	<select id="withDeleteUserMember"
-		resultType="com.itwillbs.domain.UserVO">
+	<select id="withDeleteUserMember" resultType="com.itwillbs.domain.UserVO">
 		SELECT *
 		FROM user
 		WHERE user_role = 'user'
-		AND (user_status =
-		'self-withdraw' OR user_status = 'withdraw')
+		AND (user_status = 'self-withdraw' OR user_status = 'withdraw')
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				AND (user_name LIKE CONCAT('%', #{search}, '%')
+				OR user_id LIKE CONCAT('%', #{search}, '%')
+				OR user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				AND user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				AND user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				AND user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 		ORDER BY user_num DESC
 		LIMIT #{startRow}, #{pageSize}
 	</select>
 
 	<select id="countTeacherList" resultType="java.lang.Integer">
-		select count(*) from
-		user
+		select count(*) from user
 		WHERE user_role = 'instructor'
 	</select>
 
-	<select id="deleteAllMemberCount" resultType="java.lang.Integer">
-		select count(*)
-		from user
-		WHERE user_status != 'active'
-	</select>
-
-	<select id="countMemberCount" resultType="java.lang.Integer">
-		select count(*) from
-		user
-		WHERE user_role = 'user'
-	</select>
-
-	<insert id="LectureUpdate"
-		parameterType="com.itwillbs.domain.LectureVO" useGeneratedKeys="true"
-		keyProperty="lecture_num">
+	<insert id="LectureUpdate" parameterType="com.itwillbs.domain.LectureVO" 
+		useGeneratedKeys="true" keyProperty="lecture_num">
 		INSERT INTO lecture
-		(lecture_title, category_detail,
-		lecture_detail, lecture_author, lecture_price,
-		lecture_img,
-		lecture_tag, user_num)
-		VALUES(#{lecture_title}, #{category_detail},
-		#{lecture_detail}, #{lecture_author},
-		#{lecture_price}, #{lecture_img},
-		#{lecture_tag}, #{user_num})
+		(lecture_title, category_detail, lecture_detail, lecture_author, 
+		lecture_price, lecture_img, lecture_tag, user_num)
+		VALUES(#{lecture_title}, #{category_detail}, #{lecture_detail}, 
+		#{lecture_author}, #{lecture_price}, #{lecture_img}, #{lecture_tag}, #{user_num})
 	</insert>
 
-	<!-- chapter 저장 - useGeneratedKeys 확인 -->
-	<insert id="insertChapter"
-		parameterType="com.itwillbs.domain.ChapterVO" useGeneratedKeys="true"
-		keyProperty="chapter_num">
-		INSERT INTO chapter (lecture_num, chapter_order,
-		chapter_title)
-		VALUES (#{lecture_num}, #{chapter_order},
-		#{chapter_title})
+	<insert id="insertChapter" parameterType="com.itwillbs.domain.ChapterVO" 
+		useGeneratedKeys="true" keyProperty="chapter_num">
+		INSERT INTO chapter (lecture_num, chapter_order, chapter_title)
+		VALUES (#{lecture_num}, #{chapter_order}, #{chapter_title})
 	</insert>
 
-	<!-- chapter_detail 저장 - useGeneratedKeys 확인 -->
-	<insert id="insertChapterDetail"
-		parameterType="com.itwillbs.domain.ChapterDetailVO"
+	<insert id="insertChapterDetail" parameterType="com.itwillbs.domain.ChapterDetailVO"
 		useGeneratedKeys="true" keyProperty="detail_num">
-		INSERT INTO chapter_detail
-		(chapter_num, detail_order, detail_title, detail_time)
-		VALUES
-		(#{chapter_num}, #{detail_order}, #{detail_title}, #{detail_time})
+		INSERT INTO chapter_detail (chapter_num, detail_order, detail_title, detail_time)
+		VALUES (#{chapter_num}, #{detail_order}, #{detail_title}, #{detail_time})
 	</insert>
 
-<!-- 강의 리스트 -->
+	<!-- 강의 리스트 -->
 	<select id="listLecture" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
-		<if test="search != null">
+		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
-				where lecture_title LIKE  CONCAT('%', #{search}, '%')
-				or lecture_author LIKE  CONCAT('%', #{search}, '%')
+				where lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%')
 			</if>
 			<if test="searchList == '강사'">
-				where lecture_author LIKE  CONCAT('%', #{search}, '%')
+				where lecture_author LIKE CONCAT('%', #{search}, '%')
 			</if>
 			<if test="searchList == '강의'">
-				where lecture_title LIKE  CONCAT('%', #{search}, '%')
+				where lecture_title LIKE CONCAT('%', #{search}, '%')
 			</if>
 		</if>
 		order by lecture_num desc
-		LIMIT
-		#{startRow}, #{pageSize}
+		LIMIT #{startRow}, #{pageSize}
 	</select>
 
 	<select id="countlectureList" resultType="java.lang.Integer">
-		select count(*) from
-		lecture
+		select count(*) from lecture
 	</select>
 
 	<delete id="deleteClass">
-		delete from lecture
-		where lecture_num =
-		#{lecture_num};
+		delete from lecture where lecture_num = #{lecture_num};
 	</delete>
 
-	<select id="insertMember"
-		resultType="com.itwillbs.domain.UserVO">
-		select * from user
-		where user_num = #{user_num}
+	<select id="insertMember" resultType="com.itwillbs.domain.UserVO">
+		select * from user where user_num = #{user_num}
 	</select>
 
-	<update id="adminUserUpdate"
-		parameterType="com.itwillbs.domain.UserVO">
-		update user
-		set user_role = #{user_role}
-		where user_num =
-		#{user_num}
+	<update id="adminUserUpdate" parameterType="com.itwillbs.domain.UserVO">
+		update user set user_role = #{user_role} where user_num = #{user_num}
 	</update>
 
-	<select id="classEdit" parameterType="int"
-		resultType="com.itwillbs.domain.LectureVO">
-		select * from lecture
-		where lecture_num = #{lecture_num}
+	<select id="classEdit" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture where lecture_num = #{lecture_num}
 	</select>
 
-	<update id="adminEditClass"
-		parameterType="com.itwillbs.domain.LectureVO">
+	<update id="adminEditClass" parameterType="com.itwillbs.domain.LectureVO">
 		update lecture
 		set lecture_title = #{lecture_title},
 		category_detail = #{category_detail}, 
@@ -209,74 +213,145 @@
 		where lecture_num = #{lecture_num}
 	</update>
 
+	<!-- 강사 조회 -->
 	<select id="listTeacher" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE
-		user_role = 'instructor'
-		order by user_num desc
-		LIMIT #{startRow},
-		#{pageSize}
-	</select>
-
-<!-- 회원 목록 -->
-	<select id="MemberList" resultType="com.itwillbs.domain.UserVO">
-		select * from user
-		WHERE
-		user_role = 'user'
-		<if test="search != null">
+		WHERE user_role = 'instructor'
+		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
-				and user_name LIKE  CONCAT('%', #{search}, '%')
-				or user_id LIKE  CONCAT('%', #{search}, '%')
-				or user_email LIKE  CONCAT('%', #{search}, '%')
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
 			</if>
 			<if test="searchList == '이름'">
-				and user_name LIKE  CONCAT('%', #{search}, '%')
+				and user_name LIKE CONCAT('%', #{search}, '%')
 			</if>
 			<if test="searchList == '아이디'">
-				and user_id LIKE  CONCAT('%', #{search}, '%')
+				and user_id LIKE CONCAT('%', #{search}, '%')
 			</if>
 			<if test="searchList == '이메일'">
-				and user_email LIKE  CONCAT('%', #{search}, '%')
+				and user_email LIKE CONCAT('%', #{search}, '%')
 			</if>
 		</if>
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
 
-	<select id="activeTeacherList"
-		resultType="com.itwillbs.domain.UserVO">
+	<!-- 회원 목록 -->
+	<select id="MemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'instructor' and
-		user_status = 'active'
-		order by user_num desc
-		LIMIT #{startRow},
-		#{pageSize}
-	</select>
-
-	<select id="activeMemberList"
-		resultType="com.itwillbs.domain.UserVO">
-		select * from user
-		WHERE user_role = 'user' and user_status
-		= 'active'
+		WHERE user_role = 'user'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
 
-	<select id="inactiveTeacherList"
-		resultType="com.itwillbs.domain.UserVO">
+	<!-- 활동 강사 -->
+	<select id="activeTeacherList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'instructor' and
-		user_status != 'active'
+		WHERE user_role = 'instructor' and user_status = 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 		order by user_num desc
-		LIMIT #{startRow},
-		#{pageSize}
+		LIMIT #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="activeMemberList" resultType="com.itwillbs.domain.UserVO">
+		select * from user
+		WHERE user_role = 'user' and user_status = 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+		order by user_num desc
+		LIMIT #{startRow}, #{pageSize}
 	</select>
 
-	<select id="inactiveMemberList"
-		resultType="com.itwillbs.domain.UserVO">
+<!-- 비활동 강사 -->
+	<select id="inactiveTeacherList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user' and user_status
-		!= 'active'
+		WHERE user_role = 'instructor' and user_status != 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+		order by user_num desc
+		LIMIT #{startRow}, #{pageSize}
+	</select>
+
+<!-- 회원목록에서 탈퇴회원 조회 -->
+	<select id="inactiveMemberList" resultType="com.itwillbs.domain.UserVO">
+		select * from user
+		WHERE user_role = 'user' and user_status != 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 		order by user_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
@@ -286,53 +361,86 @@
 		WHERE user_role = 'instructor' and user_status = 'active'
 	</select>
 
-	<select id="memberCount" resultType="java.lang.Integer">
-		select count(*) from user
-		WHERE user_role = 'user' and user_status = 'active'
-	</select>
-
 	<select id="inactiveTeacharCount" resultType="java.lang.Integer">
-		select count(*)
-		from user
+		select count(*) from user
 		WHERE user_role = 'instructor' and user_status != 'active'
 	</select>
 
-	<select id="inactiveMemberCount" resultType="java.lang.Integer">
-		select count(*) from
-		user
-		WHERE user_role = 'user' and user_status != 'active'
+	<!-- 검색 조건이 반영된 강사 카운트 쿼리들 -->
+	<select id="activeTeacherListCount" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_role = 'instructor' and user_status = 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
-<!-- 	강의 갯수 카운트 -->
+	<select id="inactiveTeacherListCount" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_role = 'instructor' and user_status != 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+	</select>
+
+	<select id="listTeacherCount" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_role = 'instructor'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+	</select>
+
+	<!-- 강의 갯수 카운트 -->
 	<select id="classCount" resultType="java.lang.Integer">
 		select count(*) from lecture
 	</select>
 
 	<update id="deleteMember" parameterType="int">
-		update user
-		set
-		user_status = 'withdraw'
-		where user_num = #{user_num}
+		update user set user_status = 'withdraw' where user_num = #{user_num}
 	</update>
 
 	<update id="RevertMember" parameterType="int">
-		update user
-		set
-		user_status = 'active'
-		where user_num = #{user_num}
+		update user set user_status = 'active' where user_num = #{user_num}
 	</update>
-
-<!-- 	강의 검색 -->
-<!-- 	<select id="classSearch"> -->
-<!-- 		select * from lecture  -->
-<!-- 		where -->
-<!-- 	</select> -->
-
-
-
-
-
-
-
 
 </mapper>

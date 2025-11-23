@@ -30,9 +30,9 @@ public class AdminService {
 		return adminMapper.listMember(pageVO);
 	}
 
-	public int countMemberList() {
+	public int countMemberList(PageVO pageVO) {
 		System.out.println("AdminService countMemberList()");
-		return adminMapper.countMemberList();
+		return adminMapper.countMemberList(pageVO);
 	}
 
 	public void LectureUpdate(LectureVO lectureVO) {
@@ -92,9 +92,9 @@ public class AdminService {
 		return adminMapper.listTeacher(pageVO);
 	}
 
-	public int teacharCount() {
+	public int teacharCount(PageVO pageVO) {
 		System.out.println("AdminService teacharCount()");
-		return adminMapper.teacharCount();
+		return adminMapper.teacharCount(pageVO);
 	}
 
 	public int classCount() {
@@ -121,9 +121,9 @@ public class AdminService {
 		return adminMapper.countDrawMemberList();
 	}
 
-	public int countTeacherList() {
+	public int countTeacherList(PageVO pageVO) {
 		System.out.println("AdminService countTeacherList()");
-		return adminMapper.countTeacherList();
+		return adminMapper.countTeacherList(pageVO);
 	}
 
 	public void RevertMember(int user_num) {
@@ -131,19 +131,14 @@ public class AdminService {
 		adminMapper.RevertMember(user_num);
 	}
 
-	public int inactiveTeacharCount() {
+	public int inactiveTeacharCount(PageVO pageVO) {
 		System.out.println("AdminService inactiveTeacharCount()");
-		return adminMapper.inactiveTeacharCount();
+		return adminMapper.inactiveTeacharCount(pageVO);
 	}
 
-	public int activecountMemberList() {
-		System.out.println("AdminService inactiveTeacharCount()");
-		return adminMapper.activecountMemberList();
-	}
-
-	public int deletecountMemberList() {
+	public int deletecountMemberList(PageVO pageVO) {
 		System.out.println("AdminService deletecountMemberList()");
-		return adminMapper.deletecountMemberList();
+		return adminMapper.deletecountMemberList(pageVO);
 	}
 
 	public List<UserVO> activeTeacherList(PageVO pageVO) {
@@ -192,19 +187,14 @@ public class AdminService {
 		return adminMapper.MemberList(pageVO);
 	}
 
-	public int memberCount() {
+	public int memberCount(PageVO pageVO) {
 		System.out.println("AdminService memberCount()");
-		return adminMapper.memberCount();
+		return adminMapper.memberCount(pageVO);
 	}
 
-	public int inactiveMemberCount() {
+	public int inactiveMemberCount(PageVO pageVO) {
 		System.out.println("AdminService inactiveMemberCount()");
-		return adminMapper.inactiveMemberCount();
-	}
-
-	public int countMemberCount() {
-		System.out.println("AdminService countMemberCount()");
-		return adminMapper.countMemberCount();
+		return adminMapper.inactiveMemberCount(pageVO);
 	}
 
 	public List<UserVO> DrawinstructorListMember(PageVO pageVO) {
@@ -216,14 +206,14 @@ public class AdminService {
 		return adminMapper.DrawinstructorListMember(pageVO);
 	}
 
-	public int instructorDeletecountList() {
+	public int instructorDeletecountList(PageVO pageVO) {
 		System.out.println("AdminService instructorDeletecountList()");
-		return adminMapper.instructorDeletecountList();
+		return adminMapper.instructorDeletecountList(pageVO);
 	}
 
-	public int deleteAllMemberCount() {
+	public int deleteAllMemberCount(PageVO pageVO) {
 		System.out.println("AdminService deleteAllMemberCount()");
-		return adminMapper.deleteAllMemberCount();
+		return adminMapper.deleteAllMemberCount(pageVO);
 	}
 
 	public List<UserVO> withDeleteUserMember(PageVO pageVO) {

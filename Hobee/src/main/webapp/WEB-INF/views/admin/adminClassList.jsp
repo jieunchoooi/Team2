@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>강의 목록 | Hobee Admin</title>
+<title>클래스 목록 | Hobee Admin</title>
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
@@ -27,10 +27,10 @@
 				<h3>총 강의 수</h3>
 				<div class="stat-number">${classCount}</div>
 			</div>
-			<div class="stat-card orange">
-				<h3>활동 강사 수</h3>
-				<div class="stat-number">${tCount}</div>
-			</div>
+<!-- 			<div class="stat-card orange"> -->
+<!-- 				<h3>활동 강사 수</h3> -->
+<%-- 				<div class="stat-number">${tCount}</div> --%>
+<!-- 			</div> -->
 		</div>
 		
 		
@@ -39,14 +39,8 @@
 			<!-- 검색 영역 -->
 			<div class="search-wrapper">
 				<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search-form" id="search_form">
-					<select name="searchList" id="searchList">
-						<option value="전체"	${pageVO.searchList == '전체' ? 'selected' : ''}>전체 검색</option>
-						<option value="강사" ${pageVO.searchList == '강사' ? 'selected' : ''}>강사 검색</option>
-						<option value="강의" ${pageVO.searchList == '강의' ? 'selected' : ''}>강의 검색</option>
-					</select>
 					<input type="text" name="search" class="search-input" id="search_box" value="${pageVO.search}" placeholder="강의명, 강사 이름으로 검색..."> 
 					<button type="submit" class="search-btn" id="search">검색</button>
-					<a href="${ pageContext.request.contextPath }/admin/adminClassList" class="search-btn">전체 강의</a>
 				</form>
 			</div>
 			
@@ -79,7 +73,7 @@
 							<td>${lectureVO.lecture_author}</td>
 							<td>₩ <fmt:formatNumber value="${lectureVO.lecture_price}" pattern="#,###"/></td>
 							<td>
-								<button class="btn edit" data-num="${lectureVO.lecture_num}">수정</button>
+								<button type="button" class="btn edit" data-num="${lectureVO.lecture_num}">수정</button>
 								<button class="btn btn-delete" data-num="${lectureVO.lecture_num}">삭제</button>
 								
 							</td>
@@ -111,7 +105,6 @@
 let search = document.querySelector(".search-btn");
 let search_box = document.querySelector(".search-input");
 let search_form = document.querySelector("#search_form");
-let stat_card = document.querySelector(".stat-card");
 
 search.onclick = function(e){
 	e.preventDefault();
@@ -124,9 +117,7 @@ search.onclick = function(e){
 	search_form.submit();
 }
 
-stat_card.onclick = function(){
-	location.href = "${ pageContext.request.contextPath }/admin/adminClassList";
-}
+
 
 
 
@@ -158,8 +149,8 @@ let edit = document.querySelectorAll(".edit");
 
 edit.forEach(function(btn){
     btn.onclick = function(){
-        let classNum = this.getAttribute("data-num");
-        location.href = "${pageContext.request.contextPath}/admin/adminEditClass?lecture_num=" + classNum;
+        let lectureNum = this.getAttribute("data-num");
+        location.href = "${pageContext.request.contextPath}/admin/adminClassEditinfo?lecture_num=" + lectureNum;
     }
 });
 

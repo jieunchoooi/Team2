@@ -40,12 +40,21 @@
 			</div>
 		</div>
 
-		<div class="search-box">
-			<input type="text" placeholder="이름, 아이디, 이메일로 검색...">
-			<button>검색</button>
-		</div>
-		
 		<div class="table-container">
+			<div class="search-wrapper">
+				<form action="${ pageContext.request.contextPath }/admin/adminTeacherList" class="search-form" id="search_form">
+				  <input type="hidden" name="filter" value="${param.filter}"> 
+					<select name="searchList" id="searchList">
+						<option value="전체"	${pageVO.searchList == '전체' ? 'selected' : ''}>전체 검색</option>
+						<option value="이름" ${pageVO.searchList == '이름' ? 'selected' : ''}>이름 검색</option>
+						<option value="아이디" ${pageVO.searchList == '아이디' ? 'selected' : ''}>아이디 검색</option>
+						<option value="이메일" ${pageVO.searchList == '이메일' ? 'selected' : ''}>이메일 검색</option>
+					</select>
+					<input type="text" name="search" class="search-input" id="search_box" value="${pageVO.search}" placeholder="이름, 아이디, 이메일로 검색..."> 
+					<button type="submit" class="search-btn" id="search">검색</button>
+				<a href="${ pageContext.request.contextPath }/admin/adminTeacherList" class="search-btn" id="search_btn">전체 강의</a>
+			</form>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -98,28 +107,52 @@
 					
 				</tbody>
 			</table>
-		</div>
-		<div class="pagination">
+			<div class="pagination">
 				<!-- 10 만큼 이전 -->
 				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
-					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${pageVO.startPage - pageVO.pageBlock}">[이전]</a>
+					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${pageVO.startPage - pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[이전]</a>
 				</c:if>
 				
 				<c:forEach var="i" begin="${pageVO.startPage}"
 					end="${pageVO.endPage}" step="1">
-					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${i}">${i}</a>
+					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">${i}</a>
 				</c:forEach>
 
 				<!-- 10만큼 다음 -->
 				<c:if test="${pageVO.endPage < pageVO.pageCount }">
-					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${pageVO.startPage + pageVO.pageBlock}">[다음]</a>
+					<a href="${ pageContext.request.contextPath }/admin/adminTeacherList?pageNum=${pageVO.startPage + pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[다음]</a>
 				</c:if>
 			</div>
+		</div>
 	</main>
 </body>
 <script type="text/javascript">
 let deletebtn = document.querySelectorAll(".btn-delete");
 let sumtc = document.querySelector(".stat-number");
+let search_form = document.querySelector("#search_form");
+let search_box = document.querySelector("#search_box");
+let search = document.querySelector("#search");
+let search_btn = document.querySelector("#search_btn");
+
+// 검색
+search.onclick = function(e){
+	e.preventDefault();
+	
+	if(search_box.value == ""){
+		alert("검색어를 입력해주세요.");
+		search_box.focus();
+		return false;
+	}
+	search_form.submit();
+}
+
+search_btn.onclick = function(){
+	location.href = "${ pageContext.request.contextPath }/admin/adminTeacherList";
+}
+
+
+
+
 
 //강제 탈퇴 버튼
 sumtc = function(){
