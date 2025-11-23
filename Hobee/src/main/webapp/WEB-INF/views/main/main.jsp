@@ -27,10 +27,10 @@
 	</main>
 	
 	<!-- 카테고리 메뉴 -->
-<section class="inflearn-category">
+<section class="hobee-category">
     <div class="category-list">
 
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item active">
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item">
             <i class="fa-solid fa-layer-group"></i>
             <span>전체</span>
         </a>
@@ -71,7 +71,7 @@
         </a>
 
         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" class="category-item">
-            <i class="fa-solid fa-chart-line"></i>
+            <i class="fa-solid fa-earth-americas"></i>
             <span>제2외국어</span>
         </a>
 
@@ -86,36 +86,54 @@
 	
 	
 	<!-- 인기 강의 섹션 -->
-	<section class="course-section">
-		<h3>인기 강의 🔥</h3>
-		<div class="course-grid">
-			<c:choose>
-				<c:when test="${not empty bestList}">
-					<c:forEach var="lecture" items="${bestList}" varStatus="status">
-						<c:if test="${status.index < 8}">
-							<div class="course-card">
-								<a
-									href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}">
-									<img
-									src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
+<section class="course-section">
+	<h3>인기 강의 🔥</h3>
+	<div class="course-grid">
+		<c:choose>
+			<c:when test="${not empty bestList}">
+				<c:forEach var="lecture" items="${bestList}" varStatus="status">
+					<c:if test="${status.index < 8}">
+						<div class="course-card">
+							<a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}">
+								<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
 									class="course-thumb" alt="${lecture.lecture_title}">
-								</a>
-								<div class="course-info">
-									<div class="course-title">${lecture.lecture_title}</div>
+							</a>
+							<div class="course-info">
+								<div class="course-title">${lecture.lecture_title}</div>
+								<div class="course-instructor">${lecture.lecture_author}</div>
+								<div class="course-meta">
 									<div class="course-price">
 										<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
 									</div>
+									<div class="course-stats">
+										<span class="rating">
+											<i class="fas fa-star"></i> ${lecture.avg_score}
+											<span class="review-count">(${lecture.review_count})</span>
+										</span>
+										<span class="student-count">
+											<i class="fas fa-user"></i> ${lecture.student_count}+
+										</span>
+<!-- 										<span class="rating"> -->
+<!-- 											<i class="fas fa-star"></i> 5.0 -->
+<!-- 											<span class="review-count">(232)</span> -->
+<!-- 										</span> -->
+<!-- 										<span class="student-count"> -->
+<!-- 											<i class="fas fa-user"></i> 1928+ -->
+<!-- 										</span> -->
+									</div>
 								</div>
 							</div>
-						</c:if>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<p>인기강의가 없습니다.</p>
-				</c:otherwise>
-			</c:choose>
-		</div>
-	</section>
+						</div>
+					</c:if>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<p>인기강의가 없습니다.</p>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</section>
+	
 	<!-- 할인 강의 섹션 -->
 	<section class="course-section">
 		<h3>할인 중인 강의 💸</h3>
