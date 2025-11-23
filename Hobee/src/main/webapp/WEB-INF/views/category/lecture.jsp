@@ -330,33 +330,120 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .action-icon:hover i { color: var(--primary); }
 
 /* 강사의 다른 강의 / 비슷한 강의 추천 */
-.instructor-section, .similar-section { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.instructor-section h3, .similar-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 25px; color: #222; }
-.lecture-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.lecture-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.2s ease; cursor: pointer; }
-.lecture-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
-.lecture-card img { width: 100%; height: 160px; object-fit: cover; }
-.lecture-info { padding: 12px 14px; }
-.lecture-title { font-size: 1rem; font-weight: 600; color: #222; margin-bottom: 6px; }
-.lecture-price { color: var(--primary); font-weight: 700; font-size: 0.95rem; }
-
-.tag-badge {
-  display: inline-block;
-  background: #eef5ff;
-  color: var(--primary);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-right: 6px;
-  margin-bottom: 4px;
+/* 강사의 다른 강의 / 비슷한 강의 추천 - 업데이트 */
+.instructor-section, .similar-section { 
+  background: #fff; 
+  border-radius: 16px; 
+  padding: 30px; 
+  margin-bottom: 20px; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
 }
 
-/* .tag-badge:hover { */
-/*   background: var(--primary); */
-/*   color: #fff; */
-/*   cursor: pointer; */
-/* } */
+.instructor-section h3, .similar-section h3 { 
+  font-size: 1.3rem; 
+  font-weight: 700; 
+  margin-bottom: 25px; 
+  color: #222; 
+}
+
+.lecture-grid { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px; 
+}
+
+.lecture-card { 
+  background: #fff; 
+  border-radius: 14px; 
+  overflow: hidden; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+  transition: all 0.2s ease; 
+  cursor: pointer; 
+}
+
+.lecture-card:hover { 
+  transform: translateY(-4px); 
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1); 
+}
+
+.lecture-card img { 
+  width: 100%; 
+  height: 160px; 
+  object-fit: cover; 
+}
+
+.lecture-info { 
+  padding: 14px; 
+}
+
+.lecture-title { 
+  font-size: 1rem; 
+  font-weight: 600; 
+  color: #222; 
+  margin-bottom: 6px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.lecture-instructor {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.lecture-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lecture-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.lecture-stats .rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #333;
+  font-weight: 600;
+}
+
+.lecture-stats .rating i {
+  color: #ffa41b;
+  font-size: 0.85rem;
+}
+
+.lecture-stats .review-count {
+  color: #999;
+  font-weight: 400;
+}
+
+.lecture-stats .student-count {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #666;
+}
+
+.lecture-stats .student-count i {
+  font-size: 0.8rem;
+}
+
+.lecture-price { 
+  color: #2573ff; 
+  font-weight: 700; 
+  font-size: 0.95rem; 
+  margin-top: 4px;
+}
+
 
 footer { background: #fff; text-align: center; padding: 20px; font-size: 0.9rem; color: #777; border-radius: 20px 20px 0 0; box-shadow: 0 -2px 6px rgba(0,0,0,0.05); margin-top: 60px; }
 
@@ -727,8 +814,20 @@ body.modal-open {
 	                 alt="${lecture.lecture_title}">
 	            <div class="lecture-info">
 	              <div class="lecture-title">${lecture.lecture_title}</div>
-	              <div class="lecture-price">
-	              	<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
+	              <div class="lecture-instructor">${lecture.lecture_author}</div>
+	              <div class="lecture-meta">
+	              	<div class="lecture-price">
+	                  <fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
+	                </div>
+	                <div class="lecture-stats">
+	                  <span class="rating">
+	                    <i class="fas fa-star"></i> ${lecture.avg_score}
+	                    <span class="review-count">(${lecture.review_count})</span>
+	                  </span>
+	                  <span class="student-count">
+	                    <i class="fas fa-user"></i> ${lecture.student_count}+
+	                  </span>
+	                </div>
 	              </div>
 	            </div>
 	          </div>
@@ -742,36 +841,47 @@ body.modal-open {
 	    </c:choose>
 	  </div>
 	</div>
-  
-  	<!-- 비슷한 강의 추천 -->
-    <div class="similar-section">
-      <h3>비슷한 강의 추천</h3>
-      <div class="lecture-grid">
-       <c:choose>
-       	<c:when test="${not empty similarLectures}">
-       		<c:forEach var="slecture" items="${similarLectures}">
-       			<div class="lecture-card" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
-       				<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
-       				     alt="${slecture.lecture_title}">
-       				<div class="lecture-info">
-       					<div class="lecture-title">${slecture.lecture_title}</div>
-       					<div class="lecture-price">
-       						<fmt:formatNumber value="${slecture.lecture_price}" type="number" />원
-       					</div>
-       				</div>
-       			</div>
-       		</c:forEach>
-       	</c:when>
-       	<c:otherwise>
-       		<p style="color: #888; text-align: center; width: 100%;">
-	          해당 강사의 다른 강의가 없습니다.
-	        </p>
-       	</c:otherwise>
-       </c:choose>
-      </div>
-    </div>
-  </div>
-
+	
+	<!-- 비슷한 강의 추천 -->
+	<div class="similar-section">
+	  <h3>비슷한 강의 추천</h3>
+	  <div class="lecture-grid">
+	   <c:choose>
+	    <c:when test="${not empty similarLectures}">
+	      <c:forEach var="slecture" items="${similarLectures}">
+	        <div class="lecture-card" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
+	          <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
+	               alt="${slecture.lecture_title}">
+	          <div class="lecture-info">
+	            <div class="lecture-title">${slecture.lecture_title}</div>
+	            <div class="lecture-instructor">${slecture.lecture_author}</div>
+	            <div class="lecture-meta">
+	              <div class="lecture-price">
+	                <fmt:formatNumber value="${slecture.lecture_price}" type="number" />원
+	              </div>
+	              <div class="lecture-stats">
+	                <span class="rating">
+	                  <i class="fas fa-star"></i> ${slecture.avg_score}
+	                  <span class="review-count">(${slecture.review_count})</span>
+	                </span>
+	                <span class="student-count">
+	                  <i class="fas fa-user"></i> ${slecture.student_count}+
+	                </span>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </c:forEach>
+	    </c:when>
+	    <c:otherwise>
+	      <p style="color: #888; text-align: center; width: 100%;">
+	        비슷한 강의가 없습니다.
+	      </p>
+	    </c:otherwise>
+	   </c:choose>
+	  </div>
+	</div>
+</div>
   <!-- 우측 사이드바: 이미지 + 구매박스 -->
   <div class="right-sidebar">
     <img class="course-thumbnail" src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}" alt="디지털 드로잉 클래스" />

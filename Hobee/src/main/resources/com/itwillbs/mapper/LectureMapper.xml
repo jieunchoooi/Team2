@@ -164,26 +164,85 @@
   		</select>
   		
 		<select id="authorLectures" resultType="com.itwillbs.domain.LectureVO">
-		    select * from lecture 
-		    where lecture_author = #{lecture_author} 
-		    and lecture_num != #{lecture_num}
-		    order by readcount desc
-		    limit 4
+		    SELECT 
+		        l.lecture_num,
+		        l.user_num,
+		        l.lecture_title,
+		        l.lecture_author,
+		        l.lecture_price,
+		        l.category_detail,
+		        l.readcount,
+		        l.lecture_img,
+		        l.lecture_detail,
+		        l.lecture_tag,
+		        COALESCE(ROUND(AVG(r.review_score), 1), 0) as avg_score,
+		        COALESCE(COUNT(DISTINCT r.review_num), 0) as review_count,
+		        COALESCE(COUNT(DISTINCT e.enrollment_id), 0) as student_count
+		    FROM 
+		        lecture l
+		        LEFT JOIN review r ON l.lecture_num = r.lecture_num
+		        LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
+		    WHERE 
+		        l.lecture_author = #{lecture_author}
+		        AND l.lecture_num != #{lecture_num}
+		    GROUP BY 
+		        l.lecture_num,
+		        l.user_num,
+		        l.lecture_title,
+		        l.lecture_author,
+		        l.lecture_price,
+		        l.category_detail,
+		        l.readcount,
+		        l.lecture_img,
+		        l.lecture_detail,
+		        l.lecture_tag
+		    ORDER BY 
+		        l.readcount DESC
+		    LIMIT 4
 		</select>
 		
 		<select id="similarLectures" resultType="com.itwillbs.domain.LectureVO">
-		    SELECT *
-			FROM lecture
-			WHERE lecture_num != #{lecture_num}
-			<if test="tagList != null and tagList.size() > 0">
-			    AND (
-			        <foreach collection="tagList" item="tag" separator=" OR ">
-			            lecture_tag LIKE CONCAT('%', #{tag}, '%')
-			        </foreach>
-			    )
-			</if>
-			ORDER BY readcount DESC
-			LIMIT 4
+		    SELECT 
+		        l.lecture_num,
+		        l.user_num,
+		        l.lecture_title,
+		        l.lecture_author,
+		        l.lecture_price,
+		        l.category_detail,
+		        l.readcount,
+		        l.lecture_img,
+		        l.lecture_detail,
+		        l.lecture_tag,
+		        COALESCE(ROUND(AVG(r.review_score), 1), 0) as avg_score,
+		        COALESCE(COUNT(DISTINCT r.review_num), 0) as review_count,
+		        COALESCE(COUNT(DISTINCT e.enrollment_id), 0) as student_count
+		    FROM 
+		        lecture l
+		        LEFT JOIN review r ON l.lecture_num = r.lecture_num
+		        LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
+		    WHERE 
+		        l.lecture_num != #{lecture_num}
+		        <if test="tagList != null and tagList.size() > 0">
+		            AND (
+		                <foreach collection="tagList" item="tag" separator=" OR ">
+		                    l.lecture_tag LIKE CONCAT('%', #{tag}, '%')
+		                </foreach>
+		            )
+		        </if>
+		    GROUP BY                           
+		        l.lecture_num,
+		        l.user_num,
+		        l.lecture_title,
+		        l.lecture_author,
+		        l.lecture_price,
+		        l.category_detail,
+		        l.readcount,
+		        l.lecture_img,
+		        l.lecture_detail,
+		        l.lecture_tag
+		    ORDER BY 
+		        l.readcount DESC
+		    LIMIT 4
 		</select>
 		
 		

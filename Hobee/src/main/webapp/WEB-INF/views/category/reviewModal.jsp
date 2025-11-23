@@ -314,12 +314,12 @@ body {
               ${review.review_content}
             </div>
 
-            <div class="review-actions">
-              <button class="review-action-btn">
-                <i class="far fa-thumbs-up"></i>
-                <span>도움돼요</span>
-              </button>
-            </div>
+<!--             <div class="review-actions"> -->
+<!--               <button class="review-action-btn"> -->
+<!--                 <i class="far fa-thumbs-up"></i> -->
+<!--                 <span>도움돼요</span> -->
+<!--               </button> -->
+<!--             </div> -->
           </div>
         </c:forEach>
       </c:when>
