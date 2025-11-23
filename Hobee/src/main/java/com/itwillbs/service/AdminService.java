@@ -245,6 +245,16 @@ public class AdminService {
 		return adminMapper.classSearch();
 	}
 
+	public UserVO teachercheck(int user_num) {
+		System.out.println("AdminService teachercheck()");
+		return adminMapper.classSearch(user_num);
+	}
+
+	public List<LectureVO> teacherClassCheck(int user_num) {
+		System.out.println("AdminService teacherClassCheck()");
+		return adminMapper.teacherClassCheck(user_num);
+	}
+
 
 
 

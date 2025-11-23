@@ -80,6 +80,10 @@ public interface AdminMapper {
 
 	public String classSearch();
 
+	public UserVO classSearch(int user_num);
+
+	public List<LectureVO> teacherClassCheck(int user_num);
+
 
 
 }

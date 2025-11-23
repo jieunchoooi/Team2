@@ -573,6 +573,28 @@ public class AdminController {
 	    return "admin/adminClassEditinfo";
    }
    
+// 강사 상세보기
+   @GetMapping("/adminTeacherDetail")
+   public String adminTeacherDetail(@RequestParam("user_num") int user_num, Model model) {
+	   System.out.println("AdminController adminTeacherDetail()");
+	   
+	   UserVO userVO = adminService.teachercheck(user_num);
+//	   List<LectureVO> lectureVO = adminService.teacherClassCheck(user_num);
+	   
+	   model.addAttribute("userVO", userVO);
+//	   model.addAttribute("lectureVO", lectureVO);
+//	   for(LectureVO lecture : lectureList) {
+//		    System.out.println(lecture.getLecture_title());
+//		}
+//
+//		// 또는 단순히 첫 번째 강의만 필요하다면
+//		LectureVO lecture = null;
+//		if(!lectureList.isEmpty()) {
+//		    lecture = lectureList.get(0);
+//		}
+	   return "admin/adminTeacherDetail";
+   }
+   
    
 
 }

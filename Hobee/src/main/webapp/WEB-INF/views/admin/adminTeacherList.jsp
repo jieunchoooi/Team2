@@ -133,6 +133,7 @@ let search_form = document.querySelector("#search_form");
 let search_box = document.querySelector("#search_box");
 let search = document.querySelector("#search");
 let search_btn = document.querySelector("#search_btn");
+let detail = document.querySelectorAll(".detail");
 
 // 검색
 search.onclick = function(e){
@@ -150,7 +151,13 @@ search_btn.onclick = function(){
 	location.href = "${ pageContext.request.contextPath }/admin/adminTeacherList";
 }
 
-
+// 상세 정보
+detail.forEach(function(btn){
+	btn.onclick = function(){
+		let teacherNum = this.getAttribute("data-num");
+		location.href = "${ pageContext.request.contextPath }/admin/adminTeacherDetail?user_num=" + teacherNum; 
+	}
+});
 
 
 
