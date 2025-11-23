@@ -8,11 +8,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>취미 온라인 클래스 - HobbyPrep</title>
-<link
-	href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main/main.css">
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css">
 </head>
 <body>
 	<!-- header -->
@@ -27,37 +25,115 @@
 			<button type="submit" class="btn">검색</button>
 		</form>
 	</main>
+	
+	<!-- 카테고리 메뉴 -->
+<section class="hobee-category">
+    <div class="category-list">
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>전체</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" class="category-item">
+            <i class="fa-solid fa-palette"></i>
+            <span>디지털드로잉</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" class="category-item">
+            <i class="fa-solid fa-paintbrush"></i>
+            <span>드로잉</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" class="category-item">
+            <i class="fa-solid fa-brush"></i>
+            <span>공예</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI" class="category-item">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>AI스킬업</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" class="category-item">
+            <i class="fa-solid fa-code"></i>
+            <span>프로그래밍</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" class="category-item">
+            <i class="fa-solid fa-database"></i>
+            <span>데이터사이언스</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" class="category-item">
+            <i class="fa-solid fa-language"></i>
+            <span>영어</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" class="category-item">
+            <i class="fa-solid fa-earth-americas"></i>
+            <span>제2외국어</span>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어" class="category-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>외국어시험</span>
+        </a>
+
+    </div>
+</section>
+	
+	
+	
 	<!-- 인기 강의 섹션 -->
-	<section class="course-section">
-		<h3>인기 강의 🔥</h3>
-		<div class="course-grid">
-			<c:choose>
-				<c:when test="${not empty bestList}">
-					<c:forEach var="lecture" items="${bestList}" varStatus="status">
-						<c:if test="${status.index < 8}">
-							<div class="course-card">
-								<a
-									href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}">
-									<img
-									src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
+<section class="course-section">
+	<h3>인기 강의 🔥</h3>
+	<div class="course-grid">
+		<c:choose>
+			<c:when test="${not empty bestList}">
+				<c:forEach var="lecture" items="${bestList}" varStatus="status">
+					<c:if test="${status.index < 8}">
+						<div class="course-card">
+							<a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}">
+								<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
 									class="course-thumb" alt="${lecture.lecture_title}">
-								</a>
-								<div class="course-info">
-									<div class="course-title">${lecture.lecture_title}</div>
+							</a>
+							<div class="course-info">
+								<div class="course-title">${lecture.lecture_title}</div>
+								<div class="course-instructor">${lecture.lecture_author}</div>
+								<div class="course-meta">
 									<div class="course-price">
 										<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
 									</div>
+									<div class="course-stats">
+										<span class="rating">
+											<i class="fas fa-star"></i> ${lecture.avg_score}
+											<span class="review-count">(${lecture.review_count})</span>
+										</span>
+										<span class="student-count">
+											<i class="fas fa-user"></i> ${lecture.student_count}+
+										</span>
+<!-- 										<span class="rating"> -->
+<!-- 											<i class="fas fa-star"></i> 5.0 -->
+<!-- 											<span class="review-count">(232)</span> -->
+<!-- 										</span> -->
+<!-- 										<span class="student-count"> -->
+<!-- 											<i class="fas fa-user"></i> 1928+ -->
+<!-- 										</span> -->
+									</div>
 								</div>
 							</div>
-						</c:if>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<p>인기강의가 없습니다.</p>
-				</c:otherwise>
-			</c:choose>
-		</div>
-	</section>
+						</div>
+					</c:if>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<p>인기강의가 없습니다.</p>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</section>
+	
 	<!-- 할인 강의 섹션 -->
 	<section class="course-section">
 		<h3>할인 중인 강의 💸</h3>
