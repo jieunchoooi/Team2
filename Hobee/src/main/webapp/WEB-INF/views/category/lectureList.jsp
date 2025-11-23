@@ -106,21 +106,66 @@ main {
 	object-fit: cover;
 }
 .card-body {
-	padding: 10px 12px;
+	padding: 14px;
 }
 .card-title {
 	font-size: 1rem;
 	font-weight: 600;
-	margin-bottom: 6px;
 	color: #222;
-	line-height: 1.3;
+	line-height: 1.4;
+	margin-bottom: 6px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+.card-instructor {
+	font-size: 0.85rem;
+	color: #666;
+	margin-bottom: 10px;
+}
+.card-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.card-stats {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 0.85rem;
+}
+.rating {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	color: #333;
+	font-weight: 600;
+}
+.rating i {
+	color: #ffa41b;
+	font-size: 0.9rem;
+}
+.review-count {
+	color: #999;
+	font-weight: 400;
+}
+.student-count {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	color: #666;
+}
+.student-count i {
+	font-size: 0.85rem;
 }
 .card-price {
 	color: #2573ff;
 	font-weight: 700;
-	font-size: 0.95rem;
+	font-size: 1rem;
+	margin-top: 4px;
 }
-
 /* ====== Top10 슬라이더 ====== */
 .top10-header {
 	display: flex;
@@ -155,14 +200,18 @@ main {
 	height: 200px;
 }
 .top10-slide .card-body {
-	padding: 14px;
+	padding: 16px;
 }
 .top10-slide .card-title {
 	font-size: 1.05rem;
-	margin-bottom: 8px;
+	margin-bottom: 6px;
+}
+.top10-slide .card-instructor {
+	font-size: 0.9rem;
+	margin-bottom: 10px;
 }
 .top10-slide .card-price {
-	font-size: 1rem;
+	font-size: 1.1rem;
 }
 /* 화살표 버튼 */
 .slider-btn {
@@ -204,7 +253,6 @@ main {
 	width: 24px;
 	border-radius: 5px;
 }
-
 /* ====== 전체 강의 ====== */
 .all-grid {
 	display: grid;
@@ -212,9 +260,24 @@ main {
 	gap: 20px;
 }
 .all-grid .card img {
-	height: 120px;
+	height: 160px;
 }
-
+.all-grid .card-body {
+	padding: 14px;
+}
+.all-grid .card-title {
+	font-size: 0.95rem;
+}
+.all-grid .card-instructor {
+	font-size: 0.8rem;
+}
+.all-grid .card-stats {
+	font-size: 0.8rem;
+	gap: 10px;
+}
+.all-grid .card-price {
+	font-size: 0.95rem;
+}
 /* ====== 푸터 ====== */
 footer {
 	background: #fff;
@@ -279,72 +342,106 @@ footer {
 			<i class="fa-solid fa-magnifying-glass"></i>
 			<input type="text" placeholder="강의를 검색해보세요">
 		</div>
-
-	<!-- 🔹 Top10 슬라이더 -->
-	<div class="section">
-	    <div class="top10-header">
-	        <h3 id="top10-title">${param.category_detail == null ? '전체' : param.category_detail} Top 10</h3>
-	        <div class="slider-controls">
-	            <button class="slider-btn prev" onclick="moveSlide(-1)">
-	                <i class="fa-solid fa-chevron-left"></i>
-	            </button>
-	            <button class="slider-btn next" onclick="moveSlide(1)">
-	                <i class="fa-solid fa-chevron-right"></i>
-	            </button>
-	        </div>
-	    </div>
-	    
-	    <div class="top10-slider-container">
-	        <div class="top10-grid" id="top10Slider">
-	            <c:forEach var="top" items="${top10List}" varStatus="status">
-	                <c:if test="${status.index % 3 == 0}">
-	                    <div class="top10-slide ${status.index == 0 ? 'active' : ''}">
-	                </c:if>
-	                
-	                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
-	                    <div class="card">
-	                        <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
-	                        <div class="card-body">
-	                            <div class="card-title">${top.lecture_title}</div>
-	                            <div class="card-price"><fmt:formatNumber value="${top.lecture_price}" pattern="#,###" />원</div>
-	                        </div>
-	                    </div>
-	                </a>
-	                
-	                <c:if test="${(status.index + 1) % 3 == 0 || status.last}">
-	                    </div>
-	                </c:if>
-	            </c:forEach>
-	        </div>
-	    </div>
-	    
-	    <div class="slider-dots" id="sliderDots"></div>
-	    
-	    <c:if test="${empty top10List}">
-	        <p>Top10 강의가 없습니다.</p>
-	    </c:if>
-	</div>
 	
-	<!-- 🔹 전체 강의 -->
-	<div class="section">
-	    <h3 id="all-title">${param.category_detail == null ? '전체' : param.category_detail} 전체 강의</h3>
-	    <div class="all-grid">
-	        <c:forEach var="lec" items="${lectureList}">
-	            <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" style="text-decoration:none;color:inherit;">
-	                <div class="card">
-	                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
-	                    <div class="card-body">
-	                        <div class="card-title">${lec.lecture_title}</div>
-	                        <div class="card-price"><fmt:formatNumber value="${lec.lecture_price}" pattern="#,###" />원</div>
-	                    </div>
-	                </div>
-	            </a>
-	        </c:forEach>
-	        <c:if test="${empty lectureList}">
-	            <p>등록된 강의가 없습니다.</p>
-	        </c:if>
-	    </div>
-	</div>
+		<!-- 🔹 Top10 슬라이더 -->
+		<div class="section">
+		    <div class="top10-header">
+		        <h3 id="top10-title">${param.category_detail == null ? '전체' : param.category_detail} Top 10</h3>
+		        <div class="slider-controls">
+		            <button class="slider-btn prev" onclick="moveSlide(-1)">
+		                <i class="fa-solid fa-chevron-left"></i>
+		            </button>
+		            <button class="slider-btn next" onclick="moveSlide(1)">
+		                <i class="fa-solid fa-chevron-right"></i>
+		            </button>
+		        </div>
+		    </div>
+	    
+			<div class="top10-slider-container">
+			    <div class="top10-grid" id="top10Slider">
+			        <c:forEach var="top" items="${top10List}" varStatus="status">
+			
+			            <!-- 0,3,6,... 3개마다 새로운 slide 열기 -->
+			            <c:if test="${status.index % 3 == 0}">
+			                <div class="top10-slide ${status.index == 0 ? 'active' : ''}">
+			            </c:if>
+			
+			            <!-- 개별 카드 -->
+			            <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
+			                <div class="card">
+			                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
+			                    <div class="card-body">
+			                        <div class="card-title">${top.lecture_title}</div>
+			                        <div class="card-instructor">${top.lecture_author}</div>
+			                        <div class="card-meta">
+			                            <div class="card-price">
+			                                <fmt:formatNumber value="${top.lecture_price}" type="number" />원
+			                            </div>
+			                            <div class="card-stats">
+			                                <span class="rating">
+			                                    <i class="fas fa-star"></i> ${top.avg_score}
+			                                    <span class="review-count">(${top.review_count})</span>
+			                                </span>
+			                                <span class="student-count">
+			                                    <i class="fas fa-user"></i> ${top.student_count}+
+			                                </span>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </a>
+			
+			            <!-- 3번째 카드마다 또는 마지막 요소에서 slide 닫기 -->
+			            <c:if test="${(status.index + 1) % 3 == 0 || status.last}">
+			                </div> <!-- top10-slide 끝 -->
+			            </c:if>
+			
+			        </c:forEach>
+			    </div>
+			</div>
+
+	    
+			    <div class="slider-dots" id="sliderDots"></div>
+			    
+			    <c:if test="${empty top10List}">
+			        <p>Top10 강의가 없습니다.</p>
+			    </c:if>
+		</div>
+		
+		<!-- 🔹 전체 강의 -->
+		<div class="section">
+		    <h3 id="all-title">${param.category_detail == null ? '전체' : param.category_detail} 전체 강의</h3>
+		    <div class="all-grid">
+		        <c:forEach var="lec" items="${lectureList}">
+		            <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" style="text-decoration:none;color:inherit;">
+		                <div class="card">
+		                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
+		                    <div class="card-body">
+		                        <div class="card-title">${lec.lecture_title}</div>
+		                        <div class="card-instructor">${lec.lecture_author}</div>
+		                        <div class="card-meta">
+		                            <div class="card-price">
+		                                <fmt:formatNumber value="${lec.lecture_price}" type="number" />원
+		                            </div>
+		                            <div class="card-stats">
+		                                <span class="rating">
+		                                    <i class="fas fa-star"></i> ${lec.avg_score}
+		                                    <span class="review-count">(${lec.review_count})</span>
+		                                </span>
+		                                <span class="student-count">
+		                                    <i class="fas fa-user"></i> ${lec.student_count}+
+		                                </span>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </a>
+		        </c:forEach>
+		        <c:if test="${empty lectureList}">
+		            <p>등록된 강의가 없습니다.</p>
+		        </c:if>
+		    </div>
+		</div>
 	</section>
 </main>
 
