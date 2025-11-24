@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -11,26 +13,55 @@ import com.itwillbs.mapper.AdminReportMapper;
 
 @Service
 public class AdminReportService {
-	
+
 	@Inject
 	private AdminReportMapper adminReportMapper;
-	
-	// 신고 목록
-	public List<AdminReportVO> getReportList() {
-		System.out.println("AdminReportService: getReportList() 실행");
-        return adminReportMapper.getReportList();
-    }
+
+	// 🔹 페이징 + 필터 통합 조회 (최신 메서드)
+	public Map<String, Object> getReportListWithPaging(String type, String status, int currentPage) {
+
+		int pageSize = 10;
+		int offset = (currentPage - 1) * pageSize;
+
+		// 전체 개수
+		int totalCount = adminReportMapper.getReportCount(type, status);
+
+		// 총 페이지
+		int totalPage = (int)Math.ceil((double)totalCount / pageSize);
+
+		// 리스트 조회
+		List<AdminReportVO> list =
+				adminReportMapper.getReportList(type, status, offset, pageSize);
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("list", list);
+		result.put("currentPage", currentPage);
+		result.put("totalPage", totalPage);
+		result.put("totalCount", totalCount);
+
+		return result;
+	}
 
 	// 상세 페이지
-    public AdminReportVO getReportDetail(int report_id) {
-    	System.out.println("AdminReportService: getReportDetail() 실행");
-        return adminReportMapper.getReportDetail(report_id);
-    }
+	public AdminReportVO getReportDetail(int report_id) {
+		return adminReportMapper.getReportDetail(report_id);
+	}
 
- // 신고 처리 완료
-    public void updateReportDone(int report_id) {
-    	System.out.println("AdminReportService: updateReportDone() 실행");
-    	adminReportMapper.updateReportDone(report_id);
-    }
+	// 신고 처리
+	public void updateReportDone(int report_id, String done_reason) {
+		adminReportMapper.updateReportDone(report_id, done_reason);
+	}
+
+
+	public Map<String, Integer> getReportStats() {
+
+		Map<String, Integer> map = new HashMap<>();
+		map.put("total", adminReportMapper.getTotalCount());
+		map.put("month", adminReportMapper.getMonthCount());
+		map.put("post", adminReportMapper.getPostCount());
+		map.put("comment", adminReportMapper.getCommentCount());
+
+		return map;
+	}
 
 }

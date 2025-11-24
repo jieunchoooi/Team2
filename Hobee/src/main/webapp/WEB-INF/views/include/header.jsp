@@ -149,6 +149,15 @@ $(document).ready(function () {
  $("#loginBtn").click(function () {
      loginRequest();
  });
+    
+    /* 엔터키 로그인 */
+    $("#loginForm input").keypress(function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            loginRequest();
+        }
+    });
+
 
  function loginRequest() {
      $.ajax({
