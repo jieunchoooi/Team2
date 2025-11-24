@@ -1,53 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.AdminCommentMapper">
 
-  
-<!--      1. 댓글 전체 목록 조회 : comment + community_content JOIN-->
-    <select id="getCommentList" resultType="com.itwillbs.domain.AdminCommentVO">
-        SELECT 
-            c.comment_id,
-            c.post_id,
-            c.user_id,
-            c.content,
-            c.created_at,
-            c.report_count,
-            c.is_deleted,
-            p.title AS post_title
-        FROM comment c
-        JOIN community_content p 
-            ON c.post_id = p.post_id
-        WHERE c.is_deleted = 0
-        ORDER BY c.comment_id DESC
-    </select>
-    
-<!--     2. 댓글 상세 -->
-    <select id="getCommentDetail" resultType="com.itwillbs.domain.AdminCommentVO">
-    SELECT 
+    <!-- 댓글 목록 -->
+    <select id="getPagingCommentList" resultType="com.itwillbs.domain.AdminCommentVO">
+        SELECT
         c.comment_id,
         c.post_id,
         c.user_id,
         c.content,
         c.created_at,
         c.report_count,
+        c.is_deleted,
         p.title AS post_title
-    FROM comment c
-    JOIN community_content p ON c.post_id = p.post_id
-    WHERE comment_id = #{comment_id}
-</select>
-    
+        FROM comment c
+        JOIN community_content p ON c.post_id = p.post_id
+        WHERE 1 = 1
 
+        <!-- 🔥 상태 필터 -->
+        <choose>
+            <when test="status == 'deleted'">
+                AND c.is_deleted = 1
+            </when>
+            <when test="status == 'normal'">
+                AND c.is_deleted = 0
+            </when>
+            <otherwise>
+                AND 1 = 1
+            </otherwise>
+        </choose>
 
+        <!-- 🔍 검색 -->
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <when test="type == 'title'">
+                    AND p.title LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'userid'">
+                    AND c.user_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'content'">
+                    AND c.content LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
+        </if>
 
-<!--       3. 댓글 삭제 -->
-     
-    <update id="deleteComment" parameterType="int">
+        <!-- 🔥 정렬 -->
+        <choose>
+            <when test="sort == 'report'">
+                ORDER BY c.report_count DESC, c.comment_id DESC
+            </when>
+            <otherwise>
+                ORDER BY c.comment_id DESC
+            </otherwise>
+        </choose>
+
+        LIMIT #{cri.startRow}, #{cri.amount}
+    </select>
+
+    <!-- 총 개수 -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM comment c
+        JOIN community_content p ON c.post_id = p.post_id
+        WHERE 1 = 1
+
+        <choose>
+            <when test="status == 'deleted'">
+                AND c.is_deleted = 1
+            </when>
+            <when test="status == 'normal'">
+                AND c.is_deleted = 0
+            </when>
+        </choose>
+
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <when test="type == 'title'">
+                    AND p.title LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'userid'">
+                    AND c.user_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'content'">
+                    AND c.content LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
+        </if>
+    </select>
+
+    <!-- 상세 -->
+    <select id="getCommentDetail" resultType="com.itwillbs.domain.AdminCommentVO">
+        SELECT
+        c.comment_id,
+        c.post_id,
+        c.user_id,
+        c.content,
+        c.created_at,
+        c.report_count,
+        c.is_deleted,
+        p.title AS post_title
+        FROM comment c
+        JOIN community_content p ON c.post_id = p.post_id
+        WHERE c.comment_id = #{comment_id}
+    </select>
+
+    <!-- 개별 삭제 -->
+    <update id="deleteComment">
         UPDATE comment
         SET is_deleted = 1
         WHERE comment_id = #{comment_id}
-    </update> 
+    </update>
+
+    <!-- 일괄 삭제 -->
+    <update id="batchDelete">
+        UPDATE comment
+        SET is_deleted = 1
+        WHERE comment_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!-- 복구 -->
+    <update id="restoreComment">
+        UPDATE comment
+        SET is_deleted = 0
+        WHERE comment_id = #{comment_id}
+    </update>
 
 </mapper>

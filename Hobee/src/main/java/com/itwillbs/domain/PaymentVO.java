@@ -53,9 +53,11 @@ public class PaymentVO {
     private boolean refundable;
     /** [조회 전용] 여러 강의 제목 표시용 (ex. "수채화 기초, 캘리그래피 입문") */
     // 🔥 배열 기반으로 변경!
+    private List<PaymentDetailVO> details;
     private List<Integer> lectureNumList;
     private List<String> lectureTitleList;
     private List<Integer> lecturePriceList;
+    private List<String> detailStatusList;
 
     /** [조회 전용] 회원 이름, 이메일 표시용 (JOIN 시 활용) */
     private String user_name;

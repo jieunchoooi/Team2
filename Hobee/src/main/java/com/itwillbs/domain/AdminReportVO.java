@@ -19,6 +19,12 @@ public class AdminReportVO {
 
     // JOIN용
     private String post_title;     		// 게시글 제목
+    private String post_content;        // 댓글 제목
+
     private String comment_content;		// 댓글 내용
+
+    private String done_at;   // 처리 일시 (nullable)
+
+    private String done_reason;  // 사유
 
 }

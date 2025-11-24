@@ -216,6 +216,7 @@ footer {
 }
 .category-item:hover {
 	color: #2672ff;
+	transform: translateY(-2px);
 }
 .category-item:hover i {
 	color: #2672ff;

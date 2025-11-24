@@ -74,6 +74,7 @@
                 <c:when test="${empty sessionScope.user_id}">
                     <a href="#" id="openLoginModal" class="auth-link">로그인</a>
                     <a href="#" id="openInsertModal" class="auth-link">회원가입</a>
+                    <a href="#" id="" class="auth-link">고객센터</a>
                 </c:when>
 
               
@@ -148,6 +149,15 @@ $(document).ready(function () {
  $("#loginBtn").click(function () {
      loginRequest();
  });
+    
+    /* 엔터키 로그인 */
+    $("#loginForm input").keypress(function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            loginRequest();
+        }
+    });
+
 
  function loginRequest() {
      $.ajax({
