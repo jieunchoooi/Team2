@@ -107,7 +107,6 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .lecture-item { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-top: 1px solid #e0e0e0; cursor: pointer; transition: background 0.2s; }
 .lecture-item:hover { background: #f0f0f0; }
 .lecture-number { font-size: 0.85rem; color: var(--gray); font-weight: 600; min-width: 30px; }
-.lecture-title { flex: 1; font-size: 0.95rem; color: #333; }
 .lecture-duration { font-size: 0.85rem; color: var(--gray); }
 .lecture-play-icon { color: var(--primary); font-size: 1rem; }
 
@@ -396,7 +395,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 

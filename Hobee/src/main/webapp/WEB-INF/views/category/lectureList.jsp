@@ -108,18 +108,34 @@ main {
 .card-body {
 	padding: 14px;
 }
-.card-title {
-	font-size: 1rem;
-	font-weight: 600;
-	color: #222;
-	line-height: 1.4;
-	margin-bottom: 6px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-}
+/*강의제목 말줄임표 1줄로 제한 */
+ .card-title { 
+ 	font-size: 1rem; 
+ 	font-weight: 600; 
+ 	color: #222; 
+ 	line-height: 1.4; 
+ 	margin-bottom: 6px; 
+ 	overflow: hidden; 
+ 	text-overflow: ellipsis; 
+ 	display: -webkit-box; 
+ 	-webkit-line-clamp: 1; 
+ 	-webkit-box-orient: vertical; 
+ } 
+
+/*강의제목 말줄임표 2줄로 제한 */
+/* .card-title { */
+/* 	font-size: 1rem; */
+/* 	font-weight: 600; */
+/* 	color: #222; */
+/* 	line-height: 1.4; */
+/* 	margin-bottom: 6px; */
+/* 	overflow: hidden; */
+/* 	text-overflow: ellipsis; */
+/* 	display: -webkit-box; */
+/* 	-webkit-line-clamp: 2; */
+/* 	-webkit-box-orient: vertical; */
+/* } */
+
 .card-instructor {
 	font-size: 0.85rem;
 	color: #666;
