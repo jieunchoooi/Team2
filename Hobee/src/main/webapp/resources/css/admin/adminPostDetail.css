@@ -42,6 +42,7 @@
     border-radius: 18px;
     box-shadow: 0 3px 18px rgba(0,0,0,0.06);
     margin: 0 auto;
+    margin-top: 40px !important;
 }
 
 /* ==========================
@@ -55,7 +56,9 @@
 .detail-info-row {
     display: flex;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .info-label {
@@ -117,6 +120,7 @@
     color: #444;
     margin-top: 12px;
     white-space: pre-line;
+    line-height: 1.8;
 }
 
 /* ==========================
