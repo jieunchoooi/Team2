@@ -133,44 +133,40 @@
 	<section class="course-section">
 		<h3>전체 강의</h3>
 		<div class="course-grid">
-			<c:choose>
-				<c:when test="${not empty lectureList}">
-					<c:forEach var="lecture" items="${lectureList}" varStatus="status">
-						<c:if test="${status.index < 21}">
-							<div class="course-card">
-								<a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}" class="course-thumb-wrapper">
-									<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
-										class="course-thumb" alt="${lecture.lecture_title}">
-									<button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
-								        <i class="far fa-bookmark"></i>
-								    </button>
-								</a>
-								<div class="course-info">
-									<div class="course-title">${lecture.lecture_title}</div>
-									<div class="course-instructor">${lecture.lecture_author}</div>
-									<div class="course-meta">
-										<div class="course-price">
-											<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
-										</div>
-										<div class="course-stats">
-											<span class="rating">
-												<i class="fas fa-star"></i> ${lecture.avg_score}
-												<span class="review-count">(${lecture.review_count})</span>
-											</span>
-											<span class="student-count">
-												<i class="fas fa-user"></i> ${lecture.student_count}+
-											</span>
-										</div>
-									</div>
-								</div>
+			<c:forEach var="lecture" items="${lectureList}" varStatus="status">
+				<div class="course-card">
+					<a
+						href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}"
+						class="course-thumb-wrapper"> <img
+						src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
+						class="course-thumb" alt="${lecture.lecture_title}">
+						<button class="bookmark-btn"
+							onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
+							<i class="far fa-bookmark"></i>
+						</button>
+					</a>
+					<div class="course-info">
+						<div class="course-title">${lecture.lecture_title}</div>
+						<div class="course-instructor">${lecture.lecture_author}</div>
+						<div class="course-meta">
+							<div class="course-price">
+								<fmt:formatNumber value="${lecture.lecture_price}" type="number" />
+								원
 							</div>
-						</c:if>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<p>인기강의가 없습니다.</p>
-				</c:otherwise>
-			</c:choose>
+							<div class="course-stats">
+								<span class="rating"> <i class="fas fa-star"></i>
+									${lecture.avg_score} <span class="review-count">(${lecture.review_count})</span>
+								</span> <span class="student-count"> <i class="fas fa-user"></i>
+									${lecture.student_count}+
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+			<c:if test="${empty lectureList}">
+				<p>전체강의가 없습니다.</p>
+			</c:if>
 		</div>
 	</section>
 	
