@@ -15,6 +15,7 @@
 <body>
 	<!-- header -->
 	<jsp:include page="../include/header.jsp"></jsp:include>
+	
 	<!-- 메인 히어로 섹션 -->
 	<main class="main-hero">
 		<div class="hero-text">
@@ -30,7 +31,7 @@
 	<section class="hobee-category">
 	    <div class="category-list">
 	
-	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item">
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item active">
 	            <i class="fa-solid fa-layer-group"></i>
 	            <span>전체</span>
 	        </a>
@@ -83,65 +84,61 @@
 	    </div>
 	</section>
 	
-	
-	
 	<!-- 인기 강의 섹션 -->
-<section class="course-section">
-	<h3>인기 강의 🔥</h3>
-	<div class="course-grid">
-		<c:choose>
-			<c:when test="${not empty bestList}">
-				<c:forEach var="lecture" items="${bestList}" varStatus="status">
-					<c:if test="${status.index < 8}">
-						<div class="course-card">
-							<a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}">
-								<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
-									class="course-thumb" alt="${lecture.lecture_title}">
-							</a>
-							<div class="course-info">
-								<div class="course-title">${lecture.lecture_title}</div>
-								<div class="course-instructor">${lecture.lecture_author}</div>
-								<div class="course-meta">
-									<div class="course-price">
-										<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
-									</div>
-									<div class="course-stats">
-										<span class="rating">
-											<i class="fas fa-star"></i> ${lecture.avg_score}
-											<span class="review-count">(${lecture.review_count})</span>
-										</span>
-										<span class="student-count">
-											<i class="fas fa-user"></i> ${lecture.student_count}+
-										</span>
-<!-- 										<span class="rating"> -->
-<!-- 											<i class="fas fa-star"></i> 5.0 -->
-<!-- 											<span class="review-count">(232)</span> -->
-<!-- 										</span> -->
-<!-- 										<span class="student-count"> -->
-<!-- 											<i class="fas fa-user"></i> 1928+ -->
-<!-- 										</span> -->
+	<section class="course-section">
+		<h3>인기 강의 🔥</h3>
+		<div class="course-grid">
+			<c:choose>
+				<c:when test="${not empty bestList}">
+					<c:forEach var="lecture" items="${bestList}" varStatus="status">
+						<c:if test="${status.index < 8}">
+							<div class="course-card">
+								<a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}" class="course-thumb-wrapper">
+									<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
+										class="course-thumb" alt="${lecture.lecture_title}">
+									<button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
+								        <i class="far fa-bookmark"></i>
+								    </button>
+								</a>
+								<div class="course-info">
+									<div class="course-title">${lecture.lecture_title}</div>
+									<div class="course-instructor">${lecture.lecture_author}</div>
+									<div class="course-meta">
+										<div class="course-price">
+											<fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
+										</div>
+										<div class="course-stats">
+											<span class="rating">
+												<i class="fas fa-star"></i> ${lecture.avg_score}
+												<span class="review-count">(${lecture.review_count})</span>
+											</span>
+											<span class="student-count">
+												<i class="fas fa-user"></i> ${lecture.student_count}+
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</c:if>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<p>인기강의가 없습니다.</p>
-			</c:otherwise>
-		</c:choose>
-	</div>
-</section>
+						</c:if>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<p>인기강의가 없습니다.</p>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</section>
 	
 	<!-- 할인 강의 섹션 -->
 	<section class="course-section">
 		<h3>할인 중인 강의 💸</h3>
 		<div class="course-grid">
 			<div class="course-card">
-				<a href="${pageContext.request.contextPath}/category/lecture"> <img
-					src="https://picsum.photos/400/250?random=5" class="course-thumb"
-					alt="강의5">
+				<a href="${pageContext.request.contextPath}/category/lecture" class="course-thumb-wrapper">
+					<img src="https://picsum.photos/400/250?random=5" class="course-thumb" alt="강의5">
+					<button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(5, this);">
+						<i class="far fa-bookmark"></i>
+					</button>
 				</a>
 				<div class="course-info">
 					<div class="course-title">캘리그라피 디자인</div>
@@ -152,9 +149,11 @@
 				</div>
 			</div>
 			<div class="course-card">
-				<a href="${pageContext.request.contextPath}/category/lecture"> <img
-					src="https://picsum.photos/400/250?random=6" class="course-thumb"
-					alt="강의6">
+				<a href="${pageContext.request.contextPath}/category/lecture" class="course-thumb-wrapper">
+					<img src="https://picsum.photos/400/250?random=6" class="course-thumb" alt="강의6">
+					<button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(6, this);">
+						<i class="far fa-bookmark"></i>
+					</button>
 				</a>
 				<div class="course-info">
 					<div class="course-title">웹 퍼블리싱 완성반</div>
@@ -165,9 +164,11 @@
 				</div>
 			</div>
 			<div class="course-card">
-				<a href="${pageContext.request.contextPath}/category/lecture"> <img
-					src="https://picsum.photos/400/250?random=7" class="course-thumb"
-					alt="강의7">
+				<a href="${pageContext.request.contextPath}/category/lecture" class="course-thumb-wrapper">
+					<img src="https://picsum.photos/400/250?random=7" class="course-thumb" alt="강의7">
+					<button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(7, this);">
+						<i class="far fa-bookmark"></i>
+					</button>
 				</a>
 				<div class="course-info">
 					<div class="course-title">기초 일본어 회화</div>
@@ -178,9 +179,11 @@
 				</div>
 			</div>
 			<div class="course-card">
-				<a href="${pageContext.request.contextPath}/category/lecture"> <img
-					src="https://picsum.photos/400/250?random=8" class="course-thumb"
-					alt="강의8">
+				<a href="${pageContext.request.contextPath}/category/lecture" class="course-thumb-wrapper">
+					<img src="https://picsum.photos/400/250?random=8" class="course-thumb" alt="강의8">
+					<button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(8, this);">
+						<i class="far fa-bookmark"></i>
+					</button>
 				</a>
 				<div class="course-info">
 					<div class="course-title">도예 취미 클래스</div>
@@ -192,6 +195,7 @@
 			</div>
 		</div>
 	</section>
+	
 	<script>
 		function searchLecture(event) {
 			event.preventDefault();
@@ -202,7 +206,28 @@
 			}
 			window.location.href = '/search?query=' + encodeURIComponent(query);
 		}
+		
+		function toggleBookmark(lectureNum, btn) {
+			// 북마크 토글 로직 (서버에 요청)
+			// TODO: Ajax 요청 구현
+			/*
+			$.ajax({
+				url: '${pageContext.request.contextPath}/bookmark/toggle',
+				method: 'POST',
+				data: { lectureNum: lectureNum },
+				success: function(response) {
+					if(response.success) {
+						btn.classList.toggle('active');
+					}
+				}
+			});
+			*/
+			
+			// 임시: UI만 토글
+			btn.classList.toggle('active');
+		}
 	</script>
+	
 	<footer>© 2025 Hobee | 당신의 취미 파트너</footer>
 </body>
 </html>

@@ -67,7 +67,42 @@
             <div class="detail-content-area">${notice.content}</div>
         </div>
 
+        <c:if test="${!empty files}">
+            <div class="detail-row">
+                <span class="detail-label">첨부파일</span>
+                <div class="detail-value">
+                    <c:forEach var="f" items="${files}">
+                        <a href="${pageContext.request.contextPath}/admin/fileDownload?file=${f.file_name}">
+                            📎 ${f.file_name}
+                        </a><br>
+                    </c:forEach>
+                </div>
+            </div>
+        </c:if>
+
+
         <div class="btn-area">
+
+            <!-- ⭐ 상세에서 공개/숨김 토글 -->
+            <form action="${pageContext.request.contextPath}/admin/adminNoticeVisibleDetail"
+                  method="post"
+                  style="display:inline-block">
+                <input type="hidden" name="notice_id" value="${notice.notice_id}">
+                <input type="hidden" name="is_visible" value="${notice.is_visible == 1 ? 0 : 1}">
+                <button class="${notice.is_visible == 1 ? 'btn-gray' : 'btn-blue'}">
+                    ${notice.is_visible == 1 ? '숨김으로 변경' : '공개로 변경'}
+                </button>
+            </form>
+
+            <!-- ⭐ 상세에서 PIN 고정 / 해제 -->
+            <form action="${pageContext.request.contextPath}/admin/adminNoticePinnedDetail"
+                  method="post" style="display:inline-block">
+                <input type="hidden" name="notice_id" value="${notice.notice_id}">
+                <input type="hidden" name="is_pinned" value="${notice.is_pinned == 1 ? 0 : 1}">
+                <button class="${notice.is_pinned == 1 ? 'btn-orange' : 'btn-gray'}">
+                    ${notice.is_pinned == 1 ? '고정 해제' : '상단 고정'}
+                </button>
+            </form>
 
             <!-- 수정 -->
             <button class="btn-blue"

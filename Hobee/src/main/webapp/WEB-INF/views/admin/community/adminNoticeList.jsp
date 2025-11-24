@@ -8,23 +8,18 @@
     <meta charset="UTF-8">
     <title>공지사항 관리 | Hobee Admin</title>
 
-    <!-- 공통 관리자 CSS -->
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
-    <!-- 공지 목록 전용 CSS -->
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminNoticeList.css">
+
 </head>
 
 <body>
 
-<!-- 공통 상단 헤더 -->
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
-
-<!-- 공통 관리자 사이드바 -->
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
-<!-- ⭐ 메인 -->
 <main class="main-content">
 
     <div class="main-header">
@@ -33,40 +28,88 @@
 
     <div class="table-card">
 
-        <!-- 글쓰기 버튼 -->
-        <div class="right-area">
-            <button class="btn-blue"
-                    onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeWrite'">
-                + 공지 작성
-            </button>
+        <!-- 🔸 검색 + 버튼 정렬 -->
+        <div class="top-bar">
+
+            <!-- 🔍 검색창 -->
+            <form method="get"
+                  action="${pageContext.request.contextPath}/admin/adminNoticeList"
+                  class="search-box">
+
+                <select name="type" class="search-select">
+                    <option value="title"  ${param.type == 'title' ? 'selected' : ''}>제목</option>
+                    <option value="content" ${param.type == 'content' ? 'selected' : ''}>내용</option>
+                    <option value="admin_id" ${param.type == 'admin_id' ? 'selected' : ''}>작성자</option>
+                </select>
+
+                <input type="text" name="keyword" class="search-input"
+                       value="${param.keyword}" placeholder="검색어를 입력하세요">
+
+                <button class="btn-blue" type="submit">검색</button>
+            </form>
+
+            <!-- ➕ 공지작성 + 선택삭제 -->
+            <div class="right-area">
+                <button class="btn-blue"
+                        onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeWrite'">
+                    + 공지 작성
+                </button>
+
+                <button type="button" class="bulk-delete-btn" id="deleteModeBtn">
+                    선택 삭제
+                </button>
+            </div>
+
         </div>
 
+        <!-- ⭐ 정렬 버튼 -->
+        <div class="sort-box">
+            <a href="?sort=recent&type=${type}&keyword=${keyword}"
+               class="sort-btn ${sort == 'recent' ? 'active' : ''}">
+                최신순
+            </a>
+
+            <a href="?sort=views&type=${type}&keyword=${keyword}"
+               class="sort-btn ${sort == 'views' ? 'active' : ''}">
+                조회많은순
+            </a>
+        </div>
+
+        <!-- 📋 공지 리스트 테이블 -->
         <table class="admin-table">
             <thead>
-                <tr>
-                    <th>No</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>등록일</th>
-                    <th>조회</th>
-                    <th>공개</th>
-                    <th>수정</th>
-                    <th>삭제</th>
-                </tr>
+            <tr>
+                <th><input type="checkbox" id="checkAll" class="bulk-check-header" style="display:none;"></th>
+                <th>No</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>등록일</th>
+                <th>조회</th>
+                <th>공개</th>
+                <th>PIN</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
             </thead>
 
             <tbody>
             <c:if test="${empty noticeList}">
                 <tr>
-                    <td colspan="8" class="empty-text">등록된 공지사항이 없습니다.</td>
+                    <td colspan="10" class="empty-text">등록된 공지사항이 없습니다.</td>
                 </tr>
             </c:if>
 
             <c:forEach var="n" items="${noticeList}">
                 <tr>
+
+                    <td>
+                        <input type="checkbox" name="noticeIds"
+                               value="${n.notice_id}" class="bulk-check"
+                               style="display:none;">
+                    </td>
+
                     <td>${n.notice_id}</td>
 
-                    <!-- 제목 → 상세 이동 -->
                     <td>
                         <a class="title-link"
                            href="${pageContext.request.contextPath}/admin/adminNoticeDetail?notice_id=${n.notice_id}">
@@ -78,10 +121,8 @@
                     <td>${n.created_at}</td>
                     <td>${n.view_count}</td>
 
-                    <!-- 공개/숨김 -->
                     <td>
-                        <form action="${pageContext.request.contextPath}/admin/adminNoticeVisible"
-                              method="post">
+                        <form action="${pageContext.request.contextPath}/admin/adminNoticeVisible" method="post">
                             <input type="hidden" name="notice_id" value="${n.notice_id}">
                             <input type="hidden" name="is_visible" value="${n.is_visible == 1 ? 0 : 1}">
                             <button class="${n.is_visible == 1 ? 'btn-blue' : 'btn-gray'}">
@@ -90,7 +131,16 @@
                         </form>
                     </td>
 
-                    <!-- 수정 -->
+                    <td>
+                        <form action="${pageContext.request.contextPath}/admin/adminNoticePinned" method="post">
+                            <input type="hidden" name="notice_id" value="${n.notice_id}">
+                            <input type="hidden" name="is_pinned" value="${n.is_pinned == 1 ? 0 : 1}">
+                            <button class="${n.is_pinned == 1 ? 'btn-orange' : 'btn-gray'}">
+                                ${n.is_pinned == 1 ? '고정 해제' : '상단 고정'}
+                            </button>
+                        </form>
+                    </td>
+
                     <td>
                         <button class="btn-blue"
                                 onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeEdit?notice_id=${n.notice_id}'">
@@ -98,7 +148,6 @@
                         </button>
                     </td>
 
-                    <!-- 삭제 -->
                     <td>
                         <form action="${pageContext.request.contextPath}/admin/adminNoticeDelete"
                               method="post"
@@ -107,14 +156,79 @@
                             <button class="btn-red">삭제</button>
                         </form>
                     </td>
+
                 </tr>
             </c:forEach>
             </tbody>
-
         </table>
+
+        <!-- 📌 페이징 -->
+        <div class="pagination">
+            <c:if test="${pageDTO.prev}">
+                <a href="?page=${pageDTO.startPage - 1}&sort=${sort}&type=${type}&keyword=${keyword}"
+                   class="page-btn">이전</a>
+            </c:if>
+
+            <c:forEach var="p" begin="${pageDTO.startPage}" end="${pageDTO.endPage}">
+                <a href="?page=${p}&sort=${sort}&type=${type}&keyword=${keyword}"
+                   class="page-btn ${pageDTO.page == p ? 'active' : ''}">
+                    ${p}
+                </a>
+            </c:forEach>
+
+            <c:if test="${pageDTO.next}">
+                <a href="?page=${pageDTO.endPage + 1}&sort=${sort}&type=${type}&keyword=${keyword}"
+                   class="page-btn">다음</a>
+            </c:if>
+        </div>
+
     </div>
 
 </main>
+
+<!-- 선택삭제 JS -->
+<script>
+    const deleteModeBtn = document.getElementById("deleteModeBtn");
+    const deleteForm = document.getElementById("deleteForm");
+    const checks = document.querySelectorAll(".bulk-check");
+    const headerCheck = document.querySelector(".bulk-check-header");
+
+    let bulkMode = false;
+
+    deleteModeBtn.addEventListener("click", function (e) {
+        if (!bulkMode) {
+            e.preventDefault();
+            bulkMode = true;
+
+            checks.forEach(cb => cb.style.display = "inline-block");
+            headerCheck.style.display = "inline-block";
+
+            deleteModeBtn.textContent = "선택 삭제 실행";
+            alert("삭제할 공지를 체크하세요!");
+            return;
+        }
+
+        const selected = document.querySelectorAll(".bulk-check:checked");
+        if (selected.length === 0) {
+            alert("삭제할 공지를 선택하세요!");
+            return;
+        }
+
+        selected.forEach(cb => {
+            const hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = "noticeIds";
+            hidden.value = cb.value;
+            deleteForm.appendChild(hidden);
+        });
+
+        deleteForm.submit();
+    });
+
+    headerCheck.addEventListener("change", function () {
+        checks.forEach(cb => cb.checked = this.checked);
+    });
+</script>
 
 </body>
 </html>

@@ -101,25 +101,95 @@ main {
 	transform: translateY(-4px);
 	box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
+
+/* 이미지 북마크 래퍼 */
+.card-img-wrapper {
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
 .card img {
 	width: 100%;
 	object-fit: cover;
 }
+
+/* 북마크 버튼 */
+.bookmark-btn {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	width: 36px;
+	height: 36px;
+	background-color: transparent;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+	box-shadow: none;
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+	z-index: 10;
+}
+
+.bookmark-btn i {
+	font-size: 17px;
+	color: #ededed;
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+	transition: all 0.2s ease;
+	font-weight: 300;
+}
+
+.bookmark-btn:hover {
+	background-color: transparent;
+	transform: scale(1.1);
+}
+
+.bookmark-btn:hover i {
+	color: white;
+	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
+/* 북마크 활성화 상태 */
+.bookmark-btn.active i {
+	color: white;
+	font-weight: 900;
+	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
 .card-body {
 	padding: 14px;
 }
-.card-title {
-	font-size: 1rem;
-	font-weight: 600;
-	color: #222;
-	line-height: 1.4;
-	margin-bottom: 6px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-}
+/*강의제목 말줄임표 1줄로 제한 */
+ .card-title { 
+ 	font-size: 1rem; 
+ 	font-weight: 600; 
+ 	color: #222; 
+ 	line-height: 1.4; 
+ 	margin-bottom: 6px; 
+ 	overflow: hidden; 
+ 	text-overflow: ellipsis; 
+ 	display: -webkit-box; 
+ 	-webkit-line-clamp: 1; 
+ 	-webkit-box-orient: vertical; 
+ } 
+
+/*강의제목 말줄임표 2줄로 제한 */
+/* .card-title { */
+/* 	font-size: 1rem; */
+/* 	font-weight: 600; */
+/* 	color: #222; */
+/* 	line-height: 1.4; */
+/* 	margin-bottom: 6px; */
+/* 	overflow: hidden; */
+/* 	text-overflow: ellipsis; */
+/* 	display: -webkit-box; */
+/* 	-webkit-line-clamp: 2; */
+/* 	-webkit-box-orient: vertical; */
+/* } */
+
 .card-instructor {
 	font-size: 0.85rem;
 	color: #666;
@@ -367,9 +437,14 @@ footer {
 			            </c:if>
 			
 			            <!-- 개별 카드 -->
-			            <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
-			                <div class="card">
+			            <div class="card">
+			                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
 			                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
+			                    <button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(${top.lecture_num}, this);">
+			                        <i class="far fa-bookmark"></i>
+			                    </button>
+			                </a>
+			                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
 			                    <div class="card-body">
 			                        <div class="card-title">${top.lecture_title}</div>
 			                        <div class="card-instructor">${top.lecture_author}</div>
@@ -388,8 +463,8 @@ footer {
 			                            </div>
 			                        </div>
 			                    </div>
-			                </div>
-			            </a>
+			                </a>
+			            </div>
 			
 			            <!-- 3번째 카드마다 또는 마지막 요소에서 slide 닫기 -->
 			            <c:if test="${(status.index + 1) % 3 == 0 || status.last}">
@@ -413,9 +488,14 @@ footer {
 		    <h3 id="all-title">${param.category_detail == null ? '전체' : param.category_detail} 전체 강의</h3>
 		    <div class="all-grid">
 		        <c:forEach var="lec" items="${lectureList}">
-		            <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" style="text-decoration:none;color:inherit;">
-		                <div class="card">
+		            <div class="card">
+		                <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
 		                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
+		                    <button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(${lec.lecture_num}, this);">
+		                        <i class="far fa-bookmark"></i>
+		                    </button>
+		                </a>
+		                <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" style="text-decoration:none;color:inherit;">
 		                    <div class="card-body">
 		                        <div class="card-title">${lec.lecture_title}</div>
 		                        <div class="card-instructor">${lec.lecture_author}</div>
@@ -434,8 +514,8 @@ footer {
 		                            </div>
 		                        </div>
 		                    </div>
-		                </div>
-		            </a>
+		                </a>
+		            </div>
 		        </c:forEach>
 		        <c:if test="${empty lectureList}">
 		            <p>등록된 강의가 없습니다.</p>
@@ -490,6 +570,12 @@ function showSlide(index) {
         dot.classList.remove('active');
         if (i === index) dot.classList.add('active');
     });
+}
+
+// 북마크 토글
+function toggleBookmark(lectureNum, btn) {
+    // TODO: Ajax 요청으로 서버에 북마크 저장
+    btn.classList.toggle('active');
 }
 
 // 초기화
