@@ -262,7 +262,7 @@ public class PaymentService {
 	        return resultVO;
 	    }
 
-	    if (!"PAID".equalsIgnoreCase(payment.getStatus())) {
+	    if (!"paid".equalsIgnoreCase(payment.getStatus())) {
 	        resultVO.setSuccess(false);
 	        resultVO.setMessage("이미 환불되었거나 환불할 수 없는 결제입니다.");
 	        return resultVO;
@@ -388,7 +388,7 @@ public class PaymentService {
 	        return resultVO;
 	    }
 
-	    if (!"PAID".equalsIgnoreCase(payment.getStatus())) {
+	    if (!"paid".equalsIgnoreCase(payment.getStatus())) {
 	        resultVO.setSuccess(false);
 	        resultVO.setMessage("이미 전체 환불된 결제입니다.");
 	        return resultVO;
@@ -414,7 +414,7 @@ public class PaymentService {
 	        return resultVO;
 	    }
 
-	    if ("CANCELLED".equalsIgnoreCase(detail.getStatus())) {
+	    if ("refunded".equalsIgnoreCase(detail.getStatus())) {
 	        resultVO.setSuccess(false);
 	        resultVO.setMessage("이미 환불 처리된 강의입니다.");
 	        return resultVO;

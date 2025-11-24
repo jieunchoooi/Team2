@@ -67,6 +67,17 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .course-meta i { color: var(--primary); }
 .course-description { line-height: 1.7; color: #444;  margin-top: 5px;}
 
+/* 태그 뱃지 스타일 */
+.tag-badge {
+    display: inline-block;
+    background-color: #e3f2fd;  
+    color: #1976d2;  
+    padding: 5px 12px;
+    border-radius: 15px; 
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-right: 6px;
+}
 /* 커리큘럼 섹션 */
 .curriculum-section { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .curriculum-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -78,7 +89,7 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .chapter-item { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; } 
 .chapter-item:hover { border-color: var(--primary); } 
 
-.chapter-header { display: flex; align-items: center; gap: 15px; padding: 18px; cursor: pointer; background: #fff; transition: background 0.2s; }
+.chapter-header { background: #edf5ff; display: flex; align-items: center; gap: 15px; padding: 18px; cursor: pointer; transition: background 0.2s; }
 .chapter-header:hover { background: var(--hover-bg); }
 .chapter-header.active { background: var(--hover-bg); }
 
