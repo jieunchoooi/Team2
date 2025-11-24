@@ -27,61 +27,61 @@
 	</main>
 	
 	<!-- 카테고리 메뉴 -->
-<section class="hobee-category">
-    <div class="category-list">
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item">
-            <i class="fa-solid fa-layer-group"></i>
-            <span>전체</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" class="category-item">
-            <i class="fa-solid fa-palette"></i>
-            <span>디지털드로잉</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" class="category-item">
-            <i class="fa-solid fa-paintbrush"></i>
-            <span>드로잉</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" class="category-item">
-            <i class="fa-solid fa-brush"></i>
-            <span>공예</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI" class="category-item">
-            <i class="fa-solid fa-gamepad"></i>
-            <span>AI스킬업</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" class="category-item">
-            <i class="fa-solid fa-code"></i>
-            <span>프로그래밍</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" class="category-item">
-            <i class="fa-solid fa-database"></i>
-            <span>데이터사이언스</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" class="category-item">
-            <i class="fa-solid fa-language"></i>
-            <span>영어</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" class="category-item">
-            <i class="fa-solid fa-earth-americas"></i>
-            <span>제2외국어</span>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어" class="category-item">
-            <i class="fa-solid fa-graduation-cap"></i>
-            <span>외국어시험</span>
-        </a>
-
-    </div>
-</section>
+	<section class="hobee-category">
+	    <div class="category-list">
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item">
+	            <i class="fa-solid fa-layer-group"></i>
+	            <span>전체</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" class="category-item">
+	            <i class="fa-solid fa-palette"></i>
+	            <span>디지털드로잉</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" class="category-item">
+	            <i class="fa-solid fa-paintbrush"></i>
+	            <span>드로잉</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" class="category-item">
+	            <i class="fa-solid fa-brush"></i>
+	            <span>공예</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI" class="category-item">
+	            <i class="fa-solid fa-gamepad"></i>
+	            <span>AI스킬업</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" class="category-item">
+	            <i class="fa-solid fa-code"></i>
+	            <span>프로그래밍</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" class="category-item">
+	            <i class="fa-solid fa-database"></i>
+	            <span>데이터사이언스</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" class="category-item">
+	            <i class="fa-solid fa-language"></i>
+	            <span>영어</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" class="category-item">
+	            <i class="fa-solid fa-earth-americas"></i>
+	            <span>제2외국어</span>
+	        </a>
+	
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어" class="category-item">
+	            <i class="fa-solid fa-graduation-cap"></i>
+	            <span>외국어시험</span>
+	        </a>
+	
+	    </div>
+	</section>
 	
 	
 	
