@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* ================================
-      메인 레이아웃
+   메인 레이아웃
 ================================ */
 .main-content {
     margin-left: 220px;
@@ -13,7 +13,7 @@
 .main-header h1 {
     font-size: 26px;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin-bottom: 40px;  /* 🔥 상세/수정/작성 페이지 공통 간격 통일 */
     color: #333;
 }
 
@@ -31,7 +31,7 @@
 }
 
 /* ================================
-      폼 입력 그룹
+      입력 그룹
 ================================ */
 .form-group {
     margin-bottom: 25px;
@@ -45,6 +45,7 @@
     color: #444;
 }
 
+/* 공통 input/select/textarea 스타일 */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -54,16 +55,95 @@
     border-radius: 8px;
     font-size: 14px;
     background: #fff;
+    box-sizing: border-box;
 }
 
+/* 작성자(읽기전용) input */
 .form-group input[readonly] {
     background: #f2f2f2;
 }
 
+/* 내용 textarea */
 .form-group textarea {
     height: 200px;
     resize: none;
     line-height: 1.6;
+}
+
+/* ================================
+      공개여부 select — 완전 커스텀
+================================ */
+.form-group select {
+    /* 기본 드롭다운 화살표 제거 */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* 커스텀 화살표 추가 */
+    background: #fff url("data:image/svg+xml;utf8,<svg fill='black' height='20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 8l5 5 5-5z'/></svg>")
+        no-repeat right 14px center;
+
+    padding-right: 40px;   /* 🔥 input과 동일해 보이도록 오른쪽 공간 확보 */
+}
+
+/* ================================
+      기존 첨부파일 목록
+================================ */
+.old-files-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #e4e4e4;
+}
+
+.file-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.file-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-detail {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.file-name {
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.delete-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.delete-check input {
+    transform: scale(1.2);
+    cursor: pointer;
 }
 
 /* ================================
@@ -84,18 +164,11 @@ button {
     color: #fff;
 }
 
-/* 파란 버튼 */
-.btn-blue {
-    background: #397dff;
-}
-.btn-blue:hover {
-    background: #2f67d4;
-}
+.btn-blue { background: #397dff; }
+.btn-blue:hover { background: #2f67d4; }
 
-/* 회색 버튼 */
-.btn-gray {
-    background: #aaa;
-}
-.btn-gray:hover {
-    background: #888;
-}
+.btn-gray { background: #aaa; }
+.btn-gray:hover { background: #888; }
+
+.btn-red { background: #e74a3b; }
+.btn-red:hover { background: #cf2f23; }

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* ================================
-      메인 레이아웃
+   메인 레이아웃
 ================================ */
 .main-content {
     margin-left: 220px;
@@ -13,12 +13,12 @@
 .main-header h1 {
     font-size: 26px;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin-bottom: 40px; /* 🔥 상세·수정·작성 페이지 통일 */
     color: #333;
 }
 
 /* ================================
-      입력 카드 박스
+      입력 카드
 ================================ */
 .form-card {
     width: 100%;
@@ -31,7 +31,7 @@
 }
 
 /* ================================
-      입력 폼 스타일
+      폼 그룹
 ================================ */
 .form-group {
     margin-bottom: 25px;
@@ -45,6 +45,7 @@
     color: #444;
 }
 
+/* 공통 input/select/textarea */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -53,12 +54,37 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
+    background: #fff;
+    box-sizing: border-box;
 }
 
+/* textarea */
 .form-group textarea {
-    height: 180px;
+    height: 200px;
     resize: none;
     line-height: 1.6;
+}
+
+/* 작성자 (readonly) */
+.form-group input[readonly] {
+    background: #f2f2f2;
+}
+
+
+/* ================================
+      🔥 공개 여부 select 커스텀
+================================ */
+.form-group select {
+    /* 기본 브라우저 화살표 제거 */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* 커스텀 화살표 추가 */
+    background: #fff url("data:image/svg+xml;utf8,<svg fill='black' width='22' height='22' xmlns='http://www.w3.org/2000/svg'><path d='M7 9l5 5 5-5z'/></svg>") 
+        no-repeat right 14px center;
+
+    padding-right: 40px;   /* 🔥 input과 동일해 보이도록 보정 */
 }
 
 /* ================================
@@ -75,11 +101,10 @@ button {
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    color: #fff;
     font-size: 14px;
+    color: #fff;
 }
 
-/* 파란 버튼 */
 .btn-blue {
     background: #397dff;
 }
@@ -88,7 +113,6 @@ button {
     background: #2f67d4;
 }
 
-/* 회색 버튼 */
 .btn-gray {
     background: #aaa;
 }

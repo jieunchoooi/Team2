@@ -20,4 +20,6 @@ public class AdminNoticeVO {
     private String created_at;    // 생성일
     private String updated_at;    // 수정일
 
+    private int is_pinned;   // 1 = 상단 고정, 0 = 일반
+
 }

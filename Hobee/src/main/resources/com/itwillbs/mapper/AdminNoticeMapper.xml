@@ -5,80 +5,227 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminNoticeMapper">
 
-    <!-- 공지사항 전체 목록 -->
+    <!-- ================================
+         1) 공지사항 목록 + 검색 + 정렬 + 페이징
+         ================================ -->
     <select id="getNoticeList" resultType="com.itwillbs.domain.AdminNoticeVO">
-        SELECT 
-            notice_id,
-            admin_id,
-            title,
-            content,
-            is_visible,
-            view_count,
-            created_at,
-            updated_at
+        SELECT
+        notice_id,
+        admin_id,
+        title,
+        content,
+        is_visible,
+        is_pinned,
+        view_count,
+        created_at,
+        updated_at
         FROM notice
-        ORDER BY notice_id DESC
+        <where>
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="type == 'title'">
+                        title LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'content'">
+                        content LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'admin_id'">
+                        admin_id LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+
+        <!-- 정렬 옵션 -->
+        <choose>
+            <when test="pageDTO.sort == 'views'">
+                ORDER BY is_pinned DESC, view_count DESC
+            </when>
+            <otherwise>
+                ORDER BY is_pinned DESC, notice_id DESC
+            </otherwise>
+        </choose>
+
+        <!-- 페이징 -->
+        LIMIT #{pageDTO.start}, #{pageDTO.amount}
     </select>
 
-    <!-- 공지사항 등록 -->
-    <insert id="insertNotice">
-        INSERT INTO notice (
-            admin_id,
-            title,
-            content,
-            is_visible
-        ) VALUES (
-            #{admin_id},
-            #{title},
-            #{content},
-            #{is_visible}
-        )
+
+    <!-- ================================
+         2) 전체 개수 (페이징용)
+         ================================ -->
+    <select id="getNoticeCount" resultType="int">
+        SELECT COUNT(*)
+        FROM notice
+        <where>
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="type == 'title'">
+                        title LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'content'">
+                        content LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'admin_id'">
+                        admin_id LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+
+    <!-- ================================
+         3) 공지 등록 (PK 자동 증가)
+         ================================ -->
+    <insert id="insertNotice"
+            useGeneratedKeys="true"
+            keyProperty="notice_id">
+        INSERT INTO notice
+        (admin_id, title, content, is_visible)
+        VALUES
+        (#{admin_id}, #{title}, #{content}, #{is_visible})
     </insert>
 
-    <!-- 공지사항 상세 -->
+
+    <!-- ================================
+         4) 공지 상세 조회
+         ================================ -->
     <select id="getNoticeDetail" resultType="com.itwillbs.domain.AdminNoticeVO">
-        SELECT 
-            notice_id,
-            admin_id,
-            title,
-            content,
-            is_visible,
-            view_count,
-            created_at,
-            updated_at
+        SELECT
+        notice_id,
+        admin_id,
+        title,
+        content,
+        is_visible,
+        is_pinned,
+        view_count,
+        created_at,
+        updated_at
         FROM notice
         WHERE notice_id = #{notice_id}
     </select>
 
-    <!-- 조회수 증가 -->
+
+    <!-- ================================
+         5) 조회수 증가
+         ================================ -->
     <update id="updateViewCount">
         UPDATE notice
         SET view_count = view_count + 1
         WHERE notice_id = #{notice_id}
     </update>
 
-    <!-- 공지사항 수정 -->
+
+    <!-- ================================
+         6) 공지 수정
+         ================================ -->
     <update id="updateNotice">
         UPDATE notice
-        SET 
-            title = #{title},
-            content = #{content},
-            is_visible = #{is_visible},
-            updated_at = NOW()
+        SET
+        title = #{title},
+        content = #{content},
+        is_visible = #{is_visible},
+        updated_at = NOW()
         WHERE notice_id = #{notice_id}
     </update>
 
-    <!-- 공지사항 삭제 -->
+
+    <!-- ================================
+         7) 공지 삭제(단일)
+         ================================ -->
     <delete id="deleteNotice">
         DELETE FROM notice
         WHERE notice_id = #{notice_id}
     </delete>
 
-    <!-- 공개 / 숨김 토글 -->
+
+    <!-- ================================
+         8) 공지 삭제(여러 개 일괄)
+         ================================ -->
+    <delete id="deleteNoticeSelect">
+        DELETE FROM notice
+        WHERE notice_id IN
+        <foreach collection="noticeIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <!-- ================================
+         9) 공개/숨김 토글
+         ================================ -->
     <update id="updateVisible">
         UPDATE notice
         SET is_visible = #{is_visible}
         WHERE notice_id = #{notice_id}
     </update>
+
+
+    <!-- ================================
+         10) 상단 고정(PIN)
+         ================================ -->
+    <update id="updatePinned">
+        UPDATE notice
+        SET is_pinned = #{is_pinned}
+        WHERE notice_id = #{notice_id}
+    </update>
+
+
+    <!-- ================================
+         11) 첨부파일 등록
+         ================================ -->
+    <insert id="insertNoticeFile">
+        INSERT INTO notice_file
+        (notice_id, file_name, file_path, file_size)
+        VALUES
+        (#{notice_id}, #{file_name}, #{file_path}, #{file_size})
+    </insert>
+
+
+    <!-- ================================
+         12) 첨부파일 목록 조회
+         ================================ -->
+    <select id="getNoticeFiles" resultType="com.itwillbs.domain.NoticeFileVO">
+        SELECT
+        file_id,
+        notice_id,
+        file_name,
+        file_path,
+        file_size,
+        upload_date
+        FROM notice_file
+        WHERE notice_id = #{notice_id}
+        ORDER BY file_id ASC
+    </select>
+
+
+    <!-- ================================
+         13) 첨부파일 전체 삭제
+         ================================ -->
+    <delete id="deleteNoticeFiles">
+        DELETE FROM notice_file
+        WHERE notice_id = #{notice_id}
+    </delete>
+
+    <!-- 특정 파일 1개 조회 -->
+    <select id="getNoticeFile" resultType="com.itwillbs.domain.NoticeFileVO">
+        SELECT
+        file_id,
+        notice_id,
+        file_name,
+        file_path,
+        file_size,
+        upload_date
+        FROM notice_file
+        WHERE file_id = #{file_id}
+    </select>
+
+    <!-- 특정 파일 1개 삭제 -->
+    <delete id="deleteNoticeFile">
+        DELETE FROM notice_file
+        WHERE file_id = #{file_id}
+    </delete>
+
 
 </mapper>
