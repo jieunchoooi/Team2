@@ -1,75 +1,122 @@
 @charset "UTF-8";
 
+/* ================================
+   🔷 수정 페이지 전체 레이아웃
+================================ */
 .main-content {
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 20px 40px;
 }
 
+/* ================================
+   🔷 제목 (왼쪽 정렬)
+================================ */
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    margin: 20px 0;
+    color: #111;
+    margin: 10px 0 25px 10px;
+    text-align: left;
 }
 
+/* ================================
+   🔷 카드 박스
+================================ */
 .card-box {
-    background: #fff;
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+
+    /* 🔥 카드박스 너비 확장 */
+    max-width: 900px;   /* 기존 760~800 → 900으로 확장 */
+    margin: 0 auto;     /* 중앙 정렬 */
 }
 
+/* ================================
+   🔷 입력 영역
+================================ */
 .edit-row {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .edit-row label {
     font-weight: 600;
     margin-bottom: 8px;
+    color: #333;
 }
 
 .edit-input {
-    height: 40px;
-    border: 1px solid #ccc;
+    width: 100%;
+    height: 42px;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 8px 12px;
     font-size: 15px;
 }
 
 .edit-textarea {
+    width: 100%;
     height: 250px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 12px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    resize: vertical;
     font-size: 15px;
-    resize: none;
-    background: #fafafa;
 }
 
+/* ================================
+   🔷 버튼 영역
+================================ */
 .btn-area {
-    margin-top: 20px;
     display: flex;
     gap: 10px;
+    margin-top: 20px;
 }
 
-/* 버튼 */
 .btn-blue {
+    padding: 10px 22px;
     background: #4C7DF5;
+    color: white;
     border: none;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 15px;
     border-radius: 8px;
+    font-size: 15px;
     cursor: pointer;
 }
 
 .btn-gray {
-    background: #999;
+    padding: 10px 22px;
+    background: #888;
+    color: white;
     border: none;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 15px;
     border-radius: 8px;
+    font-size: 15px;
     cursor: pointer;
 }
+
+.btn-blue:hover { background: #2f65e0; }
+.btn-gray:hover { background: #666; }
+
+/* 🔥 수정 페이지에서 제목이 사라지는 오류 해결 */
+main.main-content .page-title {
+    margin-top: 40px !important;
+    margin-bottom: 30px !important;
+    padding-left: 5px !important;
+    text-align: left !important;
+    display: block !important;
+}
+
+/* 🔥 게시글 수정 제목 강제 표시 */
+.main-content > .page-title {
+    display: block !important;
+    margin-top: 20px !important;
+    margin-left: 0 !important;
+    padding-left: 5px !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #111 !important;
+    visibility: visible !important;
+}
+
+

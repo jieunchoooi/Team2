@@ -1,8 +1,5 @@
 @charset "UTF-8";
 
-/* ================================
-      메인 레이아웃
-================================ */
 .main-content {
     margin-left: 220px;
     padding: 40px;
@@ -10,29 +7,102 @@
     min-height: 100vh;
 }
 
-.main-header h1 {
-    font-size: 26px;
-    font-weight: 700;
+.page-title {
+    font-size: 30px;
+    font-weight: 800;
     margin-bottom: 25px;
-    color: #333;
+    color:#222;
 }
 
-/* ================================
-      카드 박스 (테이블 래퍼)
-================================ */
+/* 카드박스 */
 .table-card {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     background: #fff;
     padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
-/* ================================
-      테이블 스타일
-================================ */
+/* 검색박스 */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-select {
+    height: 38px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    background: white;
+    font-size: 14px;
+}
+
+.search-input {
+    height: 38px;
+    width: 260px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    font-size: 14px;
+}
+
+.search-btn {
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 8px;
+    background: #4C7DF5;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.reset-btn {
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 8px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.batch-red {
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 8px;
+    background: #ff5b5b;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* 상태 필터 (두 번째 줄) */
+.status-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 6px 14px;
+    background: #ddd;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+}
+
+.filter-btn.active {
+    background: #4C7DF5;
+    color: white;
+}
+
+/* 테이블 */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -42,70 +112,118 @@
     background: #e9efff;
 }
 
-.admin-table th {
-    padding: 14px 10px;
-    text-align: center;
-    font-size: 14px;
-    color: #333;
-}
-
+.admin-table th,
 .admin-table td {
-    padding: 12px 10px;
+    padding: 12px;
     text-align: center;
-    font-size: 14px;
     border-bottom: 1px solid #ececec;
+    font-size: 14px;
 }
 
-.empty-text {
-    text-align: center;
-    padding: 30px;
-    color: #777;
-    font-size: 15px;
-}
-
-/* ================================
-      링크 스타일 (게시글 제목)
-================================ */
-.title-link {
-    color: #397dff;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.title-link:hover {
-    text-decoration: underline;
-}
-
-/* ================================
-      버튼 스타일
-================================ */
+/* 버튼 공통 */
 button {
-    padding: 7px 14px;
+    padding: 7px 12px;
     border-radius: 6px;
-    cursor: pointer;
     border: none;
+    cursor: pointer;
     font-size: 13px;
 }
 
-.btn-blue {
+.btn-blue { background:#397dff; color:#fff; }
+.btn-blue:hover { background:#2f5fda; }
+
+.btn-red { background:#e84040; color:#fff; }
+.btn-red:hover { background:#d93333; }
+
+.btn-green { background:#27a745; color:#fff; }
+.btn-green:hover { background:#1f8f34; }
+
+.small { font-size:12px; padding:4px 8px; }
+
+/* 배지 */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+.badge.green { background: #4CAF50; }
+.badge.yellow { background: #FFB300; }
+.badge.red { background: #E53935; }
+
+/* 페이징 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.page-btn {
+    padding: 8px 14px;
+    background: #e4e6eb;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+}
+.page-btn.active {
     background: #397dff;
-    color: #fff;
+    color:white;
 }
 
-.btn-blue:hover {
-    background: #2f67d4;
+.batch-btn-box {
+    display: none; 
 }
 
-.btn-red {
-    background: #e74a3b;
-    color: #fff;
+.select-mode .batch-btn-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-.btn-red:hover {
-    background: #cf2f23;
+/* 초기 화면에서는 체크박스 숨김 */
+#checkAll,
+.rowCheck {
+    display: none !important;
 }
 
-.small {
-    padding: 5px 10px !important;
-    font-size: 12px !important;
+/* 선택 모드일 때만 표시 */
+.select-mode #checkAll,
+.select-mode .rowCheck {
+    display: inline-block !important;
 }
+
+/* 검색줄 전체 높이 통일 */
+.search-select,
+.search-input,
+.search-btn,
+.reset-btn,
+.batch-red {
+    height: 42px !important;
+    padding: 0 16px !important;
+    line-height: 42px !important;
+    display: flex;
+    align-items: center;
+    border-radius: 8px !important;
+}
+
+/* input(검색창)은 line-height 적용되지 않아서 따로 조정 */
+.search-input {
+    padding: 0 14px !important;
+}
+
+/* select는 텍스트가 위로 치우치는 경우가 있어 조정 */
+.search-select {
+    padding: 0 12px !important;
+}
+
+/* 버튼은 텍스트 정확히 가운데 */
+.search-btn,
+.reset-btn,
+.batch-red {
+    justify-content: center;
+}
+
+
+
