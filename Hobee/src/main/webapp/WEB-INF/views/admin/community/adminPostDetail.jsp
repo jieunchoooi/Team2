@@ -19,97 +19,84 @@
 
 <main class="main-content">
 
-    <!-- 페이지 제목 -->
     <div class="page-title">게시글 상세보기</div>
 
-    <!-- 카드박스 -->
-    <div class="card-box">
+    <div class="detail-card">
 
-        <div class="detail-row">
-            <span class="label">제목</span>
-            <span class="value">${post.title}</span>
+        <div class="detail-info-box">
+
+            <div class="detail-info-row">
+                <span class="info-label">제목</span>
+                <span class="info-value">${post.title}</span>
+            </div>
+
+            <div class="detail-info-row">
+                <span class="info-label">작성자</span>
+                <span class="info-value">${post.author}</span>
+            </div>
+
+            <div class="detail-info-row">
+                <span class="info-label">게시판</span>
+                <span class="info-value">${post.board_name}</span>
+            </div>
+
+            <div class="detail-info-row">
+                <span class="info-label">등록일</span>
+                <span class="info-value">${post.created_at}</span>
+            </div>
+
+            <div class="detail-info-row">
+                <span class="info-label">조회수</span>
+                <span class="info-value">${post.views}</span>
+            </div>
+
+            <div class="detail-info-row">
+                <span class="info-label">노출 여부</span>
+
+                <div class="exposure-box">
+                    <span class="state-badge ${post.is_visible == 1 ? 'on' : 'off'}">
+                        ${post.is_visible == 1 ? '공개' : '숨김'}
+                    </span>
+
+                    <form action="${pageContext.request.contextPath}/admin/adminPostToggle" method="post">
+                        <input type="hidden" name="post_id" value="${post.post_id}">
+                        <button class="toggle-btn ${post.is_visible == 1 ? 'btn-red' : 'btn-green'}">
+                            ${post.is_visible == 1 ? '숨기기' : '표시하기'}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
-        <div class="detail-row">
-            <span class="label">작성자</span>
-            <span class="value">${post.author}</span>
-        </div>
-
-        <div class="detail-row">
-            <span class="label">게시판</span>
-            <span class="value">${post.board_name}</span>
-        </div>
-
-        <div class="detail-row">
-            <span class="label">등록일</span>
-            <span class="value">${post.created_at}</span>
-        </div>
-
-        <div class="detail-row">
-            <span class="label">조회수</span>
-            <span class="value">${post.views}</span>
-        </div>
-
-        <!-- ================================
-             🔥 노출 여부 + 토글 버튼 (정렬 깔끔 버전)
-        ================================= -->
-       <div class="detail-row">
-    <span class="label">노출 여부</span>
-
-    <span class="value" style="display:flex; align-items:center; gap:12px;">
-
-        <!-- 🔥 공개/숨김을 버튼으로 통일 -->
-        <button class="btn-toggle ${post.is_visible == 1 ? 'btn-green' : 'btn-gray'}" disabled>
-            ${post.is_visible == 1 ? '공개' : '숨김'}
-        </button>
-
-        <!-- 🔥 숨기기/표시하기 버튼 -->
-        <form action="${pageContext.request.contextPath}/admin/adminPostToggle" method="post">
-            <input type="hidden" name="post_id" value="${post.post_id}">
-            <button class="btn-toggle ${post.is_visible == 1 ? 'btn-red' : 'btn-green'}">
-                ${post.is_visible == 1 ? '숨기기' : '표시하기'}
-            </button>
-        </form>
-
-    </span>
-</div>
-
-        <!-- 내용 -->
-        <div class="content-box-wrapper">
+        <div class="detail-content-box">
             <h3>내용</h3>
-            <div class="content-box">
+            <div class="detail-content-area">
                 ${post.content}
             </div>
         </div>
-        
-      
 
-        <!-- 버튼 영역 -->
-        <div class="btn-area">
-        
-        
-           <!-- 수정하기 -->
-    <button class="btn-blue"
-        onclick="location.href='${pageContext.request.contextPath}/admin/adminPostEdit?post_id=${post.post_id}'">
-        수정하기
-    </button>
+        <div class="detail-btn-area">
 
-    <!-- 목록으로 -->
-    <button class="btn-blue"
-        onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'">
-        목록으로
-    </button>
+            <button class="btn-blue"
+                onclick="location.href='${pageContext.request.contextPath}/admin/adminPostEdit?post_id=${post.post_id}'">
+                수정하기
+            </button>
 
-    <!-- 삭제 -->
-    <form action="${pageContext.request.contextPath}/admin/adminPostDelete"
-          method="post" onsubmit="return confirm('삭제하시겠습니까?');">
-        <input type="hidden" name="post_id" value="${post.post_id}">
-        <button class="btn-red">삭제</button>
-    </form>
+            <button class="btn-gray"
+                onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'">
+                목록으로
+            </button>
 
-</div>
+            <form action="${pageContext.request.contextPath}/admin/adminPostDelete"
+                method="post" onsubmit="return confirm('삭제하시겠습니까?');">
+                <input type="hidden" name="post_id" value="${post.post_id}">
+                <button class="btn-red">삭제</button>
+            </form>
 
-    </div><!-- card-box -->
+        </div>
+
+    </div>
 
 </main>
 
