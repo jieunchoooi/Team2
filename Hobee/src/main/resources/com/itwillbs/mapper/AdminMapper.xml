@@ -452,4 +452,53 @@
 		update user set user_status = 'active' where user_num = #{user_num}
 	</update>
 
+<!-- 카테고리 메인 추가 -->
+	<insert id="addCateMain" parameterType="com.itwillbs.domain.Category_mainVO">
+		INSERT INTO category_main (category_main_name)
+		value (#{category_main_name})
+	</insert>
+
+<!-- 카테고리 리스트 -->
+	<select id="categoryList" resultType="com.itwillbs.domain.CategoryVO">
+		select * from category
+		order by category_main_name desc
+	</select>
+	
+<!-- 카테고리 메인 리스트 -->
+	<select id="categoMainryList" resultType="com.itwillbs.domain.Category_mainVO">
+		select category_main_name from category_main
+	</select>
+	
+<!-- 카테고리 모달 리스트 -->
+<!-- 	<select id="categoMainryList" resultType="com.itwillbs.domain.Category_mainVO"> -->
+<!-- 		select category_main_name from category_main -->
+<!-- 	</select> -->
+
+<!-- 카테고리 메인 삭제 -->
+	<delete id="CateMainDelete">
+		delete from category_main where category_main_name = #{category_main_name};
+	</delete>
+	
+	<!-- 카테고리 추가 -->
+	<insert id="addCategoty" parameterType="com.itwillbs.domain.CategoryVO">
+		INSERT INTO category (category_main_name, category_detail)
+		value (#{category_main_name}, #{category_detail})
+	</insert>
+	
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteCategory">
+		delete from category where category_num = #{category_num};
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

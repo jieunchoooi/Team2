@@ -2,6 +2,8 @@ package com.itwillbs.mapper;
 
 import java.util.List;
 
+import com.itwillbs.domain.CategoryVO;
+import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
@@ -83,6 +85,22 @@ public interface AdminMapper {
 	public UserVO classSearch(int user_num);
 
 	public List<LectureVO> teacherClassCheck(int user_num);
+
+	public List<CategoryVO> categoryList();
+
+	public List<Category_mainVO> categoMainryList();
+
+	public void addCateMain(Category_mainVO category_mainVO);
+
+	public void CateMainDelete(Category_mainVO category_mainVO);
+
+	public void addCategoty(CategoryVO categoryVO);
+
+	public void deleteCategory(int category_num);
+
+	public Category_mainVO categoMainryList2(int category_num);
+
+	
 
 
 

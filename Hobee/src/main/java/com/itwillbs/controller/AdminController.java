@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.domain.CategoryVO;
+import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
@@ -41,12 +43,90 @@ public class AdminController {
    private String uploadPath1;
 
    @GetMapping("/adminCategory")
-   public String adminCategory() {
+   public String adminCategory(Model model) {
       System.out.println("AdminController adminCategory()");
-
+      
+      List<Category_mainVO> categoMainryList = adminService.categoMainryList();
+      List<CategoryVO> categoryList = adminService.categoryList();
+      model.addAttribute("categoryList", categoryList);
+      model.addAttribute("categoMainryList", categoMainryList);
+      
       return "admin/adminCategory";
    }
 
+//   카테고리 대분류 추가
+   @PostMapping("/addCategoryMain")
+   public String addCategoryMain(@RequestParam("category_main_name") String category_main_name) {
+	   System.out.println("AdminController addCategoryMain()");
+	   
+   		Category_mainVO category_mainVO = new Category_mainVO();
+   		category_mainVO.setCategory_main_name(category_main_name);
+   		
+   		adminService.addCateMain(category_mainVO);
+   		
+   		return "admin/adminCategory";
+   }
+   	
+//  카테고리 대분류 삭제
+   @PostMapping("/CategoryMainDelete")
+   public String CategoryMainDelete(@RequestParam("category_main_name") String category_main_name) {
+	   System.out.println("AdminController CategoryMainDelete()");
+	   
+   		Category_mainVO category_mainVO = new Category_mainVO();
+   		category_mainVO.setCategory_main_name(category_main_name);
+   		
+   		adminService.CateMainDelete(category_mainVO);
+   		
+   		return "admin/adminCategory";
+   }
+   	
+//  카테고리 추가
+   @PostMapping("/addCategory")
+   public String CategoryMainDelete(@RequestParam("category_main_name") String category_main_name,
+   							  @RequestParam("category_detail") String category_detail) {
+	   System.out.println("AdminController CategoryMainDelete()");
+	   
+   		CategoryVO categoryVO = new CategoryVO();
+   		categoryVO.setCategory_main_name(category_main_name);
+   		categoryVO.setCategory_detail(category_detail);
+   		adminService.addCategoty(categoryVO);
+   		
+   		return "admin/adminCategory";
+   }
+   
+   // 카테고리 삭제
+   	@GetMapping("/deleteCategory")
+   	public String deleteCategory(@RequestParam("category_num") int category_num) {
+   		System.out.println("AdminController deleteCategory()");
+   		
+   		adminService.deleteCategory(category_num);
+   		
+   		return "admin/adminCategory";
+   	}
+   	
+ // 모달에 카테고리 정보 보여주기
+   	@GetMapping("/categoryEditInfoModal")
+   	public String categoryEditInfoModal(@RequestParam("category_num") int category_num, Model model) {
+   		System.out.println("AdminController categoryEditInfoModal()");
+//   	 
+//   	// 1. 수정할 카테고리 정보 조회
+//   	    CategoryVO category = adminService.selectCategoryByNum(category_num);
+//   	    model.addAttribute("category", category);
+//   	    
+//   	    // 2. 대분류 목록도 함께 전달 (셀렉트박스에 옵션 표시용)
+//   	    List<Category_mainVO> categoMainryList = adminService.selectCategoryMainList();
+//   	    model.addAttribute("categoMainryList", categoMainryList);
+   	    return "admin/CategoryEditinfoModal";
+   	}
+    
+   	// 2. 카테고리 수정 처리
+   	@PostMapping("/updateCategory")
+   	public String updateCategory(CategoryVO categoryVO) {
+//   	    categoryService.updateCategory(categoryVO);
+   	    return "redirect:/admin/categoryManage"; // 카테고리 관리 페이지로 리다이렉트
+   	}
+   	
+   	
    // 클래스 등록
    @GetMapping("/adminClassAdd")
    public String adminClassAdd(Model model) {

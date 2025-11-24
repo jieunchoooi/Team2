@@ -6,6 +6,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.CategoryVO;
+import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
@@ -254,6 +256,39 @@ public class AdminService {
 		System.out.println("AdminService teacherClassCheck()");
 		return adminMapper.teacherClassCheck(user_num);
 	}
+
+	public List<CategoryVO> categoryList() {
+		System.out.println("AdminService categoryList()");
+		return adminMapper.categoryList();
+	}
+
+	public List<Category_mainVO> categoMainryList() {
+		System.out.println("AdminService categoMainryList()");
+		return adminMapper.categoMainryList();
+	}
+
+	public void addCateMain(Category_mainVO category_mainVO) {
+		System.out.println("AdminService addCateMain()");
+		adminMapper.addCateMain(category_mainVO);
+	}
+
+	public void CateMainDelete(Category_mainVO category_mainVO) {
+		System.out.println("AdminService CateMainDelete()");
+		adminMapper.CateMainDelete(category_mainVO);
+	}
+
+	public void addCategoty(CategoryVO categoryVO) {
+		System.out.println("AdminService addCategoty()");
+		adminMapper.addCategoty(categoryVO);
+	}
+
+	public void deleteCategory(int category_num) {
+		System.out.println("AdminService deleteCategory()");
+		adminMapper.deleteCategory(category_num);
+	}
+
+
+
 
 
 

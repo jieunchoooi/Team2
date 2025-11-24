@@ -135,7 +135,7 @@ let deleteBtn = document.querySelectorAll('.btn-delete');
 deleteBtn.forEach(function(btn) {
     btn.onclick = function() {
         let lectureNum = this.getAttribute('data-num');
-        let result = confirm("클래스를 삭제하시겠습니까?");
+        let result = confirm("강의를 삭제하시겠습니까?");
         if(result) {
             alert("강의가 삭제되었습니다.");
             location.href = "${pageContext.request.contextPath}/admin/deleteClass?lecture_num=" + lectureNum;
