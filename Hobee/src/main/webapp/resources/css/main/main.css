@@ -97,7 +97,8 @@ main p {
 	font-size: 1rem;
 	font-weight: 600;
 	color: #333;
-	margin-bottom: 6px;
+	height:20px;
+	margin-bottom: 4px;
 	line-height: 1.4;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -108,12 +109,12 @@ main p {
 .course-instructor {
 	font-size: 0.85rem;
 	color: #666;
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 .course-meta {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 5px;
 }
 .course-stats {
 	display: flex;

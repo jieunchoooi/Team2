@@ -30,7 +30,7 @@
 	<section class="hobee-category">
 	    <div class="category-list">
 	
-	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item">
+	        <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" class="category-item active">
 	            <i class="fa-solid fa-layer-group"></i>
 	            <span>전체</span>
 	        </a>

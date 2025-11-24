@@ -19,22 +19,22 @@
   --bg: #f9fafc;
 }
 
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
-  font-family: 'Pretendard', sans-serif; 
-}
+/* * {  */
+/*   margin: 0;  */
+/*   padding: 0;  */
+/*   box-sizing: border-box;  */
+/*   font-family: 'Pretendard', sans-serif;  */
+/* } */
 
 body { 
   background: var(--bg); 
   color: var(--text-color); 
   min-height: 100vh;
-  padding: 20px;
+/*   padding: 20px; */
 }
 
 .modal-container {
-  max-width: 700px;
+  width: 700px;
   margin: 0 auto;
   background: #fff;
   border-radius: 16px;
