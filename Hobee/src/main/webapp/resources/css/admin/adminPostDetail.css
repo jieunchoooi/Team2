@@ -1,188 +1,157 @@
 @charset "UTF-8";
 
-/* ================================
-   🔷 메인 콘텐츠 (왼쪽 정렬)
-================================ */
+/* ==========================
+   메인 콘텐츠 영역
+========================== */
 .main-content {
-    padding: 20px 40px;
-    margin-left: 260px; /* 사이드바 때문에 */
-    text-align: left;
+    background: #f5f6fa;
+    padding: 100px 50px 60px 50px;  /* header 때문에 여백 확보 */
+    margin-left: 220px;             /* sidebar 만큼 오른쪽 이동 */
 }
 
-/* ================================
-   🔷 중앙 카드 박스
-================================ */
-.card-box {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-
-    width: 85%;              /* 🔥 박스 크기 */
-    max-width: 1100px;       /* 🔥 너무 넓지 않게 */
-    margin: 0 auto;          /* 🔥 화면 중앙 정렬 */
-}
-
-/* ================================
-   🔷 페이지 제목
-================================ */
+/* ==========================
+   페이지 제목
+========================== */
+/* ==========================
+   페이지 제목 (왼쪽 정렬)
+========================== */
 .page-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin: 10px 0 25px 0;
+    font-size: 32px;
+    font-weight: 800;
+    color: #111;
+
+    /* 위치 */
+    margin-top: -20px;   /* 필요 없으면 0으로 조절 가능 */
+    margin-bottom: 28px;
+    margin-left: 5px;    /* main-content 안에서 살짝만 들여쓰기 */
+
+    /* 가운데 정렬용 설정 삭제 */
+    width: auto;
+    max-width: none;
 }
 
-/* ================================
-   🔷 상세 행 스타일
-================================ */
-.detail-row {
+
+/* ==========================
+   카드 박스
+========================== */
+.detail-card {
+    width: 100%;
+    max-width: 1200px;
+    background: #fff;
+    padding: 35px 40px;
+    border-radius: 18px;
+    box-shadow: 0 3px 18px rgba(0,0,0,0.06);
+    margin: 0 auto;
+}
+
+/* ==========================
+   정보 박스
+========================== */
+.detail-info-box {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 25px;
+}
+
+.detail-info-row {
     display: flex;
-    padding: 15px 0;
-    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
-.label {
-    width: 120px;
-    font-weight: bold;
+.info-label {
+    width: 140px;
+    font-weight: 700;
     color: #444;
 }
 
-.value {
-    flex: 1;
+.info-value {
+    font-size: 15px;
+    color: #333;
 }
 
-
-/* ================================
-   🔷 배지
-================================ */
-.badge-active,
-.badge-inactive {
-    padding: 8px 18px;        /* 🔥 더 큰 버튼 느낌 */
-    font-size: 15px;          /* 🔥 글자 크게 */
-    font-weight: 600;         /* 🔥 진하게 */
-    border-radius: 25px;      /* 🔥 더 둥글게 */
+/* ==========================
+   노출 여부
+========================== */
+.exposure-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
+.state-badge {
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+}
+.state-badge.on { background: #2ecc71; }
+.state-badge.off { background: #7e7e7e; }
 
-/* ================================
-   🔷 🔥 숨기기 / 표시 버튼 (리스트와 동일 크기)
-================================ */
-/* 토글 버튼 공통 */
-.btn-toggle {
-    padding: 8px 18px;
-    border-radius: 6px;
+.toggle-btn {
+    height: 34px;
+    padding: 0 20px;
+    border-radius: 8px;
+    font-weight: 600;
     border: none;
-    font-size: 14px;
     cursor: pointer;
 }
+.btn-green { background: #2ecf8f; color: #fff; }
+.btn-red   { background: #ff4d4f; color: #fff; }
 
-/* 상태 표시용 (disabled) */
-.btn-green {
-    background:#4CAF50;
-    color:white;
+/* ==========================
+   내용 박스
+========================== */
+.detail-content-box h3 {
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: 700;
 }
 
-.btn-gray {
-    background:#6c757d;
-    color:white;
-}
-
-/* 숨기기 버튼 */
-.btn-red {
-    background:#FF5B5B;
-    color:white;
-}
-
-.btn-red:hover {
-    background:#e04646;
-}
-
-.btn-green:hover {
-    background:#3a9a42;
-}
-
-
-/* ================================
-   🔷 내용 박스
-================================ */
-.content-box-wrapper {
-    margin-top: 25px;
-}
-
-.content-box {
-    background: #fafafa;
+.detail-content-area {
+    background: #f1f3f9;
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid #ddd;
-    min-height: 180px;
-    white-space: pre-wrap;
+    border: 1px solid #e1e4eb;
+    font-size: 15px;
+    color: #444;
+    margin-top: 12px;
+    white-space: pre-line;
 }
 
-
-/* ================================
-   🔷 목록 / 삭제 버튼 (간격 좁게+크기 보정)
-================================ */
-.btn-area {
+/* ==========================
+   버튼 영역
+========================== */
+.detail-btn-area {
     display: flex;
-    justify-content: flex-start;
-    gap: 10px;  /* 🔥 간격 적당히 */
-    margin-top: 30px;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 35px;
 }
 
 .btn-blue {
-    background: #4C7DF5;
-    padding: 8px 20px;
-    font-size: 15px;
+    background: #2b59ff;
     color: #fff;
+    padding: 10px 22px;
     border-radius: 8px;
     border: none;
-    cursor: pointer;
-}
-
-.btn-red-small {
-    background: #FF5B5B;
-    padding: 8px 20px;
-    font-size: 15px;
-    color: #fff;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-blue:hover,
-.btn-red-small:hover {
-    opacity: .85;
-}
-
-.btn-red,
-.btn-green {
-    padding: 8px 20px !important;   /* 버튼 크게 */
-    font-size: 14px !important;
-    border-radius: 8px !important;
-}
-
-.badge-active,
-.badge-inactive {
-    padding: 8px 20px !important;      /* 🔥 크게! */
-    font-size: 15px !important;        /* 🔥 글자 크게 */
     font-weight: 600;
-    border-radius: 25px;               /* 더 동글동글 */
-    display: inline-block;
 }
 
-/* 🔥 공개 / 숨김 배지를 버튼처럼 강제 적용 */
-.detail-row .badge-active,
-.detail-row .badge-inactive {
-    display: inline-flex !important;     /* 강제로 버튼 형태 */
-    align-items: center !important;
-    justify-content: center !important;
-
-    padding: 8px 20px !important;        /* 버튼 크기 */
-    font-size: 15px !important;          /* 커진 글자 */
-    font-weight: 600 !important;
-    border-radius: 25px !important;      /* 더 둥글게 */
-
-    height: 32px !important;             /* 버튼 높이 동일 */
-    line-height: 1 !important;
+.btn-gray {
+    background: #6d6d6d;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
 }
 
+.btn-red {
+    background: #ff4d4f;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+}
