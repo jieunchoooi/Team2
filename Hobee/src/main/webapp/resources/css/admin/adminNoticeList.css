@@ -18,12 +18,114 @@
 }
 
 /* ================================
-      상단 우측: 글쓰기 버튼
+      🔸 검색 + 우측 버튼 묶음
 ================================ */
+/* 검색 + 버튼 전체 라인 정렬 */
+.top-bar {
+    display: flex;
+    align-items: center;   /* 전체 높이 자동 정렬 */
+    gap: 10px;
+}
+/* ================================
+      🔍 검색박스
+================================ */
+/* 🔥 검색 select + input + 검색버튼 묶음 */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+/* 🔥 모든 요소 높이 통일 */
+.search-select {
+    height: 38px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 14px;
+}
+.search-input {
+    height: 38px;
+    padding: 0 12px;
+}
+
+.search-box button,
+.right-area button {
+    height: 38px;
+}
+
+/* 🔥 입력창 width 살짝 줄여서 전체 균형 잡기 */
+.search-input {
+    width: 250px;
+}
+
+/* ================================
+      오른쪽 버튼 영역
+================================ */
+/* 🔥 오른쪽 버튼 2개 묶음 */
 .right-area {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 15px;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+/* ================================
+      공통 버튼 스타일
+================================ */
+button {
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 13px;
+}
+
+/* 파란 버튼 */
+.btn-blue {
+    background: #397dff;
+    color: #fff;
+}
+.btn-blue:hover {
+    background: #2f67d4;
+}
+
+/* 회색 버튼 */
+.btn-gray {
+    background: #aaa;
+    color: #fff;
+}
+.btn-gray:hover {
+    background: #888;
+}
+
+/* 빨간 버튼 */
+.btn-red {
+    background: #e74a3b;
+    color: #fff;
+}
+.btn-red:hover {
+    background: #cf2f23;
+}
+
+/* 주황 버튼 */
+.btn-orange {
+    background: #ff8c42;
+    color: #fff;
+}
+.btn-orange:hover {
+    background: #e6762d;
+}
+
+/* 일괄 삭제 버튼 */
+.bulk-delete-btn {
+    background: #ff4d4d;
+    color: #fff;
+}
+.bulk-delete-btn:hover {
+    background: #e60000;
 }
 
 /* ================================
@@ -40,7 +142,31 @@
 }
 
 /* ================================
-      테이블 스타일
+      정렬 버튼
+================================ */
+.sort-box {
+    margin: 10px 0 15px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.sort-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: #eee;
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.sort-btn.active {
+    background: #2573ff;
+    color: white;
+    font-weight: 700;
+}
+
+/* ================================
+      테이블
 ================================ */
 .admin-table {
     width: 100%;
@@ -65,6 +191,7 @@
     border-bottom: 1px solid #ececec;
 }
 
+/* 빈 테이블 텍스트 */
 .empty-text {
     text-align: center;
     padding: 30px;
@@ -72,56 +199,44 @@
     color: #777;
 }
 
-/* ================================
-      제목 링크
-================================ */
+/* 제목 링크 */
 .title-link {
     color: #397dff;
     font-weight: 600;
     text-decoration: none;
 }
-
 .title-link:hover {
     text-decoration: underline;
 }
 
 /* ================================
-      버튼 스타일
+      페이징
 ================================ */
-button {
-    padding: 7px 14px;
+.pagination {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.page-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 4px;
     border-radius: 6px;
-    cursor: pointer;
-    border: none;
-    font-size: 13px;
+    background: #f5f5f5;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
 }
 
-/* 파란 버튼 */
-.btn-blue {
-    background: #397dff;
-    color: #fff;
+.page-btn.active {
+    background: #2573ff;
+    color: white;
+    font-weight: 700;
 }
 
-.btn-blue:hover {
-    background: #2f67d4;
+.page-btn:hover {
+    background: #d8e6ff;
 }
 
-/* 회색 버튼 */
-.btn-gray {
-    background: #aaa;
-    color: #fff;
-}
 
-.btn-gray:hover {
-    background: #888;
-}
 
-/* 빨간 버튼 */
-.btn-red {
-    background: #e74a3b;
-    color: #fff;
-}
-
-.btn-red:hover {
-    background: #cf2f23;
-}
