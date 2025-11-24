@@ -670,6 +670,58 @@ body.modal-open {
   margin-left: 4px;
 }
 
+/* 이미지 북마크 래퍼 */
+.lecture-img-wrapper {
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+/* 북마크 버튼 */
+.bookmark-btn {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	width: 36px;
+	height: 36px;
+	background-color: transparent;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+	box-shadow: none;
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+	z-index: 10;
+}
+
+.bookmark-btn i {
+	font-size: 17px;
+	color: #ededed;
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+	transition: all 0.2s ease;
+	font-weight: 300;
+}
+
+.bookmark-btn:hover {
+	background-color: transparent;
+	transform: scale(1.1);
+}
+
+.bookmark-btn:hover i {
+	color: white;
+	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
+/* 북마크 활성화 상태 */
+.bookmark-btn.active i {
+	color: white;
+	font-weight: 900;
+	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
 </style>
 </head>
 <body>
@@ -812,21 +864,26 @@ body.modal-open {
       </c:forEach>
     </div>
 
-    <!-- 강사의 다른 강의 -->
+	<!-- 강사의 다른 강의 -->
 	<div class="instructor-section">
 	  <h3>강사의 다른강의</h3>
 	  <div class="lecture-grid">
 	    <c:choose>
 	      <c:when test="${not empty authorLectures}">
 	        <c:forEach var="lecture" items="${authorLectures}">
-	          <div class="lecture-card" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
-	            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
-	                 alt="${lecture.lecture_title}">
-	            <div class="lecture-info">
+	          <div class="lecture-card">
+	            <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
+	              <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
+	                   alt="${lecture.lecture_title}">
+	              <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(${lecture.lecture_num}, this);">
+	                <i class="far fa-bookmark"></i>
+	              </button>
+	            </div>
+	            <div class="lecture-info" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
 	              <div class="lecture-title">${lecture.lecture_title}</div>
 	              <div class="lecture-instructor">${lecture.lecture_author}</div>
 	              <div class="lecture-meta">
-	              	<div class="lecture-price">
+	                <div class="lecture-price">
 	                  <fmt:formatNumber value="${lecture.lecture_price}" type="number" />원
 	                </div>
 	                <div class="lecture-stats">
@@ -859,10 +916,15 @@ body.modal-open {
 	   <c:choose>
 	    <c:when test="${not empty similarLectures}">
 	      <c:forEach var="slecture" items="${similarLectures}">
-	        <div class="lecture-card" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
-	          <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
-	               alt="${slecture.lecture_title}">
-	          <div class="lecture-info">
+	        <div class="lecture-card">
+	          <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
+	            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
+	                 alt="${slecture.lecture_title}">
+	            <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(${slecture.lecture_num}, this);">
+	              <i class="far fa-bookmark"></i>
+	            </button>
+	          </div>
+	          <div class="lecture-info" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
 	            <div class="lecture-title">${slecture.lecture_title}</div>
 	            <div class="lecture-instructor">${slecture.lecture_author}</div>
 	            <div class="lecture-meta">
@@ -892,6 +954,7 @@ body.modal-open {
 	  </div>
 	</div>
 </div>
+
   <!-- 우측 사이드바: 이미지 + 구매박스 -->
   <div class="right-sidebar">
     <img class="course-thumbnail" src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}" alt="디지털 드로잉 클래스" />
@@ -1049,6 +1112,12 @@ body.modal-open {
       allToggles.forEach(toggle => toggle.classList.remove('active'));
       allHeaders.forEach(header => header.classList.remove('active'));
     }
+  }
+  
+  //북마크 토글 함수
+  function toggleBookmark(lectureNum, btn) {
+    // TODO: Ajax 요청으로 서버에 북마크 저장
+    btn.classList.toggle('active');
   }
   
   // ⭐ 별점 선택 변수
