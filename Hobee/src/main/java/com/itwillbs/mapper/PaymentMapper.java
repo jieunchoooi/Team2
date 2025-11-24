@@ -35,7 +35,7 @@ public interface PaymentMapper {
     PaymentVO getPayment(int paymentId);
 
     /** ----------------------------------------------
-     * 🔹 환불 처리 시 상태 → cancelled 로 변경
+     * 🔹 환불 처리 시 상태 → refunded 로 변경
      * ---------------------------------------------- */
     int updatePaymentStatusRefund(int paymentId);
 

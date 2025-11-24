@@ -315,7 +315,7 @@ public class MemberController {
 
 	        // JSP에서 사용하도록 모델에 담기
 	        model.addAttribute("payment", payment);
-
+	        System.out.println("📌 PaymentVO JSON = " + payment);
 	        // JSP 경로
 	        return "member/payment";  // /WEB-INF/views/member/payment.jsp
 	    }

@@ -5,209 +5,249 @@
 
 <mapper namespace="com.itwillbs.mapper.PaymentMapper">
 
-    <!-- ============================================================
-         📌 PaymentList 전용 ResultMap (리스트 페이지)
-         - payment 1건에 여러 강의가 JOIN되므로 리스트로 매핑
-       ============================================================ -->
-    <resultMap id="PaymentListMap" type="com.itwillbs.domain.PaymentVO">
+	<!-- ============================================================ 
+				📌 PaymentList 
+		전용 ResultMap (리스트 페이지) - payment 1건에 여러 강의가 JOIN되므로 리스트로 매핑 
+		============================================================ -->
+	<resultMap id="PaymentListMap"
+		type="com.itwillbs.domain.PaymentVO">
 
-        <!-- 단일 결제 정보 -->
-        <id property="payment_id" column="payment_id"/>
-        <result property="user_num" column="user_num"/>
-        <result property="amount" column="amount"/>
-        <result property="used_points" column="used_points"/>
-        <result property="saved_points" column="saved_points"/>
-        <result property="status" column="status"/>
-        <result property="imp_uid" column="imp_uid"/>
-        <result property="merchant_uid" column="merchant_uid"/>
-        <result property="created_at" column="created_at"/>
+		<!-- 단일 결제 정보 -->
+		<id property="payment_id" column="payment_id" />
+		<result property="user_num" column="user_num" />
+		<result property="amount" column="amount" />
+		<result property="used_points" column="used_points" />
+		<result property="saved_points" column="saved_points" />
+		<result property="status" column="status" />
+		<result property="imp_uid" column="imp_uid" />
+		<result property="merchant_uid" column="merchant_uid" />
+		<result property="created_at" column="created_at" />
 
-        <!-- 회원 정보 -->
-        <result property="user_name" column="user_name"/>
-        <result property="user_email" column="user_email"/>
+		<!-- 회원 정보 -->
+		<result property="user_name" column="user_name" />
+		<result property="user_email" column="user_email" />
 
-        <!-- 강의 정보 리스트 -->
-        <collection property="lectureNumList" ofType="int">
-            <result column="lecture_num"/>
-        </collection>
+		<!-- 강의 정보 리스트 -->
+		<collection property="lectureNumList" ofType="int">
+			<result column="lecture_num" />
+		</collection>
 
-        <collection property="lectureTitleList" ofType="string">
-            <result column="lecture_title"/>
-        </collection>
+		<collection property="lectureTitleList" ofType="string">
+			<result column="lecture_title" />
+		</collection>
 
-        <collection property="lecturePriceList" ofType="int">
-            <result column="lecture_price"/>
-        </collection>
+		<collection property="lecturePriceList" ofType="int">
+			<result column="lecture_price" />
+		</collection>
 
-    </resultMap>
-
-
-
-    <!-- ============================================================
-         📌 상세 조회 전용 ResultMap (모달 상세)
-         - 리스트 페이지와 동일하게 리스트 매핑
-       ============================================================ -->
-    <resultMap id="PaymentDetailMap" type="com.itwillbs.domain.PaymentVO">
-
-        <!-- 단일 결제 정보 -->
-        <id property="payment_id" column="payment_id"/>
-        <result property="user_num" column="user_num"/>
-        <result property="amount" column="amount"/>
-        <result property="used_points" column="used_points"/>
-        <result property="saved_points" column="saved_points"/>
-        <result property="status" column="status"/>
-        <result property="imp_uid" column="imp_uid"/>
-        <result property="merchant_uid" column="merchant_uid"/>
-        <result property="created_at" column="created_at"/>
-
-        <!-- 회원 정보 -->
-        <result property="user_name" column="user_name"/>
-        <result property="user_email" column="user_email"/>
-
-        <!-- 강의 정보 리스트 -->
-        <collection property="lectureNumList" ofType="int">
-            <result column="lecture_num"/>
-        </collection>
-
-        <collection property="lectureTitleList" ofType="string">
-            <result column="lecture_title"/>
-        </collection>
-
-        <collection property="lecturePriceList" ofType="int">
-            <result column="lecture_price"/>
-        </collection>
-
-    </resultMap>
+	</resultMap>
 
 
+	<!-- ============================================================
+     📌 PaymentDetailMap
+     결제 1건(PaymentVO) + 해당 결제에 포함된 강의 상세정보(PaymentDetailVO 리스트)
+     
+      구조:
+     PaymentVO
+       List<PaymentDetailVO> details   ← 1:N 구조 (정석 MyBatis 방식)
+     
+    장점:
+        5개의 강의가 있으면 details 안에 PaymentDetailVO 5개가 100% 정확히 담김
+        강의명/가격/상태가 서로 꼬이거나 1개만 들어오는 문제 완전 해결
+        부분환불/전체환불 판단에도 최적화됨
+		=============================================================== -->
+<resultMap id="PaymentDetailMap" type="com.itwillbs.domain.PaymentVO">
 
-    <!-- ============================================================
-         결제 INSERT
-       ============================================================ -->
-    <insert id="insertPayment" parameterType="com.itwillbs.domain.PaymentVO">
-        INSERT INTO payment (
-            user_num, amount, used_points, saved_points,
-            status, imp_uid, merchant_uid, created_at
-        )
-        VALUES (
-            #{user_num}, #{amount}, #{used_points}, #{saved_points},
-            #{status}, #{imp_uid}, #{merchant_uid}, NOW()
-        );
-        <selectKey resultType="int" keyProperty="payment_id" order="AFTER">
-            SELECT LAST_INSERT_ID();
-        </selectKey>
-    </insert>
+    <id property="payment_id" column="payment_id"/>
+    <result property="user_num" column="user_num"/>
+    <result property="amount" column="amount"/>
+    <result property="used_points" column="used_points"/>
+    <result property="saved_points" column="saved_points"/>
+    <result property="status" column="payment_status"/>
+    <result property="imp_uid" column="imp_uid"/>
+    <result property="merchant_uid" column="merchant_uid"/>
+    <result property="created_at" column="created_at"/>
+
+    <result property="user_name" column="user_name"/>
+    <result property="user_email" column="user_email"/>
+
+    <collection property="details" ofType="com.itwillbs.domain.PaymentDetailVO">
+        <id property="detail_id" column="detail_id"/>
+        
+        <!-- payment_detail -->
+        <result property="payment_id" column="detail_payment_id"/>
+        <result property="lecture_num" column="lecture_num"/>
+        <result property="original_price" column="original_price"/>
+        <result property="sale_price" column="sale_price"/>
+        <result property="used_points" column="detail_used_points"/>
+        <result property="saved_points" column="detail_saved_points"/>
+        <result property="status" column="detail_status"/>
+        <result property="created_at" column="detail_created_at"/>
+
+        <!-- lecture JOIN -->
+        <result property="lecture_title" column="lecture_title"/>
+        <result property="lecture_author" column="lecture_author"/>
+        <result property="lecture_img" column="lecture_img"/>
+        <result property="lecture_price" column="lecture_price"/>
+
+    </collection>
+</resultMap>
 
 
 
-    <!-- ============================================================
-         imp_uid 중복 체크
-       ============================================================ -->
-    <select id="checkDuplicateImpUid" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM payment WHERE imp_uid = #{impUid};
-    </select>
+
+
+	<!-- ============================================================ 
+							결제 INSERT 
+		============================================================ -->
+	<insert id="insertPayment"
+		parameterType="com.itwillbs.domain.PaymentVO">
+		INSERT INTO payment (
+		user_num, amount, used_points, saved_points,
+		status, imp_uid, merchant_uid, created_at
+		)
+		VALUES (
+		#{user_num}, #{amount}, #{used_points}, #{saved_points},
+		#{status}, #{imp_uid}, #{merchant_uid}, NOW()
+		);
+		<selectKey resultType="int" keyProperty="payment_id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
 
 
 
-    <!-- ============================================================
-         📌 결제 리스트 조회 (PaymentListMap 적용)
-       ============================================================ -->
-    <select id="getPaymentList" parameterType="int" resultMap="PaymentListMap">
-
-        SELECT
-            p.payment_id,
-            p.user_num,
-            p.amount,
-            p.used_points,
-            p.saved_points,
-            p.status,
-            p.imp_uid,
-            p.merchant_uid,
-            p.created_at,
-
-            u.user_name,
-            u.user_email,
-
-            l.lecture_num,
-            l.lecture_title,
-            l.lecture_price
-
-        FROM payment p
-        LEFT JOIN user u ON p.user_num = u.user_num
-        LEFT JOIN enrollment e ON p.payment_id = e.payment_id
-        LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
-
-        WHERE p.user_num = #{user_num}
-        ORDER BY p.payment_id DESC;
-
-    </select>
+	<!-- ============================================================ 
+								imp_uid 중복 체크 
+		============================================================ -->
+	<select id="checkDuplicateImpUid" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*) FROM payment WHERE imp_uid = #{impUid};
+	</select>
 
 
 
-    <!-- ============================================================
-         📌 상세 조회 — PaymentDetailMap 사용
-       ============================================================ -->
-    <select id="getPayment" parameterType="int" resultMap="PaymentDetailMap">
+	<!-- ============================================================ 📌 결제 
+					리스트 조회 (PaymentListMap 적용) 
+		============================================================ -->
+	<select id="getPaymentList" parameterType="int"
+		resultMap="PaymentListMap">
 
-        SELECT
-            p.payment_id,
-            p.user_num,
-            p.amount,
-            p.used_points,
-            p.saved_points,
-            p.status,
-            p.imp_uid,
-            p.merchant_uid,
-            p.created_at,
+		SELECT
+		p.payment_id,
+		p.user_num,
+		p.amount,
+		p.used_points,
+		p.saved_points,
+		p.status,
+		p.imp_uid,
+		p.merchant_uid,
+		p.created_at,
 
-            u.user_name,
-            u.user_email,
+		u.user_name,
+		u.user_email,
 
-            l.lecture_num,
-            l.lecture_title,
-            l.lecture_price
+		l.lecture_num,
+		l.lecture_title,
+		l.lecture_price
 
-        FROM payment p
-        LEFT JOIN user u ON p.user_num = u.user_num
-        LEFT JOIN enrollment e ON p.payment_id = e.payment_id
-        LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
+		FROM payment p
+		LEFT JOIN user u ON p.user_num = u.user_num
+		LEFT JOIN enrollment e ON p.payment_id = e.payment_id
+		LEFT JOIN lecture l ON e.lecture_num = l.lecture_num
 
-        WHERE p.payment_id = #{payment_id};
+		WHERE p.user_num = #{user_num}
+		ORDER BY p.payment_id DESC;
 
-    </select>
-
-
-
-    <!-- ============================================================
-         환불 verify 용 단건 조회
-       ============================================================ -->
-    <select id="getPaymentById" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
-        SELECT *
-        FROM payment
-        WHERE payment_id = #{payment_id};
-    </select>
+	</select>
 
 
 
-    <!-- ============================================================
-         결제 상태 변경 → refunded
-       ============================================================ -->
-    <update id="updatePaymentStatusRefund" parameterType="int">
-        UPDATE payment
-        SET status = 'refunded'
-        WHERE payment_id = #{payment_id};
-    </update>
+	<!-- ============================================================ 📌 상세 
+						조회 — PaymentDetailMap 사용 
+		============================================================ -->
+	<select id="getPayment" parameterType="int" resultMap="PaymentDetailMap">
+
+    SELECT
+        -- payment
+        p.payment_id,
+        p.user_num,
+        p.amount,
+        p.used_points,
+        p.saved_points,
+        p.status              AS payment_status,
+        p.imp_uid,
+        p.merchant_uid,
+        p.created_at,
+
+        -- user
+        u.user_name,
+        u.user_email,
+
+        -- payment_detail
+        d.detail_id,
+        d.payment_id          AS detail_payment_id,
+        d.lecture_num,
+        d.original_price,
+        d.sale_price,
+        d.used_points         AS detail_used_points,
+        d.saved_points        AS detail_saved_points,
+        d.status              AS detail_status,
+        d.created_at          AS detail_created_at,
+
+        -- lecture JOIN (실제 테이블 기준)
+        l.lecture_title,
+        l.lecture_author,
+        l.lecture_img,
+        l.lecture_price
+
+    FROM payment p
+    JOIN user u
+        ON p.user_num = u.user_num
+    JOIN payment_detail d
+        ON p.payment_id = d.payment_id
+    JOIN lecture l
+        ON d.lecture_num = l.lecture_num
+
+    WHERE p.payment_id = #{payment_id}
+
+</select>
 
 
 
-    <!-- ============================================================
-         유저 총 결제 금액
-       ============================================================ -->
-    <select id="getUserTotalPayment" parameterType="int" resultType="int">
-        SELECT COALESCE(SUM(amount), 0)
-        FROM payment
-        WHERE user_num = #{user_num}
-          AND status = 'paid';
-    </select>
+	<!-- ============================================================ 
+					환불 verify 용 단건 조회 
+	============================================================ -->
+	<select id="getPaymentById" parameterType="int"
+		resultType="com.itwillbs.domain.PaymentVO">
+		SELECT *
+		FROM payment
+		WHERE payment_id = #{payment_id};
+	</select>
+
+
+
+	<!-- ============================================================ 
+					결제 상태 변경 → refunded 
+	============================================================ -->
+	<update id="updatePaymentStatusRefund" parameterType="int">
+		UPDATE payment
+		SET status = 'refunded'
+		WHERE payment_id = #{payment_id};
+	</update>
+
+
+
+	<!-- ============================================================ 
+						유저 총 결제 금액 
+	============================================================ -->
+	<select id="getUserTotalPayment" parameterType="int"
+		resultType="int">
+		SELECT COALESCE(SUM(amount), 0)
+		FROM payment
+		WHERE user_num = #{user_num}
+		AND status = 'paid';
+	</select>
 
 </mapper>
