@@ -19,7 +19,7 @@
   --bg: #f9fafc;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
 body { background: var(--bg); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
 

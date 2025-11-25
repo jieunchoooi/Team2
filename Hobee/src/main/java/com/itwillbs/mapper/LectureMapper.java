@@ -49,6 +49,8 @@ public interface LectureMapper {
 
 	int hasWrittenReview(@Param("user_id") String user_id, @Param("lecture_num") int lecture_num);
 
+	List<LectureVO> getAllLectures(String search);
+
 	
 
 
