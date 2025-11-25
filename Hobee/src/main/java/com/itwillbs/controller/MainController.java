@@ -23,8 +23,10 @@ public class MainController {
 		System.out.println("MainController main()");
 		
 		List<LectureVO> bestList = lectureService.getTop10();
-		
+		List<LectureVO> lectureList = lectureService.getAllLectures();
+
 		model.addAttribute("bestList", bestList);
+		model.addAttribute("lectureList", lectureList);
 		
 		return "main/main";
 	}

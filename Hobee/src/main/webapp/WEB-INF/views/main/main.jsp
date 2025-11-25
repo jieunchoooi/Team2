@@ -180,8 +180,14 @@
 		}
 		window.location.href = '/search?query=' + encodeURIComponent(query);
 	}
+	
+	const isLogin = "${not empty sessionScope.user_id}" === "true";
 		
 	function toggleBookmark(lectureNum, btn) {
+		if(!isLogin){
+			alert("로그인후 사용할수 있는 서비스 입니다.");
+			return;
+		}
 		// 북마크 토글 로직 (서버에 요청)
 		// TODO: Ajax 요청 구현
 		/*
