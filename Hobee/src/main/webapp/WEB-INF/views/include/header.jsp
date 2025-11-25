@@ -124,6 +124,7 @@ $(document).ready(function () {
  // 로그인 모달 열기
     window.openLoginModal = function() {
         $("#loginModal").fadeIn().css("display", "flex");
+        $("#loginForm input[name='user_id']").focus();
     }
 
     // 로그인 모달 닫기
