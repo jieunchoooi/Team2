@@ -410,7 +410,7 @@ footer {
 	<section class="content">
 		<div class="search-bar">
 			<i class="fa-solid fa-magnifying-glass"></i>
-			<input type="text" placeholder="강의를 검색해보세요">
+			<input type="text" id="searchInput" placeholder="원하는 강의를 검색해보세요" onkeydown="if(event.key === 'Enter'){ searchLecture(); }"/>
 		</div>
 	
 		<!-- 🔹 Top10 슬라이더 -->
@@ -528,6 +528,17 @@ footer {
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
 
 <script>
+
+function searchLecture(){
+	const search = document.getElementById('searchInput').value.trim();
+	if(search === ''){
+		alert("검색어를 입력해주세요.");
+		return;
+	}
+	window.location.href='${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
+}
+
+
 let currentSlide = 0;
 const slides = document.querySelectorAll('.top10-slide');
 const totalSlides = slides.length;

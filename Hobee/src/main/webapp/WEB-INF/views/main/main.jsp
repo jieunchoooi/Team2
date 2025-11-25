@@ -176,7 +176,7 @@ function searchLecture(event) {
      event.preventDefault();
      const search = document.getElementById('searchInput').value.trim();
      if (!search) {
-        alert('검색어를 입력해주세요!');
+        alert('검색어를 입력해주세요.');
         return;
      }
      window.location.href = '${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);

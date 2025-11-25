@@ -410,13 +410,13 @@ footer {
 	<section class="content">
 		<div class="search-bar">
 			<i class="fa-solid fa-magnifying-glass"></i>
-			<input type="text" placeholder="강의를 검색해보세요">
+			<input type="text" id="searchInput" placeholder="강의를 검색해보세요" onkeydown="if(event.key === 'Enter'){searchLecture();}">
 		</div>
 	
 		
 		<!-- 🔹 전체 강의 -->
 		<div class="section">
-		    <h3 id="all-title">${param.search} 검색결과</h3>
+		    <h3 id="all-title">'${param.search}' 검색결과</h3>
 		    <div class="all-grid">
 		        <c:forEach var="lec" items="${lectureList}">
 		            <div class="card">
@@ -459,6 +459,15 @@ footer {
 <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
 
 <script>
+
+function searchLecture(){
+	const search = document.getElementById('searchInput').value.trim();
+	if(!search){
+		alert("검색어를 입력해주세요.");
+		return;
+	}
+	window.location.href='${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
+}
 
 // 북마크 토글
 function toggleBookmark(lectureNum, btn) {
