@@ -312,6 +312,11 @@ public class AdminService {
 		adminMapper.deleteChaptersByLectureNum(lecture_num);
 	}
 
+	public String lectureCount(int user_num) {
+		System.out.println("AdminService lectureCount()");
+		return adminMapper.lectureCount(user_num);
+	}
+
 
 
 

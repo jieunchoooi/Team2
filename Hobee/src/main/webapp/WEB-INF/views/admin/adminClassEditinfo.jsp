@@ -19,7 +19,7 @@
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
 		<div class="main-header">
-			<h1>클래스 등록</h1>
+			<h1>클래스 수정</h1>
 		</div>
 
 		<form id="classAddForm" class="form-container"
@@ -32,7 +32,8 @@
 						<span>📚</span>
 					</c:when>
 					<c:otherwise>
-						<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}" alt="프로필 사진">
+						<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}" alt="프로필 사진" 
+						     style="width: 200px; height: 200px; object-fit: cover;">
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -154,10 +155,9 @@
 				<!-- 서버로 전송할 hidden input (쉼표로 구분된 태그들) -->
 				<input type="hidden" name="lecture_tag" id="lecture_tag_hidden">
 			</div>
-<!-- ✅ 이 div만 추가 -->
-<div style="text-align: center;">
-    <button class="btn" type="button" onclick="history.back();">목록</button>
-    <button class="btn" type="submit">수정하기</button>
+<div class="btn-wrapper">
+    <button class="btn" type="button" onclick="history.back();" style="margin:0;">목록</button>
+    <button class="btn btn-primary" type="submit" style="margin:0;">수정하기</button>
 </div>
 		</form>
 	</main>
@@ -450,6 +450,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // 파일 선택 시 미리보기
+// 파일 선택 시 미리보기
 document.getElementById("lecture_img").addEventListener('change', function(e) {
     let file = e.target.files[0];
     
@@ -472,14 +473,13 @@ document.getElementById("lecture_img").addEventListener('change', function(e) {
         img.src = e.target.result;
         img.style.width = '200px';
         img.style.height = '200px';
-        img.style.objectFit = 'cover';
+        img.style.objectFit = 'contain'; /* ✅ cover에서 contain으로 변경 */
 
         profilePic.appendChild(img);
     }
 
     reader.readAsDataURL(file);
 });
-
 let chapterIndex = 0;
 
 //✅ 폼 제출 전 챕터 인덱스 재정렬

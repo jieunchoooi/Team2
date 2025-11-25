@@ -29,16 +29,22 @@
 			<div class="main-header">
 				<div class="profile-box">
 					<div class="profile-pic">
-						<c:choose>
-							<c:when test="${empty user.user_file}">
-								<span>🐵</span>
-							</c:when>
-							<c:otherwise>
-								<img
-									src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}"
-									alt="프로필 사진">
-							</c:otherwise>
-						</c:choose>
+						<!-- 프로필 사진 -->
+<div class="profile-image">
+    <c:choose>
+        <c:when test="${not empty userVO.user_file}">
+            <!-- ✅ background-image 방식으로 변경 -->
+            <div class="profile-img-bg" 
+                 style="background-image: url('${pageContext.request.contextPath}/resources/img/user_picture/${userVO.user_file}');">
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="no-image">
+                <i class="icon">🐵</i>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
 					</div>
 					<div class="profile-info">
 						<p><p><c:choose>

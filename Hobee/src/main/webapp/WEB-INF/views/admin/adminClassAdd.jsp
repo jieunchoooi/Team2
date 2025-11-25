@@ -10,7 +10,7 @@
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
-	href="${ pageContext.request.contextPath }/resources/css/admin/adminClassadd.css">
+	href="${ pageContext.request.contextPath }/resources/css/admin/adminClassEditinfo.css">
 
 </head>
 <body>

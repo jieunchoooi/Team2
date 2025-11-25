@@ -6,7 +6,7 @@
 .main-content {
     padding: 30px;
     max-width: 1400px;
-    margin: 0 auto;
+    margin: 0 0 0 300px;
 }
 
 /* 헤더 */
@@ -48,22 +48,27 @@
 .info-container {
     display: grid;
     grid-template-columns: 280px 1fr;
+    grid-template-rows: auto auto; /* ✅ 추가: 2행 그리드 */
     gap: 30px;
     background: white;
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 40px;
+    align-items: center;
 }
 
 /* 프로필 섹션 */
 .profile-section {
+    grid-row: 1; /* ✅ 추가: 1행에 배치 */
+    grid-column: 1; /* ✅ 추가: 1열에 배치 */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 20px;
 }
-
+/* 프로필 이미지 */
 .profile-image {
     width: 200px;
     height: 200px;
@@ -71,17 +76,27 @@
     overflow: hidden;
     border: 4px solid #f0f0f0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    flex-shrink: 0;
 }
 
+/* img 태그 방식 사용 시 */
 .profile-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 .no-image {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 200px;
+    height: 200px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
@@ -91,6 +106,13 @@
 .no-image .icon {
     font-size: 80px;
     color: white;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    text-align: center;
 }
 
 /* 상태 배지 */
@@ -116,91 +138,117 @@
     color: #c62828;
 }
 
-/* 정보 섹션 */
+/* 정보 섹션 - mypage 스타일 적용 */
 .info-section {
+    grid-row: 1; /* ✅ 추가: 1행에 배치 */
+    grid-column: 2; /* ✅ 추가: 2열에 배치 */
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 0;
 }
 
 .info-title {
     font-size: 20px;
     color: #333;
     font-weight: 600;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+    margin-bottom: 20px; /* ✅ 10px에서 20px로 변경 */
+    padding-bottom: 15px; /* ✅ 10px에서 15px로 변경 */
     border-bottom: 2px solid #f0f0f0;
 }
 
-/* 정보 그리드 */
+/* ✅ mypage 스타일로 변경 */
 .info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    display: flex; /* ✅ grid에서 flex로 변경 */
+    flex-direction: column; /* ✅ 추가 */
+    gap: 0; /* ✅ 20px에서 0으로 변경 */
 }
 
+/* ✅ mypage의 form-group 스타일 적용 */
 .info-item {
-    padding: 15px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    border-left: 3px solid #667eea;
+    display: flex; /* ✅ 추가 */
+    align-items: center; /* ✅ 추가 */
+    justify-content: space-between; /* ✅ 추가 */
+    padding: 20px 0; /* ✅ 15px에서 20px 0으로 변경 */
+    background: transparent; /* ✅ #f9f9f9에서 transparent로 변경 */
+    border-radius: 0; /* ✅ 8px에서 0으로 변경 */
+    border-left: none; /* ✅ 제거 */
+    border-bottom: 1px solid #f0f0f0; /* ✅ 추가 */
+}
+
+.info-item:last-child {
+    border-bottom: none; /* ✅ 추가 */
 }
 
 .info-label {
-    font-size: 13px;
-    color: #666;
-    font-weight: 500;
-    margin-bottom: 8px;
+    font-size: 0.95rem; /* ✅ 13px에서 0.95rem으로 변경 */
+    color: #333; /* ✅ #666에서 #333으로 변경 */
+    font-weight: 600; /* ✅ 500에서 600으로 변경 */
+    margin-bottom: 0; /* ✅ 8px에서 0으로 변경 */
+    min-width: 120px; /* ✅ 추가 */
+    flex-shrink: 0; /* ✅ 추가 */
 }
 
 .info-value {
-    font-size: 16px;
-    color: #333;
-    font-weight: 600;
+    flex: 1; /* ✅ 추가 */
+    font-size: 0.95rem; /* ✅ 16px에서 0.95rem으로 변경 */
+    color: #666; /* ✅ #333에서 #666으로 변경 */
+    font-weight: 400; /* ✅ 600에서 400으로 변경 */
+    text-align: left; /* ✅ 추가 */
 }
 
 .text-muted {
-    color: #999;
+    color: #ccc; /* ✅ #999에서 #ccc로 변경 */
     font-weight: 400;
     font-style: italic;
 }
 
-/* 관리 버튼 */
 .action-buttons {
+    grid-row: 2; /* ✅ 추가: 2행에 배치 */
+    grid-column: 1 / -1; /* ✅ 추가: 전체 너비 차지 */
     display: flex;
-    gap: 15px;
-    padding-top: 20px;
+    gap: 12px;
+    padding-top: 30px;
     border-top: 1px solid #f0f0f0;
+    justify-content: center;
+    margin-top: 0; /* ✅ 추가 */
 }
 
 .btn {
     padding: 12px 30px;
     border: none;
-    border-radius: 8px;
-    font-size: 15px;
+    border-radius: 10px; /* ✅ 8px에서 10px로 변경 */
+    font-size: 1rem; /* ✅ 15px에서 1rem으로 변경 */
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease; /* ✅ 0.3s에서 0.2s로 변경 */
 }
 
 .btn-warning {
     background: #ff5252;
     color: white;
+    box-shadow: 0 3px 8px rgba(255, 82, 82, 0.2); /* ✅ 추가 */
 }
 
 .btn-warning:hover {
     background: #e53935;
-    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(229, 57, 53, 0.3);
 }
 
 .btn-success {
     background: #4CAF50;
     color: white;
+    box-shadow: 0 3px 8px rgba(76, 175, 80, 0.2); /* ✅ 추가 */
 }
 
 .btn-success:hover {
     background: #43a047;
-    box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(67, 160, 71, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0); /* ✅ 추가 */
 }
 
 /* ========================================
@@ -241,8 +289,8 @@
 /* 강의 그리드 */
 .lectures-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
 }
 
 /* 강의 카드 */
@@ -252,11 +300,13 @@
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .lecture-card:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    transform: translateY(-5px);
+    transform: translateY(-4px);
 }
 
 /* 강의 썸네일 */
@@ -265,12 +315,18 @@
     height: 180px;
     overflow: hidden;
     background: #f5f5f5;
+    position: relative;
 }
 
 .lecture-thumbnail img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.lecture-card:hover .lecture-thumbnail img {
+    transform: scale(1.05);
 }
 
 .no-thumbnail {
@@ -288,92 +344,138 @@
 
 /* 강의 정보 */
 .lecture-info {
-    padding: 20px;
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .lecture-title {
-    font-size: 17px;
-    color: #333;
+    font-size: 16px;
+    color: #222;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 48px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.lecture-instructor {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 12px;
 }
 
 .lecture-meta {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.lecture-price {
+    color: #667eea;
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.lecture-stats {
+    display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    gap: 12px;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #333;
+    font-weight: 600;
+}
+
+.rating i {
+    color: #ffa41b;
+    font-size: 14px;
+}
+
+.review-count {
+    color: #999;
+    font-weight: 400;
+}
+
+.student-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #666;
+}
+
+.student-count i {
+    font-size: 13px;
 }
 
 .lecture-category {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 4px 10px;
     background: #f0f0f0;
     color: #666;
-    font-size: 12px;
+    font-size: 11px;
     border-radius: 12px;
     font-weight: 500;
-}
-
-.lecture-price {
-    font-size: 18px;
-    color: #667eea;
-    font-weight: 700;
+    width: fit-content;
+    margin-bottom: 8px;
 }
 
 .lecture-date {
-    font-size: 13px;
+    font-size: 12px;
     color: #999;
-    margin-top: 8px;
 }
 
 /* 강의 관리 버튼 */
 .lecture-actions {
     display: flex;
-    gap: 10px;
-    padding: 15px 20px;
-    background: #f9f9f9;
+    gap: 0;
     border-top: 1px solid #e0e0e0;
 }
 
 .btn-small {
     flex: 1;
-    padding: 8px 16px;
+    padding: 12px 16px;
     border: none;
-    border-radius: 6px;
+    background: white;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    border-right: 1px solid #e0e0e0;
+}
+
+.btn-small:last-child {
+    border-right: none;
 }
 
 .btn-edit {
-    background: white;
-    border: 1px solid #ddd;
-    color: #666;
+    color: #667eea;
 }
 
 .btn-edit:hover {
-    background: #667eea;
-    border-color: #667eea;
-    color: white;
+    background: #f0f4ff;
+    color: #5568d3;
 }
 
 .btn-delete {
-    background: white;
-    border: 1px solid #ff5252;
     color: #ff5252;
 }
 
 .btn-delete:hover {
-    background: #ff5252;
-    color: white;
+    background: #fff5f5;
+    color: #e53935;
 }
 
 /* 빈 상태 */
@@ -407,7 +509,7 @@
     }
     
     .lectures-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     }
 }
 

@@ -173,7 +173,7 @@ deletebtn.forEach(function(btn){
         
         let result = confirm(userName + "님을 강제 탈퇴시키겠습니까?"); 
         if(result) {
-            location.href = "${pageContext.request.contextPath}/admin/MemberAdminDelete?user_num=" + userNum + "&returnPage=teacher";
+            location.href = "${pageContext.request.contextPath}/admin/AdminTeacherDelete?user_num=" + userNum + "&returnPage=teacher";
 			alert("탈퇴되었습니다.");
         }
     }
@@ -188,7 +188,7 @@ revertbtn.forEach(function(btn){
         
         let result = confirm(userName + "님을 복구하시겠습니까?"); 
         if(result) {
-            location.href = "${pageContext.request.contextPath}/admin/MemberRevert?user_num=" + userNum;
+            location.href = "${pageContext.request.contextPath}/admin/teacherRevert?user_num=" + userNum;
 			alert("복구되었습니다.");
         }
     }

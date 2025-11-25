@@ -206,6 +206,13 @@
 	<select id="teacherClassCheck" parameterType="int" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture where user_num = #{user_num}
 	</select>
+	
+		<!-- 강사별 강의 갯수 카운트 -->
+	<select id="lectureCount" parameterType="int" resultType="String">
+    	SELECT COUNT(*) 
+    	FROM lecture
+    	WHERE user_num = #{user_num}
+	</select>
 
 	<select id="classSearch" parameterType="int" resultType="com.itwillbs.domain.UserVO">
 		select * from user where user_num = #{user_num}
@@ -443,6 +450,7 @@
 	<select id="classCount" resultType="java.lang.Integer">
 		select count(*) from lecture
 	</select>
+	
 
 	<update id="deleteMember" parameterType="int">
 		update user set user_status = 'withdraw' where user_num = #{user_num}

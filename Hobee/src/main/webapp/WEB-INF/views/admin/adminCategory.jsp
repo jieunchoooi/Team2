@@ -206,8 +206,6 @@ categoryDe.forEach(function(btn){
 	}
 });
 
-
-//모달 열기
 //모달 열기
 $(".btn-modal").click(function(){
     let num = $(this).data('num');

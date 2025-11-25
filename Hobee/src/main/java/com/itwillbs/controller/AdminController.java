@@ -546,6 +546,16 @@ public class AdminController {
       return "redirect:/admin/adminMemberList";
    }
    
+   // 강사 강제 탈퇴
+   @GetMapping("/AdminTeacherDelete")
+   public String AdminTeacherDelete(@RequestParam("user_num") int user_num) {
+	   System.out.println("AdminController AdminTeacherDelete()");
+	   
+	   adminService.deleteMember(user_num);
+	   
+	   return "redirect:/admin/adminTeacherList";
+   }
+   
    // 탈퇴 회원 복구
    @GetMapping("/MemberRevert")
    public String MemberRevert(@RequestParam("user_num") int user_num) {
@@ -554,6 +564,16 @@ public class AdminController {
       adminService.RevertMember(user_num);
       
       return "redirect:/admin/adminWithdrawList";
+   }
+   
+   // 탈퇴 강사 복구
+   @GetMapping("/teacherRevert")
+   public String teacherRevert(@RequestParam("user_num") int user_num) {
+	   System.out.println("AdminController teacherRevert()");
+	   
+	   adminService.RevertMember(user_num);
+	   
+	   return "redirect:/admin/adminTeacherList";
    }
    
    
@@ -800,20 +820,38 @@ public class AdminController {
    public String adminTeacherDetail(@RequestParam("user_num") int user_num, Model model) {
 	   System.out.println("AdminController adminTeacherDetail()");
 	   
-	   UserVO userVO = adminService.teachercheck(user_num);
-//	   List<LectureVO> lectureVO = adminService.teacherClassCheck(user_num);
+	    try {
+	        UserVO userVO = adminService.teachercheck(user_num);
+	        
+	        // ✅ null 체크 추가
+	        if (userVO == null) {
+	            System.out.println("⚠️ 강사 정보를 찾을 수 없습니다. user_num: " + user_num);
+	            model.addAttribute("errorMessage", "강사 정보를 찾을 수 없습니다.");
+	            return "redirect:/admin/adminTeacherList";
+	        }
+	        
+	        System.out.println("강사 정보: " + userVO);
+	        model.addAttribute("userVO", userVO);
+	        
+	    } catch (Exception e) {
+	        System.out.println("⚠️ 에러 발생: " + e.getMessage());
+	        e.printStackTrace();
+	        return "redirect:/admin/adminTeacherList";
+	    }
 	   
-	   model.addAttribute("userVO", userVO);
-//	   model.addAttribute("lectureVO", lectureVO);
-//	   for(LectureVO lecture : lectureList) {
-//		    System.out.println(lecture.getLecture_title());
-//		}
+	    String lectureCount = adminService.lectureCount(user_num);
+	   List<LectureVO> lectureList = adminService.teacherClassCheck(user_num);
+	   for(LectureVO lecture : lectureList) {
+		    System.out.println(lecture.getLecture_title());
+		}
 //
 //		// 또는 단순히 첫 번째 강의만 필요하다면
 //		LectureVO lecture = null;
 //		if(!lectureList.isEmpty()) {
 //		    lecture = lectureList.get(0);
 //		}
+	   model.addAttribute("lectureList", lectureList);
+	   model.addAttribute("lectureCount", lectureCount);
 	   return "admin/adminTeacherDetail";
    }
    

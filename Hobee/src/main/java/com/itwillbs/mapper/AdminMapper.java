@@ -110,6 +110,8 @@ public interface AdminMapper {
 
 	public void deleteChaptersByLectureNum(int lecture_num);
 
+	public String lectureCount(int user_num);
+
 
 	
 
