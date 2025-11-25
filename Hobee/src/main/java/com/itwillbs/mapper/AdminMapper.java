@@ -2,6 +2,8 @@ package com.itwillbs.mapper;
 
 import java.util.List;
 
+import com.itwillbs.domain.CategoryVO;
+import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
@@ -12,7 +14,7 @@ public interface AdminMapper {
 
 	public List<UserVO> listMember(PageVO pageVO);
 
-	public int countMemberList();
+	public int countMemberList(PageVO pageVO);
 
 	public void LectureUpdate(LectureVO lectureVO);
 
@@ -32,7 +34,7 @@ public interface AdminMapper {
 
 	public List<UserVO> listTeacher(PageVO pageVO);
 
-	public int teacharCount();
+	public int teacharCount(PageVO pageVO);
 
 	public int classCount();
 
@@ -42,15 +44,13 @@ public interface AdminMapper {
 
 	public int countDrawMemberList();
 
-	public int countTeacherList();
+	public int countTeacherList(PageVO pageVO);
 
 	public void RevertMember(int user_num);
 
-	public int inactiveTeacharCount();
+	public int inactiveTeacharCount(PageVO pageVO);
 
-	public int activecountMemberList();
-
-	public int deletecountMemberList();
+	public int deletecountMemberList(PageVO pageVO);
 
 	public List<UserVO> activeTeacherList(PageVO pageVO);
 
@@ -62,17 +62,15 @@ public interface AdminMapper {
 
 	public List<UserVO> MemberList(PageVO pageVO);
 
-	public int memberCount();
+	public int memberCount(PageVO pageVO);
 
-	public int inactiveMemberCount();
-
-	public int countMemberCount();
+	public int inactiveMemberCount(PageVO pageVO);
 
 	public List<UserVO> DrawinstructorListMember(PageVO pageVO);
 
-	public int instructorDeletecountList();
+	public int instructorDeletecountList(PageVO pageVO);
 
-	public int deleteAllMemberCount();
+	public int deleteAllMemberCount(PageVO pageVO);
 
 	public List<UserVO> withDeleteUserMember(PageVO pageVO);
 
@@ -83,6 +81,26 @@ public interface AdminMapper {
 	public List<UserVO> getInstructorList();
 
 	public String classSearch();
+
+	public UserVO classSearch(int user_num);
+
+	public List<LectureVO> teacherClassCheck(int user_num);
+
+	public List<CategoryVO> categoryList();
+
+	public List<Category_mainVO> categoMainryList();
+
+	public void addCateMain(Category_mainVO category_mainVO);
+
+	public void CateMainDelete(Category_mainVO category_mainVO);
+
+	public void addCategoty(CategoryVO categoryVO);
+
+	public void deleteCategory(int category_num);
+
+	public Category_mainVO categoMainryList2(int category_num);
+
+	
 
 
 

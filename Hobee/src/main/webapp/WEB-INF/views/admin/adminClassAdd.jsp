@@ -35,8 +35,8 @@
 			</div>
 			<!-- ✅ 카테고리 선택 추가 -->
 			<div class="form-group">
-				<label>카테고리</label> <select name="category_detail" id="category"
-					required>
+				<label>카테고리</label> 
+				<select name="category_detail" id="category" required>
 					<option value="">카테고리를 선택하세요</option>
 					<option value="디지털드로잉">디지털 드로잉</option>
 					<option value="드로잉">드로잉</option>

@@ -27,22 +27,24 @@
 				<h3>총 강의 수</h3>
 				<div class="stat-number">${classCount}</div>
 			</div>
-			<div class="stat-card orange">
-				<h3>활동 강사 수</h3>
-				<div class="stat-number">${tCount}</div>
-			</div>
+<!-- 			<div class="stat-card orange"> -->
+<!-- 				<h3>활동 강사 수</h3> -->
+<%-- 				<div class="stat-number">${tCount}</div> --%>
+<!-- 			</div> -->
 		</div>
 		
 		
 		
 		<div class="table-container">
-			<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search_form" id="search_form">
-			<table>
-				<div class="search-box">
-					<input type="text" class="search_box" id="search_box" placeholder="이름, 아이디, 이메일로 검색...">
-					<button class="search" id="search">검색</button>
-				</div>
+			<!-- 검색 영역 -->
+			<div class="search-wrapper">
+				<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search-form" id="search_form">
+					<input type="text" name="search" class="search-input" id="search_box" value="${pageVO.search}" placeholder="강의명, 강사 이름으로 검색..."> 
+					<button type="submit" class="search-btn" id="search">검색</button>
+				</form>
+			</div>
 			
+			<table>
 				<thead>
 					<tr>
 						<th>번호</th>
@@ -71,7 +73,7 @@
 							<td>${lectureVO.lecture_author}</td>
 							<td>₩ <fmt:formatNumber value="${lectureVO.lecture_price}" pattern="#,###"/></td>
 							<td>
-								<button class="btn edit" data-num="${lectureVO.lecture_num}">수정</button>
+								<button type="button" class="btn edit" data-num="${lectureVO.lecture_num}">수정</button>
 								<button class="btn btn-delete" data-num="${lectureVO.lecture_num}">삭제</button>
 								
 							</td>
@@ -79,7 +81,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			</form>
+			
 			<div class="pagination">
 				<!-- 10 만큼 이전 -->
 				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
@@ -100,18 +102,19 @@
 	</main>
 </body>
 <script type="text/javascript">
-let search = document.querySelector(".search");
-let search_box = document.querySelector(".search_box");
+let search = document.querySelector(".search-btn");
+let search_box = document.querySelector(".search-input");
+let search_form = document.querySelector("#search_form");
 
 search.onclick = function(e){
+	e.preventDefault();
 	
 	if(search_box.value == ""){
 		alert("검색어를 입력해주세요.");
 		search_box.focus();
 		return false;
-	}else{
-		location.href = "${pageContext.request.contextPath}/admin/classSearch";
 	}
+	search_form.submit();
 }
 
 
@@ -132,7 +135,7 @@ let deleteBtn = document.querySelectorAll('.btn-delete');
 deleteBtn.forEach(function(btn) {
     btn.onclick = function() {
         let lectureNum = this.getAttribute('data-num');
-        let result = confirm("클래스를 삭제하시겠습니까?");
+        let result = confirm("강의를 삭제하시겠습니까?");
         if(result) {
             alert("강의가 삭제되었습니다.");
             location.href = "${pageContext.request.contextPath}/admin/deleteClass?lecture_num=" + lectureNum;
@@ -146,8 +149,8 @@ let edit = document.querySelectorAll(".edit");
 
 edit.forEach(function(btn){
     btn.onclick = function(){
-        let classNum = this.getAttribute("data-num");
-        location.href = "${pageContext.request.contextPath}/admin/adminEditClass?lecture_num=" + classNum;
+        let lectureNum = this.getAttribute("data-num");
+        location.href = "${pageContext.request.contextPath}/admin/adminClassEditinfo?lecture_num=" + lectureNum;
     }
 });
 
