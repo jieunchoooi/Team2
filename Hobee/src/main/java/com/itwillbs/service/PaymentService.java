@@ -92,7 +92,7 @@ public class PaymentService {
 			usedPH.setUser_num(userNum);
 			usedPH.setPayment_id(paymentId);
 			usedPH.setPoint_change(-minus);
-			usedPH.setType("USE");
+			usedPH.setType("use");
 			usedPH.setDescription("클래스 결제 시 포인트 사용");
 			pointHistoryMapper.insertPointHistory(usedPH);
 
@@ -315,7 +315,7 @@ public class PaymentService {
 	        phRestore.setUser_num(userNum);
 	        phRestore.setPayment_id(paymentId);
 	        phRestore.setPoint_change(restoreUsedPoints);
-	        phRestore.setType("RESTORE");
+	        phRestore.setType("restore");
 	        phRestore.setDescription("전체 환불로 사용 포인트 복구");
 	        pointHistoryMapper.insertPointHistory(phRestore);
 	    }
@@ -438,7 +438,7 @@ public class PaymentService {
 	        phRestore.setUser_num(userNum);
 	        phRestore.setPayment_id(paymentId);
 	        phRestore.setPoint_change(restoreUsedPoints);
-	        phRestore.setType("RESTORE");
+	        phRestore.setType("restore");
 	        phRestore.setDescription("부분 환불로 사용 포인트 복구");
 	        pointHistoryMapper.insertPointHistory(phRestore);
 	    }

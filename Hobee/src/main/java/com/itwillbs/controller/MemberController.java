@@ -24,11 +24,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ �
 import com.itwillbs.domain.EnrollmentVO;
 import com.itwillbs.domain.EnrollmentViewVO;
 import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.domain.PointHistoryVO;
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.EnrollmentService;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.PaymentService;
+import com.itwillbs.service.PointHistoryService;
 import com.itwillbs.service.ScrapService;
 import com.mysql.cj.Session;
 
@@ -45,6 +47,8 @@ public class MemberController {
     private PaymentService paymentService;
 	@Inject
     private ScrapService scrapService;
+	@Inject
+    private PointHistoryService pointHistoryService;
 	// 업로드 경로
 	@Resource(name = "uploadPath")
 	private String uploadPath;
@@ -62,7 +66,7 @@ public class MemberController {
 	    if (uri.contains("payment")) return "paymentList"; // ⭐ 상세 페이지도 동일 그룹
 	    if (uri.contains("editInfo")) return "edit";
 	    if (uri.contains("updatePassWord")) return "edit";
-
+	    if (uri.contains("pointHistory")) return "pointHistory";
 	    return "";
 	}
 
@@ -321,7 +325,27 @@ public class MemberController {
 	    }
 
 	
-	
+	    /** 포인트 내역 페이지 */
+	    @GetMapping("/member/pointHistory")
+	    public String pointHistory(HttpSession session, Model model) {
+
+	        // 세션 체크
+	        UserVO user = (UserVO) session.getAttribute("userVO");
+	        if (user == null) {
+	            return "redirect:/member/login";
+	        }
+
+	        int userNum = user.getUser_num();
+
+	        // 서비스 조회
+	        List<PointHistoryVO> pointhistoryVOList = pointHistoryService.getHistoryByUser(userNum);
+
+	        // JSP 로 전달
+	        model.addAttribute("pointhistoryVOList", pointhistoryVOList);
+	        model.addAttribute("userVO", user);
+
+	        return "member/pointHistory";   // JSP 파일명
+	    }
 	
 	
 	

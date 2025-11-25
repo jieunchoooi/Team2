@@ -2,6 +2,8 @@ package com.itwillbs.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.itwillbs.domain.PointHistoryVO;
 
 @Mapper
@@ -17,7 +19,7 @@ public interface PointHistoryMapper {
     int addPoints(PointHistoryVO pointVO);
 
     /** 🔹 특정 회원의 전체 포인트 내역 조회 */
-    List<PointHistoryVO> getPointHistoryByUser(int user_num);
+    List<PointHistoryVO> getPointHistoryByUser(@Param("user_num") int userNum);
 
     /** 🔹 특정 회원의 포인트 총합 조회 (현재 포인트 확인용) */
     Integer getUserTotalPoints(int user_num);
@@ -28,6 +30,7 @@ public interface PointHistoryMapper {
     void insertPointHistoryForTest();
     
     
-
+   
+    
     
 }

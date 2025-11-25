@@ -1,0 +1,169 @@
+@charset "UTF-8";
+/* =========================================
+   기본 설정 (절대 건들지 않음)
+========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: #f4f6fa;
+    padding-top: 0;
+    overflow-x: hidden;
+}
+
+/* =========================== 메인 콘텐츠 영역 =========================== */
+.main-content {
+    margin-left: 240px;
+    margin-top: 0;
+    padding: 40px 30px 30px 30px;
+    width: calc(100% - 240px);
+    background-color: #f9fafb;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* =========================== 컨텐츠 래퍼 =========================== */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* =========================== 포인트 박스 =========================== */
+.point-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    margin-top: 30px;
+}
+
+/* 타이틀 */
+.point-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #333;
+}
+
+/* ===========================
+   데이터 없음
+=========================== */
+.point-empty-box {
+    padding: 40px 0;
+    text-align: center;
+    color: #777;
+    font-size: 1rem;
+}
+
+/* ===========================
+   라인 필터
+=========================== */
+.filter-line {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    gap: 14px;
+    margin-bottom: 22px;
+    font-size: 1rem;
+}
+
+.filter-item {
+    cursor: pointer;
+    color: #666;
+    transition: 0.15s ease;
+}
+
+.filter-item:hover {
+    color: black; /* 연파랑 */
+}
+
+.filter-item.active {
+    color: black;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: underline;
+}
+
+.divider {
+    color: #ccc;
+    font-weight: 100;
+}
+
+/* ===========================
+   테이블
+=========================== */
+.point-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.point-table thead {
+    background: #f8f9fc;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* 헤더 가운데 정렬 */
+.point-table th {
+    padding: 14px 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+}
+
+/* 모든 데이터 중앙정렬 */
+.point-table td {
+    padding: 14px 12px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+    text-align: center;
+}
+
+/* 강의명 */
+.lec-title {
+    font-weight: 600;
+    color: #333;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===========================
+   포인트 색상 (복구 완)
+=========================== */
+.point-plus {
+    color: #4f8bff;    /* 연파랑 - 적립 */
+    font-weight: 700;
+}
+
+.point-minus {
+    color: #ef4444;    /* 사용 */
+    font-weight: 700;
+}
+
+.point-zero {
+    color: #777;
+}
+
+/* ===========================
+   타입 태그 (필요 시 사용)
+=========================== */
+.tag {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.tag.save    { background: #4f8bff; }  
+.tag.use     { background: #ef4444; }
+.tag.restore { background: #6b7280; }
+.tag.remove  { background: #9ca3af; }
