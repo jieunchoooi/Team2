@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class PageVO {
 	private int pageSize;
-	private String pageNum;
+	private String pageNum; // 현재 페이지 번호
 	private int currentPage;
 	
 	private int startRow;
@@ -20,4 +20,8 @@ public class PageVO {
 	private int startPage;
 	private int endPage;
 	private int pageCount;
+	
+	// ---------------------
+	private String search;
+	private String searchList;
 }
