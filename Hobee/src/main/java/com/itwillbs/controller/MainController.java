@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.LectureService;
 import com.itwillbs.service.ScrapService;
@@ -29,11 +31,27 @@ public class MainController {
    private ScrapService scrapService;
    
    @RequestMapping(value="/main")
-   public String main(Model model) {
+   public String main(Model model, HttpSession session) {
       System.out.println("MainController main()");
       
       List<LectureVO> bestList = lectureService.getTop10();
       List<LectureVO> lectureList = lectureService.getAllLectures();
+      
+      UserVO userVO = (UserVO) session.getAttribute("userVO");
+      if(userVO != null) {
+          List<Integer> scrapLectureNums = scrapService.getScrapList(userVO.getUser_num())
+                                                     .stream()
+                                                     .map(ScrapVO::getLecture_num)
+                                                     .collect(Collectors.toList());
+          
+          // 강의 목록에 bookmark 정보 세팅
+          for(LectureVO lecture : bestList) {
+              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+          }
+          for(LectureVO lecture : lectureList) {
+              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+          }
+      }
 
       model.addAttribute("bestList", bestList);
       model.addAttribute("lectureList", lectureList);

@@ -31,8 +31,6 @@ public class HomeController {
    
    @Inject
    private LectureService lectureService;
-   @Inject
-   private ScrapService scrapService;
    
    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
    
@@ -50,21 +48,4 @@ public class HomeController {
       return "main/main";
    }
    
-//   @RequestMapping(value="/bookmark", method = RequestMethod.POST)
-//   @ResponseBody
-//   public Map<String, Object> bookmark(@RequestParam("lecture_num") int lecture_num, Model model, HttpSession session ) {
-//      System.out.println("MainController bookmark()");
-//      
-//      String user_id = (String) session.getAttribute("user_id");
-//    
-//      Map<String, Object> res = new HashMap<>();
-//      try {
-//    	  scrapService.addScrap(lecture_num, user_id);
-//          res.put("success", true);
-//      } catch (Exception e) {
-//          res.put("success", false);
-//      }
-//      
-//      return res;
-//   }
 }
