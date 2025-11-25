@@ -28,13 +28,22 @@
 <c:choose>
 
     <%-- 결제 내역 없음 --%>
-    <c:when test="${empty paymentList}">
-        <div class="empty-card">
-            <p class="icon">🧸</p>
-            <p class="msg">아직 결제 내역이 없어요</p>
-            <p class="sub">관심 가는 클래스를 찾아보세요 ✨</p>
+   <c:when test="${empty paymentList}">
+    <%-- 결제 내역 없음 : 카드형 UI --%>
+    <div class="payment-empty-wrap">
+        <div class="payment-empty-card">
+            <div class="empty-icon">🧸</div>
+            <div class="empty-title">아직 결제 내역이 없어요</div>
+            <div class="empty-sub">관심 가는 클래스를 찾아보세요 ✨</div>
+           <button class="go-class-btn" 
+        onclick="location.href='${pageContext.request.contextPath}/category/lectureList?category_detail=전체'">
+    클래스 둘러보기
+</button>
+
         </div>
-    </c:when>
+    </div>
+</c:when>
+
 
     <%-- 결제 내역 있음 --%>
     <c:otherwise>
