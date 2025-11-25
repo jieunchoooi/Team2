@@ -104,12 +104,12 @@
 
                             <td>${post.post_id}</td>
 
-                            <td class="title-cell">
-                                <a href="${pageContext.request.contextPath}/admin/adminPostDetail?post_id=${post.post_id}"
-                                   class="post-link">
-                                    ${post.title}
-                                </a>
-                            </td>
+                          <td class="title-cell">
+   							 <a href="${pageContext.request.contextPath}/admin/adminPostDetail?post_id=${post.post_id}"
+       							class="post-link">
+        						${post.title}
+   							 </a>
+						</td>
 
                             <td>${post.author}</td>
                             <td>${post.board_name}</td>

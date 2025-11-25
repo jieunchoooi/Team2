@@ -2,6 +2,7 @@ package com.itwillbs.mapper;
 
 import java.util.List;
 
+import com.itwillbs.domain.ReportActionLogVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.domain.AdminReportVO;
@@ -38,5 +39,17 @@ public interface AdminReportMapper {
     int getMonthCount();         // 이번달 신고 수
     int getPostCount();          // 게시글 신고 수
     int getCommentCount();       // 댓글 신고 수
+
+    void insertReportActionLog(
+            @Param("report_id") int report_id,
+            @Param("admin_id") String admin_id,
+            @Param("action") String action,
+            @Param("reason") String reason
+    );
+
+    List<ReportActionLogVO> getReportActionLogs(int report_id);
+
+    void rejectReport(@Param("report_id") int report_id,
+                      @Param("reason") String reason);
 
 }

@@ -132,4 +132,51 @@
         WHERE comment_id = #{comment_id}
     </update>
 
+    <select id="getCommentReportList" resultType="com.itwillbs.domain.CommentReportVO">
+        SELECT
+        report_id,
+        comment_id,
+        reporter_id,
+        reason,
+        created_at
+        FROM comment_report
+        WHERE comment_id = #{comment_id}
+        ORDER BY report_id DESC
+    </select>
+
+    <!-- 로그 입력 -->
+    <insert id="insertActionLog">
+        INSERT INTO admin_action_log (comment_id, admin_id, action, reason)
+        VALUES (#{comment_id}, #{admin_id}, #{action}, #{reason})
+    </insert>
+
+    <!-- 댓글별 로그 조회 -->
+    <select id="getCommentActionLogs" resultType="com.itwillbs.domain.AdminActionLogVO">
+        SELECT
+        log_id,
+        comment_id,
+        admin_id,
+        action,
+        reason,
+        created_at
+        FROM admin_action_log
+        WHERE comment_id = #{comment_id}
+        ORDER BY log_id DESC
+    </select>
+    
+    <select id="getCommentsByPostId" resultType="com.itwillbs.domain.AdminCommentVO">
+    SELECT 
+        comment_id,
+        post_id,
+        user_id,
+        content,
+        created_at,
+        is_deleted,
+        report_count
+    FROM comment
+    WHERE post_id = #{post_id}
+    ORDER BY comment_id DESC
+</select>
+    
+
 </mapper>

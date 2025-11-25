@@ -15,10 +15,10 @@ public class ScrapService {
     private ScrapMapper scrapMapper;
 
     // 1) 스크랩 추가
-    public boolean addScrap(int user_num, int lecture_num) {
+    public boolean addScrap(int setLecture_num, int user_num) {
         ScrapVO vo = new ScrapVO();
         vo.setUser_num(user_num);
-        vo.setLecture_num(lecture_num);
+        vo.setLecture_num(setLecture_num);
         return scrapMapper.addScrap(vo) > 0;
     }
 

@@ -183,5 +183,28 @@
     WHERE post_id = #{post_id}
 </update>
 
+<!-- 게시글별 조회수 순위 (상위 10개) -->
+<select id="getTopViewPosts" resultType="map">
+    SELECT
+        p.title AS title,
+        p.views AS views
+    FROM community_content p
+    ORDER BY p.views DESC
+    LIMIT 10
+</select>
+
+<!-- 게시글별 댓글 수 순위 (상위 10개) -->
+<select id="getTopCommentPosts" resultType="map">
+    SELECT
+        p.title AS title,
+        COUNT(c.comment_id) AS comment_count
+    FROM community_content p
+    LEFT JOIN comment c ON p.post_id = c.post_id AND c.is_deleted = 0
+    GROUP BY p.post_id
+    ORDER BY comment_count DESC
+    LIMIT 10
+</select>
+
+
 
 </mapper>

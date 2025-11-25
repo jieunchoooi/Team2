@@ -15,31 +15,29 @@
     <!-- 신고 상세 전용 CSS -->
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminReportDetail.css">
-
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
-<!-- 전체 컨테이너 -->
 <div class="detail-container">
 
-    <!-- 🔥 제목 (왼쪽 고정) -->
-    <div class="detail-title-wrapper">
-        <h1 class="detail-title">신고 상세</h1>
-    </div>
+    <!-- 제목 -->
+    <div class="detail-title">신고 상세</div>
 
-    <!-- 🔥 아래는 모두 가운데 정렬 -->
-    <div class="detail-center-wrapper">
+    <div class="center-wrapper">
 
-        <!-- =============================
-             신고 기본 정보 박스
-        ============================== -->
+        <!-- 신고 기본 정보 -->
         <div class="info-box">
 
-            <div class="info-row"><strong>신고 번호</strong> ${report.report_id}</div>
-            <div class="info-row"><strong>신고자</strong> ${report.reporter_id}</div>
+            <div class="info-row">
+                <strong>신고 번호</strong> ${report.report_id}
+            </div>
+
+            <div class="info-row">
+                <strong>신고자</strong> ${report.reporter_id}
+            </div>
 
             <div class="info-row">
                 <strong>신고 유형</strong>
@@ -49,14 +47,22 @@
                 </c:choose>
             </div>
 
-            <div class="info-row"><strong>신고 사유</strong> ${report.reason}</div>
-            <div class="info-row"><strong>신고 일시</strong> ${report.created_at}</div>
+            <div class="info-row">
+                <strong>신고 사유</strong> ${report.reason}
+            </div>
+
+            <div class="info-row">
+                <strong>신고 일시</strong> ${report.created_at}
+            </div>
 
             <div class="info-row">
                 <strong>처리 상태</strong>
                 <c:choose>
                     <c:when test="${report.is_done == 1}">
                         <span style="color:#397dff; font-weight:700;">완료</span>
+                    </c:when>
+                    <c:when test="${report.is_done == 2}">
+                        <span style="color:#888; font-weight:700;">반려</span>
                     </c:when>
                     <c:otherwise>
                         <span style="color:#e74a3b; font-weight:700;">대기</span>
@@ -72,44 +78,58 @@
                 </c:choose>
             </div>
 
-            <c:if test="${report.is_done == 1}">
+            <c:if test="${report.is_done == 1 || report.is_done == 2}">
                 <div class="info-row">
-                    <strong>처리 사유</strong> ${report.done_reason}
+                    <strong>처리/반려 사유</strong>
+                    ${report.done_reason}
                 </div>
             </c:if>
 
         </div>
 
 
-        <!-- =============================
-             처리 사유 선택 + 처리 버튼
-        ============================== -->
-        <c:if test="${report.is_done != 1}">
-            <form action="${pageContext.request.contextPath}/admin/adminReportDone"
-                  method="post"
-                  onsubmit="return confirm('해당 신고를 처리하시겠습니까?');">
+       <!-- 🔥 처리 완료 폼 (대기 상태일 때만) -->
+<c:if test="${report.is_done == 0}">
+    <form action="${pageContext.request.contextPath}/admin/adminReportDone"
+          method="post"
+          onsubmit="return confirm('해당 신고를 처리하시겠습니까?');">
 
-                <input type="hidden" name="report_id" value="${report.report_id}">
+        <input type="hidden" name="report_id" value="${report.report_id}">
 
-                <div class="info-row">
-                    <strong>처리 사유</strong>
-                    <select name="done_reason" class="done-select">
-                        <option value="경고">경고</option>
-                        <option value="게시글 삭제">게시글 삭제</option>
-                        <option value="댓글 삭제">댓글 삭제</option>
-                        <option value="계정 정지">계정 정지</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </div>
+        <div class="info-row">
+            <strong>처리 사유</strong>
+            <select name="done_reason" class="reason-select">
+                <option value="경고">경고</option>
+                <option value="게시글 삭제">게시글 삭제</option>
+                <option value="댓글 삭제">댓글 삭제</option>
+                <option value="계정 정지">계정 정지</option>
+                <option value="기타">기타</option>
+            </select>
+        </div>
 
-                <button class="btn-red process-btn">처리 완료</button>
-            </form>
-        </c:if>
+        <button class="btn-red" style="margin-top:10px;">처리 완료</button>
+    </form>
+</c:if>
 
 
-        <!-- =============================
-             게시글 원문
-        ============================== -->
+               <c:if test="${report.is_done == 0}">
+    <form action="${pageContext.request.contextPath}/admin/adminReportReject"
+          method="post"
+          onsubmit="return confirm('해당 신고를 반려하시겠습니까?');">
+
+        <input type="hidden" name="report_id" value="${report.report_id}">
+
+        <div class="info-row">
+            <strong>반려 사유</strong>
+           <input type="text" name="reason" class="reason-input" placeholder="반려 사유를 입력하세요">
+        </div>
+
+        <button class="btn-red" style="margin-top:10px;">신고 반려</button>
+    </form>
+</c:if>
+
+
+        <!-- 게시글 / 댓글 원문 -->
         <c:if test="${report.post_id ne null}">
             <div class="preview-box">
                 <h3>📄 게시글 원문</h3>
@@ -118,9 +138,6 @@
             </div>
         </c:if>
 
-        <!-- =============================
-             댓글 원문
-        ============================== -->
         <c:if test="${report.comment_id ne null}">
             <div class="preview-box">
                 <h3>💬 댓글 원문</h3>
@@ -128,17 +145,38 @@
             </div>
         </c:if>
 
-        <!-- =============================
-             목록 버튼
-        ============================== -->
-        <div class="btn-wrapper">
-            <button class="back-btn"
-                    onclick="location.href='${pageContext.request.contextPath}/admin/adminReportList'">
-                ← 목록으로 돌아가기
-            </button>
+        <!-- 로그 -->
+        <div class="preview-box">
+            <h3>📝 처리 로그</h3>
+
+            <c:if test="${empty actionLogs}">
+                <div class="preview-content" style="background:#fff3cd; border:1px solid #ffeeba;">
+                    처리 로그가 없습니다.
+                </div>
+            </c:if>
+
+            <c:forEach var="log" items="${actionLogs}">
+                <div class="preview-content" style="margin-bottom:10px;">
+                    <p><b>관리자:</b> ${log.admin_id}</p>
+                    <p><b>조치:</b> ${log.action}</p>
+                    <p><b>사유:</b> ${log.reason}</p>
+                    <p><b>시간:</b> ${log.created_at}</p>
+                </div>
+            </c:forEach>
         </div>
 
-    </div>
+
+        <!-- 목록으로 돌아가기 -->
+        <div class="back-area">
+            <button class="back-btn"
+        onclick="location.href='${pageContext.request.contextPath}/admin/adminReportList'">
+    ← 목록으로 돌아가기
+</button>
+
+        </div>
+
+    </div> <!-- center-wrapper -->
+
 </div>
 
 </body>

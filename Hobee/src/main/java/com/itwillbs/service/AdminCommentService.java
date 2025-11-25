@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.itwillbs.domain.AdminActionLogVO;
+import com.itwillbs.domain.CommentReportVO;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AdminCommentVO;
@@ -46,7 +48,29 @@ public class AdminCommentService {
 	}
 
 	public void restoreComment(int id) {
-		System.out.println("AdminCommentService :restoreComment() 실행");
+		System.out.println("AdminCommentService : restoreComment() 실행");
 		adminCommentMapper.restoreComment(id);
 	}
+
+	public List<CommentReportVO> getCommentReportList(int comment_id) {
+		System.out.println("AdminCommentService : getCommentReportList() 실행");
+		return adminCommentMapper.getCommentReportList(comment_id);
+	}
+
+	public void logAction(int comment_id, String admin_id, String action, String reason) {
+		System.out.println("AdminCommentService : logAction() 실행");
+		adminCommentMapper.insertActionLog(comment_id, admin_id, action, reason);
+	}
+
+	public List<AdminActionLogVO> getActionLogs(int comment_id) {
+		System.out.println("AdminCommentService : getActionLogs() 실행");
+		return adminCommentMapper.getCommentActionLogs(comment_id);
+	}
+	
+	public List<AdminCommentVO> getComments(int post_id) {
+		System.out.println("AdminCommentService : getComments() 실행");
+	    return adminCommentMapper.getCommentsByPostId(post_id);
+	}
+
+
 }

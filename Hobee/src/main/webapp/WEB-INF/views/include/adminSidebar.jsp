@@ -78,6 +78,11 @@
                     onclick="location.href='${pageContext.request.contextPath}/admin/adminReportList'">
                     🚨 <span>신고 관리</span>
                 </div>
+                
+                <div class="menu-item ${page eq 'postStats' ? 'active' : ''}"
+            		onclick="location.href='${pageContext.request.contextPath}/admin/adminPostStats'">
+        	    	📊 <span>게시글 통계</span>
+       		   </div>
 
                 <!-- 옵션: 공지사항 -->
                 <div class="menu-item ${page eq 'noticeList' ? 'active' : ''}"

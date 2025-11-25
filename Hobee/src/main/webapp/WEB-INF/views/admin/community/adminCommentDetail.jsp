@@ -138,6 +138,46 @@
             </div>
         </div>
 
+        <!-- 🚨 신고 상세내역 -->
+        <div class="detail-content" style="margin-top:30px;">
+            <h3>신고 내역</h3>
+
+            <c:if test="${empty reportList}">
+                <div class="content-box" style="background:#fff7f7; border:1px solid #ffd1d1;">
+                    신고 내역이 없습니다.
+                </div>
+            </c:if>
+
+            <c:forEach var="r" items="${reportList}">
+                <div class="content-box" style="margin-bottom:15px; background:#f7f9ff; border:1px solid #dce3ff;">
+                    <p><b>신고자:</b> ${r.reporter_id}</p>
+                    <p><b>사유:</b> ${r.reason}</p>
+                    <p><b>신고 일시:</b> ${r.created_at}</p>
+                </div>
+            </c:forEach>
+        </div>
+
+        <!-- 🔥 관리자 조치 로그 -->
+        <div style="margin-top:30px;">
+            <h3>관리자 처리 로그</h3>
+
+            <c:if test="${empty actionLogs}">
+                <div class="content-box" style="background:#fff3cd; border:1px solid #ffeeba;">
+                    관리자 조치 이력이 없습니다.
+                </div>
+            </c:if>
+
+            <c:forEach var="log" items="${actionLogs}">
+                <div class="content-box" style="margin-bottom:12px;">
+                    <p><b>관리자:</b> ${log.admin_id}</p>
+                    <p><b>조치:</b> ${log.action}</p>
+                    <p><b>사유:</b> ${log.reason}</p>
+                    <p><b>일시:</b> ${log.created_at}</p>
+                </div>
+            </c:forEach>
+        </div>
+
+
         <!-- 버튼 영역 -->
         <div class="btn-area">
 

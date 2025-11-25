@@ -83,11 +83,11 @@
                     <a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
 
                     <c:if test="${sessionScope.user_role eq 'admin' or sessionScope.user_role eq 'super_admin'}">
-    				<a href="${pageContext.request.contextPath}/admin/adminCategory" class="auth-link">관리자페이지</a>
-				</c:if>
-
+    					<a href="${pageContext.request.contextPath}/admin/adminCategory" class="auth-link">관리자페이지</a>
+					</c:if>
 
                     <a href="${pageContext.request.contextPath}/user/logout" class="auth-link">로그아웃</a>
+                    <a href="#" id="" class="auth-link">고객센터</a>
                 </c:otherwise>
             </c:choose>
 
@@ -115,13 +115,13 @@ $(document).ready(function () {
     /* --------------------------------------------------
        1) 로그인 모달 열기 / 닫기
     -------------------------------------------------- */
- // 로그인 버튼 클릭 시
+ 	// 로그인 버튼 클릭 시
     $("#openLoginModal").click(function(e) {
         e.preventDefault(); // a 태그 기본 동작 막기
         openLoginModal();   // 전역 함수 호출
     });
     
- // 로그인 모달 열기
+ 	// 로그인 모달 열기
     window.openLoginModal = function() {
         $("#loginModal").fadeIn().css("display", "flex");
         $("#loginForm input[name='user_id']").focus();
@@ -139,6 +139,12 @@ $(document).ready(function () {
         closeLoginModal(); // 전역 함수 호출
     });
 
+ 	// 로그인 모달 내부의 "회원가입" 버튼 눌렀을 때
+    $(document).on("click", ".openInsertFromLogin", function(e) {
+        e.preventDefault();
+        closeLoginModal(); // 로그인 모달 닫기
+        $("#insertModal").fadeIn().css("display", "flex"); // 회원가입 모달 열기
+    });
 
     /* --------------------------------------------------
        2) 회원가입 모달 열기 / 닫기

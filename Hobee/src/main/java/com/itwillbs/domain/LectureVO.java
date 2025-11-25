@@ -22,7 +22,10 @@ public class LectureVO {
     private String created_at; // 강의 생성 날짜
     
     
- // 추가 필드 (통계 정보)
+    //북마크
+    private boolean bookmark;
+    
+    // 추가 필드 (통계 정보)
  	private double avg_score;         // 평균 별점
  	private int review_count;         // 리뷰 개수
  	private int student_count;        // 수강생 수
