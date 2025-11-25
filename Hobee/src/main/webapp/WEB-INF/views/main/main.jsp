@@ -171,41 +171,42 @@
    </section>
    
 <script>
-   function searchLecture(event) {
-      event.preventDefault();
-      const query = document.getElementById('searchInput').value.trim();
-      if (!query) {
-         alert('검색어를 입력해주세요!');
-         return;
-      }
-      window.location.href = '/search?query=' + encodeURIComponent(query);
-   }
+
+function searchLecture(event) {
+     event.preventDefault();
+     const query = document.getElementById('searchInput').value.trim();
+     if (!query) {
+        alert('검색어를 입력해주세요!');
+        return;
+     }
+     window.location.href = '/search?query=' + encodeURIComponent(query);
+}
    
-   const isLogin = "${not empty sessionScope.user_id}" === "true";
+const isLogin = "${not empty sessionScope.user_id}" === "true";
       
-   function toggleBookmark(lectureNum, btn) {
-      if(!isLogin){
-         alert("로그인후 사용할수 있는 서비스 입니다.");
-         return;
-      }
-      // 북마크 토글 로직 (서버에 요청)
-      // TODO: Ajax 요청 구현
-      /*
-      $.ajax({
-         url: '${pageContext.request.contextPath}/bookmark/toggle',
-         method: 'POST',
-         data: { lectureNum: lectureNum },
-            success: function(response) {
-            if(response.success) {
-               btn.classList.toggle('active');
-            }
-         }
-      });
-      */
+function toggleBookmark(lectureNum, btn) {
+     if(!isLogin){
+        alert("로그인후 사용할수 있는 서비스 입니다.");
+        return;
+     }
+     // 북마크 토글 로직 (서버에 요청)
+     // TODO: Ajax 요청 구현
+     /*
+     $.ajax({
+        url: '${pageContext.request.contextPath}/bookmark/toggle',
+        method: 'POST',
+        data: { lectureNum: lectureNum },
+           success: function(response) {
+           if(response.success) {
+              btn.classList.toggle('active');
+           }
+        }
+     });
+     */
          
-      // 임시: UI만 토글
-      btn.classList.toggle('active');
-   }
+     // 임시: UI만 토글
+     btn.classList.toggle('active');
+}
 </script>
    
    <footer>© 2025 Hobee | 당신의 취미 파트너</footer>
