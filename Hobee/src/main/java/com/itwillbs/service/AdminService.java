@@ -287,6 +287,16 @@ public class AdminService {
 		adminMapper.deleteCategory(category_num);
 	}
 
+	public CategoryVO selectCategoryByNum(int category_num) {
+		System.out.println("AdminService selectCategoryByNum()");
+		return adminMapper.selectCategoryByNum(category_num);
+	}
+
+	public void updateCategory(CategoryVO categoryVO) {
+		System.out.println("AdminService updateCategory()");
+		adminMapper.updateCategory(categoryVO);
+	}
+
 
 
 

@@ -108,22 +108,22 @@ public class AdminController {
    	@GetMapping("/categoryEditInfoModal")
    	public String categoryEditInfoModal(@RequestParam("category_num") int category_num, Model model) {
    		System.out.println("AdminController categoryEditInfoModal()");
-//   	 
-//   	// 1. 수정할 카테고리 정보 조회
-//   	    CategoryVO category = adminService.selectCategoryByNum(category_num);
-//   	    model.addAttribute("category", category);
-//   	    
-//   	    // 2. 대분류 목록도 함께 전달 (셀렉트박스에 옵션 표시용)
-//   	    List<Category_mainVO> categoMainryList = adminService.selectCategoryMainList();
-//   	    model.addAttribute("categoMainryList", categoMainryList);
+
+   	    // 1. 수정할 카테고리 정보 조회
+   	    CategoryVO category = adminService.selectCategoryByNum(category_num);
+   	    model.addAttribute("category", category);
+   	    
+   	    // 2. 대분류 목록도 함께 전달 (셀렉트박스에 옵션 표시용)
+   	    List<Category_mainVO> categoMainryList = adminService.categoMainryList();
+   	    model.addAttribute("categoMainryList", categoMainryList);
    	    return "admin/CategoryEditinfoModal";
    	}
     
    	// 2. 카테고리 수정 처리
    	@PostMapping("/updateCategory")
    	public String updateCategory(CategoryVO categoryVO) {
-//   	    categoryService.updateCategory(categoryVO);
-   	    return "redirect:/admin/categoryManage"; // 카테고리 관리 페이지로 리다이렉트
+   	    adminService.updateCategory(categoryVO);
+   	    return "redirect:/admin/adminCategory"; // 카테고리 관리 페이지로 리다이렉트
    	}
    	
    	
