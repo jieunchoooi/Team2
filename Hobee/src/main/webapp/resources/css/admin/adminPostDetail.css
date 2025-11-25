@@ -329,6 +329,24 @@
     font-weight: 600;
 }
 
+.deleted-notice {
+    background: #ffeaea;
+    border: 1px solid #ff8a8a;
+    color: #d60000;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+
+/* 삭제된 제목 스타일 */
+.deleted-title {
+    color: #b1b1b1;
+    text-decoration: line-through;
+}
+
 
 
 
