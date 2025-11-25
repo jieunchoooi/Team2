@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>클래스 등록 | Hobee Admin</title>
+<title>강의 등록 | Hobee Admin</title>
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
@@ -38,15 +38,13 @@
 				<label>카테고리</label> 
 				<select name="category_detail" id="category" required>
 					<option value="">카테고리를 선택하세요</option>
-					<option value="디지털드로잉">디지털 드로잉</option>
-					<option value="드로잉">드로잉</option>
-					<option value="공예">공예</option>
-					<option value="AI 스킬업">AI 스킬업</option>
-					<option value="프로그래밍">프로그래밍</option>
-					<option value="데이터사이언스">데이터사이언스</option>
-					<option value="영어">영어</option>
-					<option value="외국어 시험">외국어 시험</option>
-					<option value="제2외국어">제2외국어</option>
+					<c:forEach var="categoryVO" items="${categoryList}">
+						<option value="${categoryVO.category_detail}">
+<%-- 						${categoryVO.category_main_name}.  --%>
+							${categoryVO.category_detail}
+						</option>
+					</c:forEach>
+		
 				</select>
 			</div>
 

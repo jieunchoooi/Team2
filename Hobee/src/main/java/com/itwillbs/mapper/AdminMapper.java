@@ -100,6 +100,10 @@ public interface AdminMapper {
 
 	public Category_mainVO categoMainryList2(int category_num);
 
+	public CategoryVO selectCategoryByNum(int category_num);
+
+	public void updateCategory(CategoryVO categoryVO);
+
 	
 
 
