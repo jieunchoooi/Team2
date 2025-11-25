@@ -1,6 +1,7 @@
 package com.itwillbs.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import com.itwillbs.domain.AdminCommentVO;
 import com.itwillbs.domain.Criteria;
@@ -70,7 +71,15 @@ public class AdminCommentController {
 			@RequestParam("comment_id") int comment_id,
 			Model model) {
 
+		// 댓글 상세
 		model.addAttribute("comment", adminCommentService.getCommentDetail(comment_id));
+
+		// 🚨 신고 상세내역 불러오기 추가!
+		model.addAttribute("reportList", adminCommentService.getCommentReportList(comment_id));
+
+		// 🔥 관리자 조치 로그 추가
+		model.addAttribute("actionLogs", adminCommentService.getActionLogs(comment_id));
+
 		model.addAttribute("page", "commentList");
 
 		return "admin/community/adminCommentDetail";
@@ -79,18 +88,28 @@ public class AdminCommentController {
 
 	/** 개별 삭제 */
 	@PostMapping("/adminCommentDelete")
-	public String deleteComment(@RequestParam("comment_id") int comment_id) {
+	public String deleteComment(@RequestParam("comment_id") int comment_id, HttpSession session) {
+
+		String adminId = (String) session.getAttribute("user_id");
 
 		adminCommentService.deleteComment(comment_id);
+
+		// 🔥 삭제 로그 기록
+		adminCommentService.logAction(comment_id, adminId, "DELETE", "관리자 삭제");
 		return "redirect:/admin/adminCommentList";
 	}
 
 
 	/** 댓글 복구 */
 	@PostMapping("/adminCommentRestore")
-	public String restoreComment(@RequestParam("comment_id") int comment_id) {
+	public String restoreComment(@RequestParam("comment_id") int comment_id, HttpSession session) {
+
+		String adminId = (String) session.getAttribute("user_id");
 
 		adminCommentService.restoreComment(comment_id);
+
+		// 🔥 복구 로그 기록
+		adminCommentService.logAction(comment_id, adminId, "RESTORE", "관리자 복구");
 		return "redirect:/admin/adminCommentDetail?comment_id=" + comment_id;
 	}
 

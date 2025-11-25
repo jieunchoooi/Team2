@@ -140,5 +140,33 @@
         WHERE comment_id IS NOT NULL
     </select>
 
+    <!-- 신고 처리 로그 저장 -->
+    <insert id="insertReportActionLog">
+        INSERT INTO report_action_log (report_id, admin_id, action, reason)
+        VALUES (#{report_id}, #{admin_id}, #{action}, #{reason})
+    </insert>
+
+    <!-- 신고 처리 로그 조회 -->
+    <select id="getReportActionLogs" resultType="com.itwillbs.domain.ReportActionLogVO">
+        SELECT
+        log_id,
+        report_id,
+        admin_id,
+        action,
+        reason,
+        created_at
+        FROM report_action_log
+        WHERE report_id = #{report_id}
+        ORDER BY log_id DESC
+    </select>
+
+    <!-- 신고 반려 -->
+    <update id="rejectReport">
+        UPDATE report
+        SET is_done = 2,
+        done_at = NOW(),
+        done_reason = #{reason}
+        WHERE report_id = #{report_id}
+    </update>
 
 </mapper>

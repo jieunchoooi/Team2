@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -84,5 +85,14 @@ public class AdminPostService {
 		System.out.println("AdminPostService: updatePost() 실행");
 		adminPostMapper.updatePost(vo);
 	}
+	
+	public List<Map<String, Object>> getTopViewPosts() {
+	    return adminPostMapper.getTopViewPosts();
+	}
+
+	public List<Map<String, Object>> getTopCommentPosts() {
+	    return adminPostMapper.getTopCommentPosts();
+	}
+
 
 }

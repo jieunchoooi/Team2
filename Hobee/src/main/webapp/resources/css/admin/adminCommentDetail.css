@@ -124,3 +124,45 @@
 .btn-delete:hover {
     background: #cf2f23;
 }
+
+.report-item {
+    background: #f7f9ff;
+    border: 1px solid #dce3ff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+.report-item p {
+    margin: 3px 0;
+}
+
+/* 신고 내역 / 관리자 로그 박스 크기 줄이기 */
+.content-box {
+    padding: 14px 16px !important;
+    min-height: auto !important;
+    line-height: 1.55 !important;
+}
+
+/* 신고 내역 / 로그 내부의 줄마다 밑줄 */
+.content-box p {
+    padding: 6px 0;
+    margin: 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.content-box p:last-child {
+    border-bottom: none;
+}
+
+/* 신고·로그 박스 폭 좁게 */
+.detail-content .content-box {
+    max-width: 700px;
+}
+
+/* 상세 카드 전체 크기 조정 */
+.detail-card {
+    max-width: 850px !important;   /* 기존 900 → 조금 줄임 */
+    padding: 30px !important;
+}
+
+

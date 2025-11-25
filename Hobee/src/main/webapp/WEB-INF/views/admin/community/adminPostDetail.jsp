@@ -23,6 +23,9 @@
 
     <div class="detail-card">
 
+        <!-- =========================
+             기본 정보
+        ========================== -->
         <div class="detail-info-box">
 
             <div class="detail-info-row">
@@ -53,22 +56,29 @@
             <div class="detail-info-row">
                 <span class="info-label">노출 여부</span>
 
-                <div class="exposure-box">
-                    <span class="state-badge ${post.is_visible == 1 ? 'on' : 'off'}">
-                        ${post.is_visible == 1 ? '공개' : '숨김'}
-                    </span>
+           <div class="exposure-box">
 
-                    <form action="${pageContext.request.contextPath}/admin/adminPostToggle" method="post">
-                        <input type="hidden" name="post_id" value="${post.post_id}">
-                        <button class="toggle-btn ${post.is_visible == 1 ? 'btn-red' : 'btn-green'}">
-                            ${post.is_visible == 1 ? '숨기기' : '표시하기'}
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <!-- 공개 상태 버튼 -->
+    <button class="action-btn ${post.is_visible == 1 ? 'btn-green' : 'btn-gray'}" disabled>
+        ${post.is_visible == 1 ? '공개' : '숨김'}
+    </button>
 
-        </div>
+    <!-- 상태 변경 버튼 -->
+    <form action="${pageContext.request.contextPath}/admin/adminPostToggle" method="post">
+        <input type="hidden" name="post_id" value="${post.post_id}">
+        <button class="action-btn ${post.is_visible == 1 ? 'btn-red' : 'btn-green'}">
+            ${post.is_visible == 1 ? '숨기기' : '표시하기'}
+        </button>
+    </form>
 
+</div>
+
+
+</div> <!-- 🔥 detail-info-row 닫는 위치 -->
+
+        <!-- =========================
+             내용
+        ========================== -->
         <div class="detail-content-box">
             <h3>내용</h3>
             <div class="detail-content-area">
@@ -76,6 +86,66 @@
             </div>
         </div>
 
+        <!-- =========================
+             COMMENT LIST 영역 추가!!!
+        ========================== -->
+        <div class="comment-section">
+
+            <h3>댓글 목록</h3>
+
+            <c:if test="${empty comments}">
+                <p class="no-comment">등록된 댓글이 없습니다.</p>
+            </c:if>
+
+            <c:forEach var="cmt" items="${comments}">
+                <div class="comment-box ${cmt.is_deleted == 1 ? 'deleted' : ''}">
+
+                    <div class="comment-row">
+                        <span class="comment-writer">${cmt.user_id}</span>
+                        <span class="comment-date">${cmt.created_at}</span>
+                    </div>
+
+                    <c:if test="${cmt.report_count > 0}">
+                        <div class="report-badge">${cmt.report_count}회 신고됨</div>
+                    </c:if>
+
+                    <div class="comment-content">
+                        ${cmt.content}
+                    </div>
+
+                    <div class="comment-actions">
+
+                        <!-- 삭제된 댓글인 경우 복구 버튼 -->
+<c:if test="${cmt.is_deleted == 1}">
+    <form action="${pageContext.request.contextPath}/admin/postDetailCommentRestore" method="post">
+        <input type="hidden" name="post_id" value="${post.post_id}">
+        <input type="hidden" name="comment_id" value="${cmt.comment_id}">
+        <button class="action-btn btn-green">복구</button>
+    </form>
+</c:if>
+
+<!-- 정상 댓글 → 삭제 버튼 -->
+<c:if test="${cmt.is_deleted == 0}">
+    <form action="${pageContext.request.contextPath}/admin/postDetailCommentDelete"
+          method="post"
+          onsubmit="return confirm('댓글을 삭제하시겠습니까?');">
+        <input type="hidden" name="post_id" value="${post.post_id}">
+        <input type="hidden" name="comment_id" value="${cmt.comment_id}">
+       	<button class="action-btn btn-red">삭제</button>
+    </form>
+</c:if>
+
+
+                    </div>
+
+                </div>
+            </c:forEach>
+
+        </div>
+
+        <!-- =========================
+             버튼 영역
+        ========================== -->
         <div class="detail-btn-area">
 
             <button class="btn-blue"

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import com.itwillbs.domain.ReportActionLogVO;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AdminReportVO;
@@ -63,5 +64,18 @@ public class AdminReportService {
 
 		return map;
 	}
+
+	public void insertActionLog(int report_id, String admin_id, String action, String reason) {
+		adminReportMapper.insertReportActionLog(report_id, admin_id, action, reason);
+	}
+
+	public List<ReportActionLogVO> getActionLogs(int report_id) {
+		return adminReportMapper.getReportActionLogs(report_id);
+	}
+
+	public void rejectReport(int report_id, String reason) {
+		adminReportMapper.rejectReport(report_id, reason);
+	}
+
 
 }

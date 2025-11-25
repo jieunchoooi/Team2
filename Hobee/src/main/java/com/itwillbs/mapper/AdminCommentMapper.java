@@ -2,6 +2,8 @@ package com.itwillbs.mapper;
 
 import java.util.List;
 
+import com.itwillbs.domain.AdminActionLogVO;
+import com.itwillbs.domain.CommentReportVO;
 import com.itwillbs.domain.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -37,4 +39,21 @@ public interface AdminCommentMapper {
 
 	// 복구
 	void restoreComment(int comment_id);
+
+	List<CommentReportVO> getCommentReportList(int comment_id);
+
+	void insertActionLog(
+			@Param("comment_id") int comment_id,
+			@Param("admin_id") String admin_id,
+			@Param("action") String action,
+			@Param("reason") String reason
+	);
+
+	List<AdminActionLogVO> getCommentActionLogs(int comment_id);
+	
+	// 특정 게시글 댓글 목록
+	List<AdminCommentVO> getCommentsByPostId(int post_id);
+
+
+
 }

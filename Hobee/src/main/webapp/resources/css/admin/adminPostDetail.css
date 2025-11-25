@@ -159,3 +159,177 @@
     border: none;
     font-weight: 600;
 }
+
+/* ============================
+   🔥 댓글 리스트 디자인 강화
+=============================== */
+
+/* 댓글 전체 영역 */
+.comment-section {
+    margin-top: 40px;
+    border-top: 2px solid #e5e7eb;
+    padding-top: 25px;
+}
+
+/* 댓글 1개 박스 */
+.comment-box {
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* 삭제된 댓글일 때 흐릿하게 */
+.comment-box.deleted {
+    opacity: 0.55;
+}
+
+/* 작성자 + 날짜 */
+.comment-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.comment-writer {
+    font-weight: 700;
+    color: #333;
+}
+
+.comment-date {
+    font-size: 13px;
+    color: #777;
+}
+
+/* 댓글 본문 */
+.comment-content {
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 10px;
+    white-space: pre-line;
+}
+
+/* 신고 배지 */
+.report-badge {
+    display: inline-block;
+    background: #ff6b6b;
+    color: #fff;
+    padding: 3px 7px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+/* 버튼 영역 */
+.comment-actions {
+    margin-top: 8px;
+}
+
+/* 공개 / 숨기기 버튼 공통 */
+.toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 78px;       /* 두 버튼 동일 크기 */
+    height: 36px;
+
+    border-radius: 18px;
+    border: none;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* 공개(초록) */
+.btn-green {
+    background-color: #32c77b;
+}
+
+/* 숨기기(빨강) */
+.btn-red {
+    background-color: #ff5b5b;
+}
+
+/* 버튼처럼 보이지만 비활성 */
+.btn-gray {
+    background-color: #bcbcbc;
+}
+
+/* hover 효과 */
+/* 공개 / 숨기기 버튼 공통 */
+.toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100px;     /* ★★ 여기 값을 키우면 글자 안 떨어짐 */
+    height: 38px;
+
+    border-radius: 20px;
+    border: none;
+
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+/* ==========================
+   🔥 버튼 크기 통일 (댓글/노출 공통)
+========================== */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 90px;            /* 💎 모든 버튼 폭 통일 */
+    height: 36px;           /* 💎 모든 버튼 높이 통일 */
+
+    padding: 0;
+    border: none;
+    border-radius: 18px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* 색상 */
+.btn-green { background-color: #32c77b !important; }
+.btn-red   { background-color: #ff5b5b !important; }
+.btn-gray  { background-color: #bcbcbc !important; }
+
+/* hover */
+.action-btn:hover {
+    opacity: 0.85;
+}
+
+/* 신고 배지 버튼과 동일 크기 */
+.report-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 36px;         /* 🔥 버튼과 동일값 */
+    padding: 0 14px;      /* 🔥 좌우 폭만 조금 여유 */
+    border-radius: 18px;  /* 🔥 버튼과 동일한 둥근 모양 */
+    
+    background: #ff6b6b;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+
+
+

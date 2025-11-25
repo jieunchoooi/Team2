@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,17 +62,42 @@ public class AdminReportController {
 
         model.addAttribute("report", adminReportService.getReportDetail(report_id));
 
+        // 🔥 신고 처리 로그 가져오기
+        model.addAttribute("actionLogs", adminReportService.getActionLogs(report_id));
+
         return "admin/community/adminReportDetail";
     }
 
     // ⭐ 신고 처리 완료
     @PostMapping("/adminReportDone")
     public String reportDone(@RequestParam int report_id,
-                             @RequestParam(required=false) String done_reason) {
+                             @RequestParam(required=false) String done_reason, HttpSession session) {
 
+        String adminId = (String) session.getAttribute("user_id");
+
+        // 신고 처리
         adminReportService.updateReportDone(report_id, done_reason);
+
+        // 🔥 신고 처리 로그 기록
+        adminReportService.insertActionLog(report_id, adminId, "처리완료", done_reason);
 
         return "redirect:/admin/adminReportList";
     }
+
+    @PostMapping("/adminReportReject")
+    public String rejectReport(@RequestParam int report_id,
+                               @RequestParam String reason,
+                               HttpSession session) {
+
+        String adminId = (String) session.getAttribute("user_id");
+
+        adminReportService.rejectReport(report_id, reason);
+
+        // 🔥 반려 로그 자동 저장
+        adminReportService.insertActionLog(report_id, adminId, "반려", reason);
+
+        return "redirect:/admin/adminReportDetail?report_id=" + report_id;
+    }
+
 
 }

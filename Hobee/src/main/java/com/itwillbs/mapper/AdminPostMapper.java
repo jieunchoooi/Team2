@@ -1,6 +1,7 @@
 package com.itwillbs.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -50,6 +51,10 @@ public interface AdminPostMapper {
     void batchDelete(@Param("ids") List<Integer> ids);
 
 	void updatePost(AdminPostVO vo);
+	
+	List<Map<String, Object>> getTopViewPosts();
+	List<Map<String, Object>> getTopCommentPosts();
+
 
 
 }
