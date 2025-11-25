@@ -174,12 +174,12 @@
 
 function searchLecture(event) {
      event.preventDefault();
-     const query = document.getElementById('searchInput').value.trim();
-     if (!query) {
+     const search = document.getElementById('searchInput').value.trim();
+     if (!search) {
         alert('검색어를 입력해주세요!');
         return;
      }
-     window.location.href = '/search?query=' + encodeURIComponent(query);
+     window.location.href = '${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
 }
    
 const isLogin = "${not empty sessionScope.user_id}" === "true";

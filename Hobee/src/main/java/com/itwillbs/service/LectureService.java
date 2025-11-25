@@ -116,6 +116,11 @@ public class LectureService {
 		return lectureMapper.hasWrittenReview(user_id, lecture_num);
 	}
 
+	public List<LectureVO> getAllLectures(String search) {
+		System.out.println("LectureService getAllLectures(search)");
+		return lectureMapper.getAllLectures(search);
+	}
+
 
 
 

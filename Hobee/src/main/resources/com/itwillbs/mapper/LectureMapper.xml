@@ -10,38 +10,48 @@
 <!--       values(#{id},#{passwd},#{name},#{phone},#{email},#{gender},#{agree},#{content},#{rdate}) -->
 <!--    </insert> -->
 		
-		<select id="getAllLectures" resultType="com.itwillbs.domain.LectureVO">
+		<select id="getAllLectures" resultType="com.itwillbs.domain.LectureVO" parameterType="string">
 		   	SELECT 
-		        l.lecture_num,
-		        l.user_num,
-		        l.lecture_title,
-		        l.lecture_author,
-		        l.lecture_price,
-		        l.category_detail,
-		        l.readcount,
-		        l.lecture_img,
-		        l.lecture_detail,
-		        l.lecture_tag,
-		        COALESCE(ROUND(AVG(r.review_score), 1), 0) as avg_score,
-		        COALESCE(COUNT(DISTINCT r.review_num), 0) as review_count,
-		        COALESCE(COUNT(DISTINCT e.enrollment_id), 0) as student_count
-		    FROM 
-		        lecture l
-		        LEFT JOIN review r ON l.lecture_num = r.lecture_num
-		        LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
-		    GROUP BY 
-		        l.lecture_num,
-		        l.user_num,
-		        l.lecture_title,
-		        l.lecture_author,
-		        l.lecture_price,
-		        l.category_detail,
-		        l.readcount,
-		        l.lecture_img,
-		        l.lecture_detail,
-		        l.lecture_tag
-		    ORDER BY 
-		        l.readcount DESC
+			    l.lecture_num,
+			    l.user_num,
+			    l.lecture_title,
+			    l.lecture_author,
+			    l.lecture_price,
+			    l.category_detail,
+			    l.readcount,
+			    l.lecture_img,
+			    l.lecture_detail,
+			    l.lecture_tag,
+			    COALESCE(ROUND(AVG(r.review_score), 1), 0) AS avg_score,
+			    COALESCE(COUNT(DISTINCT r.review_num), 0) AS review_count,
+			    COALESCE(COUNT(DISTINCT e.enrollment_id), 0) AS student_count
+			FROM 
+			    lecture l
+			    LEFT JOIN review r ON l.lecture_num = r.lecture_num
+			    LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
+			
+			<where>
+			    <if test="_parameter != null and _parameter != ''">
+			       (   l.lecture_title LIKE CONCAT('%', #{_parameter}, '%')
+			        OR l.lecture_author LIKE CONCAT('%', #{_parameter}, '%')
+			        OR l.lecture_tag LIKE CONCAT('%', #{_parameter}, '%')
+			        OR l.category_detail LIKE CONCAT('%', #{_parameter}, '%'))
+			    </if>
+			</where>
+			
+			GROUP BY 
+			    l.lecture_num,
+			    l.user_num,
+			    l.lecture_title,
+			    l.lecture_author,
+			    l.lecture_price,
+			    l.category_detail,
+			    l.readcount,
+			    l.lecture_img,
+			    l.lecture_detail,
+			    l.lecture_tag
+			ORDER BY 
+			    l.readcount DESC
 		</select>
 		
 		<!-- 인기 강의 TOP 10 조회 (통계 포함) -->

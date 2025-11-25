@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.service.LectureService;
@@ -30,5 +31,18 @@ public class MainController {
       
       return "main/main";
    }
+   
+   @RequestMapping(value="/search")
+   public String search(@RequestParam("search") String search, Model model) {
+      System.out.println("MainController search()");     
+    
+      List<LectureVO> lectureList = lectureService.getAllLectures(search);
+    
+      model.addAttribute("lectureList", lectureList);
+      
+      return "main/search";
+   }
+   
+
 }
 
