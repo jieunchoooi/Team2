@@ -15,10 +15,10 @@ public class ScrapService {
     private ScrapMapper scrapMapper;
 
     // 1) 스크랩 추가
-    public boolean addScrap(int user_num, int lecture_num) {
+    public boolean addScrap(int setLecture_num, String user_id) {
         ScrapVO vo = new ScrapVO();
-        vo.setUser_num(user_num);
-        vo.setLecture_num(lecture_num);
+        vo.setUser_id(user_id);
+        vo.setLecture_num(setLecture_num);
         return scrapMapper.addScrap(vo) > 0;
     }
 
@@ -28,26 +28,26 @@ public class ScrapService {
     }
 
     // 3) 스크랩 삭제
-    public boolean deleteScrap(int user_num, int lecture_num) {
+    public boolean deleteScrap(String user_id, int lecture_num) {
         ScrapVO vo = new ScrapVO();
-        vo.setUser_num(user_num);
+        vo.setUser_id(user_id);
         vo.setLecture_num(lecture_num);
         return scrapMapper.deleteScrap(vo) > 0;
     }
 
     // 4) 유저가 해당 강의를 스크랩했는지 여부 체크
-    public boolean isScraped(int user_num, int lecture_num) {
+    public boolean isScraped(String user_id, int lecture_num) {
         ScrapVO vo = new ScrapVO();
-        vo.setUser_num(user_num);
+        vo.setUser_id(user_id);
         vo.setLecture_num(lecture_num);
         return scrapMapper.existsScrap(vo) > 0;
     }
 
     // 5) 스크랩 토글 기능 (강의 상세 페이지에서 사용)
-    public boolean toggleScrap(int user_num, int lecture_num) {
-        boolean exists = isScraped(user_num, lecture_num);
+    public boolean toggleScrap(String user_id, int lecture_num) {
+        boolean exists = isScraped(user_id, lecture_num);
         ScrapVO vo = new ScrapVO();
-        vo.setUser_num(user_num);
+        vo.setUser_id(user_id);
         vo.setLecture_num(lecture_num);
 
         if (exists) {

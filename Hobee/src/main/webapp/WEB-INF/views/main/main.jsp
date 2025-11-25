@@ -189,23 +189,21 @@ function toggleBookmark(lectureNum, btn) {
     	 openLoginModal();
         return;
      }
-     // 북마크 토글 로직 (서버에 요청)
-     // TODO: Ajax 요청 구현
-     /*
+     // 북마크 토글 로직 
      $.ajax({
-        url: '${pageContext.request.contextPath}/bookmark/toggle',
+        url: '${pageContext.request.contextPath}/main/bookmark',
         method: 'POST',
-        data: { lectureNum: lectureNum },
-           success: function(response) {
+        data: { lecture_num: lectureNum },
+        success: function(response) {
+        	console.log("response :: " + response);
            if(response.success) {
               btn.classList.toggle('active');
            }
         }
      });
-     */
          
      // 임시: UI만 토글
-     btn.classList.toggle('active');
+//      btn.classList.toggle('active');
 }
 </script>
    

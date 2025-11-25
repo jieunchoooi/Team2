@@ -1,16 +1,22 @@
 package com.itwillbs.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.service.LectureService;
+import com.itwillbs.service.ScrapService;
 
 @Controller
 @RequestMapping("/main/*")
@@ -18,6 +24,8 @@ public class MainController {
    
    @Inject
    private LectureService lectureService;
+   @Inject
+   private ScrapService scrapService;
    
    @RequestMapping(value="/main")
    public String main(Model model) {
@@ -41,6 +49,24 @@ public class MainController {
       model.addAttribute("lectureList", lectureList);
       
       return "main/search";
+   }
+   
+   @RequestMapping(value="/bookmark", method = RequestMethod.POST)
+   @ResponseBody
+   public Map<String, Object> bookmark(@RequestParam("lecture_num") int lecture_num, Model model, HttpSession session ) {
+      System.out.println("MainController bookmark()");
+      
+      String user_id = (String) session.getAttribute("user_id");
+    
+      Map<String, Object> res = new HashMap<>();
+      try {
+    	  scrapService.addScrap(lecture_num, user_id);
+          res.put("success", true);
+      } catch (Exception e) {
+          res.put("success", false);
+      }
+      
+      return res;
    }
    
 
