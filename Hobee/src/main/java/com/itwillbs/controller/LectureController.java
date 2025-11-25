@@ -1,6 +1,7 @@
 package com.itwillbs.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,10 @@ import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.LectureService;
+import com.itwillbs.service.ScrapService;
 
 @Controller
 @RequestMapping("/category/*")
@@ -24,10 +27,12 @@ public class LectureController {
 	
 	@Inject
 	private LectureService lectureService;
+	@Inject
+	private ScrapService scrapService;
 	
 	@RequestMapping(value="/lectureList")
 	public String lectureList(@RequestParam(required = false, defaultValue = "전체") String category_detail,
-            Model model) {
+            Model model, HttpSession session) {
 		System.out.println("LectureController lectureList()");
 		
 		List<LectureVO> lectureList;
@@ -41,12 +46,29 @@ public class LectureController {
 	        top10List = lectureService.getTop10ByCategory(category_detail);
 	    }
 	    
+	    UserVO userVO = (UserVO) session.getAttribute("userVO");
+	      if(userVO != null) {
+	          List<Integer> scrapLectureNums = scrapService.getScrapList(userVO.getUser_num())
+	                                                     .stream()
+	                                                     .map(ScrapVO::getLecture_num)
+	                                                     .collect(Collectors.toList());
+	          
+	          // 강의 목록에 bookmark 정보 세팅
+	          for(LectureVO lecture : lectureList) {
+	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+	          }
+	          for(LectureVO lecture : top10List) {
+	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+	          }
+	      }
+	    
 	    model.addAttribute("lectureList", lectureList);
 	    model.addAttribute("top10List", top10List);
 	    model.addAttribute("category_detail", category_detail);
 		
 		return "category/lectureList";
 	}
+	
 	
 	@RequestMapping(value="/lecture")
 	public String lecture(@RequestParam("no") int lecture_num,
