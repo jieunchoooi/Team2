@@ -216,7 +216,7 @@ public class MemberController {
         UserVO userVO = (UserVO) session.getAttribute("userVO");
         if (userVO == null) return "LOGIN_REQUIRED";
 
-        boolean result = scrapService.deleteScrap(userVO.getUser_id(), lecture_num);
+        boolean result = scrapService.deleteScrap(userVO.getUser_num(), lecture_num);
         return result ? "OK" : "FAIL";
     }
 	
