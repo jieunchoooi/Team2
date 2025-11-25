@@ -14,19 +14,21 @@ import com.itwillbs.service.LectureService;
 @Controller
 @RequestMapping("/main/*")
 public class MainController {
-	
-	@Inject
-	private LectureService lectureService;
-	
-	@RequestMapping(value="/main")
-	public String main(Model model) {
-		System.out.println("MainController main()");
-		
-		List<LectureVO> bestList = lectureService.getTop10();
-		
-		model.addAttribute("bestList", bestList);
-		
-		return "main/main";
-	}
+   
+   @Inject
+   private LectureService lectureService;
+   
+   @RequestMapping(value="/main")
+   public String main(Model model) {
+      System.out.println("MainController main()");
+      
+      List<LectureVO> bestList = lectureService.getTop10();
+      List<LectureVO> lectureList = lectureService.getAllLectures();
+
+      model.addAttribute("bestList", bestList);
+      model.addAttribute("lectureList", lectureList);
+      
+      return "main/main";
+   }
 
 }

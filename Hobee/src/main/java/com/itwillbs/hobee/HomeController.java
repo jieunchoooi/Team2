@@ -22,23 +22,23 @@ import com.itwillbs.service.LectureService;
  */
 @Controller
 public class HomeController {
-	
-	@Inject
-	private LectureService lectureService;
-	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		System.out.println("MainController main()");
-		
-		List<LectureVO> bestList = lectureService.getTop10();
-		List<LectureVO> lectureList = lectureService.getAllLectures();
-		
-		model.addAttribute("bestList", bestList);
-		model.addAttribute("lectureList", lectureList);
-		
-		return "main/main";
-	}
+   
+   @Inject
+   private LectureService lectureService;
+   
+   private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+   
+   @RequestMapping(value = "/", method = RequestMethod.GET)
+   public String home(Locale locale, Model model) {
+      logger.info("Welcome home! The client locale is {}.", locale);
+      System.out.println("MainController main()");
+      
+      List<LectureVO> bestList = lectureService.getTop10();
+      List<LectureVO> lectureList = lectureService.getAllLectures();
+      
+      model.addAttribute("bestList", bestList);
+      model.addAttribute("lectureList", lectureList);
+      
+      return "main/main";
+   }
 }
