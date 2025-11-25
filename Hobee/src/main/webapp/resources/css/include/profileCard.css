@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/* 전체 프로필카드 영역 스코프 부여 */
+.profile-card-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    background: #fff;
+    padding: 24px 30px;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+/* 프로필 사진 */
+.profile-card-wrap .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #2573ff 0%, #1e40af 100%);
+}
+
+.profile-card-wrap .profile-pic span {
+    font-size: 3.5rem;
+}
+
+.profile-card-wrap .profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 프로필 정보 */
+.profile-card-wrap .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 🔥 페이지 CSS 영향 절대 안 받도록 완전 스코프 선언 */
+.profile-card-wrap .profile-info p {
+    margin: 0; 
+    padding: 0;
+    color: #333;
+    line-height: 1.4;
+}
+
+/* 사용자 이름 */
+.profile-card-wrap .profile-info .name {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/* 이메일 */
+.profile-card-wrap .profile-info .email {
+    font-size: 0.95rem;
+    color: #666;
+}
+
+/* 포인트 */
+.profile-card-wrap .profile-info .points {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+}
+
+/* 등급 배지 */
+.profile-card-wrap .badge {
+    margin-right: 4px;
+}

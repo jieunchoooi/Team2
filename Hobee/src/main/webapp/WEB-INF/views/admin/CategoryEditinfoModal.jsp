@@ -16,14 +16,12 @@
         <label for="edit_category_main_name" style="display: block; margin-bottom: 8px; font-weight: 600;">대분류</label>
         <select name="category_main_name" id="edit_category_main_name" 
                 style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;" required>
-
             <c:forEach var="category_mainVO" items="${categoMainryList}">
                 <option value="${category_mainVO.category_main_name}" 
                         ${category.category_main_name == category_mainVO.category_main_name ? 'selected' : ''}>
                     ${category_mainVO.category_main_name}
                 </option>
             </c:forEach>
-			
         </select>
     </div>
     
@@ -47,22 +45,5 @@
     </div>
 </form>
 </body>
-<script>
-// 모달 열기
-document.querySelector('.btn-open-modal').addEventListener('click', function() {
-    document.querySelector('.modal').classList.add('show');
-});
 
-// 모달 닫기 (배경 클릭시)
-document.querySelector('.modal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        this.classList.remove('show');
-    }
-});
-
-// 모달 닫기 버튼 (필요시 추가)
-// document.querySelector('.modal_close')?.addEventListener('click', function() {
-//     document.querySelector('.modal').classList.remove('show');
-// });
-</script>
 </html>

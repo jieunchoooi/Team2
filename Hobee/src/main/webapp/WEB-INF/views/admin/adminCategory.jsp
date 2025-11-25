@@ -242,6 +242,7 @@ $(".btn-modal").click(function(){
                 let result = confirm("카테고리를 수정하시겠습니까?");
                 if(result) {
                     document.getElementById('categoryEditForm').submit();
+				    alert("카테고리 수정이 완료되었습니다.");
                 }
             };
         },

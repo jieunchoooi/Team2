@@ -1,149 +1,258 @@
 @charset "UTF-8";
 
-/* 기본 스타일 */
-* {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif; background:#f9fafb;}
-.cart-wrap {margin-left:240px; padding:40px;}
-.cart-title {font-size:1.6rem; font-weight:700; margin-bottom:30px;}
+/* =============================================
+   기본 설정
+============================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+body {
+    font-family:'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    background:#f9fafb;
+}
 
-/* 2단 레이아웃 */
-.cart-container {display:flex; gap:24px; align-items:flex-start;}
+/* =============================================
+   메인 컨텐츠 (마이페이지 공통)
+============================================= */
+.main-content {
+    margin-left: 240px;
+    padding: 40px 30px;
+    width: calc(100% - 240px);
+    min-height: 100vh;
+    background:#f9fafb;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* =============================================
+   2단 레이아웃 (스크랩 리스트 + 결제 요약)
+============================================= */
+.cart-container {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+/* =============================================
+   스크랩 리스트 카드
+============================================= */
 .cart-list {
-  flex:2;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.05);
-  padding:20px 24px;
+    flex: 2;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    padding: 28px 30px;
 }
 
 /* 상단 선택 영역 */
 .cart-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #eee;
-  padding-bottom:10px;
-  margin-bottom:15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
 }
+
 .select-group {
-  display:flex;
-  align-items:center;
-  gap:8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
+
 .btn-outline {
-  background:#f3f4f6;
-  color:#333;
-  border:1px solid #ddd;
-  border-radius:6px;
-  padding:5px 10px;
-  font-size:0.85rem;
-  cursor:pointer;
+    background:#f3f4f6;
+    color:#333;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:6px 12px;
+    font-size:0.85rem;
+    cursor:pointer;
 }
 .btn-outline:hover {background:#e5e7eb;}
 
-/* 강의 리스트 */
+/* =============================================
+   스크랩 아이템
+============================================= */
 .cart-item {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:14px 0;
-  border-bottom:1px solid #f0f0f0;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:16px 0;
+    border-bottom:1px solid #f0f0f0;
 }
+
 .cart-item img {
-  width:80px; height:80px; border-radius:8px; object-fit:cover;
+    width:80px;
+    height:80px;
+    border-radius:10px;
+    object-fit:cover;
 }
+
 .cart-item .info {flex:1;}
-.cart-item .title {font-weight:600; margin-bottom:4px;}
-.cart-item .teacher {font-size:0.9rem; color:#666;}
-.cart-item .price {width:120px; font-weight:700; color:#2563eb; text-align:right;}
+
+.cart-item .title {
+    font-weight:600;
+    margin-bottom:4px;
+    color:#333;
+}
+
+.cart-item .teacher {
+    font-size:0.9rem;
+    color:#666;
+}
+
+.cart-item .price {
+    width:120px;
+    font-weight:700;
+    color:#2563eb;
+    text-align:right;
+}
+
 .btn-delete {
-  background:#64748b; color:#fff; border:none;
-  border-radius:8px; padding:6px 12px;
-  font-size:0.85rem; cursor:pointer;
-  transition:background 0.2s ease;
+    background:#64748b;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:6px 12px;
+    font-size:0.85rem;
+    cursor:pointer;
+    transition:0.2s ease;
 }
 .btn-delete:hover {background:#475569;}
 
-/* 우측 결제 요약 */
+/* =============================================
+   스크랩이 없을 때 Empty 상태
+============================================= */
+.empty-box {
+    text-align:center;
+    padding:40px 0;
+    color:#666;
+    font-size:1rem;
+}
+
+/* =============================================
+   결제 요약 카드
+============================================= */
 .cart-summary {
-  flex:1;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.05);
-  padding:20px;
-  min-width:280px;
+    flex:1;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    padding:28px 30px;
+    min-width:280px;
 }
-.cart-summary h2 {font-size:1.1rem; font-weight:700; margin-bottom:20px;}
+
+.cart-summary h2 {
+    font-size:1.1rem;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
 .summary-line {
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:10px;
-  font-size:0.95rem;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+    font-size:0.95rem;
 }
+
 .summary-total {
-  display:flex;
-  justify-content:space-between;
-  font-size:1rem;
-  font-weight:700;
-  color:#2563eb;
-  margin:12px 0;
+    display:flex;
+    justify-content:space-between;
+    font-size:1rem;
+    font-weight:700;
+    color:#2563eb;
+    margin:12px 0;
 }
+
 .cart-summary .btn-primary {
-  width:100%; padding:10px 0;
-  border:none; border-radius:8px;
-  font-size:0.95rem; font-weight:600;
-  cursor:pointer; margin-top:8px;
-  background:#2563eb; color:#fff;
+    width:100%;
+    padding:12px 0;
+    border:none;
+    border-radius:10px;
+    font-size:0.95rem;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:10px;
+    background:#2563eb;
+    color:#fff;
 }
-.cart-summary .btn-primary:hover {background:#1e40af;}
-
-/* 반응형 */
-@media (max-width:1024px){
-  .cart-container{flex-direction:column;}
-  .cart-summary{width:100%;}
+.cart-summary .btn-primary:hover {
+    background:#1e40af;
 }
 
-/* 포인트 박스 디자인 */
+/* =============================================
+   포인트 박스
+============================================= */
 .point-box {
-  background: #f7f8fc;
-  padding: 14px 16px;
-  margin: 14px 0;
-  border-radius: 10px;
-  border: 1px solid #e0e3eb;
+    background: #f7f8fc;
+    padding: 14px 16px;
+    margin: 14px 0;
+    border-radius: 10px;
+    border: 1px solid #e0e3eb;
 }
 
 .point-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
 }
 
 .point-input-area {
-  display: flex;
-  gap: 6px;
-  align-items: center;
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
 
 .point-input {
-  width: 110px;
-  padding: 6px 10px;
-  text-align: right;
-  border: 1px solid #d0d4df;
-  border-radius: 8px;
-  font-size: 14px;
+    width: 110px;
+    padding: 6px 10px;
+    text-align: right;
+    border: 1px solid #d0d4df;
+    border-radius: 8px;
+    font-size: 14px;
 }
 
 .btn-use-all {
-  padding: 6px 10px;
-  font-size: 13px;
-  background: #e8ecff;
-  border: 1px solid #c3ccff;
-  color: #4a57e8;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
+    padding: 6px 10px;
+    font-size: 13px;
+    background: #e8ecff;
+    border: 1px solid #c3ccff;
+    color: #4a57e8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
 }
-.btn-use-all:hover {
-  background: #d8e0ff;
+.btn-use-all:hover {background:#d8e0ff;}
+
+/* =============================================
+   반응형
+============================================= */
+@media (max-width:1024px){
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+        padding-top: 100px;
+    }
+
+    .content-wrapper {
+        width: 100%;
+    }
+
+    .cart-container {
+        flex-direction: column;
+    }
+
+    .cart-summary {
+        width: 100%;
+    }
 }

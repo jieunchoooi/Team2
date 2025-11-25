@@ -1,22 +1,35 @@
 @charset "UTF-8";
 
+/* ===============================
+   기본 설정
+================================ */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Pretendard', sans-serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+
 
 body {
     background: #f4f6fa;
 }
 
 /* ===============================
-   메인 컨테이너
+   메인 컨텐츠 레이아웃 (공통 규칙 적용)
 ================================ */
 .main-content {
     margin-left: 240px;
     padding: 40px 30px;
+    width: calc(100% - 240px);
+    background: #f9fafb;
+    min-height: 100vh;
+}
+
+/* 중앙 정렬용 공통 래퍼 */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* ===============================
@@ -49,7 +62,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    min-width: 0; /* 🔥 flex 오버플로우 방지 */
+    min-width: 0;
 }
 
 /* 🔵 오른쪽 */
@@ -58,8 +71,7 @@ body {
     flex-direction: column;
     align-items: flex-end;
     gap: 10px;
-
-    min-width: 160px; /* 🔥 버튼들이 줄바꿈되지 않게 고정 */
+    min-width: 160px;
 }
 
 /* ===============================
@@ -82,7 +94,6 @@ body {
     font-weight: 700;
     max-width: 420px;
 
-    /* 🔥 텍스트 오버플로우 안정화 */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -109,11 +120,9 @@ body {
     background: none;
     border: none;
     padding: 4px 0;
-
     font-size: 0.95rem;
     color: #555;
     font-weight: 500;
-
     cursor: pointer;
     transition: .13s ease;
 }
@@ -142,9 +151,53 @@ body {
     cursor: default;
     text-decoration: none !important;
 }
+/* ===========================================================
+   결제 내역 없음 (Empty Card) — 결제 카드와 크기 통일 버전
+=========================================================== */
+
+.payment-empty-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.payment-empty-card {
+    width: 100%;               /* 🔥 결제 카드와 동일한 폭 */
+    padding: 50px 40px;        /* 🔥 상하 넉넉 */
+    background: #ffffff;
+    border-radius: 16px;       /* 🔥 결제카드 통일 */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    animation: fadeIn 0.4s ease-in-out;
+    min-height: 160px;         /* 🔥 payment-card 높이와 비슷하게 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* 🔥 내용 수직 중앙 */
+}
+
+/* 아이콘 */
+.empty-icon {
+    font-size: 52px;
+    margin-bottom: 12px;
+}
+
+/* 메인 타이틀 */
+.empty-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 
 /* ===============================
-   모달 스타일
+   모달
 ================================ */
 .modal-overlay {
     display: none;
@@ -155,13 +208,12 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 999;
-
-    padding: 20px; /* 🔥 작은 화면에서 튐 방지 */
+    padding: 20px;
 }
 
 .modal-box {
     width: 720px;
-    max-width: 90%;           /* 🔥 작은 화면 대응 */
+    max-width: 90%;
     max-height: 85vh;
 
     padding: 32px 40px;
@@ -177,12 +229,10 @@ body {
     position: absolute;
     top: 16px;
     right: 20px;
-
     border: none;
     background: none;
     font-size: 22px;
     cursor: pointer;
-
     color: #444;
 }
 .modal-close:hover {
@@ -191,67 +241,7 @@ body {
 
 .modal-frame {
     width: 100%;
-    height: 72vh; /* 🔥 전체 모달 대비 적절한 높이 */
+    height: 72vh;
     border: none;
     border-radius: 12px;
 }
-
-/* ===========================================================
-   결제 내역 없음 (Empty Card)
-=========================================================== */
-.payment-empty-wrap {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 60px;
-}
-
-.payment-empty-card {
-    width: 360px;
-    padding: 40px 30px;
-    background: #ffffff;
-    border-radius: 18px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    text-align: center;
-    animation: fadeIn 0.4s ease-in-out;
-}
-
-.empty-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-}
-
-.empty-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.empty-sub {
-    font-size: 0.95rem;
-    color: #777;
-    margin-bottom: 24px;
-}
-
-.go-class-btn {
-    padding: 12px 20px;
-    background-color: #6c63ff;
-    border: none;
-    color: #fff;
-    font-size: 0.95rem;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.go-class-btn:hover {
-    background-color: #5850ec;
-}
-
-/* 등장 애니메이션 */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
