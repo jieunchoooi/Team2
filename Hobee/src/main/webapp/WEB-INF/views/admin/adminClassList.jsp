@@ -39,8 +39,14 @@
 			<!-- 검색 영역 -->
 			<div class="search-wrapper">
 				<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search-form" id="search_form">
+				<select name="searchList" id="searchList">
+				<option value="전체"	${pageVO.searchList == '전체' ? 'selected' : ''}>전체 검색</option>
+				<option value="강의명" ${pageVO.searchList == '강의명' ? 'selected' : ''}>강의명 검색</option>
+				<option value="강사명" ${pageVO.searchList == '강사명' ? 'selected' : ''}>강사명 검색</option>
+			</select>
 					<input type="text" name="search" class="search-input" id="search_box" value="${pageVO.search}" placeholder="강의명, 강사 이름으로 검색..."> 
 					<button type="submit" class="search-btn" id="search">검색</button>
+					<a href="${ pageContext.request.contextPath }/admin/adminClassList" class="search-btn">전체 회원</a>
 				</form>
 			</div>
 			
@@ -85,17 +91,17 @@
 			<div class="pagination">
 				<!-- 10 만큼 이전 -->
 				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
-					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${pageVO.startPage - pageVO.pageBlock}">[이전]</a>
+					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${pageVO.startPage - pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[이전]</a>
 				</c:if>
 
 				<c:forEach var="i" begin="${pageVO.startPage}"
 					end="${pageVO.endPage}" step="1">
-					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${i}">${i}</a>
+					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">${i}</a>
 				</c:forEach>
 
 				<!-- 10만큼 다음 -->
 				<c:if test="${pageVO.endPage < pageVO.pageCount }">
-					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${pageVO.startPage + pageVO.pageBlock}">[다음]</a>
+					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${pageVO.startPage + pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[다음]</a>
 				</c:if>
 			</div>
 		</div>

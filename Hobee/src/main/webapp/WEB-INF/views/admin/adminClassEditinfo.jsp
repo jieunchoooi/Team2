@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>클래스 등록 | Hobee Admin</title>
+<title>강의 등록 | Hobee Admin</title>
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
@@ -23,18 +23,26 @@
 		</div>
 
 		<form id="classAddForm" class="form-container"
-			action="${pageContext.request.contextPath}/admin/adminClassAddPro"
+			action="${pageContext.request.contextPath}/admin/adminClassUpdate"
 			method="post" enctype="multipart/form-data" onsubmit="return reindexChapters()">
 			
 			<div class="profile-pic">
-				<span>📚</span>
+				<c:choose>
+					<c:when test="${empty lectureVO.lecture_img}">
+						<span>📚</span>
+					</c:when>
+					<c:otherwise>
+						<img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}" alt="프로필 사진">
+					</c:otherwise>
+				</c:choose>
 			</div>
 			
 			<div class="form-group">
 				<label>썸네일 이미지</label> <input type="file" name="lecture_img" id="lecture_img">
+				<input type="hidden" name="oldfile" value="${lectureVO.lecture_img}">
 			</div>
 			<div class="form-group">
-				<label>강의 번호</label> <input type="number" name="lecture_num" id="lecture_num" value="${lectureVO.lecture_num}">
+				<label>강의 번호</label> <input type="number" name="lecture_num" id="lecture_num" value="${lectureVO.lecture_num}" readonly>
 			</div>
 			<!-- ✅ 카테고리 선택 추가 -->
 			<div class="form-group">
@@ -42,26 +50,28 @@
 				<select name="category_detail" id="category" required>
 					<option value="">카테고리를 선택하세요</option> 
 					<c:forEach var="categoryVO" items="${categoryList}">
-						<option value="${categoryVO.category_detail}">
-<%-- 						${categoryVO.category_main_name}.  --%>
-							${categoryVO.category_detail}
+						<option value="${categoryVO.category_detail}"
+   				 			${lectureVO.category_detail == categoryVO.category_detail ? 'selected' : ''}>
+    						${categoryVO.category_detail}
 						</option>
+
 					</c:forEach>
 				</select>
 			</div>
-
 			<div class="form-group">
-				<label>강의명</label> <input type="text" name="lecture_title" id="lecture_title" placeholder="강의명을 입력하세요">
+				<label>강의명</label> <input type="text" name="lecture_title" id="lecture_title" value="${lectureVO.lecture_title}">
 			</div>
 			<div class="form-group">
     		<label>강사명</label>
     		<!-- ✅ 검색 입력란 추가 -->
-    		<input type="text" id="instructor-search" placeholder="강사명을 검색하세요..." class="instructor-search">
+    		<input type="text" id="instructor-search" value="${lectureVO.lecture_author}" class="instructor-search">
     
     		<select name="lecture_author" id="instructor" required>
         		<option value="">강사를 선택하세요</option>
         		<c:forEach var="instructor" items="${instructorList}">
-            		<option value="${instructor.user_num}:${instructor.user_name}" data-user-num="${instructor.user_num}" data-user-name="${instructor.user_name}">
+            		<option value="${instructor.user_num}:${instructor.user_name}" 
+            				${lectureVO.user_num == instructor.user_num ? 'selected' : ''}
+            				data-user-num="${instructor.user_num}" data-user-name="${instructor.user_name}">
                 		${instructor.user_num}. ${instructor.user_name}
             		</option>
         		</c:forEach>
@@ -69,35 +79,66 @@
 			</div>
 
 			<div class="form-group">
-				<label>금액</label> <input type="number" name="lecture_price" id="lecture_price" placeholder="금액을 입력하세요 (숫자만 입력)">
+				<label>금액</label> <input type="number" name="lecture_price" id="lecture_price" value="${lectureVO.lecture_price}">
 			</div>
 			<div class="form-group">
 				<label>상세정보</label>
-				<textarea name="lecture_detail" id="lecture_detail" placeholder="강의 상세 정보를 입력하세요"></textarea>
+				<textarea name="lecture_detail" id="lecture_detail">${lectureVO.lecture_detail}</textarea>
 			</div>
 			<div class="form-group">
-				<label>커리큘럼</label>
-				<div id="curriculum-container">
-					<!-- 첫 번째 챕터 -->
-					<div class="chapter-item">
-						<div class="chapter-header">
-							<span class="chapter_order">Chapter 1</span>
-							<input type="text" name="chapter_title[]" id="chapter_title" placeholder="챕터 제목 (예: 1주차)" class="chapter-title">
-							<button type="button" class="btn-remove-chapter">챕터 삭제</button>
-						</div>
-						<div class="details-container">
-							<div class="detail-item">
-								<span class="detail-order">1</span> 
-								<input type="text" name="detail_title_0[]" id="detail_title" placeholder="강의 제목" class="detail-title"> 
-								<input type="text" name="detail_time_0[]" id="detail_time" placeholder="00:00 (분:초)" class="detail-time" maxlength="8">
-								<button type="button" class="btn-remove-detail">-</button>
-							</div>
-						</div>
-						<button type="button" class="btn-add-detail">+ 강의 추가</button>
-					</div>
-				</div>
-				<button type="button" id="add-chapter" class="btn-add">+ 챕터 추가</button>
-			</div>
+    <label>커리큘럼</label>
+    <div id="curriculum-container">
+        <!-- ✅ 기존 챕터 데이터 렌더링 -->
+        <c:forEach var="chapter" items="${chapterList}" varStatus="chapterStatus">
+            <div class="chapter-item" data-chapter-index="${chapterStatus.index}">
+                <div class="chapter-header">
+                    <span class="chapter_order">Chapter ${chapterStatus.index + 1}</span>
+                    <input type="text" name="chapter_title[]" 
+                           value="${chapter.chapter_title}" 
+                           placeholder="챕터 제목" class="chapter-title">
+                    <button type="button" class="btn-remove-chapter">챕터 삭제</button>
+                </div>
+                <div class="details-container">
+                    <!-- ✅ 챕터의 강의 목록 렌더링 -->
+                    <c:forEach var="detail" items="${chapter.detailList}" varStatus="detailStatus">
+                        <div class="detail-item">
+                            <span class="detail-order">${detailStatus.index + 1}</span>
+                            <input type="text" name="detail_title_${chapterStatus.index}[]" 
+                                   value="${detail.detail_title}" 
+                                   placeholder="강의 제목" class="detail-title">
+                            <input type="text" name="detail_time_${chapterStatus.index}[]" 
+                                   value="${detail.detail_time}" 
+                                   placeholder="00:00 (분:초)" class="detail-time" maxlength="8">
+                            <button type="button" class="btn-remove-detail">-</button>
+                        </div>
+                    </c:forEach>
+                </div>
+                <button type="button" class="btn-add-detail">+ 강의 추가</button>
+            </div>
+        </c:forEach>
+        
+        <!-- ✅ 챕터가 없을 경우 기본 챕터 1개 표시 -->
+        <c:if test="${empty chapterList}">
+            <div class="chapter-item">
+                <div class="chapter-header">
+                    <span class="chapter_order">Chapter 1</span>
+                    <input type="text" name="chapter_title[]" placeholder="챕터 제목" class="chapter-title">
+                    <button type="button" class="btn-remove-chapter">챕터 삭제</button>
+                </div>
+                <div class="details-container">
+                    <div class="detail-item">
+                        <span class="detail-order">1</span>
+                        <input type="text" name="detail_title_0[]" placeholder="강의 제목" class="detail-title">
+                        <input type="text" name="detail_time_0[]" placeholder="00:00 (분:초)" class="detail-time" maxlength="8">
+                        <button type="button" class="btn-remove-detail">-</button>
+                    </div>
+                </div>
+                <button type="button" class="btn-add-detail">+ 강의 추가</button>
+            </div>
+        </c:if>
+    </div>
+    <button type="button" id="add-chapter" class="btn-add">+ 챕터 추가</button>
+</div>
 			<!-- ✅ 태그 섹션 -->
 			<div class="form-group">
 				<label>태그 (최대 10개)</label>
@@ -113,9 +154,11 @@
 				<!-- 서버로 전송할 hidden input (쉼표로 구분된 태그들) -->
 				<input type="hidden" name="lecture_tag" id="lecture_tag_hidden">
 			</div>
-
-
-			<button class="btn" type="submit">등록하기</button>
+<!-- ✅ 이 div만 추가 -->
+<div style="text-align: center;">
+    <button class="btn" type="button" onclick="history.back();">목록</button>
+    <button class="btn" type="submit">수정하기</button>
+</div>
 		</form>
 	</main>
 
@@ -132,15 +175,16 @@ let detail_time = document.querySelector(".detail_time");
 let tag_input = document.querySelector("#tag-input");
 let add_tag_btn = document.querySelector("#add-tag-btn");
 let allDetailTitles = document.querySelectorAll(".detail-title");
+const existingImg = document.querySelector(".profile-pic img");
 
 
 classAddForm.onsubmit = function(e){
-	
-	if(lecture_img.files.length === 0){
-		e.preventDefault(); 
-		alert("썸네일을 넣어주세요.");
-		lecture_img.focus();
-		return false;
+
+	if (lecture_img.files.length === 0 && !existingImg) {
+	    e.preventDefault(); 
+	    alert("썸네일을 넣어주세요.");
+	    lecture_img.focus();
+	    return false;
 	}
 	
 	if(lecture_title.value.length < 1 && lecture_title.value == ""){
@@ -323,6 +367,69 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+//⭐ 기존 태그 로딩 (lectureVO.lecture_tag 값 사용)
+document.addEventListener("DOMContentLoaded", function () {
+    let tagInput = document.getElementById("tag-input");
+    let addTagBtn = document.getElementById("add-tag-btn");
+    let tagContainer = document.getElementById("tag-container");
+    let hiddenInput = document.getElementById("lecture_tag_hidden");
+    let tags = [];
+
+    function updateHiddenInput() {
+        hiddenInput.value = tags.join(",");
+    }
+
+    function addTag(tagText, isInitial = false) {
+        tagText = tagText.trim();
+        if (tagText === "") return;
+        if (!isInitial) {
+            if (tags.length >= 10) {
+                alert("최대 10개까지 입력 가능합니다.");
+                return;
+            }
+            if (tags.includes(tagText)) {
+                alert("이미 추가된 태그입니다.");
+                return;
+            }
+        }
+
+        tags.push(tagText);
+
+        let tagChip = document.createElement("div");
+        tagChip.className = "tag-chip";
+        tagChip.innerHTML =
+            '<span class="tag-text">#' + tagText + '</span>' +
+            '<button type="button" class="tag-remove-btn">×</button>';
+
+        tagChip.querySelector(".tag-remove-btn").addEventListener("click", function () {
+            let index = tags.indexOf(tagText);
+            if (index > -1) tags.splice(index, 1);
+            tagChip.remove();
+            updateHiddenInput();
+        });
+
+        tagContainer.appendChild(tagChip);
+        updateHiddenInput();
+        if (!isInitial) tagInput.value = "";
+    }
+
+    // ⭐⭐⭐ 기존 태그 자동 생성
+    const existingTags = "${lectureVO.lecture_tag}";  // "드로잉,일러스트,취미"
+    if (existingTags && existingTags.trim() !== "") {
+        existingTags.split(",").forEach(tag => addTag(tag, true));
+    }
+
+    addTagBtn.addEventListener("click", function () {
+        addTag(tagInput.value);
+    });
+
+    tagInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            addTag(tagInput.value);
+        }
+    });
+});
 
 
 
@@ -502,104 +609,50 @@ document.getElementById('add-chapter').addEventListener('click', function () {
     });
 });
 
-window.addEventListener('load', function () {
-    const firstChapter = document.querySelector('.chapter-item');
-    if (!firstChapter) return;
-
-    const removeChapterBtn = firstChapter.querySelector('.btn-remove-chapter');
-    if (removeChapterBtn) {
-        removeChapterBtn.addEventListener('click', function () {
-            if (document.querySelectorAll('.chapter-item').length > 1) {
-                firstChapter.remove();
-                updateChapterOrders();
-            } else {
-                alert('최소 1개의 챕터는 필요합니다.');
-            }
+//✅ 페이지 로드 시 기존 챕터들에 이벤트 바인딩
+window.addEventListener('load', function() {
+    // 기존 챕터들에 이벤트 바인딩
+    document.querySelectorAll('.chapter-item').forEach(function(chapter, index) {
+        const chapterIdx = index;
+        
+        // 챕터 삭제 버튼
+        const removeChapterBtn = chapter.querySelector('.btn-remove-chapter');
+        if (removeChapterBtn) {
+            removeChapterBtn.addEventListener('click', function() {
+                if (document.querySelectorAll('.chapter-item').length > 1) {
+                    chapter.remove();
+                    updateChapterOrders();
+                } else {
+                    alert('최소 1개의 챕터는 필요합니다.');
+                }
+            });
+        }
+        
+        // 강의 추가 버튼
+        const addDetailBtn = chapter.querySelector('.btn-add-detail');
+        if (addDetailBtn) {
+            addDetailBtn.addEventListener('click', function() {
+                addDetail(chapter, chapterIdx);
+            });
+        }
+        
+        // 강의 삭제 버튼들
+        chapter.querySelectorAll('.btn-remove-detail').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                removeDetail(this, chapter);
+            });
         });
-    }
-
-    const addDetailBtn = firstChapter.querySelector('.btn-add-detail');
-    if (addDetailBtn) {
-        addDetailBtn.addEventListener('click', function () {
-            addDetail(firstChapter, 0);
-        });
-    }
-
-    firstChapter.querySelectorAll('.btn-remove-detail').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            removeDetail(this, firstChapter);
+        
+        // 시간 입력 포맷 적용
+        chapter.querySelectorAll('.detail-time').forEach(function(input) {
+            attachStrictTimeFormatter(input);
         });
     });
-
+    
     updateChapterOrders();
 });
 
-// 태그 추가/삭제 기능
-document.addEventListener("DOMContentLoaded", function () {
-    let tagInput = document.getElementById("tag-input");
-    let addTagBtn = document.getElementById("add-tag-btn");
-    let tagContainer = document.getElementById("tag-container");
-    let hiddenInput = document.getElementById("lecture_tag_hidden");
-    let tags = [];
-    
-    function updateHiddenInput() {
-        hiddenInput.value = tags.join(",");
-    }
-    
-    function addTag(tagText) {
-        tagText = tagText.trim();
-        
-        if (tagText === "") {
-            alert("태그를 입력하세요.");
-            return;
-        }
-        if (tags.length >= 10){
-            alert("최대 10개까지 입력 가능합니다.");
-            return;
-        }
-        if (tags.includes(tagText)){
-            alert("이미 추가된 태그 입니다.");
-            return;
-        }
-        
-        tags.push(tagText);
-        
-        let tagChip = document.createElement("div");
-        tagChip.className = "tag-chip";
-        tagChip.innerHTML = '<span class="tag-text">#' + tagText + '</span>' + '<button type="button" class="tag-remove-btn">×</button>';
-        
-        tagChip.querySelector(".tag-remove-btn").addEventListener("click", function(){
-            let index = tags.indexOf(tagText);
-            if(index > -1) {
-                tags.splice(index, 1);
-            }
-            tagChip.remove();
-            updateHiddenInput();
-        });
-        
-        tagContainer.appendChild(tagChip);
-        updateHiddenInput();
-        tagInput.value = "";
-        tagInput.focus();
-    }
-    
-    addTagBtn.addEventListener("click", function(){
-        addTag(tagInput.value);
-    });
-    
-    tagInput.addEventListener("keypress", function(e){
-        if(e.key === "Enter"){
-            e.preventDefault();
-            addTag(tagInput.value);
-        }
-    });
-});
 </script>
-
-
-
-
-
 
 </body>
 </html>

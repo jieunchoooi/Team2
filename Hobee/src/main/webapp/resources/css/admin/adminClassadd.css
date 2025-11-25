@@ -149,33 +149,45 @@ body {
     background-color: #1f65e0;
 }
 
+.btn-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+}
+
 /* =========================== 버튼 스타일 =========================== */
 .btn {
-    background-color: #2573ff;
+    background-color: #a7a7a7;
     color: white;
     border: none;
     border-radius: 10px;
-    padding: 14px 32px;
-    font-size: 1.05rem;
+    padding: 12px 30px;
+    font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(37,115,255,0.25);
+    box-shadow: 0 3px 8px rgba(37, 115, 255, 0.2);
     transition: all 0.2s;
     font-weight: 600;
     display: inline-block;
-    margin-top: 10px;
-    width: 100%;
+    margin: 30px 6px 0;  /* margin 제거 */
+}
+
+.btn:last-child {
+    background-color: #2573ff;
 }
 
 .btn:hover {
-    background-color: #1f65e0;
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(37,115,255,0.35);
+    box-shadow: 0 5px 12px rgba(37, 115, 255, 0.3);
+}
+
+.btn:last-child:hover {
+    background-color: #1f65e0;
 }
 
 .btn:active {
     transform: translateY(0);
 }
-
 /* =========================== Number Input 스타일 =========================== */
 .form-group input[type="number"] {
     -moz-appearance: textfield;

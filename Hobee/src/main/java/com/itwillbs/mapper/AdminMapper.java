@@ -20,7 +20,7 @@ public interface AdminMapper {
 
 	public List<LectureVO> listLecture(PageVO pageVO);
 
-	public int countlectureList();
+	public int countlectureList(PageVO pageVO);
 
 	public void deleteClass(String lecture_num);
 
@@ -36,7 +36,7 @@ public interface AdminMapper {
 
 	public int teacharCount(PageVO pageVO);
 
-	public int classCount();
+	public int classCount(PageVO pageVO);
 
 	public void deleteMember(int user_num);
 
@@ -103,6 +103,13 @@ public interface AdminMapper {
 	public CategoryVO selectCategoryByNum(int category_num);
 
 	public void updateCategory(CategoryVO categoryVO);
+
+	public List<ChapterVO> getChaptersByLectureNum(int lecture_num);
+
+	public void updateLecture(LectureVO lectureVO);
+
+	public void deleteChaptersByLectureNum(int lecture_num);
+
 
 	
 

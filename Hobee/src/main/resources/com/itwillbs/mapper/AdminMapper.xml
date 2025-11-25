@@ -171,10 +171,10 @@
 				where lecture_title LIKE CONCAT('%', #{search}, '%')
 				or lecture_author LIKE CONCAT('%', #{search}, '%')
 			</if>
-			<if test="searchList == '강사'">
+			<if test="searchList == '강사명'">
 				where lecture_author LIKE CONCAT('%', #{search}, '%')
 			</if>
-			<if test="searchList == '강의'">
+			<if test="searchList == '강의명'">
 				where lecture_title LIKE CONCAT('%', #{search}, '%')
 			</if>
 		</if>
@@ -505,9 +505,58 @@
     	WHERE category_num = #{category_num}
 	</update>
 	
+	<!-- 챕터 목록 조회 (lecture_num으로) -->
+<select id="getChaptersByLectureNum" parameterType="int" resultMap="ChapterResultMap">
+    SELECT 
+        c.chapter_num,
+        c.lecture_num,
+        c.chapter_order,
+        c.chapter_title,
+        cd.detail_num,
+        cd.chapter_num as detail_chapter_num,
+        cd.detail_order,
+        cd.detail_title,
+        cd.detail_time
+    FROM chapter c
+    LEFT JOIN chapter_detail cd ON c.chapter_num = cd.chapter_num
+    WHERE c.lecture_num = #{lecture_num}
+    ORDER BY c.chapter_order, cd.detail_order
+</select>
+
+<!-- ResultMap 정의 -->
+<resultMap id="ChapterResultMap" type="com.itwillbs.domain.ChapterVO">
+    <id property="chapter_num" column="chapter_num"/>
+    <result property="lecture_num" column="lecture_num"/>
+    <result property="chapter_order" column="chapter_order"/>
+    <result property="chapter_title" column="chapter_title"/>
+    <collection property="detailList" ofType="com.itwillbs.domain.ChapterDetailVO">
+        <id property="detail_num" column="detail_num"/>
+        <result property="chapter_num" column="detail_chapter_num"/>
+        <result property="detail_order" column="detail_order"/>
+        <result property="detail_title" column="detail_title"/>
+        <result property="detail_time" column="detail_time"/>
+    </collection>
+</resultMap>
 	
-	
-	
+	<!-- 강의 정보 업데이트 -->
+<update id="updateLecture" parameterType="com.itwillbs.domain.LectureVO">
+    UPDATE lecture
+    SET lecture_title = #{lecture_title},
+        category_detail = #{category_detail},
+        lecture_detail = #{lecture_detail},
+        lecture_author = #{lecture_author},
+        lecture_price = #{lecture_price},
+        lecture_img = #{lecture_img},
+        lecture_tag = #{lecture_tag},
+        user_num = #{user_num}
+    WHERE lecture_num = #{lecture_num}
+</update>
+
+<!-- 특정 강의의 모든 챕터 삭제 (연쇄 삭제로 챕터 상세도 함께 삭제됨) -->
+<delete id="deleteChaptersByLectureNum" parameterType="int">
+    DELETE FROM chapter
+    WHERE lecture_num = #{lecture_num}
+</delete>
 	
 	
 	
