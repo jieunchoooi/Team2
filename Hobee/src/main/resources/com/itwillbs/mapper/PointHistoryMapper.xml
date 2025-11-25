@@ -6,10 +6,13 @@
 <mapper namespace="com.itwillbs.mapper.PointHistoryMapper">
 
   <!-- 🔹 포인트 내역 기록 -->
-  <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointHistoryVO">
+  <insert id="insertPointHistory"
+        parameterType="com.itwillbs.domain.PaymentDetailVO"
+        useGeneratedKeys="true"
+        keyProperty="detail_id">
     INSERT INTO point_history (
         user_num,
-        payment_id,
+        detail_id,
         point_change,
         type,
         description,
@@ -17,7 +20,7 @@
     )
     VALUES (
         #{user_num},
-        #{payment_id},
+        #{detail_id},
         #{point_change},
         #{type},
         #{description},
@@ -25,104 +28,103 @@
     )
   </insert>
 
- 
-  
   <!-- 🔹 포인트 차감 -->
-<update id="deductPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
-  UPDATE user
-  SET points = points + #{point_change}
-  WHERE user_num = #{user_num};
-</update>
+  <update id="deductPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
+    UPDATE user
+    SET points = points + #{point_change}
+    WHERE user_num = #{user_num};
+  </update>
 
-<!-- 🔹 포인트 적립 -->
-<update id="addPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
-  UPDATE user
-  SET points = points + #{point_change}
-  WHERE user_num = #{user_num};
-</update>
-
+  <!-- 🔹 포인트 적립 -->
+  <update id="addPoints" parameterType="com.itwillbs.domain.PointHistoryVO">
+    UPDATE user
+    SET points = points + #{point_change}
+    WHERE user_num = #{user_num};
+  </update>
 
   <!-- 🔹 특정 회원의 포인트 총합 조회 (user 테이블 기준) -->
   <select id="getUserTotalPoints" parameterType="int" resultType="int">
-    SELECT user_points
+    SELECT points
     FROM user
     WHERE user_num = #{user_num}
   </select>
 
-  <!-- 🔹 특정 결제의 포인트 내역 조회 -->
+
+  <!-- 🔹 특정 결제의 포인트 내역 조회 (payment_id 기준 → detail_id 기준으로 변경됨) -->
   <select id="getPointHistoryByPayment" parameterType="int" resultType="com.itwillbs.domain.PointHistoryVO">
     SELECT 
-        point_id,
-        user_num,
-        payment_id,
-        point_change,
-        type,
-        description,
-        created_at
-    FROM point_history
-    WHERE payment_id = #{payment_id}
-    ORDER BY created_at DESC
+        ph.history_id,
+        ph.user_num,
+        ph.detail_id,
+        ph.point_change,
+        ph.type,
+        ph.description,
+        ph.created_at
+    FROM point_history ph
+    JOIN payment_detail pd
+        ON ph.detail_id = pd.detail_id
+    WHERE pd.payment_id = #{payment_id}
+    ORDER BY ph.created_at DESC
   </select>
-  
-  
-  <!-- ✅ 트랜잭션 테스트용 임시 INSERT -->
+
+
+  <!-- 🔹 테스트용 (무의미한 컬럼 제거 후 정상화) -->
   <insert id="insertPointHistoryForTest">
-    INSERT INTO point_history (user_num, used_points, saved_points, type, created_at)
-    VALUES (1, 0, 100, 'TEST', NOW())
+    INSERT INTO point_history (user_num, detail_id, point_change, type, description, created_at)
+    VALUES (1, 1, 100, 'TEST', '테스트', NOW())
   </insert>
-  
-  
- <!-- ===========================================
+
+
+  <!-- ===========================================
          1) 회원별 포인트 내역 조회 (강의 단위 FULL JOIN)
          =========================================== -->
-    <select id="getPointHistoryByUser" resultType="com.itwillbs.domain.PointHistoryVO">
-        SELECT
-            /* ===================== point_history ===================== */
-            ph.point_history_id,
-            ph.user_num,
-            ph.payment_id,
-            ph.point_change,
-            ph.type,
-            ph.description,
-            ph.created_at,
+  <select id="getPointHistoryByUser" resultType="com.itwillbs.domain.PointHistoryVO">
+      SELECT
+          /* ===== point_history ===== */
+          ph.history_id,
+          ph.user_num,
+          ph.detail_id,
+          ph.point_change,
+          ph.type,
+          ph.description,
+          ph.created_at,
 
-            /* ========================= payment ======================== */
-            p.merchant_uid,
-            p.amount AS payment_amount,
-            p.created_at AS payment_created_at,
+          /* ===== payment_detail ===== */
+          pd.payment_id,
+          pd.lecture_num,
+          pd.original_price,
+          pd.sale_price,
+          pd.used_points,
+          pd.saved_points,
+          pd.status AS detail_status,
 
-            /* ====================== payment_detail ==================== */
-            pd.detail_id,
-            pd.lecture_num,
-            pd.original_price,
-            pd.sale_price,
-            pd.used_points,
-            pd.saved_points,
-            pd.status AS detail_status,
+          /* ===== payment ===== */
+          p.merchant_uid,
+          p.amount AS payment_amount,
+          p.created_at AS payment_created_at,
 
-            /* ========================= lecture ======================== */
-            l.lecture_title,
-            l.lecture_author,
-            l.lecture_img,
-            l.lecture_price
+          /* ===== lecture ===== */
+          l.lecture_title,
+          l.lecture_author,
+          l.lecture_img,
+          l.lecture_price
 
-        FROM point_history ph
+      FROM point_history ph
 
-        /* 결제 정보 JOIN */
-        LEFT JOIN payment p
-            ON ph.payment_id = p.payment_id
+      /* detail_id 기준 JOIN */
+      LEFT JOIN payment_detail pd
+        ON ph.detail_id = pd.detail_id
 
-        /* 상세 정보 JOIN (결제건 안에 강의별 포인트 나눠진 부분) */
-        LEFT JOIN payment_detail pd
-            ON ph.payment_id = pd.payment_id
+      /* payment JOIN */
+      LEFT JOIN payment p
+        ON pd.payment_id = p.payment_id
 
-        /* 강의 정보 JOIN */
-        LEFT JOIN lecture l
-            ON pd.lecture_num = l.lecture_num
+      /* lecture JOIN */
+      LEFT JOIN lecture l
+        ON pd.lecture_num = l.lecture_num
 
-        WHERE ph.user_num = #{user_num}
-        ORDER BY ph.created_at DESC
-    </select>
-  
+      WHERE ph.user_num = #{user_num}
+      ORDER BY ph.created_at DESC
+  </select>
 
 </mapper>

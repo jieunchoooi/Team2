@@ -5,13 +5,13 @@
 <mapper namespace="com.itwillbs.mapper.PaymentDetailMapper">
 
 
-<insert id="insert" parameterType="com.itwillbs.domain.PaymentDetailVO">
+<insert id="insert" parameterType="com.itwillbs.domain.PaymentDetailVO"
+        useGeneratedKeys="true" keyProperty="detail_id">
     INSERT INTO payment_detail
-    (payment_id, lecture_num, original_price, sale_price, used_points, saved_points)
+    (payment_id, lecture_num, original_price, sale_price, used_points, saved_points, status)
     VALUES
-    (#{payment_id}, #{lecture_num}, #{original_price}, #{sale_price}, #{used_points}, #{saved_points});
+    (#{payment_id}, #{lecture_num}, #{original_price}, #{sale_price}, #{used_points}, #{saved_points}, #{status});
 </insert>
-
 <select id="getDetailsByPaymentId" resultType="com.itwillbs.domain.PaymentDetailVO">
     SELECT *
     FROM payment_detail

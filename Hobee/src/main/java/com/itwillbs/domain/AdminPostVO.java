@@ -24,6 +24,9 @@ public class AdminPostVO {
     // 📌 날짜 정보
     private String created_at; // 생성일
     private String updated_at; // ★ 수정일(추가됨)
+    
+    private int is_deleted;   // 0 = 정상, 1 = 삭제됨
+
 
     // 📌 JOIN용
     private String board_name; // 게시판 이름

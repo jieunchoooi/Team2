@@ -200,6 +200,10 @@ function updateSummary() {
 
     const finalAmount = priceAfterDiscount - usedPoints;
     $("#finalPrice").text("₩" + finalAmount.toLocaleString());
+
+    /* 🔥 여기 추가!!! */
+    $("#totalPrice").text("₩" + totalPrice.toLocaleString());
+    $("#discountPrice").text("-₩" + discount.toLocaleString());
 }
 
 /* 모두 사용 버튼 */
@@ -341,13 +345,13 @@ function requestPayment() {
 
                             if (completeResult.status === "success") {
 
-                                let msg = "결제가 완료되었습니다!";
 
                                 if (completeResult.gradeChanged && completeResult.gradeMessage) {
-                                    msg += "\n\n" + completeResult.gradeMessage;
+                                	 let msg = "\n\n" + completeResult.gradeMessage;
+                                    alert(msg);
                                 }
 
-                                alert(msg);
+                                
                                 location.href = "${pageContext.request.contextPath}/payment/success";
 
                             } else if (completeResult.status === "duplicate") {

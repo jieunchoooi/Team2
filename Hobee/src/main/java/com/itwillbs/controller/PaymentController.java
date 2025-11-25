@@ -195,18 +195,18 @@ public class PaymentController {
 
         paymentVO.setUser_num(userVO.getUser_num());
 
-        PaymentResultVO resultVO = paymentService.processPayment(paymentVO, lectureNums, gradeVO);
+        PaymentResultVO paymentResultVO = paymentService.processPayment(paymentVO, lectureNums, gradeVO);
 
         // 🔥 최신 userVO 세션에 저장 (Controller는 DB 몰라도 됨)
-        session.setAttribute("userVO", resultVO.getUpdatedUserVO());
+        session.setAttribute("userVO", paymentResultVO.getUpdatedUserVO());
 
-        res.put("status", resultVO.isSuccess() ? "success" : "fail");
-        res.put("message", resultVO.getMessage());
+        res.put("status", paymentResultVO.isSuccess() ? "success" : "fail");
+        res.put("message", paymentResultVO.getMessage());
 
-        if (resultVO.isGradeChanged()) {
-            String msg = resultVO.isGradeUp()
-                    ? "🎉 축하합니다! [" + resultVO.getNewGradeName() + "] 등급으로 승급되었습니다!"
-                    : "⚠️ 등급이 [" + resultVO.getNewGradeName() + "] 등급으로 조정되었습니다.";
+        if (paymentResultVO.isGradeChanged()) {
+            String msg = paymentResultVO.isGradeUp()
+                    ? "🎉 축하합니다! [" + paymentResultVO.getNewGradeName() + "] 등급으로 승급되었습니다!"
+                    : "⚠️ 등급이 [" + paymentResultVO.getNewGradeName() + "] 등급으로 조정되었습니다.";
 
             res.put("gradeMessage", msg);
         }
