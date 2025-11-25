@@ -134,6 +134,7 @@ public class AdminController {
       
       // ✅ 강사 목록 조회
       List<UserVO> instructorList = adminService.getInstructorList();
+      List<CategoryVO> categoryList = adminService.categoryList();
       
       System.out.println("강사 수: " + (instructorList != null ? instructorList.size() : 0));
       if (instructorList != null) {
@@ -143,6 +144,7 @@ public class AdminController {
       }
       
       model.addAttribute("instructorList", instructorList);
+      model.addAttribute("categoryList", categoryList);
       
       return "admin/adminClassAdd";
    }
@@ -647,8 +649,10 @@ public class AdminController {
 	    System.out.println("AdminController adminClassEditPro()");
 	    
 	    LectureVO lectureVO = adminService.classEdit(lecture_num);
-
+	    List<CategoryVO> categoryList = adminService.categoryList();
+	    
 	    model.addAttribute("lectureVO", lectureVO);
+	    model.addAttribute("categoryList", categoryList);
 	    
 	    return "admin/adminClassEditinfo";
    }
