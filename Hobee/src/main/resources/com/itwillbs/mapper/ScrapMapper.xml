@@ -5,53 +5,55 @@
 
 <mapper namespace="com.itwillbs.mapper.ScrapMapper">
 
-    <!-- 🟦 스크랩 추가 (중복 시 INSERT IGNORE) -->
-    <insert id="addScrap">
-        INSERT IGNORE INTO scrap (user_num, lecture_num)
-        VALUES (#{user_num}, #{lecture_num})
-    </insert>
+	<!-- 🟦 스크랩 추가 (중복 시 INSERT IGNORE) -->
+	<insert id="addScrap">
+		INSERT IGNORE INTO scrap (user_num, lecture_num)
+		VALUES (#{user_num}, #{lecture_num})
+	</insert>
 
-    <!-- 🟩 특정 회원의 스크랩 목록 조회 -->
-    <select id="getScrapList" resultType="com.itwillbs.domain.ScrapVO">
-        SELECT
-            s.scrap_id,
-            s.user_num,
-            s.lecture_num,
-            s.created_at,
-            
-            l.lecture_title,
-            l.lecture_author,
-            l.lecture_price,
-            l.lecture_img
+	<!-- 🟩 특정 회원의 스크랩 목록 조회 -->
+	<select id="getScrapList"
+		resultType="com.itwillbs.domain.ScrapVO">
+		SELECT
+		s.scrap_id,
+		s.user_num,
+		s.lecture_num,
+		s.created_at,
 
-        FROM scrap s
-        JOIN lecture l ON s.lecture_num = l.lecture_num
-        WHERE s.user_num = #{user_num}
-        ORDER BY s.scrap_id DESC
-    </select>
+		l.lecture_title,
+		l.lecture_author,
+		l.lecture_price,
+		l.lecture_img
 
-    <!-- 🟥 스크랩 삭제 -->
-    <delete id="deleteScrap">
-        DELETE FROM scrap
-        WHERE user_num = #{user_num}
-          AND lecture_num = #{lecture_num}
-    </delete>
-	
-    <!-- ⬜ 해당 스크랩 존재 여부 확인 -->
-    <select id="existsScrap" resultType="int">
-        SELECT COUNT(*)
-        FROM scrap
-        WHERE user_num = #{user_num}
-          AND lecture_num = #{lecture_num}
-    </select>
-<!--     결제 후 스크랩 삭제 -->
-    <delete id="deleteScrapAfterPayment">
-    DELETE FROM scrap
-    WHERE user_num = #{userNum}
-      AND lecture_num IN
-      <foreach collection="lectureNums" item="lec" open="(" close=")" separator=",">
-        #{lec}
-      </foreach>
-</delete>
+		FROM scrap s
+		JOIN lecture l ON s.lecture_num = l.lecture_num
+		WHERE s.user_num = #{user_num}
+		ORDER BY s.scrap_id DESC
+	</select>
+
+	<!-- 🟥 스크랩 삭제 -->
+	<delete id="deleteScrap">
+		DELETE FROM scrap
+		WHERE user_num = #{user_num}
+		AND lecture_num = #{lecture_num}
+	</delete>
+
+	<!-- ⬜ 해당 스크랩 존재 여부 확인 -->
+	<select id="existsScrap" resultType="int">
+		SELECT COUNT(*)
+		FROM scrap
+		WHERE user_num = #{user_num}
+		AND lecture_num = #{lecture_num}
+	</select>
+
+	<delete id="deleteScrapAfterPayment">
+		DELETE FROM scrap
+		WHERE user_num = #{userNum}
+		AND lecture_num IN
+		<foreach collection="lectureNums" item="lec" open="("
+			close=")" separator=",">
+			#{lec}
+		</foreach>
+	</delete>
 
 </mapper>

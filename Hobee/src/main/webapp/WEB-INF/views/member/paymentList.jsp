@@ -213,6 +213,57 @@ function requestFullRefund(paymentId) {
         }
     });
 }
+/* ===========================
+부분 환불
+=========================== */
+function requestPartialRefund(paymentId, lectureNum) {
+
+ if (!confirm("이 강의를 부분 환불하시겠습니까?\n포인트도 함께 회수됩니다.")) return;
+
+ $.ajax({
+     type: "POST",
+     url: "${pageContext.request.contextPath}/payment/refund/verify",
+     data: {
+         payment_id: paymentId,
+         lecture_num: lectureNum
+     },
+     dataType: "json",
+     success: function(v) {
+
+         if (v.verify_result !== "success") {
+             alert("환불 불가: " + v.message);
+             return;
+         }
+
+         $.ajax({
+             type: "POST",
+             url: "${pageContext.request.contextPath}/payment/refund/complete",
+             data: {
+                 payment_id: paymentId,
+                 type: "partial",
+                 lecture_num: lectureNum
+             },
+             dataType: "json",
+             success: function(res) {
+
+                 if (res.status === "success") {
+
+                     let msg = res.message;
+                     if (res.gradeMessage) msg += "\n\n" + res.gradeMessage;
+
+                     alert(msg);
+                     location.reload();
+
+                 } else {
+                     alert("환불 실패: " + res.message);
+                 }
+
+             }
+         });
+     }
+ });
+}
+
 
 </script>
 
