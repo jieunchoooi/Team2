@@ -42,9 +42,9 @@
     gap: 8px;
 }
 
-/* 🔥 페이지 CSS 영향 절대 안 받도록 완전 스코프 선언 */
+/* 모든 텍스트 공통 */
 .profile-card-wrap .profile-info p {
-    margin: 0; 
+    margin: 0;
     padding: 0;
     color: #333;
     line-height: 1.4;
@@ -62,11 +62,36 @@
     color: #666;
 }
 
-/* 포인트 */
-.profile-card-wrap .profile-info .points {
+/* ================================
+   포인트(아이콘 + 숫자) 영역
+================================ */
+
+/* 전체 포인트 줄 */
+.profile-card-wrap .profile-info .mpc-points {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 🪙 아이콘 — 클릭/호버 영향 없음 */
+.profile-card-wrap .profile-info .points-icon {
+    font-size: 1.1rem;
+    color: #555;
+    pointer-events: none; /* 클릭 및 hover 영향 없음 */
+}
+
+/* 숫자/텍스트만 호버 적용 */
+.profile-card-wrap .profile-info .points-inner {
     font-size: 1rem;
     font-weight: 600;
     color: #555;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.profile-card-wrap .profile-info .points-inner:hover {
+    color: #2573ff;
+    text-decoration: underline;
 }
 
 /* 등급 배지 */

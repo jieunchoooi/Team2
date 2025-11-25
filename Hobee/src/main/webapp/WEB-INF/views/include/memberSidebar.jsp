@@ -34,7 +34,10 @@
          onclick="location.href='${pageContext.request.contextPath}/member/updatePassWord'">
         👤 <span>회원정보 수정</span>
     </div>
-
+	<div class="menu-item ${page eq 'pointHistory' ? 'active' : ''}"
+         onclick="location.href='${pageContext.request.contextPath}/member/pointHistory'">
+        🪙 <span>포인트 내역</span>
+    </div>
   </div>
 
   <button class="logout-btn" onclick="logout()">로그아웃</button>

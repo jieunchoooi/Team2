@@ -41,23 +41,6 @@
   WHERE user_num = #{user_num};
 </update>
 
-  <!-- 🔹 특정 회원의 전체 포인트 내역 조회 -->
-  <select id="getPointHistoryByUser" parameterType="int" resultType="com.itwillbs.domain.PointHistoryVO">
-    SELECT 
-        ph.point_id,
-        ph.user_num,
-        ph.payment_id,
-        ph.point_change,
-        ph.type,
-        ph.description,
-        ph.created_at,
-        p.merchant_uid,
-        p.amount AS payment_amount
-    FROM point_history ph
-    LEFT JOIN payment p ON ph.payment_id = p.payment_id
-    WHERE ph.user_num = #{user_num}
-    ORDER BY ph.created_at DESC
-  </select>
 
   <!-- 🔹 특정 회원의 포인트 총합 조회 (user 테이블 기준) -->
   <select id="getUserTotalPoints" parameterType="int" resultType="int">
@@ -87,5 +70,59 @@
     INSERT INTO point_history (user_num, used_points, saved_points, type, created_at)
     VALUES (1, 0, 100, 'TEST', NOW())
   </insert>
+  
+  
+ <!-- ===========================================
+         1) 회원별 포인트 내역 조회 (강의 단위 FULL JOIN)
+         =========================================== -->
+    <select id="getPointHistoryByUser" resultType="com.itwillbs.domain.PointHistoryVO">
+        SELECT
+            /* ===================== point_history ===================== */
+            ph.point_history_id,
+            ph.user_num,
+            ph.payment_id,
+            ph.point_change,
+            ph.type,
+            ph.description,
+            ph.created_at,
+
+            /* ========================= payment ======================== */
+            p.merchant_uid,
+            p.amount AS payment_amount,
+            p.created_at AS payment_created_at,
+
+            /* ====================== payment_detail ==================== */
+            pd.detail_id,
+            pd.lecture_num,
+            pd.original_price,
+            pd.sale_price,
+            pd.used_points,
+            pd.saved_points,
+            pd.status AS detail_status,
+
+            /* ========================= lecture ======================== */
+            l.lecture_title,
+            l.lecture_author,
+            l.lecture_img,
+            l.lecture_price
+
+        FROM point_history ph
+
+        /* 결제 정보 JOIN */
+        LEFT JOIN payment p
+            ON ph.payment_id = p.payment_id
+
+        /* 상세 정보 JOIN (결제건 안에 강의별 포인트 나눠진 부분) */
+        LEFT JOIN payment_detail pd
+            ON ph.payment_id = pd.payment_id
+
+        /* 강의 정보 JOIN */
+        LEFT JOIN lecture l
+            ON pd.lecture_num = l.lecture_num
+
+        WHERE ph.user_num = #{user_num}
+        ORDER BY ph.created_at DESC
+    </select>
+  
 
 </mapper>
