@@ -115,15 +115,27 @@ $(document).ready(function () {
     /* --------------------------------------------------
        1) 로그인 모달 열기 / 닫기
     -------------------------------------------------- */
-    $("#openLoginModal").click(function (e) {
-        e.preventDefault();
-        $("#loginModal").fadeIn().css("display", "flex");
+ // 로그인 버튼 클릭 시
+    $("#openLoginModal").click(function(e) {
+        e.preventDefault(); // a 태그 기본 동작 막기
+        openLoginModal();   // 전역 함수 호출
     });
+    
+ // 로그인 모달 열기
+    window.openLoginModal = function() {
+        $("#loginModal").fadeIn().css("display", "flex");
+    }
 
-    $(document).on("click", ".login-close, #loginModal .modal-overlay", function () {
+    // 로그인 모달 닫기
+    window.closeLoginModal = function() {
         $("#loginModal").fadeOut();
         $("#loginForm")[0].reset();
         $("#loginError").text("");
+    }
+
+    // 닫기 버튼이나 배경 클릭 이벤트
+    $(document).on("click", ".login-close, #loginModal .modal-overlay", function() {
+        closeLoginModal(); // 전역 함수 호출
     });
 
 
