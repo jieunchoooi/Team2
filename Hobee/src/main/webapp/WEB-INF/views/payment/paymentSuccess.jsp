@@ -5,91 +5,96 @@
 <meta charset="UTF-8">
 <title>결제 성공 | Hobee</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css">
-
 <style>
 /* =========================================
-   Hobee Payment Success Style (Premium)
+   🔥 전체 화면을 뒤덮는 모달 오버레이
 ========================================= */
-body {
-  background: #f7f8fc;
-  margin: 0;
-  padding: 0;
-  font-family: 'Pretendard', sans-serif;
+.modal-overlay {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
-.success-wrap {
-  max-width: 560px;
-  margin: 140px auto 60px auto;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 60px 50px;
+/* =========================================
+   🔥 중앙 모달 박스
+========================================= */
+.success-box {
+  width: 460px;
+  background: #fff;
+  padding: 50px 40px;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.07);
-  animation: fadeIn 0.8s ease;
+  animation: fadeIn .5s ease;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
 }
 
-/* 체크 아이콘 애니메이션 */
+/* 체크 아이콘 */
 .checkmark {
-  width: 90px;
-  height: 90px;
+  width: 85px;
+  height: 85px;
+  margin: 0 auto 25px auto;
   border-radius: 50%;
   background: #7d89f7;
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin: 0 auto 30px auto;
+  align-items: center;
+  animation: scaleUp .4s ease;
   box-shadow: 0 6px 15px rgba(125,137,247,0.4);
-  animation: scaleUp 0.4s ease forwards;
 }
 
 .checkmark svg {
-  width: 48px;
-  height: 48px;
-  color: white;
+  width: 45px;
+  height: 45px;
+  color: #fff;
 }
 
-.success-wrap h1 {
-  font-size: 2rem;
+/* 텍스트 */
+.success-box h1 {
+  font-size: 1.7rem;
   font-weight: 700;
-  margin: 0 0 12px 0;
+  margin-bottom: 12px;
   color: #333;
 }
 
-.success-wrap p {
-  font-size: 1.1rem;
+.success-box p {
+  font-size: 1.05rem;
   color: #555;
-  margin-bottom: 35px;
+  margin-bottom: 28px;
 }
 
-.countdown {
-  font-weight: 700;
+#countdown {
   color: #7d89f7;
+  font-weight: 700;
 }
 
-/* 즉시 이동 버튼 */
-.success-wrap button {
+/* 버튼 */
+.success-box button {
+  padding: 12px 25px;
   background: #7d89f7;
   color: white;
-  padding: 14px 30px;
-  border-radius: 12px;
-  font-size: 1.05rem;
-  font-weight: 600;
   border: none;
+  border-radius: 10px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: 0.2s;
+  transition: .2s;
 }
 
-.success-wrap button:hover {
+.success-box button:hover {
   background: #636eea;
 }
 
 /* 애니메이션 */
 @keyframes fadeIn {
-  from { opacity:0; transform: translateY(20px); }
-  to   { opacity:1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes scaleUp {
   from { transform: scale(0.5); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
@@ -97,40 +102,44 @@ body {
 </style>
 
 <script>
-// =======================================
-//   3초 카운트다운 후 자동 이동
-// =======================================
+/* =========================================
+   🔥 3초 카운트다운 후 자동 이동
+========================================= */
 let counter = 3;
-
 window.onload = function() {
   const countdownElement = document.getElementById("countdown");
-  const interval = setInterval(() => {
+
+  const timer = setInterval(() => {
     counter--;
     countdownElement.innerText = counter;
 
     if (counter === 0) {
-      clearInterval(interval);
-      location.href = "${pageContext.request.contextPath}/member/my_classroom";
+      clearInterval(timer);
+      goMyClassroom();
     }
   }, 1000);
 };
 
-function goNow() {
+/* 즉시 이동 버튼 */
+function goMyClassroom() {
   location.href = "${pageContext.request.contextPath}/member/my_classroom";
 }
 </script>
+
 </head>
 
 <body>
 
-<jsp:include page="../include/header.jsp" />
+<%-- ======================================
+     🔥 모달 형태의 결제 성공 박스
+====================================== --%>
+<div class="modal-overlay">
 
-<main>
-  <div class="success-wrap">
-    
-    <%-- 🔵 체크마크 아이콘 (SVG) --%>
+  <div class="success-box">
+
     <div class="checkmark">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+           stroke-width="3" viewBox="0 0 24 24">
         <path d="M20 6L9 17l-5-5"></path>
       </svg>
     </div>
@@ -138,14 +147,15 @@ function goNow() {
     <h1>결제가 성공적으로 완료되었습니다!</h1>
 
     <p>
-      <strong id="countdown">3</strong>초 후 
+      <strong id="countdown">3</strong>초 후  
       <strong>내 강의실</strong>로 이동합니다.
     </p>
 
-    <button onclick="goNow()">즉시 이동하기</button>
+    <button onclick="goMyClassroom()">즉시 이동하기</button>
 
   </div>
-</main>
+
+</div>
 
 </body>
 </html>
