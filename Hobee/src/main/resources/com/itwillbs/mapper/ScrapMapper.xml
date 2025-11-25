@@ -7,8 +7,8 @@
 
     <!-- 🟦 스크랩 추가 (중복 시 INSERT IGNORE) -->
     <insert id="addScrap">
-        INSERT IGNORE INTO scrap (user_id, lecture_num)
-        VALUES (#{user_id}, #{lecture_num})
+        INSERT IGNORE INTO scrap (user_num, lecture_num)
+        VALUES (#{user_num}, #{lecture_num})
     </insert>
 
     <!-- 🟩 특정 회원의 스크랩 목록 조회 -->

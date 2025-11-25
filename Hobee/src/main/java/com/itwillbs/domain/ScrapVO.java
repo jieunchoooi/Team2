@@ -11,7 +11,7 @@ import lombok.ToString;
 public class ScrapVO {
 
     private int scrap_id;
-    private String user_id;
+    private int user_num;
     private int lecture_num;
     private Timestamp created_at;
 

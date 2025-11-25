@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.LectureService;
 import com.itwillbs.service.ScrapService;
 
@@ -56,11 +57,12 @@ public class MainController {
    public Map<String, Object> bookmark(@RequestParam("lecture_num") int lecture_num, Model model, HttpSession session ) {
       System.out.println("MainController bookmark()");
       
-      String user_id = (String) session.getAttribute("user_id");
+      UserVO userVO = (UserVO) session.getAttribute("userVO");
+      int user_num = userVO.getUser_num();  
     
       Map<String, Object> res = new HashMap<>();
       try {
-    	  scrapService.addScrap(lecture_num, user_id);
+    	  scrapService.addScrap(lecture_num, user_num);
           res.put("success", true);
       } catch (Exception e) {
           res.put("success", false);
