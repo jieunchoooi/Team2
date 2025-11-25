@@ -126,6 +126,122 @@ public class AdminController {
    	    return "redirect:/admin/adminCategory"; // 카테고리 관리 페이지로 리다이렉트
    	}
    	
+ // 강의 수정
+   	@PostMapping("/adminClassUpdate")
+   	public String adminClassUpdate(HttpServletRequest request,
+   	                               @RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
+   	    System.out.println("AdminController adminClassUpdate()");
+   	    
+   	    LectureVO lectureVO = new LectureVO();
+   	    
+   	    // ✅ 기본 정보 가져오기
+   	    int lecture_num = Integer.parseInt(request.getParameter("lecture_num"));
+   	    String lecture_title = request.getParameter("lecture_title");
+   	    String category_detail = request.getParameter("category_detail");
+   	    String lecture_author = request.getParameter("lecture_author");
+   	    String lecture_detail = request.getParameter("lecture_detail");
+   	    String priceParam = request.getParameter("lecture_price");
+   	    String lecture_tag = request.getParameter("lecture_tag");
+   	    String oldfile = request.getParameter("oldfile"); // 기존 이미지
+   	    
+   	    int lecture_price = 0;
+   	    if (priceParam != null && !priceParam.isEmpty()) {
+   	        lecture_price = Integer.parseInt(priceParam);
+   	    }
+   	    
+   	    // ✅ 강사 정보 분리 (user_num:user_name 형식)
+   	    String lec[] = lecture_author.split(":");
+   	    
+   	    lectureVO.setLecture_num(lecture_num);
+   	    lectureVO.setLecture_title(lecture_title);
+   	    lectureVO.setCategory_detail(category_detail);
+   	    lectureVO.setLecture_detail(lecture_detail);
+   	    lectureVO.setLecture_author(lec[1]); // 강사명
+   	    lectureVO.setLecture_price(lecture_price);
+   	    lectureVO.setLecture_tag(lecture_tag);
+   	    lectureVO.setUser_num(Integer.parseInt(lec[0])); // 강사 번호
+   	    
+   	    // ✅ 이미지 처리
+   	    if (lecture_img != null && !lecture_img.isEmpty()) {
+   	        // 새 이미지 업로드
+   	        UUID uuid = UUID.randomUUID();
+   	        String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
+   	        System.out.println("새 파일명: " + filename);
+   	        FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
+   	        lectureVO.setLecture_img(filename);
+   	        
+   	        // 기존 이미지 삭제
+   	        if (oldfile != null && !oldfile.isEmpty()) {
+   	            File oldFile = new File(uploadPath1, oldfile);
+   	            if (oldFile.exists()) {
+   	                oldFile.delete();
+   	                System.out.println("기존 파일 삭제: " + oldfile);
+   	            }
+   	        }
+   	    } else {
+   	        // 이미지 변경 없으면 기존 이미지 유지
+   	        lectureVO.setLecture_img(oldfile);
+   	    }
+   	    
+   	    System.out.println("수정할 강의 정보: " + lectureVO);
+   	    
+   	    // ✅ 1. 강의 정보 업데이트
+   	    adminService.updateLecture(lectureVO);
+   	    
+   	    // ✅ 2. 기존 챕터 및 챕터 상세 삭제 (외래키 연쇄 삭제)
+   	    adminService.deleteChaptersByLectureNum(lecture_num);
+   	    
+   	    // ✅ 3. 새로운 챕터 및 챕터 상세 추가
+   	    String[] chapterTitles = request.getParameterValues("chapter_title[]");
+   	    
+   	    System.out.println("=== 챕터 업데이트 시작 ===");
+   	    System.out.println("총 챕터 개수: " + (chapterTitles != null ? chapterTitles.length : 0));
+   	    
+   	    if (chapterTitles != null && chapterTitles.length > 0) {
+   	        for (int i = 0; i < chapterTitles.length; i++) {
+   	            System.out.println("\n--- 챕터 " + (i+1) + " 처리 중 ---");
+   	            System.out.println("챕터 제목: " + chapterTitles[i]);
+   	            
+   	            ChapterVO chapterVO = new ChapterVO();
+   	            chapterVO.setLecture_num(lecture_num);
+   	            chapterVO.setChapter_order(i + 1);
+   	            chapterVO.setChapter_title(chapterTitles[i]);
+   	            
+   	            adminService.insertChapter(chapterVO);
+   	            int chapterNum = chapterVO.getChapter_num();
+   	            
+   	            System.out.println("생성된 chapter_num: " + chapterNum);
+   	            
+   	            String detailTitleParam = "detail_title_" + i + "[]";
+   	            String detailTimeParam = "detail_time_" + i + "[]";
+   	            
+   	            String[] detailTitles = request.getParameterValues(detailTitleParam);
+   	            String[] detailTimes = request.getParameterValues(detailTimeParam);
+   	            
+   	            System.out.println("강의 개수: " + (detailTitles != null ? detailTitles.length : 0));
+   	            
+   	            if (detailTitles != null && detailTitles.length > 0) {
+   	                for (int j = 0; j < detailTitles.length; j++) {
+   	                    System.out.println("  강의 " + (j+1) + ": " + detailTitles[j] + " (" + 
+   	                        (detailTimes != null && j < detailTimes.length ? detailTimes[j] : "00:00") + ")");
+   	                    
+   	                    ChapterDetailVO detailVO = new ChapterDetailVO();
+   	                    detailVO.setChapter_num(chapterNum);
+   	                    detailVO.setDetail_order(j + 1);
+   	                    detailVO.setDetail_title(detailTitles[j]);
+   	                    detailVO.setDetail_time(detailTimes != null && j < detailTimes.length ? detailTimes[j] : "00:00");
+   	                    
+   	                    adminService.insertChapterDetail(detailVO);
+   	                }
+   	            }
+   	        }
+   	    }
+   	    
+   	    System.out.println("=== 챕터 업데이트 완료 ===\n");
+   	    
+   	    return "redirect:/admin/adminClassList";
+   	}
+   	
    	
    // 클래스 등록
    @GetMapping("/adminClassAdd")
@@ -278,7 +394,10 @@ public class AdminController {
       System.out.println("AdminController adminClassList()");
 
       String pageNum = request.getParameter("pageNum");
-
+      String filter = request.getParameter("filter");
+      if(filter == null || filter.isEmpty()) {
+    	  filter = "all";
+      }
       if (pageNum == null) {
          pageNum = "1";
       }
@@ -299,10 +418,10 @@ public class AdminController {
       }
       
       int tCount = adminService.teacharCount(pageVO);
-      int classCount = adminService.classCount();
+      int classCount = adminService.classCount(pageVO);
       List<LectureVO> lectureList = adminService.listLecture(pageVO);
 
-      int count = adminService.countlectureList();
+      int count = adminService.countlectureList(pageVO);
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
@@ -322,10 +441,13 @@ public class AdminController {
       model.addAttribute("lectureList", lectureList);
       model.addAttribute("classCount", classCount);
       model.addAttribute("tCount", tCount);
+      model.addAttribute("filter", filter);
 
       return "admin/adminClassList";
    }
+   
 
+   
    @GetMapping("/classSearch")
    public String classSearch(Model model) {
 	   System.out.println("AdminController classSearch()");
@@ -649,12 +771,28 @@ public class AdminController {
 	    System.out.println("AdminController adminClassEditPro()");
 	    
 	    LectureVO lectureVO = adminService.classEdit(lecture_num);
+	    List<UserVO> instructorList = adminService.getInstructorList();
 	    List<CategoryVO> categoryList = adminService.categoryList();
+	    List<ChapterVO> chapterList = adminService.getChaptersByLectureNum(lecture_num);
 	    
-	    model.addAttribute("lectureVO", lectureVO);
-	    model.addAttribute("categoryList", categoryList);
-	    
-	    return "admin/adminClassEditinfo";
+	    String tags = lectureVO.getLecture_tag(); // "드로잉,일러스트,취미"
+
+	    System.out.println("강사 수: " + (instructorList != null ? instructorList.size() : 0));
+	    if (instructorList != null) {
+	        for (UserVO user : instructorList) {
+	            System.out.println("강사: " + user.getUser_name() + " (" + user.getUser_id() + ")");
+	        }
+	    }
+	    // 쉼표 기준으로 배열화
+		String[] tagArr = tags.split(",");
+
+		model.addAttribute("tagArr", tagArr);
+		model.addAttribute("lectureVO", lectureVO);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("instructorList", instructorList);
+	    model.addAttribute("chapterList", chapterList); // 챕터 리스트 추가
+
+		return "admin/adminClassEditinfo";
    }
    
 // 강사 상세보기

@@ -52,10 +52,10 @@ public class AdminService {
 		return adminMapper.listLecture(pageVO);
 	}
 
-	public int countlectureList() {
+	public int countlectureList(PageVO pageVO) {
 		System.out.println("AdminService countlectureList()");
 
-		return adminMapper.countlectureList();
+		return adminMapper.countlectureList(pageVO);
 	}
 
 	public void deleteClass(String lecture_num) {
@@ -99,9 +99,9 @@ public class AdminService {
 		return adminMapper.teacharCount(pageVO);
 	}
 
-	public int classCount() {
+	public int classCount(PageVO pageVO) {
 		System.out.println("AdminService classCount()");
-		return adminMapper.classCount();
+		return adminMapper.classCount(pageVO);
 	}
 
 	public void deleteMember(int user_num) {
@@ -296,6 +296,23 @@ public class AdminService {
 		System.out.println("AdminService updateCategory()");
 		adminMapper.updateCategory(categoryVO);
 	}
+
+	public List<ChapterVO> getChaptersByLectureNum(int lecture_num) {
+		System.out.println("AdminService getChaptersByLectureNum()");
+		return adminMapper.getChaptersByLectureNum(lecture_num);
+	}
+
+	public void updateLecture(LectureVO lectureVO) {
+		System.out.println("AdminService updateLecture()");
+		adminMapper.updateLecture(lectureVO);
+	}
+
+	public void deleteChaptersByLectureNum(int lecture_num) {
+		System.out.println("AdminService deleteChaptersByLectureNum()");
+		adminMapper.deleteChaptersByLectureNum(lecture_num);
+	}
+
+
 
 
 
