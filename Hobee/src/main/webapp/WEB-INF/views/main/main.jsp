@@ -96,7 +96,7 @@
                         <a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}" class="course-thumb-wrapper">
                            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
                               class="course-thumb" alt="${lecture.lecture_title}">
-                           <button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
+                           <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}" onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
                                 <i class="far fa-bookmark"></i>
                             </button>
                         </a>
@@ -129,7 +129,7 @@
       </div>
    </section>
    
-   <!-- 할인 강의 섹션 -->
+   <!-- 전체 강의 섹션 -->
    <section class="course-section">
       <h3>전체 강의</h3>
       <div class="course-grid">
@@ -140,7 +140,7 @@
                   class="course-thumb-wrapper"> <img
                   src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
                   class="course-thumb" alt="${lecture.lecture_title}">
-                  <button class="bookmark-btn"
+                  <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}"
                      onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
                      <i class="far fa-bookmark"></i>
                   </button>
@@ -185,10 +185,12 @@ function searchLecture(event) {
 const isLogin = "${not empty sessionScope.user_id}" === "true";
       
 function toggleBookmark(lectureNum, btn) {
-     if(!isLogin){
+     
+	if(!isLogin){
     	 openLoginModal();
         return;
      }
+	
      // 북마크 토글 로직 
      $.ajax({
         url: '${pageContext.request.contextPath}/main/bookmark',
@@ -197,13 +199,12 @@ function toggleBookmark(lectureNum, btn) {
         success: function(response) {
         	console.log("response :: " + response);
            if(response.success) {
-              btn.classList.toggle('active');
+        	   alert("스크랩 되었습니다. 마이페이지 스크랩/관심 내역에서 확인해주세요.");
+               btn.classList.toggle('active');
            }
         }
      });
          
-     // 임시: UI만 토글
-//      btn.classList.toggle('active');
 }
 </script>
    
