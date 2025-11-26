@@ -54,6 +54,7 @@
     </div>
   </section>
 </main>
+		<jsp:include page="../include/footer.jsp"></jsp:include>
 
 <script>
 // 폼 제출 전 유효성 검사

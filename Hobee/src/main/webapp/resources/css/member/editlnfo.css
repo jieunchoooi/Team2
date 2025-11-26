@@ -421,8 +421,21 @@ main {
     font-size: 14px;
   }
   
-
-  
+.site-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 40px 0 30px;
+    margin-top: 60px;
+    font-size: 0.75rem;
+    color: #666;
+    
+    /* ✅ 이 부분만 변경 */
+    width: 100vw;
+    position: relative;
+    left: -260px;  /* 사이드바 너비만큼 */
+    margin-left: 0;
+    margin-right: 0;
+}
   
   
 }

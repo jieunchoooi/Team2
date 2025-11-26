@@ -17,7 +17,7 @@
 
     <div class="menu-item ${page eq 'scrap' ? 'active' : ''}"
          onclick="location.href='${pageContext.request.contextPath}/member/scrap'">
-        ⭐ <span>스크랩 / 관심</span>
+        ⭐ <span>스크랩</span>
     </div>
 
     <div class="menu-item ${page eq 'review' ? 'active' : ''}"
