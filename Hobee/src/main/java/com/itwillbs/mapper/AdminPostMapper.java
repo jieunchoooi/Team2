@@ -18,13 +18,14 @@ public interface AdminPostMapper {
             @Param("type") String type,
             @Param("keyword") String keyword);
 
-    // 검색된 총 개수
     int getSearchTotalCount(
             @Param("type") String type,
             @Param("keyword") String keyword);
 
-    // 기존 기능
-    List<AdminPostVO> getPostListPaging(@Param("start") int start, @Param("amount") int amount);
+    // 기존 목록
+    List<AdminPostVO> getPostListPaging(
+            @Param("start") int start,
+            @Param("amount") int amount);
 
     int getTotalCount();
 
@@ -32,13 +33,18 @@ public interface AdminPostMapper {
 
     void togglePostVisible(int post_id);
 
+    // ❗ 이름 수정 (softDelete → deletePost)
     void deletePost(int post_id);
 
-    List<AdminPostVO> getPostListPagingSorted(@Param("start") int start, 
+    void restorePost(int post_id);
+
+    List<AdminPostVO> getPostListPagingSorted(
+            @Param("start") int start,
             @Param("amount") int amount,
             @Param("sort") String sort);
 
-    List<AdminPostVO> getSearchPostListSorted(@Param("start") int start, 
+    List<AdminPostVO> getSearchPostListSorted(
+            @Param("start") int start,
             @Param("amount") int amount,
             @Param("type") String type,
             @Param("keyword") String keyword,
@@ -50,14 +56,12 @@ public interface AdminPostMapper {
 
     void batchDelete(@Param("ids") List<Integer> ids);
 
-	void updatePost(AdminPostVO vo);
-	
-	List<Map<String, Object>> getTopViewPosts();
-	List<Map<String, Object>> getTopCommentPosts();
+    void updatePost(AdminPostVO vo);
 
+    List<Map<String, Object>> getTopViewPosts();
 
+    List<Map<String, Object>> getTopCommentPosts();
 
+	List<AdminPostVO> getDeletedPostList();
 }
-
-
 

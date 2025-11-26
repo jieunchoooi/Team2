@@ -182,16 +182,16 @@ function searchLecture(event) {
      window.location.href = '${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
 }
    
-const isLogin = "${not empty sessionScope.user_id}" === "true";
-      
+// 북마크 토글 로직
 function toggleBookmark(lectureNum, btn) {
+	
+	const isLogin = "${not empty sessionScope.user_id}" === "true";
      
 	if(!isLogin){
     	 openLoginModal();
         return;
      }
 	
-     // 북마크 토글 로직 
      $.ajax({
         url: '${pageContext.request.contextPath}/main/bookmark',
         method: 'POST',
@@ -204,7 +204,6 @@ function toggleBookmark(lectureNum, btn) {
            }
         }
      });
-         
 }
 </script>
    

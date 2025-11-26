@@ -228,17 +228,16 @@ $(document).ready(function () {
     let insIdOk = false;
     let insEmailOk = false;
 
-    $("#ins_user_id").on("input", () => {
-        insIdOk = false;
-        $("#ins_idCheckMsg").text("");
-    });
-
     $("#ins_checkIdBtn").click(() => {
         const id = $("#ins_user_id").val().trim();
-        const pattern = /^[A-Za-z0-9]{1,8}$/;
+
+        // 🔥 소문자 시작 + 숫자 포함 + 6~8자리
+        const pattern = /^(?=.*\d)[a-z][a-z\d]{5,7}$/;
 
         if (!pattern.test(id)) {
-            $("#ins_idCheckMsg").text("영문+숫자 8자").css("color", "red");
+            $("#ins_idCheckMsg")
+                .text("아이디는 소문자로 시작하고 숫자를 포함한 6~8자리여야 합니다.")
+                .css("color", "red");
             return;
         }
 

@@ -5,7 +5,9 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminPostMapper">
 
-    <!-- 📌 1. 게시글 상세 조회 -->
+    <!-- ============================================================
+          📌 1. 게시글 상세 조회
+    ============================================================ -->
     <select id="getPostDetail" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT 
             c.post_id,
@@ -15,57 +17,62 @@
             c.tag,
             c.views,
             c.is_visible,
+            c.is_deleted,
             c.created_at,
             b.board_name
         FROM community_content c
-        LEFT JOIN board_category b
-            ON c.board_id = b.board_id
+        LEFT JOIN board_category b ON c.board_id = b.board_id
         WHERE c.post_id = #{post_id}
     </select>
 
-    <!-- 📌 2. 게시글 공개/숨김 토글 -->
+    <!-- ============================================================
+          📌 2. 게시글 공개/숨김 토글
+    ============================================================ -->
     <update id="togglePostVisible">
         UPDATE community_content
-        SET is_visible = CASE 
-                            WHEN is_visible = 1 THEN 0 
-                            ELSE 1 
-                         END
+        SET is_visible = CASE WHEN is_visible = 1 THEN 0 ELSE 1 END
+        WHERE post_id = #{post_id}
+          AND is_deleted = 0
+    </update>
+
+    <!-- ============================================================
+          📌 3. Soft Delete — 게시글 삭제 (is_deleted = 1)
+    ============================================================ -->
+    <update id="deletePost">
+        UPDATE community_content
+        SET is_deleted = 1
         WHERE post_id = #{post_id}
     </update>
 
-    <!-- 📌 3. 게시글 삭제 -->
-    <delete id="deletePost">
-        DELETE FROM community_content
-        WHERE post_id = #{post_id}
-    </delete>
-
-    <!-- 📌 4. 전체 게시글 개수 -->
+    <!-- ============================================================
+          📌 4. 전체 게시글 개수 (삭제된 글 제외)
+    ============================================================ -->
     <select id="getTotalCount" resultType="int">
-        SELECT COUNT(*) 
+        SELECT COUNT(*)
         FROM community_content
+        WHERE is_deleted = 0
     </select>
 
-
-    <!-- ===========================================================
-         🔥 5. 정렬 포함 전체 목록 (페이징 + 정렬)
+    <!-- ============================================================
+          📌 5. 게시글 목록 (정렬 + 페이징)
     ============================================================ -->
     <select id="getPostListPagingSorted" resultType="com.itwillbs.domain.AdminPostVO">
-        SELECT 
+        SELECT
             c.post_id,
             c.title,
-            c.content,
             c.author,
+            c.content,
             c.tag,
             c.views,
             c.is_visible,
             c.created_at,
             b.board_name,
-            (SELECT COUNT(*) FROM comment cm WHERE cm.post_id = c.post_id) AS reply_count
+            (SELECT COUNT(*) FROM comment cm 
+                WHERE cm.post_id = c.post_id AND cm.is_deleted = 0) AS reply_count
         FROM community_content c
-        LEFT JOIN board_category b
-            ON c.board_id = b.board_id
-        
-        <!-- 🔥 정렬 조건 -->
+        LEFT JOIN board_category b ON c.board_id = b.board_id
+        WHERE c.is_deleted = 0
+
         <choose>
             <when test="sort == 'views'">
                 ORDER BY c.views DESC
@@ -77,41 +84,39 @@
                 ORDER BY c.is_visible DESC, c.post_id DESC
             </when>
             <otherwise>
-                ORDER BY c.post_id DESC  <!-- 최신순 -->
+                ORDER BY c.post_id DESC
             </otherwise>
         </choose>
 
         LIMIT #{start}, #{amount}
     </select>
 
-
-    <!-- ===========================================================
-         🔥 6. 정렬 포함 검색된 목록 (페이징 + 검색 + 정렬)
+    <!-- ============================================================
+          📌 6. 검색 + 정렬 + 페이징
     ============================================================ -->
     <select id="getSearchPostListSorted" resultType="com.itwillbs.domain.AdminPostVO">
-        SELECT 
+        SELECT
             c.post_id,
             c.title,
-            c.content,
             c.author,
+            c.content,
             c.tag,
             c.views,
             c.is_visible,
             c.created_at,
             b.board_name,
-            (SELECT COUNT(*) FROM comment cm WHERE cm.post_id = c.post_id) AS reply_count
+            (SELECT COUNT(*) FROM comment cm 
+                WHERE cm.post_id = c.post_id AND cm.is_deleted = 0) AS reply_count
         FROM community_content c
-        LEFT JOIN board_category b
-            ON c.board_id = b.board_id
+        LEFT JOIN board_category b ON c.board_id = b.board_id
 
-        WHERE 
-            (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
-            OR
-            (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
-            OR
-            (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+        WHERE c.is_deleted = 0
+        AND (
+                (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
+             OR (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
+             OR (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+        )
 
-        <!-- 🔥 정렬 조건 -->
         <choose>
             <when test="sort == 'views'">
                 ORDER BY c.views DESC
@@ -123,88 +128,132 @@
                 ORDER BY c.is_visible DESC, c.post_id DESC
             </when>
             <otherwise>
-                ORDER BY c.post_id DESC  <!-- 최신순 -->
+                ORDER BY c.post_id DESC
             </otherwise>
         </choose>
 
         LIMIT #{start}, #{amount}
     </select>
 
-
-    <!-- 📌 7. 검색된 게시글 개수 -->
+    <!-- ============================================================
+          📌 7. 검색된 게시글 개수
+    ============================================================ -->
     <select id="getSearchTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM community_content c
-        LEFT JOIN board_category b 
-            ON c.board_id = b.board_id
-        WHERE 
-            (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
-            OR
-            (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
-            OR
-            (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+        LEFT JOIN board_category b ON c.board_id = b.board_id
+        WHERE c.is_deleted = 0
+        AND (
+                (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
+             OR (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
+             OR (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+        )
     </select>
-    
-    <!-- 🔥 일괄 숨김 -->
-<update id="batchHide">
-    UPDATE community_content
-    SET is_visible = 0
-    WHERE post_id IN
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-        #{id}
-    </foreach>
-</update>
 
-<!-- 🔥 일괄 표시 -->
-<update id="batchShow">
-    UPDATE community_content
-    SET is_visible = 1
-    WHERE post_id IN
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-        #{id}
-    </foreach>
-</update>
+    <!-- ============================================================
+          📌 8. 일괄 숨김
+    ============================================================ -->
+    <update id="batchHide">
+        UPDATE community_content
+        SET is_visible = 0
+        WHERE post_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND is_deleted = 0
+    </update>
 
-<!-- 🔥 일괄 삭제 -->
-<delete id="batchDelete">
-    DELETE FROM community_content
-    WHERE post_id IN
-    <foreach collection="ids" item="id" open="(" separator="," close=")">
-        #{id}
-    </foreach>
-</delete>
+    <!-- ============================================================
+          📌 9. 일괄 표시
+    ============================================================ -->
+    <update id="batchShow">
+        UPDATE community_content
+        SET is_visible = 1
+        WHERE post_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND is_deleted = 0
+    </update>
 
-<update id="updatePost">
-    UPDATE community_content
-    SET 
-        title = #{title},
-        content = #{content},
-        updated_at = NOW()
-    WHERE post_id = #{post_id}
-</update>
+    <!-- ============================================================
+          📌 10. 일괄 Soft Delete
+    ============================================================ -->
+    <update id="batchDelete">
+        UPDATE community_content
+        SET is_deleted = 1
+        WHERE post_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
-<!-- 게시글별 조회수 순위 (상위 10개) -->
-<select id="getTopViewPosts" resultType="map">
-    SELECT
-        p.title AS title,
-        p.views AS views
-    FROM community_content p
-    ORDER BY p.views DESC
-    LIMIT 10
-</select>
+    <!-- ============================================================
+          📌 11. Soft Delete 된 게시글만 조회
+    ============================================================ -->
+    <select id="getDeletedPostList" resultType="com.itwillbs.domain.AdminPostVO">
+        SELECT
+            c.post_id,
+            c.title,
+            c.author,
+            c.created_at,
+            c.views,
+            c.is_visible,
+            b.board_name
+        FROM community_content c
+        LEFT JOIN board_category b ON c.board_id = b.board_id
+        WHERE c.is_deleted = 1
+        ORDER BY c.post_id DESC
+    </select>
 
-<!-- 게시글별 댓글 수 순위 (상위 10개) -->
-<select id="getTopCommentPosts" resultType="map">
-    SELECT
-        p.title AS title,
-        COUNT(c.comment_id) AS comment_count
-    FROM community_content p
-    LEFT JOIN comment c ON p.post_id = c.post_id AND c.is_deleted = 0
-    GROUP BY p.post_id
-    ORDER BY comment_count DESC
-    LIMIT 10
-</select>
+    <!-- ============================================================
+          📌 12. Soft Delete → 복구
+    ============================================================ -->
+    <update id="restorePost">
+        UPDATE community_content
+        SET is_deleted = 0
+        WHERE post_id = #{post_id}
+    </update>
 
+    <!-- ============================================================
+          📌 13. 게시글 수정
+    ============================================================ -->
+    <update id="updatePost">
+        UPDATE community_content
+        SET 
+            title = #{title},
+            content = #{content},
+            updated_at = NOW()
+        WHERE post_id = #{post_id}
+    </update>
 
+    <!-- ============================================================
+          📌 14. 조회수 TOP 10
+    ============================================================ -->
+    <select id="getTopViewPosts" resultType="map">
+        SELECT
+            title,
+            views
+        FROM community_content
+        WHERE is_deleted = 0
+        ORDER BY views DESC
+        LIMIT 10
+    </select>
+
+    <!-- ============================================================
+          📌 15. 댓글 수 TOP 10
+    ============================================================ -->
+    <select id="getTopCommentPosts" resultType="map">
+        SELECT
+            p.title AS title,
+            COUNT(c.comment_id) AS comment_count
+        FROM community_content p
+        LEFT JOIN comment c 
+            ON p.post_id = c.post_id AND c.is_deleted = 0
+        WHERE p.is_deleted = 0
+        GROUP BY p.post_id
+        ORDER BY comment_count DESC
+        LIMIT 10
+    </select>
 
 </mapper>
