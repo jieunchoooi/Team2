@@ -525,8 +525,6 @@ footer {
 	</section>
 </main>
 
-<footer>© 2025 Hobee | 당신의 취미 파트너</footer>
-
 <script>
 
 function searchLecture(){
@@ -612,6 +610,8 @@ if (totalSlides > 0) {
     createDots();
 }
 </script>
+
+<jsp:include page="../include/footer.jsp"></jsp:include>
 
 </body>
 </html>

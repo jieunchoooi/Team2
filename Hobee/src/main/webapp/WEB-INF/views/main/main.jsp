@@ -220,9 +220,8 @@ function toggleBookmark(lectureNum, btn) {
      });
 }
 </script>
-<%-- <jsp:include page="/WEB-INF/views/include/footer.jsp"/> --%>
 
-   <jsp:include page="../include/footer.jsp"></jsp:include>
-<!--    <footer>© 2025 Hobee | 당신의 취미 파트너</footer> -->
+<jsp:include page="../include/footer.jsp"></jsp:include>
+
 </body>
 </html>

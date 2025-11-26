@@ -998,8 +998,6 @@ body.modal-open {
   </div>
 </main>
 
-<footer>© 2025 Hobee | 당신의 취미 파트너</footer>
-
 <!-- 리뷰 작성 모달 -->
 <div id="reviewModal" style="display:none;">
   <div class="modal-box">
@@ -1338,6 +1336,8 @@ body.modal-open {
     window.addEventListener('resize', checkDescriptionHeight);
   });
 </script>
+
+<jsp:include page="../include/footer.jsp"></jsp:include>
 
 </body>
 </html>
