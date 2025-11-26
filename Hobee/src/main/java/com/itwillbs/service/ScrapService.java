@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.mapper.ScrapMapper;
@@ -56,4 +57,9 @@ public class ScrapService {
             return scrapMapper.addScrap(vo) > 0;
         }
     }
+
+	public int isScrapped(int lecture_num, int user_num) {
+		System.out.println("ScrapService isScrapped()");
+		return scrapMapper.isScrapped(lecture_num, user_num);
+	}
 }

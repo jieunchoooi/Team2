@@ -96,7 +96,9 @@
                         <a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}" class="course-thumb-wrapper">
                            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
                               class="course-thumb" alt="${lecture.lecture_title}">
-                           <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}" onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
+                           <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}" 
+                           		   data-lecture-num="${lecture.lecture_num}"
+                           		   onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
                                 <i class="far fa-bookmark"></i>
                             </button>
                         </a>
@@ -141,7 +143,8 @@
                   src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
                   class="course-thumb" alt="${lecture.lecture_title}">
                   <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}"
-                     onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
+                  		  data-lecture-num="${lecture.lecture_num}"
+                     	  onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
                      <i class="far fa-bookmark"></i>
                   </button>
                </a>
@@ -197,10 +200,21 @@ function toggleBookmark(lectureNum, btn) {
         method: 'POST',
         data: { lecture_num: lectureNum },
         success: function(response) {
-        	console.log("response :: " + response);
+        	console.log("response.bookmarked :: " + response.bookmarked);
+        	console.log("response.success :: " + response.success);
+        	
            if(response.success) {
-        	   alert("스크랩 되었습니다. 마이페이지 스크랩/관심 내역에서 확인해주세요.");
-               btn.classList.toggle('active');
+        	   const allButtons = document.querySelectorAll('[data-lecture-num="' + lectureNum + '"]');
+        	   
+        	   if(response.bookmarked){
+        		   allButtons.forEach(button => {
+        			   button.classList.add('active'); //북마크 ON
+        		   });
+        	   } else {
+        		   allButtons.forEach(button =>{
+        			   button.classList.remove('active'); //북마크 OFF
+        		   });
+        	   }
            }
         }
      });

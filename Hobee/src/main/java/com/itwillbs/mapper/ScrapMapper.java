@@ -18,4 +18,7 @@ public interface ScrapMapper {
     
     void deleteScrapAfterPayment(@Param("userNum") int userNum,
             @Param("lectureNums") List<Integer> lectureNums);
+
+	int isScrapped(@Param("lecture_num") int lecture_num, 
+			           @Param("user_num")int user_num);
 }

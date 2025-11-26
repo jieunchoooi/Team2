@@ -79,8 +79,21 @@ public class MainController {
       int user_num = userVO.getUser_num();  
     
       Map<String, Object> res = new HashMap<>();
+      
       try {
-    	  scrapService.addScrap(lecture_num, user_num);
+    	  //현재 북마크가 있는지 확인
+    	  int count = scrapService.isScrapped(lecture_num, user_num);
+    	  boolean hasBookmark = count > 0;
+    	  
+    	  if(hasBookmark) {
+    		  //이미 있으면 삭제
+    		  scrapService.deleteScrap(user_num, lecture_num);
+    		  res.put("bookmarked", false); //현재 상태 반환
+    	  } else {
+    		  //없으면 추가
+        	  scrapService.addScrap(lecture_num, user_num);
+        	  res.put("bookmarked", true);
+    	  }
           res.put("success", true);
       } catch (Exception e) {
           res.put("success", false);
@@ -88,6 +101,12 @@ public class MainController {
       
       return res;
    }
+   
+   
+   
+   
+   
+   
    
 
 }

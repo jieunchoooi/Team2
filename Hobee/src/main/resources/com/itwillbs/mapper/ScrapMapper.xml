@@ -55,5 +55,11 @@
 			#{lec}
 		</foreach>
 	</delete>
+	
+	<select id="isScrapped" resultType="int">
+	    SELECT COUNT(*)
+	    FROM scrap
+	    WHERE lecture_num = #{lecture_num} AND user_num = #{user_num}
+	</select>
 
 </mapper>
