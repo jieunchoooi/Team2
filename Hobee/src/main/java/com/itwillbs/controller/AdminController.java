@@ -815,46 +815,38 @@ public class AdminController {
 		return "admin/adminClassEditinfo";
    }
    
-// 강사 상세보기
    @GetMapping("/adminTeacherDetail")
    public String adminTeacherDetail(@RequestParam("user_num") int user_num, Model model) {
-	   System.out.println("AdminController adminTeacherDetail()");
-	   
-	    try {
-	        UserVO userVO = adminService.teachercheck(user_num);
-	        
-	        // ✅ null 체크 추가
-	        if (userVO == null) {
-	            System.out.println("⚠️ 강사 정보를 찾을 수 없습니다. user_num: " + user_num);
-	            model.addAttribute("errorMessage", "강사 정보를 찾을 수 없습니다.");
-	            return "redirect:/admin/adminTeacherList";
-	        }
-	        
-	        System.out.println("강사 정보: " + userVO);
-	        model.addAttribute("userVO", userVO);
-	        
-	    } catch (Exception e) {
-	        System.out.println("⚠️ 에러 발생: " + e.getMessage());
-	        e.printStackTrace();
-	        return "redirect:/admin/adminTeacherList";
-	    }
-	   
-	    String lectureCount = adminService.lectureCount(user_num);
-	   List<LectureVO> lectureList = adminService.teacherClassCheck(user_num);
-	   for(LectureVO lecture : lectureList) {
-		    System.out.println(lecture.getLecture_title());
-		}
-//
-//		// 또는 단순히 첫 번째 강의만 필요하다면
-//		LectureVO lecture = null;
-//		if(!lectureList.isEmpty()) {
-//		    lecture = lectureList.get(0);
-//		}
-	   model.addAttribute("lectureList", lectureList);
-	   model.addAttribute("lectureCount", lectureCount);
-	   return "admin/adminTeacherDetail";
+       System.out.println("=== adminTeacherDetail 실행 ===");
+       System.out.println("user_num: " + user_num);
+       
+       try {
+           UserVO userVO = adminService.teachercheck(user_num);
+           System.out.println("userVO: " + userVO);
+           
+           List<LectureVO> lectureList = adminService.teacherClassCheck(user_num);
+           System.out.println("조회된 강의 수: " + (lectureList != null ? lectureList.size() : 0));
+           
+           // 각 강의 정보 출력
+           if (lectureList != null) {
+               for (LectureVO lecture : lectureList) {
+                   System.out.println("강의: " + lecture.getLecture_title() 
+                       + " (lecture_num: " + lecture.getLecture_num() + ")");
+               }
+           }
+           
+           model.addAttribute("userVO", userVO);
+           model.addAttribute("lectureList", lectureList);
+           model.addAttribute("lectureCount", lectureList != null ? lectureList.size() : 0);
+           
+           return "admin/adminTeacherDetail";
+           
+       } catch (Exception e) {
+           System.out.println("⚠️ 에러 발생 ⚠️");
+           e.printStackTrace();
+           return "redirect:/admin/adminTeacherList";
+       }
    }
-   
    
 
 }
