@@ -247,11 +247,6 @@ public class AdminService {
 		return adminMapper.classSearch();
 	}
 
-	public UserVO teachercheck(int user_num) {
-		System.out.println("AdminService teachercheck()");
-		return adminMapper.classSearch(user_num);
-	}
-
 	public List<LectureVO> teacherClassCheck(int user_num) {
 		System.out.println("AdminService teacherClassCheck()");
 		return adminMapper.teacherClassCheck(user_num);
@@ -315,6 +310,16 @@ public class AdminService {
 	public String lectureCount(int user_num) {
 		System.out.println("AdminService lectureCount()");
 		return adminMapper.lectureCount(user_num);
+	}
+
+	public List<LectureVO> instructorLecture(int user_num) {
+		System.out.println("AdminService instructorLecture()");
+		return adminMapper.instructorLecture(user_num);
+	}
+
+	public UserVO teachercheck(int user_num) {
+		System.out.println("AdminService teachercheck()");
+		return adminMapper.teachercheck(user_num);
 	}
 
 

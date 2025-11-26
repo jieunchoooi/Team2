@@ -473,7 +473,7 @@ document.getElementById("lecture_img").addEventListener('change', function(e) {
         img.src = e.target.result;
         img.style.width = '200px';
         img.style.height = '200px';
-        img.style.objectFit = 'contain'; /* ✅ cover에서 contain으로 변경 */
+        img.style.objectFit = 'cover;'; /* ✅ cover에서 contain으로 변경 */
 
         profilePic.appendChild(img);
     }

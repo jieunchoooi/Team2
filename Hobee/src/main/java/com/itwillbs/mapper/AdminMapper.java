@@ -112,6 +112,10 @@ public interface AdminMapper {
 
 	public String lectureCount(int user_num);
 
+	public List<LectureVO> instructorLecture(int user_num);
+
+	public UserVO teachercheck(int user_num);
+
 
 	
 
