@@ -14,6 +14,8 @@
 
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminNoticeEdit.css">
+
+   
 </head>
 
 <body>
@@ -56,7 +58,6 @@
                 </select>
             </div>
 
-
             <!-- ⭐ 기존 첨부파일 목록 -->
             <c:if test="${!empty files}">
                 <div class="form-group">
@@ -68,30 +69,35 @@
                             <div class="file-item">
 
                                 <!-- 이미지 파일 -->
-                                <c:if test="${f.file_name.endsWith('jpg')
-                                             or f.file_name.endsWith('png')
-                                             or f.file_name.endsWith('jpeg')
-                                             or f.file_name.endsWith('gif')}">
-                                    <img src="${pageContext.request.contextPath}/upload/${f.file_name}"
+                                <c:if test="${fn:endsWith(f.file_name, 'jpg')
+                                            or fn:endsWith(f.file_name, 'png')
+                                            or fn:endsWith(f.file_name, 'jpeg')
+                                            or fn:endsWith(f.file_name, 'gif')}">
+                                    <img src="${pageContext.request.contextPath}/upload/notice/${f.file_name}"
                                          class="file-thumb">
                                 </c:if>
 
-                               <!-- 이미지 아닌 경우 -->
-								<c:if test="${not (fn:endsWith(f.file_name, 'jpg')
-        										or fn:endsWith(f.file_name, 'png')
-        										or fn:endsWith(f.file_name, 'jpeg')
-        										or fn:endsWith(f.file_name, 'gif'))}">
-    							<div class="file-icon">📄</div>
-								</c:if>
+                                <!-- 이미지가 아닐 때 -->
+                                <c:if test="${not (fn:endsWith(f.file_name, 'jpg')
+                                                or fn:endsWith(f.file_name, 'png')
+                                                or fn:endsWith(f.file_name, 'jpeg')
+                                                or fn:endsWith(f.file_name, 'gif'))}">
+                                    <div class="file-icon">📄</div>
+                                </c:if>
 
-                                <!-- 파일명 + 삭제 체크박스 -->
+                                <!-- 파일명 + 삭제버튼 -->
                                 <div class="file-detail">
                                     <span class="file-name">${f.file_name}</span>
 
-                                    <label class="delete-check">
-                                        <input type="checkbox" name="deleteFiles" value="${f.file_id}">
+                                    <!-- 삭제 버튼 (hidden으로 실제 삭제값 전달) -->
+                                    <button type="button"
+                                            class="delete-btn"
+                                            onclick="toggleDelete(${f.file_id}, this)">
                                         삭제
-                                    </label>
+                                    </button>
+
+                                    <input type="hidden" name="deleteFiles"
+                                           value="" id="del-${f.file_id}">
                                 </div>
 
                             </div>
@@ -101,7 +107,6 @@
                 </div>
             </c:if>
 
-
             <!-- 새 파일 추가 -->
             <div class="form-group">
                 <label>새 파일 추가</label>
@@ -110,7 +115,30 @@
 
             <!-- 이미지 미리보기 -->
             <div id="preview-area"
-                 style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                 style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;"></div>
+
+
+            <!-- 중요도 -->
+            <div class="form-group">
+                <label>중요도</label>
+                <select name="priority">
+                    <option value="1" ${notice.priority == 1 ? "selected" : ""}>일반</option>
+                    <option value="2" ${notice.priority == 2 ? "selected" : ""}>중요</option>
+                    <option value="3" ${notice.priority == 3 ? "selected" : ""}>매우 중요</option>
+                    <option value="4" ${notice.priority == 4 ? "selected" : ""}>긴급 🔥</option>
+                </select>
+            </div>
+
+            <!-- 게시 시작일 -->
+            <div class="form-group">
+                <label>게시 시작일</label>
+                <input type="date" name="start_date" value="${notice.start_date}">
+            </div>
+
+            <!-- 게시 종료일 -->
+            <div class="form-group">
+                <label>게시 종료일</label>
+                <input type="date" name="end_date" value="${notice.end_date}">
             </div>
 
             <!-- 내용 -->
@@ -121,7 +149,6 @@
 
             <div class="btn-area">
                 <button type="submit" class="btn-blue">수정 완료</button>
-
                 <button type="button" class="btn-gray"
                         onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeDetail?notice_id=${notice.notice_id}'">
                     상세로
@@ -131,7 +158,31 @@
         </form>
 
 
-        <!-- 이미지 미리보기 스크립트 -->
+        <!-- 기존 파일 삭제 버튼 스크립트 -->
+        <script>
+            function toggleDelete(fileId, btn) {
+                const hidden = document.getElementById("del-" + fileId);
+                
+                if (!hidden) {
+                    console.error("hidden input 찾을 수 없음:", fileId);
+                    return;
+                }
+
+                if (hidden.value === "") {
+                    hidden.value = fileId;          // 삭제 표시
+                    btn.style.color = "#ff3b3b";
+                    btn.style.fontWeight = "700";
+                    btn.innerText = "삭제 취소";
+                } else {
+                    hidden.value = "";               // 취소
+                    btn.style.color = "";
+                    btn.style.fontWeight = "";
+                    btn.innerText = "삭제";
+                }
+            }
+        </script>
+
+        <!-- 새 파일 미리보기 -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
 
@@ -142,33 +193,28 @@
 
                     previewArea.innerHTML = "";
 
-                    let files = fileInput.files;
-
-                    Array.from(files).forEach(file => {
+                    Array.from(fileInput.files).forEach(file => {
 
                         const ext = file.name.toLowerCase().split('.').pop();
 
-                        if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
+                        if (["jpg","jpeg","png","gif"].includes(ext)) {
 
                             const reader = new FileReader();
-
                             reader.onload = function (e) {
+
                                 const img = document.createElement("img");
                                 img.src = e.target.result;
                                 img.style.width = "120px";
                                 img.style.height = "120px";
                                 img.style.objectFit = "cover";
-                                img.style.border = "1px solid #ddd";
                                 img.style.borderRadius = "10px";
-                                img.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+                                img.style.border = "1px solid #ddd";
 
                                 previewArea.appendChild(img);
                             };
-
                             reader.readAsDataURL(file);
                         }
                     });
-
                 });
             });
         </script>
@@ -179,4 +225,3 @@
 
 </body>
 </html>
-

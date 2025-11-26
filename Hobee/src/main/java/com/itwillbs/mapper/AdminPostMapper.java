@@ -56,8 +56,6 @@ public interface AdminPostMapper {
 
     void batchDelete(@Param("ids") List<Integer> ids);
 
-    void updatePost(AdminPostVO vo);
-
     List<Map<String, Object>> getTopViewPosts();
 
     List<Map<String, Object>> getTopCommentPosts();

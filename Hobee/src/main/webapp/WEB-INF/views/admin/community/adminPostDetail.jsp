@@ -31,7 +31,7 @@
                 ※ 이 게시글은 삭제된 상태입니다. (복구 가능합니다)
             </div>
 
-            <form action="${pageContext.request.contextPath}/admin/adminPostRestore" method="post">
+            <form action="${pageContext.request.contextPath}/admin/adminPostRestoreFromDetail" method="post">
                 <input type="hidden" name="post_id" value="${post.post_id}">
                 <button class="action-btn btn-green" style="margin-bottom:20px;">복구하기</button>
             </form>
@@ -164,11 +164,6 @@
              버튼 영역
         ========================== -->
         <div class="detail-btn-area">
-
-            <button class="btn-blue"
-                onclick="location.href='${pageContext.request.contextPath}/admin/adminPostEdit?post_id=${post.post_id}'">
-                수정하기
-            </button>
 
             <button class="btn-gray"
                 onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'">

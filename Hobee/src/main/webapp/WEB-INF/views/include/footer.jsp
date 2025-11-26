@@ -1,19 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style type="text/css">
-/* Footer 전체 */
+/* Footer 전체 - 사이드바 위로 완전히 덮기 */
 .site-footer {
-    background: #fff;
+    background: #f8f9fa;
     border-top: 1px solid #e9ecef;
     padding: 40px 0 30px;
     margin-top: 60px;
     font-size: 0.75rem;
     color: #666;
+    
+    /* ✅ 사이드바 위로 올리기 */
+    position: relative;
+    width: 100vw;
+    left: -5%;
+    z-index: 90;
 }
 
 .footer-container {
     max-width: 1200px;
-    margin: 0 auto;
     padding: 0 20px;
+    /* ✅ 중앙 정렬 핵심 */
+    width: 1200px;
+    margin-left: calc(260px + (100vw - 1200px - 260px) / 2);
 }
 
 /* 상단 영역 */
@@ -23,11 +31,6 @@
     gap: 60px;
     padding-bottom: 30px;
     border-bottom: 1px solid #e9ecef;
-}
-
-/* 왼쪽 섹션 */
-.footer-left {
-    /* grid로 변경했으므로 flex 속성 제거 */
 }
 
 .footer-cs-title {
@@ -62,28 +65,26 @@
     color: #2573ff;
 }
 
-/* SNS */
-.footer-social {
-    display: flex;
-    gap: 10px;
-}
+/* .footer-social { */
+/*     display: flex; */
+/*     gap: 10px; */
+/* } */
 
-.footer-social a {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    font-size: 1rem;
-    transition: color 0.2s;
-}
+/* .footer-social a { */
+/*     width: 28px; */
+/*     height: 28px; */
+/*     display: flex; */
+/*     align-items: center; */
+/*     justify-content: center; */
+/*     color: #999; */
+/*     font-size: 1rem; */
+/*     transition: color 0.2s; */
+/* } */
 
-.footer-social a:hover {
-    color: #2573ff;
-}
+/* .footer-social a:hover { */
+/*     color: #2573ff; */
+/* } */
 
-/* 오른쪽 링크 영역 - Grid로 균등 배치 */
 .footer-links-wrapper {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -122,7 +123,6 @@
     color: #333;
 }
 
-/* 하단 회사 정보 */
 .footer-bottom {
     padding-top: 20px;
 }
@@ -171,7 +171,25 @@
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+    .site-footer {
+        left: -200px;
+    }
+    
+    .footer-container {
+        margin-left: calc(200px + (100vw - 1200px - 200px) / 2);
+    }
+}
+
+@media (max-width: 480px) {
+    .site-footer {
+        left: -180px;
+    }
+    
+    .footer-container {
+        margin-left: calc(180px + (100vw - 1200px - 180px) / 2);
+    }
+    
     .footer-links-wrapper {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -179,27 +197,20 @@
 }
 </style>
 
-<!-- Footer -->
 <footer class="site-footer">
     <div class="footer-container">
-        <!-- 상단 영역 -->
         <div class="footer-top">
-            <!-- 왼쪽 섹션 -->
             <div class="footer-left">
                 <div class="footer-cs-title">고객센터</div>
                 <div class="footer-cs-time">오전 10시 ~ 오후 6시 (주말, 공휴일 제외)</div>
                 <a href="#" class="footer-inquiry-btn">문의하기</a>
-                
-                <!-- SNS -->
-                <div class="footer-social">
-                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" aria-label="Blog"><i class="fab fa-blogger"></i></a>
-                </div>
+<!--                 <div class="footer-social"> -->
+<!--                     <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a> -->
+<!--                     <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a> -->
+<!--                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a> -->
+<!--                     <a href="#" aria-label="Blog"><i class="fab fa-blogger"></i></a> -->
+<!--                 </div> -->
             </div>
-
-            <!-- 오른쪽 링크 영역 -->
             <div class="footer-links-wrapper">
                 <div class="footer-links-column">
                     <ul class="footer-links">
@@ -209,7 +220,6 @@
                         <li><a href="#">자원 거래 및 이용권한</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-links-column">
                     <ul class="footer-links">
                         <li><a href="#">크리에이터 지원</a></li>
@@ -219,7 +229,6 @@
                         <li><a href="#">클래스 개설 안내</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-links-column">
                     <ul class="footer-links">
                         <li><a href="#" class="highlight">개인정보 취급방침</a></li>
@@ -229,7 +238,6 @@
                         <li><a href="#">청소년 보호 정책</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-links-column">
                     <ul class="footer-links">
                         <li><a href="#">사업자 정보 확인</a></li>
@@ -239,19 +247,17 @@
                 </div>
             </div>
         </div>
-
-        <!-- 하단 회사 정보 -->
         <div class="footer-bottom">
             <div class="footer-company-name">(주)Hobee</div>
             <div class="footer-info-text">
-                대표 : 홍길동 | 서울특별시 강남구 테헤란로 123, 11층 1101호 | 사업자등록번호 : 123-45-67890
+                대표 : 홍길동 | 부산 부산진구 동천로 109 삼한골든게이트, 7층 | 사업자등록번호 : 123-45-67890
                 <a href="#" target="_blank">사업자 정보 확인 ></a>
             </div>
             <div class="footer-info-text">
                 통신판매업신고번호 : 2022-서울강남-02625 | 클라우드 호스팅 : Amazon Web Services Korea LLC
             </div>
             <div class="footer-info-text">
-                대표전화 : 1800-2109 | 이메일 : ask@hobee.co.kr
+                대표전화 : 1375-1375 | 이메일 : ask@hobee.co.kr
             </div>
             <div class="footer-notice">
                 Hobee는 통신판매중개자로서 중개하는 크리에이터가 제공하는 상품정보 및 거래 등에 대해서는 책임을 부담하지 않습니다.

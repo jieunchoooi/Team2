@@ -14,6 +14,7 @@
 	href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/member/editlnfo.css">
+	
 </head>
 <body>
 	<!-- header -->
@@ -131,8 +132,9 @@
 				</div>
 			</section>
 		</form>
+		
 	</main>
-
+		<jsp:include page="../include/footer.jsp"></jsp:include>
 	<script
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>

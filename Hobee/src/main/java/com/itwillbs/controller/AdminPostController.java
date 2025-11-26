@@ -91,13 +91,13 @@ public class AdminPostController {
     @PostMapping("/adminPostDelete")
     public String deletePost(@RequestParam("post_id") int post_id) {
 
-        adminPostService.deletePost(post_id); // Soft Delete
+        adminPostService.deletePost(post_id);
         return "redirect:/admin/adminPostList";
     }
 
 
     /* ============================================================
-       📌 4. Soft Delete 된 게시글 목록
+       📌 4. 삭제된 게시글 목록 (휴지통)
     ============================================================ */
     @GetMapping("/adminPostDeletedList")
     public String deletedPostList(Model model) {
@@ -111,18 +111,33 @@ public class AdminPostController {
 
 
     /* ============================================================
-       📌 5. 삭제된 게시글 복구
+       📌 5-1. 🔥 상세보기에서 "복구" (Detail → Detail)
     ============================================================ */
-    @PostMapping("/adminPostRestore")
-    public String restoreDeletedPost(@RequestParam("post_id") int post_id) {
+    @PostMapping("/adminPostRestoreFromDetail")
+    public String restorePostFromDetail(@RequestParam("post_id") int post_id) {
 
         adminPostService.restorePost(post_id);
+
+        // 복구한 글의 상세보기로 이동
+        return "redirect:/admin/adminPostDetail?post_id=" + post_id;
+    }
+
+
+    /* ============================================================
+       📌 5-2. 🔥 휴지통에서 "복구" (Trash → Trash)
+    ============================================================ */
+    @PostMapping("/adminPostRestoreFromTrash")
+    public String restorePostFromTrash(@RequestParam("post_id") int post_id) {
+
+        adminPostService.restorePost(post_id);
+
+        // 휴지통 목록으로 이동
         return "redirect:/admin/adminPostDeletedList";
     }
 
 
     /* ============================================================
-       📌 6. 게시글 공개/숨김 토글
+       📌 6. 게시글 노출 상태(공개/숨김) 토글
     ============================================================ */
     @PostMapping("/adminPostToggle")
     public String togglePostVisible(@RequestParam("post_id") int post_id) {
@@ -151,40 +166,14 @@ public class AdminPostController {
                 break;
 
             case "delete":
-                adminPostService.batchDelete(postIds);  // Soft Delete
+                adminPostService.batchDelete(postIds);
                 break;
         }
 
         return "redirect:/admin/adminPostList";
     }
-
-
     /* ============================================================
-       📌 8. 게시글 수정 페이지
-    ============================================================ */
-    @GetMapping("/adminPostEdit")
-    public String adminPostEdit(@RequestParam int post_id, Model model) {
-
-        model.addAttribute("post", adminPostService.getPostDetail(post_id));
-        model.addAttribute("page", "postList");
-
-        return "admin/community/adminPostEdit";
-    }
-
-
-    /* ============================================================
-       📌 9. 게시글 수정 처리
-    ============================================================ */
-    @PostMapping("/adminPostEditPro")
-    public String adminPostEditPro(AdminPostVO vo) {
-
-        adminPostService.updatePost(vo);
-        return "redirect:/admin/adminPostDetail?post_id=" + vo.getPost_id();
-    }
-
-
-    /* ============================================================
-       📌 10. 게시글 통계 페이지
+       📌 8. 게시글 통계 페이지
     ============================================================ */
     @GetMapping("/adminPostStats")
     public String adminPostStats(Model model) {
