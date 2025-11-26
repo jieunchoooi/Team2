@@ -112,5 +112,39 @@ public class AdminCommentController {
 		adminCommentService.logAction(comment_id, adminId, "RESTORE", "관리자 복구");
 		return "redirect:/admin/adminCommentDetail?comment_id=" + comment_id;
 	}
+	
+	@PostMapping("/postDetailCommentRestore")
+	public String restoreCommentFromDetail(
+	        @RequestParam("post_id") int post_id,
+	        @RequestParam("comment_id") int comment_id,
+	        HttpSession session) {
+
+	    String adminId = (String) session.getAttribute("user_id");
+
+	    adminCommentService.restoreComment(comment_id);
+
+	    // 로그 기록
+	    adminCommentService.logAction(comment_id, adminId, "RESTORE", "상세보기 복구");
+
+	    // 복구 후 다시 게시글 상세보기로 이동
+	    return "redirect:/admin/adminPostDetail?post_id=" + post_id;
+	}
+	
+	@PostMapping("/postDetailCommentDelete")
+	public String deleteCommentFromDetail(
+	        @RequestParam("post_id") int post_id,
+	        @RequestParam("comment_id") int comment_id,
+	        HttpSession session) {
+
+	    String adminId = (String) session.getAttribute("user_id");
+
+	    adminCommentService.deleteComment(comment_id);
+
+	    // 로그 기록
+	    adminCommentService.logAction(comment_id, adminId, "DELETE", "상세보기 삭제");
+
+	    // 삭제 후 다시 게시글 상세보기로 이동
+	    return "redirect:/admin/adminPostDetail?post_id=" + post_id;
+	}
 
 }

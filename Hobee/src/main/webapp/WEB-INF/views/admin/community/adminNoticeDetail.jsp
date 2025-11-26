@@ -61,6 +61,39 @@
                 </span>
             </span>
         </div>
+        
+        <div class="detail-row">
+    		<span class="detail-label">중요도</span>
+    		<span class="detail-value">
+        		<c:choose>
+            		<c:when test="${notice.priority == 4}">
+                	<span style="color:#ff3333; font-weight:700;">🔥 긴급</span>
+            	</c:when>
+            	<c:when test="${notice.priority == 3}">
+                	<span style="color:#ff6600; font-weight:700;">매우 중요</span>
+            	</c:when>
+            	<c:when test="${notice.priority == 2}">
+                	<span style="color:#2573ff; font-weight:600;">중요</span>
+            	</c:when>
+            	<c:otherwise>일반</c:otherwise>
+        		</c:choose>
+   		 	</span>
+		</div>
+        
+        
+        <!-- ⭐ 게시 시작일 -->
+		<div class="detail-row">
+    		<span class="detail-label">게시 시작일</span>
+    		<span class="detail-value">${notice.start_date}</span>
+		</div>
+
+		<!-- ⭐ 게시 종료일 -->
+		<div class="detail-row">
+    		<span class="detail-label">게시 종료일</span>
+   		    <span class="detail-value">
+       			 ${notice.end_date == null ? '제한 없음' : notice.end_date}
+   			</span>
+		</div>
 
         <div class="detail-row">
             <span class="detail-label" style="vertical-align:top;">내용</span>

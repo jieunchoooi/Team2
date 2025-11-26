@@ -17,6 +17,9 @@
         is_visible,
         is_pinned,
         view_count,
+        start_date,
+		end_date,
+		priority,
         created_at,
         updated_at
         FROM notice
@@ -81,10 +84,10 @@
     <insert id="insertNotice"
             useGeneratedKeys="true"
             keyProperty="notice_id">
-        INSERT INTO notice
-        (admin_id, title, content, is_visible)
-        VALUES
-        (#{admin_id}, #{title}, #{content}, #{is_visible})
+        INSERT INTO notice 
+		(admin_id, title, content, is_visible, priority, start_date, end_date)
+		VALUES
+		(#{admin_id}, #{title}, #{content}, #{is_visible}, #{priority}, #{start_date}, #{end_date})
     </insert>
 
 
@@ -100,6 +103,9 @@
         is_visible,
         is_pinned,
         view_count,
+        start_date,
+		end_date,
+		priority,
         created_at,
         updated_at
         FROM notice
@@ -121,14 +127,38 @@
          6) 공지 수정
          ================================ -->
     <update id="updateNotice">
-        UPDATE notice
-        SET
+    UPDATE notice
+    SET
         title = #{title},
         content = #{content},
         is_visible = #{is_visible},
+
+        <!-- ⭐ start_date NULL 처리 -->
+        start_date = 
+        <choose>
+            <when test="start_date != null and start_date != ''">
+                #{start_date}
+            </when>
+            <otherwise>
+                NULL
+            </otherwise>
+        </choose>,
+
+        <!-- ⭐ end_date NULL 처리 -->
+        end_date = 
+        <choose>
+            <when test="end_date != null and end_date != ''">
+                #{end_date}
+            </when>
+            <otherwise>
+                NULL
+            </otherwise>
+        </choose>,
+
+        priority = #{priority},
         updated_at = NOW()
-        WHERE notice_id = #{notice_id}
-    </update>
+    WHERE notice_id = #{notice_id}
+</update>
 
 
     <!-- ================================

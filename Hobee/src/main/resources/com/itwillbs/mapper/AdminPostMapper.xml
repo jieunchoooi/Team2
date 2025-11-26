@@ -215,17 +215,7 @@
         WHERE post_id = #{post_id}
     </update>
 
-    <!-- ============================================================
-          📌 13. 게시글 수정
-    ============================================================ -->
-    <update id="updatePost">
-        UPDATE community_content
-        SET 
-            title = #{title},
-            content = #{content},
-            updated_at = NOW()
-        WHERE post_id = #{post_id}
-    </update>
+    
 
     <!-- ============================================================
           📌 14. 조회수 TOP 10

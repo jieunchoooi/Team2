@@ -62,7 +62,7 @@
 
                 <td class="col-manage btn-group">
                     <!-- 복구 -->
-                    <form action="${pageContext.request.contextPath}/admin/adminPostRestore" method="post">
+                    <form action="${pageContext.request.contextPath}/admin/adminPostRestoreFromTrash" method="post">
                         <input type="hidden" name="post_id" value="${post.post_id}">
                         <button class="btn-green">복구</button>
                     </form>

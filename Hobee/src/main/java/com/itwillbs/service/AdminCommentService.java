@@ -47,9 +47,9 @@ public class AdminCommentService {
 		adminCommentMapper.batchDelete(ids);
 	}
 
-	public void restoreComment(int id) {
+	public void restoreComment(int comment_id) {
 		System.out.println("AdminCommentService : restoreComment() 실행");
-		adminCommentMapper.restoreComment(id);
+		 adminCommentMapper.restoreComment(comment_id);
 	}
 
 	public List<CommentReportVO> getCommentReportList(int comment_id) {

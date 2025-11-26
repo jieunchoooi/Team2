@@ -89,62 +89,108 @@
 /* ================================
       기존 첨부파일 목록
 ================================ */
+/* ----- 기존 첨부파일 박스 전체 ----- */
 .old-files-box {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+   margin-top: 10px;
 }
 
-.file-item {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 14px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    border: 1px solid #e4e4e4;
+        /* 파일 1개 라인 */
+ .file-item {
+   display: flex;
+   align-items: center;
+   gap: 15px;
+   padding: 10px 0;
+ }
+
+ /* 이미지 파일 썸네일 */
+ .file-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 10px;
 }
 
-.file-thumb {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
+ /* 이미지 아닌 경우 표시 박스 */
+ .file-icon {
+  width: 80px;
+  height: 80px;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 10px;
 
-.file-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  font-size: 36px;
+ }
+
+ /* 파일명 + 삭제버튼 */
 .file-detail {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+ }
+        
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
 }
 
-.file-name {
-    font-size: 15px;
-    font-weight: 500;
-    white-space: nowrap;
+/* 이미지 파일 썸네일 */
+.file-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 10px;
 }
 
-.delete-check {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+/* 이미지 아닌 경우 표시 박스 */
+.file-icon {
+  width: 80px;
+  height: 80px;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 36px;
+}
+
+/* 파일명 + 삭제버튼 */
+.file-detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+        /* 삭제 버튼 */
+.delete-btn {
+    border: none;
+    background: transparent;
     cursor: pointer;
+    padding: 3px 6px;
+    font-size: 14px;
+    color: #444;
 }
 
-.delete-check input {
-    transform: scale(1.2);
-    cursor: pointer;
+.delete-btn.delete-active {
+    color: #ff3b3b;
+    font-weight: 700;
 }
+
+
+        .delete-btn:hover {
+            color: #ff3b3b;
+            font-weight: 700;
+        }
 
 /* ================================
       버튼 영역

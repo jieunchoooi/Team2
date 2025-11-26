@@ -19,6 +19,11 @@ public class AdminNoticeVO {
 
     private String created_at;    // 생성일
     private String updated_at;    // 수정일
+    
+    private String start_date;    // 게시일자
+    private String end_date;      // 게시 종료일
+    
+    private int priority;   // 공지 우선순위(중요도)
 
     private int is_pinned;   // 1 = 상단 고정, 0 = 일반
 

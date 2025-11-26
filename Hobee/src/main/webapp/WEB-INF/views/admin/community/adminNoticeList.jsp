@@ -84,6 +84,7 @@
                 <th>제목</th>
                 <th>작성자</th>
                 <th>등록일</th>
+                <th>중요도</th>
                 <th>조회</th>
                 <th>공개</th>
                 <th>PIN</th>
@@ -119,8 +120,26 @@
 
                     <td>${n.admin_id}</td>
                     <td>${n.created_at}</td>
+                    
+                    <td>
+    					<c:choose>
+        					<c:when test="${n.priority == 4}">
+            					<span style="color:#ff3333; font-weight:700;">🔥 긴급</span>
+        					</c:when>
+        					<c:when test="${n.priority == 3}">
+            					<span style="color:#ff6600; font-weight:700;">매우 중요</span>
+        					</c:when>
+        					<c:when test="${n.priority == 2}">
+            					<span style="color:#2573ff; font-weight:600;">중요</span>
+       					 	</c:when>
+        				<c:otherwise>일반</c:otherwise>
+    					</c:choose>
+					</td>
+					
+					
                     <td>${n.view_count}</td>
-
+                    
+                   
                     <td>
                         <form action="${pageContext.request.contextPath}/admin/adminNoticeVisible" method="post">
                             <input type="hidden" name="notice_id" value="${n.notice_id}">

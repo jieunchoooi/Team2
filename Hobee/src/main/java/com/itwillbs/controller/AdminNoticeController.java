@@ -8,6 +8,11 @@ import javax.inject.Inject;
 
 import com.itwillbs.domain.NoticeFileVO;
 import com.itwillbs.domain.PageDTO;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -259,11 +264,26 @@ public class AdminNoticeController {
      *  파일 다운로드
      * ============================================ */
     @GetMapping("fileDownload")
-    @ResponseBody
-    public byte[] fileDownload(@RequestParam("file") String fileName) throws Exception {
+    public ResponseEntity<byte[]> fileDownload(@RequestParam("file") String fileName) throws Exception {
 
-        File file = new File("C:/upload/notice/" + fileName);
-        return Files.readAllBytes(file.toPath());
+        String uploadDir = "C:/upload/notice/";
+        File file = new File(uploadDir + fileName);
+
+        if(!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] fileData = Files.readAllBytes(file.toPath());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        // 한글 파일명 인코딩
+        String encodedName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+        headers.setContentDispositionFormData("attachment", encodedName);
+
+        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
     }
+
 
 }

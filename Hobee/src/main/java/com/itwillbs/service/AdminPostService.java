@@ -107,12 +107,6 @@ public class AdminPostService {
         adminPostMapper.batchDelete(postIds);
     }
 
-    /* ============================================================
-       📌 게시글 수정 처리
-    ============================================================ */
-    public void updatePost(AdminPostVO vo) {
-        adminPostMapper.updatePost(vo);
-    }
 
     /* ============================================================
        📌 조회수 TOP10
