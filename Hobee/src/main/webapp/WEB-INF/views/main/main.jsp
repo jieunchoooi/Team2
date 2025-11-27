@@ -200,9 +200,6 @@ function toggleBookmark(lectureNum, btn) {
         method: 'POST',
         data: { lecture_num: lectureNum },
         success: function(response) {
-        	console.log("response.bookmarked :: " + response.bookmarked);
-        	console.log("response.success :: " + response.success);
-        	
            if(response.success) {
         	   const allButtons = document.querySelectorAll('[data-lecture-num="' + lectureNum + '"]');
         	   
