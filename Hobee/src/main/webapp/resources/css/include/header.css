@@ -106,7 +106,7 @@ nav a:hover {
    padding: 30px 40px;
    z-index: 99;
    white-space: nowrap;
-   min-width: 900px;
+   min-width: 700px;
    max-width: calc(100vw - 40px);
    overflow-x: auto;
    opacity: 0;
@@ -131,6 +131,7 @@ nav a:hover {
    color: #2573ff;
    margin-bottom: 12px;
    font-size: 1rem;
+   margin-left: 10px;
 }
 .mega-column ul {
    list-style: none;
