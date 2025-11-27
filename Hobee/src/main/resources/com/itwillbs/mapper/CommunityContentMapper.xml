@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.CommunityContentMapper">
+	<!-- 	게시글 페이징 처리해서 가져오기 -->
+	<select id="getCommunityList"
+		resultType="com.itwillbs.domain.CommunityContentVO">
+		SELECT
+		c.post_id,
+		c.title,
+		c.views,
+		c.created_at,
+		u.user_name,
+		cm.category_main_name
+		FROM community_content c
+		JOIN user u ON c.user_num = u.user_num
+		JOIN category_main cm ON c.category_main_num = cm.category_main_num
+		WHERE c.is_deleted = 0
+		<if test="category_main_num != null">
+			AND c.category_main_num = #{category_main_num}
+		</if>
+		ORDER BY c.post_id DESC
+		LIMIT #{offset}, #{limit}
+	</select>
+
+
+	<select id="getCommunityCount" resultType="int">
+		SELECT COUNT(*)
+		FROM community_content
+		WHERE is_deleted = 0
+		<if test="category_main_num != null">
+			AND category_main_num = #{category_main_num}
+		</if>
+	</select>
+
+
+</mapper>

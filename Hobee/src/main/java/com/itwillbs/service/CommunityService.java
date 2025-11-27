@@ -6,25 +6,21 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.domain.CommunityVO;
-import com.itwillbs.mapper.CommunityMapper;
+import com.itwillbs.domain.CommunityContentVO;
+import com.itwillbs.mapper.CommunityContentMapper;
 
 @Service
 public class CommunityService {
 	@Inject
-	private CommunityMapper communityMapper;
+	private CommunityContentMapper communityContentMapper;
 
-	public void writeCommunity(CommunityVO communityVO) {
-		System.out.println("CommunityService writeBoard()");
-		System.out.println(communityVO);
-		
-		communityMapper.writeCommunity(communityVO);
-		
-	}
+	public List<CommunityContentVO> getList(Integer categoryMainNum, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return communityContentMapper.getCommunityList(categoryMainNum, offset, pageSize);
+    }
 
-	public List<CommunityVO> comunityList() {
-		System.out.println("CommunityService comunityList()");
-		return communityMapper.comunityList();
-	}
+    public int getTotalCount(Integer categoryMainNum) {
+        return communityContentMapper.getCommunityCount(categoryMainNum);
+    }
 
 }
