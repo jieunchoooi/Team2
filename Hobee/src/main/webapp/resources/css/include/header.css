@@ -106,7 +106,7 @@ nav a:hover {
    padding: 30px 40px;
    z-index: 99;
    white-space: nowrap;
-   min-width: 900px;
+   min-width: 700px;
    max-width: calc(100vw - 40px);
    overflow-x: auto;
    opacity: 0;
@@ -115,7 +115,12 @@ nav a:hover {
    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 /* hover 시 부드럽게 등장 */
-.mega-dropdown:hover .mega-content {
+/* .mega-dropdown:hover .mega-content { */
+/*    opacity: 1; */
+/*    visibility: visible; */
+/*    pointer-events: auto; */
+/* } */
+.mega-dropdown .mega-content {
    opacity: 1;
    visibility: visible;
    pointer-events: auto;
@@ -131,6 +136,7 @@ nav a:hover {
    color: #2573ff;
    margin-bottom: 12px;
    font-size: 1rem;
+   margin-left: 10px;
 }
 .mega-column ul {
    list-style: none;
