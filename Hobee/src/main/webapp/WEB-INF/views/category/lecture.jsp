@@ -166,7 +166,9 @@
 	            <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
 	              <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
 	                   alt="${lecture.lecture_title}">
-	              <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(${lecture.lecture_num}, this);">
+	              <button class="bookmark-btn" 
+	              		  data-lecture-num="${lecture.lecture_num}"
+	              		  onclick="event.stopPropagation(); toggleBookmark(${lecture.lecture_num}, this);">
 	                <i class="far fa-bookmark"></i>
 	              </button>
 	            </div>
@@ -211,7 +213,9 @@
 	          <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
 	            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
 	                 alt="${slecture.lecture_title}">
-	            <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(${slecture.lecture_num}, this);">
+	            <button class="bookmark-btn" 
+	            		data-lecture-num="${lecture.lecture_num}"
+	            	    onclick="event.stopPropagation(); toggleBookmark(${slecture.lecture_num}, this);">
 	              <i class="far fa-bookmark"></i>
 	            </button>
 	          </div>
@@ -405,8 +409,33 @@
   
   //북마크 토글 함수
   function toggleBookmark(lectureNum, btn) {
-    // TODO: Ajax 요청으로 서버에 북마크 저장
-    btn.classList.toggle('active');
+		const isLogin = "${not empty sessionScope.user_id}" === "true";
+	     
+		if(!isLogin){
+	    	 openLoginModal();
+	        return;
+	     }
+		
+	     $.ajax({
+	        url: '${pageContext.request.contextPath}/main/bookmark',
+	        method: 'POST',
+	        data: { lecture_num: lectureNum },
+	        success: function(response) {
+	           if(response.success) {
+	        	   const allButtons = document.querySelectorAll('[data-lecture-num="' + lectureNum + '"]');
+	        	   
+	        	   if(response.bookmarked){
+	        		   allButtons.forEach(button => {
+	        			   button.classList.add('active'); //북마크 ON
+	        		   });
+	        	   } else {
+	        		   allButtons.forEach(button =>{
+	        			   button.classList.remove('active'); //북마크 OFF
+	        		   });
+	        	   }
+	           }
+	        }
+	     });
   }
   
   // ⭐ 별점 선택 변수
