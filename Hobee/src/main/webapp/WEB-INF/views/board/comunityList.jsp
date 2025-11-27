@@ -19,7 +19,7 @@
 }
 
 body {
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg);
   color: #222;
   margin: 0;
