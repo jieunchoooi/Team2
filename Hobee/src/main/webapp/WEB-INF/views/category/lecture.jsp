@@ -214,7 +214,7 @@
 	            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
 	                 alt="${slecture.lecture_title}">
 	            <button class="bookmark-btn" 
-	            		data-lecture-num="${lecture.lecture_num}"
+	            		data-lecture-num="${slecture.lecture_num}"
 	            	    onclick="event.stopPropagation(); toggleBookmark(${slecture.lecture_num}, this);">
 	              <i class="far fa-bookmark"></i>
 	            </button>
