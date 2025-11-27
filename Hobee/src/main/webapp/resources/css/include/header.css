@@ -115,12 +115,7 @@ nav a:hover {
    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 /* hover 시 부드럽게 등장 */
-/* .mega-dropdown:hover .mega-content { */
-/*    opacity: 1; */
-/*    visibility: visible; */
-/*    pointer-events: auto; */
-/* } */
-.mega-dropdown .mega-content {
+.mega-dropdown:hover .mega-content {
    opacity: 1;
    visibility: visible;
    pointer-events: auto;

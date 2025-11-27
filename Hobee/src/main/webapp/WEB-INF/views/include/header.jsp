@@ -31,7 +31,7 @@
             <div class="mega-dropdown">
                 <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체">카테고리 ▾</a>
 
-                <div class="mega-content">
+                <div class="mega-content" >
 
                     <div class="mega-column">
                         <h3>ART</h3>
