@@ -166,7 +166,7 @@
 	            <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
 	              <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
 	                   alt="${lecture.lecture_title}">
-	              <button class="bookmark-btn" 
+	              <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}" 
 	              		  data-lecture-num="${lecture.lecture_num}"
 	              		  onclick="event.stopPropagation(); toggleBookmark(${lecture.lecture_num}, this);">
 	                <i class="far fa-bookmark"></i>
@@ -213,7 +213,7 @@
 	          <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
 	            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
 	                 alt="${slecture.lecture_title}">
-	            <button class="bookmark-btn" 
+	            <button class="bookmark-btn ${slecture.bookmark ? 'active' : ''}" 
 	            		data-lecture-num="${slecture.lecture_num}"
 	            	    onclick="event.stopPropagation(); toggleBookmark(${slecture.lecture_num}, this);">
 	              <i class="far fa-bookmark"></i>
@@ -585,7 +585,7 @@
   });
   
   //강의 상세설명 더보기 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {	
     const description = document.querySelector('.course-description');
     const moreBtn = document.getElementById('descriptionMoreBtn');
     

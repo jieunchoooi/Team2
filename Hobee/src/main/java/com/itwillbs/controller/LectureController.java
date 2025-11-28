@@ -98,6 +98,22 @@ public class LectureController {
 		    }
 		List<ReviewVO> reviewList = lectureService.getReviewList(lecture_num);
 		
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+	      if(userVO != null) {
+	          List<Integer> scrapLectureNums = scrapService.getScrapList(userVO.getUser_num())
+	                                                     .stream()
+	                                                     .map(ScrapVO::getLecture_num)
+	                                                     .collect(Collectors.toList());
+	          
+	          // 강의 목록에 bookmark 정보 세팅
+	          for(LectureVO lecture : authorLectures) {
+	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+	          }
+	          for(LectureVO lecture : similarLectures) {
+	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+	          }
+	      }
+		
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userImg);
 		model.addAttribute("authorLectures", authorLectures);
