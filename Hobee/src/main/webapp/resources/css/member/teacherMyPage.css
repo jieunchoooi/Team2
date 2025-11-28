@@ -25,6 +25,9 @@ body {
     box-sizing: border-box;
 }
 
+a {
+    text-decoration: none;
+}
 /* =========================== 컨텐츠 래퍼 =========================== */
 .content-wrapper {
     max-width: 1200px;

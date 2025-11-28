@@ -10,7 +10,7 @@
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
-	href="${ pageContext.request.contextPath }/resources/css/admin/adminClassadd.css">
+	href="${ pageContext.request.contextPath }/resources/css/admin/adminClassEditinfo.css">
 
 </head>
 <body>
@@ -19,7 +19,7 @@
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
 		<div class="main-header">
-			<h1>클래스 수정</h1>
+			<h1>강의 상세 정보</h1>
 		</div>
 
 		<form id="classAddForm" class="form-container"
@@ -39,52 +39,33 @@
 			</div>
 			
 			<div class="form-group">
-				<label>썸네일 이미지</label> <input type="file" name="lecture_img" id="lecture_img">
-				<input type="hidden" name="oldfile" value="${lectureVO.lecture_img}">
-			</div>
+ 				<label>등록일 (신청일)</label>  
+ 				<input type="text" name="created_at" value="${lectureVO.created_at}" readonly> 
+ 			</div> 
 			<div class="form-group">
 				<label>강의 번호</label> <input type="number" name="lecture_num" id="lecture_num" value="${lectureVO.lecture_num}" readonly>
 			</div>
 			<!-- ✅ 카테고리 선택 추가 -->
 			<div class="form-group">
 				<label>카테고리</label> 
-				<select name="category_detail" id="category" required>
-					<option value="">카테고리를 선택하세요</option> 
-					<c:forEach var="categoryVO" items="${categoryList}">
-						<option value="${categoryVO.category_detail}"
-   				 			${lectureVO.category_detail == categoryVO.category_detail ? 'selected' : ''}>
-    						${categoryVO.category_detail}
-						</option>
-
-					</c:forEach>
-				</select>
+				<input type="text" name="category_detail" id="category_detail" value="${lectureVO.category_detail}" readonly>
 			</div>
 			<div class="form-group">
-				<label>강의명</label> <input type="text" name="lecture_title" id="lecture_title" value="${lectureVO.lecture_title}">
+				<label>강의명</label> <input type="text" name="lecture_title" id="lecture_title" value="${lectureVO.lecture_title}" readonly>
 			</div>
 			<div class="form-group">
     		<label>강사명</label>
     		<!-- ✅ 검색 입력란 추가 -->
-    		<input type="text" id="instructor-search" value="${lectureVO.lecture_author}" class="instructor-search">
+    		<input type="text" id="instructor-search" value="${lectureVO.lecture_author}" class="instructor-search" readonly>
     
-    		<select name="lecture_author" id="instructor" required>
-        		<option value="">강사를 선택하세요</option>
-        		<c:forEach var="instructor" items="${instructorList}">
-            		<option value="${instructor.user_num}:${instructor.user_name}" 
-            				${lectureVO.user_num == instructor.user_num ? 'selected' : ''}
-            				data-user-num="${instructor.user_num}" data-user-name="${instructor.user_name}">
-                		${instructor.user_num}. ${instructor.user_name}
-            		</option>
-        		</c:forEach>
-    		</select>
 			</div>
 
 			<div class="form-group">
-				<label>금액</label> <input type="number" name="lecture_price" id="lecture_price" value="${lectureVO.lecture_price}">
+				<label>금액</label> <input type="number" name="lecture_price" id="lecture_price" value="${lectureVO.lecture_price}" readonly>
 			</div>
 			<div class="form-group">
 				<label>상세정보</label>
-				<textarea name="lecture_detail" id="lecture_detail">${lectureVO.lecture_detail}</textarea>
+				<textarea name="lecture_detail" id="lecture_detail" readonly>${lectureVO.lecture_detail}</textarea>
 			</div>
 			<div class="form-group">
     <label>커리큘럼</label>
@@ -97,7 +78,6 @@
                     <input type="text" name="chapter_title[]" 
                            value="${chapter.chapter_title}" 
                            placeholder="챕터 제목" class="chapter-title">
-                    <button type="button" class="btn-remove-chapter">챕터 삭제</button>
                 </div>
                 <div class="details-container">
                     <!-- ✅ 챕터의 강의 목록 렌더링 -->
@@ -110,11 +90,9 @@
                             <input type="text" name="detail_time_${chapterStatus.index}[]" 
                                    value="${detail.detail_time}" 
                                    placeholder="00:00 (분:초)" class="detail-time" maxlength="8">
-                            <button type="button" class="btn-remove-detail">-</button>
                         </div>
                     </c:forEach>
                 </div>
-                <button type="button" class="btn-add-detail">+ 강의 추가</button>
             </div>
         </c:forEach>
         
@@ -124,21 +102,17 @@
                 <div class="chapter-header">
                     <span class="chapter_order">Chapter 1</span>
                     <input type="text" name="chapter_title[]" placeholder="챕터 제목" class="chapter-title">
-                    <button type="button" class="btn-remove-chapter">챕터 삭제</button>
                 </div>
                 <div class="details-container">
                     <div class="detail-item">
                         <span class="detail-order">1</span>
                         <input type="text" name="detail_title_0[]" placeholder="강의 제목" class="detail-title">
                         <input type="text" name="detail_time_0[]" placeholder="00:00 (분:초)" class="detail-time" maxlength="8">
-                        <button type="button" class="btn-remove-detail">-</button>
                     </div>
                 </div>
-                <button type="button" class="btn-add-detail">+ 강의 추가</button>
             </div>
         </c:if>
     </div>
-    <button type="button" id="add-chapter" class="btn-add">+ 챕터 추가</button>
 </div>
 			<!-- ✅ 태그 섹션 -->
 			<div class="form-group">
@@ -157,7 +131,7 @@
 			</div>
 <div class="btn-wrapper">
     <button class="btn" type="button" onclick="history.back();" style="margin:0;">목록</button>
-    <button class="btn btn-primary" type="submit" style="margin:0;">수정하기</button>
+<!--     <button class="btn btn-primary" type="submit" style="margin:0;">수정하기</button> -->
 </div>
 		</form>
 	</main>

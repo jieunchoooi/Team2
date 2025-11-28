@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ 추가
 
+import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.EnrollmentVO;
 import com.itwillbs.domain.EnrollmentViewVO;
 import com.itwillbs.domain.LectureVO;
@@ -28,6 +29,7 @@ import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.PointHistoryVO;
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.AdminService;
 import com.itwillbs.service.EnrollmentService;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.PaymentService;
@@ -42,6 +44,8 @@ public class MemberController {
 
 	@Inject
 	private MemberService memberService;
+	@Inject
+	private AdminService adminService;
 	@Inject
 	private EnrollmentService enrollmentService;
 	@Inject
@@ -354,10 +358,6 @@ public class MemberController {
 	    						    @RequestParam(value = "filter", defaultValue = "all") String filter) {
 			System.out.println("MemberController teacherMyPage()");
 			
-//			if (filter == null || filter.isEmpty()) {
-//				filter = "all";
-//			}
-			
 			String user_id = (String) session.getAttribute("user_id");
 			String user_name = (String) session.getAttribute("user_name");
 			UserVO user = memberService.insertMember(user_id);
@@ -367,7 +367,6 @@ public class MemberController {
 			int teacherMyPageWaiting = memberService.teacherMyPageWaiting(user_name); // 승인 대기
 			int teacherMyPageReject = memberService.teacherMyPageReject(user_name); // 승인 반려
 			
-//		    List<LectureVO> manageMyCourses = memberService.manageMyCourses(user_name);
 		    List<LectureVO> manageMyCourses;
 		    if("approval".equals(filter)) {
 		    	manageMyCourses = memberService.approvalClass(user_name);
@@ -391,9 +390,26 @@ public class MemberController {
 	    	return "member/teacherMyPage";   
 	    }
 	    
+	    // 강의 추가
+	    @GetMapping("/classAdd")
+	    public String classAdd(Model model, HttpSession session) {
+	    	System.out.println("MemberController classAdd()");
+	    	
+	    	String user_id = (String) session.getAttribute("user_id"); 
+			UserVO user = memberService.insertMember(user_id);
 
+	        List<CategoryVO> categoryList = adminService.categoryList();
+	    	
+	        model.addAttribute("user", user);
+	        model.addAttribute("categoryList", categoryList);
+	        return "member/classAdd";   
+	    }
 	    
-	    
+	    @PostMapping("/classAddPro")
+	    public String classAddPro() {
+	    	
+	    	return "member/classAdd"; 
+	    }
 	    
 	    
 	    

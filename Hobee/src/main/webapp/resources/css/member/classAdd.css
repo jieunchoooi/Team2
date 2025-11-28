@@ -23,6 +23,8 @@ body {
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
+
+
 /* =========================== 메인 콘텐츠 영역 =========================== */
 .main-content {
     margin-left: 240px; /* 사이드바 폭만큼 밀기 */
@@ -152,11 +154,12 @@ body {
 .btn-wrapper {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 30px;
+    align-items: center;
+    gap: 8px;
+/*     margin-top: 30px; */
 }
 
-/* =========================== 버튼 스타일 =========================== */
+
 /* =========================== 버튼 스타일 =========================== */
 .btn {
     background-color: #a7a7a7;
@@ -169,8 +172,8 @@ body {
     box-shadow: 0 3px 8px rgba(37, 115, 255, 0.2);
     transition: all 0.2s;
     font-weight: 600;
-    display: block; /* ✅ inline-block에서 block으로 변경 */
-    margin: 30px auto 0; /* ✅ margin을 auto로 변경하여 중앙 정렬 */
+    display: inline-block;
+/*     margin: 0;    */
 }
 
 .btn:last-child {
@@ -497,9 +500,9 @@ body {
     font-weight: 600;
     transition: all 0.2s;
     width: auto;
-    margin-top: 0;
+/*     margin-top: 0; */
     display: block;
-    margin-left: auto;
+/*     margin-left: auto; */
 }
 
 .btn-add:hover {
@@ -681,5 +684,4 @@ body {
     outline: none;
     border-color: #007bff;
 }
-
 

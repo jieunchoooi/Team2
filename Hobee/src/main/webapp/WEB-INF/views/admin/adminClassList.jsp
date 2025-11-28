@@ -23,14 +23,22 @@
 		</div>
 		
 		<div class="stats-container">
-			<div class="stat-card">
+			<div class="stat-card ${filter == 'all' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=all'">
 				<h3>총 강의 수</h3>
 				<div class="stat-number">${classCount}</div>
 			</div>
-<!-- 			<div class="stat-card orange"> -->
-<!-- 				<h3>활동 강사 수</h3> -->
-<%-- 				<div class="stat-number">${tCount}</div> --%>
-<!-- 			</div> -->
+			<div class="stat-card ${filter == 'ok' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=ok'">
+				<h3>승인 된 수</h3>
+				<div class="stat-number">${okClassCount}</div>
+			</div>
+			<div class="stat-card ${filter == 'ask' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=ask'">
+				<h3>승인 요청 강의</h3>
+				<div class="stat-number">${askClassCount}</div>
+			</div>
+			<div class="stat-card ${filter == 'comp' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=comp'">
+				<h3>반려된 강의</h3>
+				<div class="stat-number">${compClassCount}</div>
+			</div>
 		</div>
 		
 		
@@ -58,6 +66,8 @@
 						<th>강의명</th>
 						<th>강사명</th>
 						<th>금액</th>
+						<th>상태</th>
+						<th>등록일</th>
 						<th>관리</th>
 					</tr>
 				</thead>
@@ -78,8 +88,19 @@
 							<td>${lectureVO.lecture_title}</td>
 							<td>${lectureVO.lecture_author}</td>
 							<td>₩ <fmt:formatNumber value="${lectureVO.lecture_price}" pattern="#,###"/></td>
+							<td><c:if test="${lectureVO.status eq 'approval'}">
+			                        <span class="badge badge-approved">승인</span>
+			                    </c:if>
+			                    <c:if test="${lectureVO.status eq 'waiting'}">	
+			                        <span class="badge badge-pending">승인대기</span>
+			                    </c:if>
+			                    <c:if test="${lectureVO.status eq 'reject'}">	
+			                        <span class="badge badge-rejected">반려</span>
+			                    </c:if>
+			                </td>
+			                <td>${lectureVO.created_at}</td>
 							<td>
-								<button type="button" class="btn edit" data-num="${lectureVO.lecture_num}">수정</button>
+								<button type="button" class="btn edit" data-num="${lectureVO.lecture_num}">상세보기</button>
 								<button class="btn btn-delete" data-num="${lectureVO.lecture_num}">삭제</button>
 								
 							</td>

@@ -48,9 +48,10 @@
 		<div class="table-container">
 			<div class="table-header">
 				<h2>내 강의 목록</h2>
-				<button class="btn btn-add">
-					+ 강의 추가
-				</button>
+<!-- 				<button class="btn btn-add"> -->
+<!-- 					+ 강의 추가 -->
+<!-- 				</button> -->
+				<a class="btn btn-add" href="${pageContext.request.contextPath}/member/classAdd">+ 강의 추가</a>
 			</div>
 			
 			<!-- 강의가 없을 때 -->
