@@ -322,6 +322,36 @@ public class AdminService {
 		return adminMapper.teachercheck(user_num);
 	}
 
+	public List<LectureVO> okClass(PageVO pageVO) {
+		System.out.println("AdminService okClass()");
+		return adminMapper.okClass(pageVO);
+	}
+
+	public List<LectureVO> askClass(PageVO pageVO) {
+		System.out.println("AdminService askClass()");
+		return adminMapper.askClass(pageVO);
+	}
+
+	public List<LectureVO> compClass(PageVO pageVO) {
+		System.out.println("AdminService compClass()");
+		return adminMapper.compClass(pageVO);
+	}
+
+	public int compClassCount(PageVO pageVO) {
+		System.out.println("AdminService compClassCount()");
+		return adminMapper.compClassCount(pageVO);
+	}
+
+	public int askClassCount(PageVO pageVO) {
+		System.out.println("AdminService askClassCount()");
+		return adminMapper.askClassCount(pageVO);
+	}
+
+	public int okClassCount(PageVO pageVO) {
+		System.out.println("AdminService okClassCount()");
+		return adminMapper.okClassCount(pageVO);
+	}
+
 
 
 

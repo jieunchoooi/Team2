@@ -116,6 +116,18 @@ public interface AdminMapper {
 
 	public UserVO teachercheck(int user_num);
 
+	public List<LectureVO> okClass(PageVO pageVO);
+
+	public List<LectureVO> askClass(PageVO pageVO);
+
+	public List<LectureVO> compClass(PageVO pageVO);
+
+	public int compClassCount(PageVO pageVO);
+
+	public int askClassCount(PageVO pageVO);
+
+	public int okClassCount(PageVO pageVO);
+
 
 	
 

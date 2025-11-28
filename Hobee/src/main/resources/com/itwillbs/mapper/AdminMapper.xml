@@ -181,7 +181,67 @@
 		order by lecture_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
+	
+<!-- 승인된 강의 -->
+	<select id="okClass" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where status = 'approval'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강사명'">
+				and lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강의명'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+		order by lecture_num desc
+		LIMIT #{startRow}, #{pageSize}
+	</select>
 
+<!-- 승인된 강의 -->
+	<select id="askClass" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where status = 'waiting'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강사명'">
+				and lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강의명'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+		order by lecture_num desc
+		LIMIT #{startRow}, #{pageSize}
+	</select>
+	
+<!-- 반려된 강의 -->
+	<select id="compClass" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where status = 'reject'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강사명'">
+				and lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강의명'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+		order by lecture_num desc
+		LIMIT #{startRow}, #{pageSize}
+	</select>
+	
 	<select id="countlectureList" resultType="java.lang.Integer">
 		select count(*) from lecture
 	</select>
@@ -447,6 +507,23 @@
 		select count(*) from lecture
 	</select>
 	
+	<!-- 승인된 강의 갯수 카운트 -->
+	<select id="okClassCount" resultType="java.lang.Integer">
+		select count(*) from lecture
+		where status = 'approval'
+	</select>
+
+	<!-- 승인 요청된 강의 갯수 카운트 -->
+	<select id="askClassCount" resultType="java.lang.Integer">
+		select count(*) from lecture
+		where status = 'waiting'
+	</select>
+
+	<!-- 반려 된 강의 갯수 카운트 -->
+	<select id="compClassCount" resultType="java.lang.Integer">
+		select count(*) from lecture
+		where status = 'reject'
+	</select>
 
 	<update id="deleteMember" parameterType="int">
 		update user set user_status = 'withdraw' where user_num = #{user_num}

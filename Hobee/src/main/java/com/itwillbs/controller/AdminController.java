@@ -244,30 +244,24 @@ public class AdminController {
    	
    	
    // 클래스 등록
-   @GetMapping("/adminClassAdd")
-   public String adminClassAdd(Model model) {
-      System.out.println("AdminController adminClassAdd()");
-      
-      // ✅ 강사 목록 조회
-      List<UserVO> instructorList = adminService.getInstructorList();
-      List<CategoryVO> categoryList = adminService.categoryList();
-      
-      System.out.println("강사 수: " + (instructorList != null ? instructorList.size() : 0));
-      if (instructorList != null) {
-          for (UserVO user : instructorList) {
-              System.out.println("강사: " + user.getUser_name() + " (" + user.getUser_id() + ")");
-          }
-      }
-      
-      model.addAttribute("instructorList", instructorList);
-      model.addAttribute("categoryList", categoryList);
-      
-      return "admin/adminClassAdd";
-   }
+//   @GetMapping("/adminClassAdd")
+//   public String adminClassAdd(Model model) {
+//      System.out.println("AdminController adminClassAdd()");
+//      
+//      // ✅ 강사 목록 조회
+//      List<UserVO> instructorList = adminService.getInstructorList();
+//      List<CategoryVO> categoryList = adminService.categoryList();
+//      
+//      model.addAttribute("instructorList", instructorList);
+//      model.addAttribute("categoryList", categoryList);
+//      
+//      return "admin/adminClassAdd";
+//   }
 
 // 클래스 등록
    @PostMapping("/adminClassAddPro")
    public String adminClassAddPro(HttpServletRequest request,
+		   						 @RequestParam("noFile") MultipartFile noFile,
                                  @RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
 	   System.out.println("AdminController adminClassAddPro()");
 
@@ -305,14 +299,15 @@ public class AdminController {
 	    lectureVO.setLecture_tag(lecture_tag);
 	    lectureVO.setUser_num(Integer.parseInt(lec[0])); // ✅ user_num 설정
 
-	    if (lecture_img != null && !lecture_img.isEmpty()) {
-	        UUID uuid = UUID.randomUUID();
-	        String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
-	        System.out.println("파일명: " + filename);
-	        FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
-	        lectureVO.setLecture_img(filename);
+	    if(!lecture_img.isEmpty()) {
+		    if (lecture_img != null && !lecture_img.isEmpty()) {
+		        UUID uuid = UUID.randomUUID();
+		        String filename = uuid.toString() + "_" + lecture_img.getOriginalFilename();
+		        System.out.println("파일명: " + filename);
+		        FileCopyUtils.copy(lecture_img.getBytes(), new File(uploadPath1, filename));
+		        lectureVO.setLecture_img(filename);
+		    }
 	    }
-	    
 	    System.out.println(lectureVO);
 	    adminService.LectureUpdate(lectureVO);
 	    
@@ -376,6 +371,7 @@ public class AdminController {
        
        return "redirect:/admin/adminClassList";
    }
+   
    // 클래스 삭제
    @GetMapping("/deleteClass")
    public String deleteClass(@RequestParam("lecture_num") String lecture_num) {
@@ -418,9 +414,13 @@ public class AdminController {
       }
       
       int tCount = adminService.teacharCount(pageVO);
-      int classCount = adminService.classCount(pageVO);
-      List<LectureVO> lectureList = adminService.listLecture(pageVO);
+//      List<LectureVO> lectureList = adminService.listLecture(pageVO);
+      List<LectureVO> lectureList;
 
+      int compClassCount = adminService.compClassCount(pageVO);
+      int askClassCount = adminService.askClassCount(pageVO);
+      int okClassCount = adminService.okClassCount(pageVO);
+      int classCount = adminService.classCount(pageVO);
       int count = adminService.countlectureList(pageVO);
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
@@ -430,6 +430,16 @@ public class AdminController {
          endPage = pageCount;
       }
 
+      if("ok".equals(filter)) {
+    	  lectureList = adminService.okClass(pageVO);
+      }else if("ask".equals(filter)) {
+    	  lectureList = adminService.askClass(pageVO);
+      }else if("comp".equals(filter)) {
+    	  lectureList = adminService.compClass(pageVO);
+      }else {
+    	  lectureList = adminService.listLecture(pageVO);
+      }
+      
       pageVO.setCount(count);
       pageVO.setPageBlock(pageBlock);
       pageVO.setStartPage(startPage);
@@ -442,6 +452,9 @@ public class AdminController {
       model.addAttribute("classCount", classCount);
       model.addAttribute("tCount", tCount);
       model.addAttribute("filter", filter);
+      model.addAttribute("compClassCount", compClassCount);
+      model.addAttribute("askClassCount", askClassCount);
+      model.addAttribute("okClassCount", okClassCount);
 
       return "admin/adminClassList";
    }
