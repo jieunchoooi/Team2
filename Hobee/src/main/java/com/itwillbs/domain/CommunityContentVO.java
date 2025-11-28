@@ -27,13 +27,17 @@ public class CommunityContentVO {
 
     private Timestamp created_at;
     private Timestamp updated_at;
-
+    
+   
     // JOIN 필드
     private String user_name;
     private String category_name;        // 말머리(community_category)
     private String category_main_name;   // 메인 카테고리(category_main)
     private String lecture_title;
-
+    
+    private String summary;              // 요약문
+    private String user_file;   // 작성자 썸네일
+    
     private Integer comment_count;
     private Integer like_count;
     private Integer dislike_count;

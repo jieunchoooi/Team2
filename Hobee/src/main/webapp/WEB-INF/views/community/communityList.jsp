@@ -19,37 +19,131 @@
 <main class="main-content">
 
     <%-- ===========================================================
-         🔥 전체 레이아웃: 왼쪽 본문 + 오른쪽 인기글
+         🔥 0) 실시간 HOT TOPIC 슬라이더
+    ============================================================ --%>
+    <c:if test="${not empty hotTopicList}">
+        <section class="hot-topic-wrapper">
+
+            <div class="hot-topic-title-row">
+                <div>
+                    <h2>실시간 HOT TOPIC 🔥</h2>
+                    <p class="hot-topic-sub">지금 가장 뜨거운 커뮤니티 글을 만나보세요</p>
+                </div>
+            </div>
+
+            <div class="hot-slider" id="hotSlider">
+
+                <div class="hot-slides">
+                    <c:forEach var="ht" items="${hotTopicList}" varStatus="s">
+
+                        <%-- 🔥 작성자 프로필 썸네일 URL 생성 --%>
+                        <c:choose>
+                            <c:when test="${not empty ht.user_file}">
+                                <c:set var="hotThumbUrl"
+                                       value="${pageContext.request.contextPath}/resources/img/user_picture/${ht.user_file}" />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="hotThumbUrl"
+                                       value="${pageContext.request.contextPath}/resources/img/common/default-profile.png" />
+                            </c:otherwise>
+                        </c:choose>
+
+                        <div class="hot-slide"
+                             data-index="${s.index}"
+                             onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
+
+                            <div class="hot-avatar">
+                                <img src="${hotThumbUrl}" alt="작성자 프로필">
+                            </div>
+
+                            <div class="hot-content">
+                                <div class="hot-tag">
+                                    <c:out value="${ht.category_name}" /> · 실시간 인기
+                                </div>
+
+                                <div class="hot-title">
+                                    <c:out value="${ht.title}" />
+                                </div>
+
+                                <div class="hot-summary">
+                                    <c:choose>
+                                        <c:when test="${not empty ht.summary}">
+                                            <c:out value="${ht.summary}" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            내용 미리보기 없음
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+
+                                <div class="hot-meta-row">
+                                    <div class="hot-meta-left">
+                                        <span><c:out value="${ht.user_name}" /></span>
+                                        <span>
+                                            <fmt:formatDate value="${ht.created_at}" pattern="yyyy-MM-dd HH:mm" />
+                                        </span>
+                                    </div>
+                                    <div class="hot-meta-right">
+                                        ❤️ <c:out value="${ht.like_count}" />
+                                        · 💬 <c:out value="${ht.comment_count}" />
+                                        · 👁 <c:out value="${ht.views}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <%-- 슬라이더 버튼 --%>
+                <button type="button" class="hot-nav-btn hot-nav-prev" id="hotPrevBtn">‹</button>
+                <button type="button" class="hot-nav-btn hot-nav-next" id="hotNextBtn">›</button>
+
+                <%-- 인디케이터 --%>
+                <div class="hot-dots" id="hotDots">
+                    <c:forEach var="ht" items="${hotTopicList}" varStatus="s">
+                        <div class="hot-dot ${s.index == 0 ? 'active' : ''}" data-index="${s.index}"></div>
+                    </c:forEach>
+                </div>
+            </div>
+
+        </section>
+    </c:if>
+
+
+
+    <%-- ===========================================================
+         🔥 1) 전체 레이아웃 : 왼쪽 메인 피드 + 오른쪽 주간 인기글
     ============================================================ --%>
     <div class="community-layout">
 
-        <%-- ===========================================================
-             🔥 왼쪽 영역 (본래 네가 작성한 모든 메인 기능)
-        ============================================================ --%>
+
+        <%-- =======================================================
+             🔵 왼쪽 : 대형 카드 메인 피드
+        ======================================================== --%>
         <section class="community-left">
 
             <h1>커뮤니티</h1>
 
-            <%-- ===========================================================
-                 🔥 1) 카테고리 CHIP
-            ============================================================ --%>
+            <%-- 🔥 카테고리 CHIP --%>
             <div class="category-chips">
 
-                <%-- 전체 --%>
-                <a href="/community/list"
+                <a href="${pageContext.request.contextPath}/community/list"
                    class="chip ${(empty cri.category_id and empty cri.category_main_num) ? 'active' : ''}">
                     전체
                 </a>
 
-                <%-- 기본 말머리 (category_id) --%>
-                <a href="/community/list?category_id=1" class="chip ${cri.category_id == 1 ? 'active' : ''}">공지</a>
-                <a href="/community/list?category_id=2" class="chip ${cri.category_id == 2 ? 'active' : ''}">잡담</a>
-                <a href="/community/list?category_id=3" class="chip ${cri.category_id == 3 ? 'active' : ''}">Q&A</a>
-                <a href="/community/list?category_id=4" class="chip ${cri.category_id == 4 ? 'active' : ''}">후기</a>
+                <a href="${pageContext.request.contextPath}/community/list?category_id=1"
+                   class="chip ${cri.category_id == 1 ? 'active' : ''}">공지</a>
+                <a href="${pageContext.request.contextPath}/community/list?category_id=2"
+                   class="chip ${cri.category_id == 2 ? 'active' : ''}">잡담</a>
+                <a href="${pageContext.request.contextPath}/community/list?category_id=3"
+                   class="chip ${cri.category_id == 3 ? 'active' : ''}">Q&amp;A</a>
+                <a href="${pageContext.request.contextPath}/community/list?category_id=4"
+                   class="chip ${cri.category_id == 4 ? 'active' : ''}">후기</a>
 
-                <%-- DB 기반 메인 카테고리(category_main_num) --%>
                 <c:forEach var="cm" items="${categoryMainList}">
-                    <a href="/community/list?category_main_num=${cm.category_main_num}"
+                    <a href="${pageContext.request.contextPath}/community/list?category_main_num=${cm.category_main_num}"
                        class="chip ${cri.category_main_num == cm.category_main_num ? 'active' : ''}">
                         ${cm.category_main_name}
                     </a>
@@ -58,12 +152,8 @@
             </div>
 
 
-            <%-- ===========================================================
-                 🔥 2) 정렬 / 기간 / 검색 / 카드형 토글
-            ============================================================ --%>
+            <%-- 🔥 정렬 / 기간 / 검색 --%>
             <div class="filter-bar">
-
-                <button id="toggleViewBtn" class="toggle-btn">카드형 보기</button>
 
                 <select id="sortFilter" onchange="applyFilters()">
                     <option value="latest"   ${cri.sort == 'latest'   ? 'selected' : ''}>최신순</option>
@@ -87,61 +177,73 @@
                         <option value="comment"      ${cri.searchType == 'comment' ? 'selected' : ''}>댓글</option>
                     </select>
                     <input type="text" id="searchKeyword" value="${cri.keyword}" placeholder="검색어 입력">
-                    <button onclick="applyFilters()">🔍</button>
+                    <button type="button" onclick="applyFilters()">🔍</button>
                 </div>
 
             </div>
 
 
-            <%-- ===========================================================
-                 🔥 3) 리스트형 VIEW
-            ============================================================ --%>
-            <div class="list-container">
-
-                <c:forEach var="post" items="${communityList}">
-                    <div class="list-row"
-                        onclick="location.href='/community/detail?post_id=${post.post_id}'">
-
-                        <span class="tag">${post.category_name}</span>
-                        <span class="title">${post.title}</span>
-                        <span class="likes">❤️ ${post.like_count}</span>
-                        <span class="writer">${post.user_name}</span>
-
-                        <span class="date">
-                            <fmt:formatDate value="${post.created_at}" pattern="yyyy-MM-dd"/>
-                        </span>
-
-                        <span class="views">${post.views}</span>
-                    </div>
-                </c:forEach>
-
-                <c:if test="${empty communityList}">
-                    <div class="no-data">등록된 게시글이 없습니다.</div>
-                </c:if>
-
-            </div>
-
-
-            <%-- ===========================================================
-                 🔥 4) 카드형 VIEW
-            ============================================================ --%>
+            <%-- 🔥 대형 카드 리스트 (한 줄 1개씩) --%>
             <div class="card-list">
 
                 <c:forEach var="post" items="${communityList}">
+
+                    <%-- 프로필 썸네일 URL 생성 --%>
+                    <c:choose>
+                        <c:when test="${not empty post.user_file}">
+                            <c:set var="postThumbUrl"
+                                   value="${pageContext.request.contextPath}/resources/img/user_picture/${post.user_file}" />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="postThumbUrl"
+                                   value="${pageContext.request.contextPath}/resources/img/common/default-profile.png" />
+                        </c:otherwise>
+                    </c:choose>
+
                     <div class="post-card"
-                         onclick="location.href='/community/detail?post_id=${post.post_id}'">
+                         onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${post.post_id}'">
 
-                        <div class="post-title">${post.title}</div>
+                        <div class="post-header">
 
-                        <div class="post-meta">
-                            ${post.category_name} · ${post.user_name} ·
-                            <fmt:formatDate value="${post.created_at}" pattern="yyyy-MM-dd"/>
+                            <div class="post-avatar">
+                                <img src="${postThumbUrl}" alt="작성자 프로필">
+                            </div>
+
+                            <div class="post-header-info">
+                                <div class="post-header-top">
+                                    <span class="post-category-pill">${post.category_name}</span>
+                                    <span class="post-writer">${post.user_name}</span>
+                                </div>
+                                <span class="post-date">
+                                    <fmt:formatDate value="${post.created_at}" pattern="yyyy-MM-dd HH:mm" />
+                                </span>
+                            </div>
+
                         </div>
 
-                        <div class="post-stats">
-                            ❤️ ${post.like_count}
-                            · 💬 ${post.comment_count}
-                            · 👁 ${post.views}
+                        <div class="post-title">
+                            <c:out value="${post.title}" />
+                        </div>
+
+                        <div class="post-summary">
+                            <c:choose>
+                                <c:when test="${not empty post.summary}">
+                                    <c:out value="${post.summary}" />
+                                </c:when>
+                                <c:otherwise>
+                                    내용 미리보기 없음
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
+                        <div class="post-meta-row">
+                            <div class="post-meta-left">
+                                👁 <c:out value="${post.views}" />
+                            </div>
+                            <div class="post-meta-right">
+                                ❤️ <c:out value="${post.like_count}" />
+                                · 💬 <c:out value="${post.comment_count}" />
+                            </div>
                         </div>
 
                     </div>
@@ -154,9 +256,7 @@
             </div>
 
 
-            <%-- ===========================================================
-                 🔥 5) 페이징
-            ============================================================ --%>
+            <%-- 🔥 페이징 --%>
             <div class="pagination">
 
                 <c:if test="${pageMaker.prev}">
@@ -164,7 +264,8 @@
                 </c:if>
 
                 <c:forEach var="p" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-                    <a href="#" class="${p == cri.page ? 'active' : ''}"
+                    <a href="#"
+                       class="${p == cri.page ? 'active' : ''}"
                        onclick="return movePage(${p});">${p}</a>
                 </c:forEach>
 
@@ -177,63 +278,103 @@
         </section>
 
 
-        <%-- ===========================================================
-             🔥 오른쪽 사이드바: 인기글 TOP10 (네 기존 코드 그대로 이동)
-        ============================================================ --%>
+
+        <%-- =======================================================
+             🟠 오른쪽 : 주간 인기글 (popularList)
+        ======================================================== --%>
         <aside class="community-right">
 
             <div class="popular-box">
-                <h2>🔥 인기 글 TOP 10</h2>
+                <h2>이번 주 인기글 🔥</h2>
 
                 <div class="popular-list">
-                    <c:forEach var="p" items="${popularList}">
-                        <div class="popular-row"
-                             onclick="location.href='/community/detail?post_id=${p.post_id}'">
 
-                            <span class="p-title">${p.title}</span>
-                            <span class="p-meta">
-                                ❤️ ${p.like_count}
-                                · <fmt:formatDate value="${p.created_at}" pattern="yyyy-MM-dd"/>
-                            </span>
+                    <c:forEach var="p" items="${popularList}">
+
+                        <%-- 인기글 썸네일 URL 생성 --%>
+                        <c:choose>
+                            <c:when test="${not empty p.user_file}">
+                                <c:set var="popularThumbUrl"
+                                       value="${pageContext.request.contextPath}/resources/img/user_picture/${p.user_file}" />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="popularThumbUrl"
+                                       value="${pageContext.request.contextPath}/resources/img/common/default-profile.png" />
+                            </c:otherwise>
+                        </c:choose>
+
+                        <div class="popular-row"
+                             onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${p.post_id}'">
+
+                            <div class="popular-thumb">
+                                <img src="${popularThumbUrl}" alt="작성자 프로필">
+                            </div>
+
+                            <div class="popular-text">
+                                <span class="p-title">${p.title}</span>
+
+                                <div class="p-summary">
+                                    <c:choose>
+                                        <c:when test="${not empty p.summary}">
+                                            <c:out value="${p.summary}" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            내용 미리보기 없음
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+
+                                <span class="p-meta">
+                                    ❤️ ${p.like_count}
+                                    · 💬 ${p.comment_count}
+                                    · <fmt:formatDate value="${p.created_at}" pattern="MM-dd" />
+                                </span>
+                            </div>
+
                         </div>
                     </c:forEach>
 
                     <c:if test="${empty popularList}">
-                        <div class="no-data small">인기글 데이터 없음</div>
+                        <div class="no-data small">이번 주 인기글 데이터 없음</div>
                     </c:if>
+
                 </div>
+
             </div>
 
         </aside>
 
-    </div> <%-- community-layout END --%>
+    </div> <%-- /community-layout --%>
 
 </main>
 
 
 
+<%-- ===========================================================
+     🔥 SCRIPT: 필터, 페이징, 슬라이더
+=========================================================== --%>
 <script>
 /* =============================================
    🔥 필터 적용
 ============================================= */
 function applyFilters() {
-    let url = '/community/list?';
+    var url = '${pageContext.request.contextPath}/community/list?';
 
-    const categoryId  = "${cri.category_id}";
-    const mainCat     = "${cri.category_main_num}";
-    const sort        = $('#sortFilter').val();
-    const period      = $('#periodFilter').val();
-    const searchType  = $('#searchType').val();
-    const keyword     = $('#searchKeyword').val();
+    var categoryId  = "${cri.category_id}";
+    var mainCat     = "${cri.category_main_num}";
+    var sort        = document.getElementById('sortFilter').value;
+    var period      = document.getElementById('periodFilter').value;
+    var searchType  = document.getElementById('searchType').value;
+    var keyword     = document.getElementById('searchKeyword').value;
 
-    if (categoryId) url += `category_id=${categoryId}&`;
-    if (mainCat)    url += `category_main_num=${mainCat}&`;
-    if (sort)       url += `sort=${sort}&`;
-    if (period)     url += `period=${period}&`;
-    if (searchType) url += `searchType=${searchType}&`;
-    if (keyword)    url += `keyword=${keyword}&`;
+    if (categoryId) url += 'category_id=' + categoryId + '&';
+    if (mainCat)    url += 'category_main_num=' + mainCat + '&';
+    if (sort)       url += 'sort=' + sort + '&';
+    if (period)     url += 'period=' + period + '&';
+    if (searchType) url += 'searchType=' + searchType + '&';
+    if (keyword)    url += 'keyword=' + encodeURIComponent(keyword) + '&';
 
-    url += `page=1`;
+    url += 'page=1';
 
     location.href = url;
 }
@@ -243,53 +384,97 @@ function applyFilters() {
    🔥 페이징 이동
 ============================================= */
 function movePage(page) {
-    let url = '/community/list?';
+    var url = '${pageContext.request.contextPath}/community/list?';
 
-    const categoryId  = "${cri.category_id}";
-    const mainCat     = "${cri.category_main_num}";
-    const sort        = "${cri.sort}";
-    const period      = "${cri.period}";
-    const searchType  = "${cri.searchType}";
-    const keyword     = "${cri.keyword}";
+    var categoryId  = "${cri.category_id}";
+    var mainCat     = "${cri.category_main_num}";
+    var sort        = "${cri.sort}";
+    var period      = "${cri.period}";
+    var searchType  = "${cri.searchType}";
+    var keyword     = "${cri.keyword}";
 
-    if (categoryId) url += `category_id=${categoryId}&`;
-    if (mainCat)    url += `category_main_num=${mainCat}&`;
-    if (sort)       url += `sort=${sort}&`;
-    if (period)     url += `period=${period}&`;
-    if (searchType) url += `searchType=${searchType}&`;
-    if (keyword)    url += `keyword=${keyword}&`;
+    if (categoryId) url += 'category_id=' + categoryId + '&';
+    if (mainCat)    url += 'category_main_num=' + mainCat + '&';
+    if (sort)       url += 'sort=' + sort + '&';
+    if (period)     url += 'period=' + period + '&';
+    if (searchType) url += 'searchType=' + searchType + '&';
+    if (keyword)    url += 'keyword=' + encodeURIComponent(keyword) + '&';
 
-    url += `page=${page}`;
+    url += 'page=' + page;
+
     location.href = url;
-
     return false;
 }
 
 
 /* =============================================
-   🔥 리스트형 ↔ 카드형 전환
+   🔥 실시간 HOT 슬라이더
+   - JS 템플릿 리터럴 없이 문자열 연결로만 처리
 ============================================= */
-let currentView = "list";
+(function() {
+    var $wrap   = $('.hot-slides');
+    var $slides = $('.hot-slide');
+    var $dots   = $('.hot-dot');
+    var count   = $slides.length;
+    if (count === 0) return;
 
-$("#toggleViewBtn").on("click", function () {
+    var current = 0;
+    var timer   = null;
+    var INTERVAL = 5000;
 
-    if (currentView === "list") {
-        $(".list-container").hide();
-        $(".card-list").css("display", "grid");
-        $(this).text("리스트형 보기");
-        currentView = "card";
-    } else {
-        $(".card-list").hide();
-        $(".list-container").show();
-        $(this).text("카드형 보기");
-        currentView = "list";
+    function go(i) {
+        current = i;
+        var offset = -100 * i;
+        $wrap.css('transform', 'translateX(' + offset + '%)');
+        $dots.removeClass('active').eq(i).addClass('active');
     }
-});
 
+    function next() { go((current + 1) % count); }
+    function prev() { go((current - 1 + count) % count); }
+
+    function start() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(next, INTERVAL);
+    }
+
+    function stop() {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+    }
+
+    $('#hotNextBtn').on('click', function(e){
+        e.stopPropagation();
+        next();
+        start();
+    });
+
+    $('#hotPrevBtn').on('click', function(e){
+        e.stopPropagation();
+        prev();
+        start();
+    });
+
+    $dots.on('click', function(e){
+        e.stopPropagation();
+        var idx = $(this).data('index');
+        go(idx);
+        start();
+    });
+
+    $('#hotSlider').on('mouseenter', stop)
+                   .on('mouseleave', start);
+
+    go(0);
+    start();
+})();
 
 /* Enter 검색 */
-$('#searchKeyword').on('keypress', function(e) {
-    if (e.key === 'Enter') applyFilters();
+$('#searchKeyword').on('keypress', function(e){
+    if (e.key === 'Enter') {
+        applyFilters();
+    }
 });
 </script>
 
