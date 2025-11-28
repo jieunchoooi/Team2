@@ -1,5 +1,8 @@
 package com.itwillbs.domain;
 
+import java.io.Serializable;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,7 +10,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UserVO {
+public class UserVO implements Serializable  {
+	
+	  private static final long serialVersionUID = 1L;
     private int user_num;
     private String user_id;
     private String user_password;
@@ -32,4 +37,5 @@ public class UserVO {
     // 결제 관련 보조 필드
     private int used_points;
     private int saved_points;
+    
 }

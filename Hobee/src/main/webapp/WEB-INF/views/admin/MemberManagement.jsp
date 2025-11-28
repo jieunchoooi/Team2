@@ -14,6 +14,9 @@
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/member/mypage.css">
+<link rel="stylesheet"
+	href="${ pageContext.request.contextPath }/resources/css/include/profileCard.css">
+	
 </head>
 <body>
 	<jsp:include page="../include/header.jsp"></jsp:include>
@@ -26,45 +29,8 @@
 	<main class="main-content">
 		<h1>회원 관리</h1>
 		<div class="content-wrapper">
-			<div class="main-header">
-				<div class="profile-box">
-					<div class="profile-pic">
-						<!-- 프로필 사진 -->
-<div class="profile-image">
-    <c:choose>
-        <c:when test="${not empty userVO.user_file}">
-            <!-- ✅ background-image 방식으로 변경 -->
-            <div class="profile-img-bg" 
-                 style="background-image: url('${pageContext.request.contextPath}/resources/img/user_picture/${userVO.user_file}');">
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="no-image">
-                <i class="icon">🐵</i>
-            </div>
-        </c:otherwise>
-    </c:choose>
-</div>
-					</div>
-					<div class="profile-info">
-						<p><p><c:choose>
-								<c:when test="${empty userVO.grade_id or userVO.grade_id == 1}">
-									<span class="badge bronze">🥉</span>
-								</c:when>
-								<c:when test="${userVO.grade_id == 2}">
-									<span class="badge silver">🥈</span>
-								</c:when>
-								<c:when test="${userVO.grade_id == 3}">
-									<span class="badge gold">🥇</span> 
-								</c:when>
-							</c:choose>
-							${user.user_name}</p>
-						<p>${user.user_email}</p>
-						<p>🪙  &nbsp;${user.points} P</p>
-					</div>
-				</div>
-			</div>
-
+							<jsp:include page="../include/profileCard.jsp" />
+			
 			<div class="form-container">
 				<div class="form-group">
 					<label for="user_num">번호</label> <span class="form-value">${user.user_num}</span>
