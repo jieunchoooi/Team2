@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ✅ �
 
 import com.itwillbs.domain.EnrollmentVO;
 import com.itwillbs.domain.EnrollmentViewVO;
+import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.PointHistoryVO;
 import com.itwillbs.domain.ScrapVO;
@@ -347,6 +348,57 @@ public class MemberController {
 	        return "member/pointHistory";   // JSP 파일명
 	    }
 	
-	
+//	    강사 강의 관리 페이지
+	    @GetMapping("/teacherMyPage")
+	    public String teacherMyPage(HttpSession session, Model model,
+	    						    @RequestParam(value = "filter", defaultValue = "all") String filter) {
+			System.out.println("MemberController teacherMyPage()");
+			
+//			if (filter == null || filter.isEmpty()) {
+//				filter = "all";
+//			}
+			
+			String user_id = (String) session.getAttribute("user_id");
+			String user_name = (String) session.getAttribute("user_name");
+			UserVO user = memberService.insertMember(user_id);
+
+			int teacherMyPage = memberService.teacherMyPage(user_name); // 총 강의수
+			int teacherMyPageOk = memberService.teacherMyPageOk(user_name); // 승인 완료
+			int teacherMyPageWaiting = memberService.teacherMyPageWaiting(user_name); // 승인 대기
+			int teacherMyPageReject = memberService.teacherMyPageReject(user_name); // 승인 반려
+			
+//		    List<LectureVO> manageMyCourses = memberService.manageMyCourses(user_name);
+		    List<LectureVO> manageMyCourses;
+		    if("approval".equals(filter)) {
+		    	manageMyCourses = memberService.approvalClass(user_name);
+		    }else if("waiting".equals(filter)) {
+		    	manageMyCourses = memberService.waitingClass(user_name);
+		    }else if("reject".equals(filter)) {
+		    	manageMyCourses = memberService.rejectClass(user_name);
+		    }else {
+		    	manageMyCourses = memberService.manageMyCourses(user_name);
+		    }
+		    
+		    model.addAttribute("filter",filter); 
+		    model.addAttribute("user",user); 
+			model.addAttribute("manageMyCourses", manageMyCourses);
+			model.addAttribute("teacherMyPage", teacherMyPage);
+			model.addAttribute("teacherMyPageOk", teacherMyPageOk);
+			model.addAttribute("teacherMyPageWaiting", teacherMyPageWaiting);
+			model.addAttribute("teacherMyPageReject", teacherMyPageReject);
+	    	
+	    	
+	    	return "member/teacherMyPage";   
+	    }
+	    
+
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	
 }

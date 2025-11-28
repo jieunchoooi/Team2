@@ -1,0 +1,254 @@
+@charset "UTF-8";
+
+/* =========================== 기본 설정 =========================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: #f4f6fa;
+    padding-top: 0;
+    overflow-x: hidden;
+}
+
+/* =========================== 메인 콘텐츠 영역 =========================== */
+.main-content {
+    margin-left: 240px;
+    margin-top: 0;
+    padding: 40px 30px 30px 30px;
+    width: calc(100% - 240px);
+    background-color: #f9fafb;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* =========================== 컨텐츠 래퍼 =========================== */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* =========================== 페이지 타이틀 =========================== */
+.main-content > h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* =========================== 메인 헤더 =========================== */
+.main-header {
+    margin-bottom: 40px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.main-header h1 {
+    display: none;
+}
+
+/* =========================== 폼 컨테이너 =========================== */
+.form-container {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    padding: 40px;
+}
+
+/* select 박스 스타일 */
+.form-group select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #666;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+.form-group select:focus {
+    border-color: #2573ff;
+    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+}
+
+/* =========================== 폼 그룹 =========================== */
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.form-group:last-child {
+    border-bottom: none;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    min-width: 120px;
+    flex-shrink: 0;
+}
+
+.form-group .form-value {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.form-group .form-value.placeholder {
+    color: #ccc;
+}
+
+.form-group input {
+    flex: 1;
+    padding: 0;
+    border: none;
+    font-size: 0.95rem;
+    color: #666;
+    background-color: transparent;
+}
+
+.form-group input:focus {
+    outline: none;
+}
+
+.form-group input[readonly] {
+    cursor: default;
+}
+
+.form-group input::placeholder {
+    color: #ccc;
+}
+
+/* =========================== 버튼 스타일 =========================== */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.btn {
+    background-color: #a7a7a7;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(37, 115, 255, 0.2);
+    transition: all 0.2s;
+    font-weight: 600;
+    display: inline-block;
+    margin: 30px 6px 0;
+}
+
+.btn:last-child{
+    background-color: #2573ff;
+}
+
+.btn-primary {
+    background-color: #2573ff;
+    color: white;
+    box-shadow: 0 3px 8px rgba(37,115,255,0.2);
+}
+
+.btn-primary:hover {
+    background-color: #1f65e0;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(37,115,255,0.3);
+}
+
+.btn-secondary {
+    background-color: #6b7280;
+    color: white;
+    box-shadow: 0 3px 8px rgba(107,114,128,0.2);
+}
+
+.btn-secondary:hover {
+    background-color: #4b5563;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(107,114,128,0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* =========================== 반응형 디자인 =========================== */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+    
+    .form-container {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+        padding-top: 80px;
+    }
+    
+    .form-container {
+        padding: 20px;
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-container {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+/* =========================== 메시지 박스 =========================== */
+.info-message {
+    background-color: #f0f9ff;
+    border-left: 4px solid #2573ff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #1e40af;
+}
+
+.error-message {
+    background-color: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #b91c1c;
+}
+
+.success-message {
+    background-color: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #15803d;
+}

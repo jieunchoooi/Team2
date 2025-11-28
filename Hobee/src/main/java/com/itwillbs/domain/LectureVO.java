@@ -20,6 +20,7 @@ public class LectureVO {
     private String lecture_detail;
     private String lecture_tag;
     private String created_at; // 강의 생성 날짜
+    private String status; // 승인, 반려, 승인대기 여부
     
     
     //북마크

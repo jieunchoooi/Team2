@@ -38,14 +38,22 @@
          onclick="location.href='${pageContext.request.contextPath}/member/pointHistory'">
         🪙 <span>포인트 내역</span>
     </div>
+<%--     <div class="menu-item ${page eq 'classAdd' ? 'active' : ''}" --%>
+<%-- 					onclick="location.href='${pageContext.request.contextPath}/admin/adminClassAdd'"> --%>
+<!-- 					➕ <span>강의 등록</span> -->
+<!-- 	</div> -->
+    <div class="menu-item ${page eq 'classAdd' ? 'active' : ''}"
+					onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage'">
+					📋 <span>강의 관리</span>
+	</div>
   </div>
 
-  <button class="logout-btn" onclick="logout()">로그아웃</button>
+<!--   <button class="logout-btn" onclick="logout()">로그아웃</button> -->
 
-  <script>
-    function logout() {
-      alert("로그아웃되었습니다.");
-      location.href = "${pageContext.request.contextPath}/member/logout";
-    }
-  </script>
+<!--   <script> -->
+<!-- //     function logout() { -->
+<!-- //       alert("로그아웃되었습니다."); -->
+<%-- //       location.href = "${pageContext.request.contextPath}/member/logout"; --%>
+<!-- //     } -->
+<!--   </script> -->
 </aside>

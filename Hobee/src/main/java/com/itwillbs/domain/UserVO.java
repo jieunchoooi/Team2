@@ -1,5 +1,7 @@
 package com.itwillbs.domain;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -32,4 +34,5 @@ public class UserVO {
     // 결제 관련 보조 필드
     private int used_points;
     private int saved_points;
+    
 }

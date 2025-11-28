@@ -32,7 +32,57 @@
    		set user_status = 'self-withdraw'
     	where user_num = #{user_num}
 	</update>
+	
+	<!-- 강사 강의 승인 리스트 -->
+	<select id="approvalClass" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where lecture_author = #{user_name}
+		and status = 'approval'		
+	</select>
+	
+	<!-- 강사 강의 대기 리스트 -->
+	<select id="waitingClass" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where lecture_author = #{user_name}
+		and status = 'waiting'		
+	</select>
+	
+	<!-- 강사 강의 보류 리스트 -->
+	<select id="rejectClass" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where lecture_author = #{user_name}
+		and status = 'reject'		
+	</select>
+	
+<!-- 강사 강의 전체 리스트 -->
+	<select id="manageMyCourses" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where lecture_author = #{user_name}
+	</select>
 
+<!-- 강사당 총 강의수 -->
+	<select id="teacherMyPage" resultType="java.lang.Integer">
+		select count(*) from lecture
+		where lecture_author = #{user_name}
+	</select>
+	
+<!-- 강사당 승인된 강의수 -->
+	<select id="teacherMyPageOk" parameterType="String"  resultType="java.lang.Integer">
+		select count(*) from lecture
+		where lecture_author = #{user_name} and status = 'approval'
+	</select>
+
+<!-- 강사당 승인대기중인 강의수 -->
+	<select id="teacherMyPageWaiting" parameterType="String"  resultType="java.lang.Integer">
+		select count(*) from lecture
+		where lecture_author = #{user_name} and status = 'waiting'
+	</select>
+
+<!-- 강사당 반려 강의수 -->
+	<select id="teacherMyPageReject" parameterType="String"  resultType="java.lang.Integer">
+		select count(*) from lecture
+		where lecture_author = #{user_name} and status = 'reject'
+	</select>
 
 
 </mapper>
