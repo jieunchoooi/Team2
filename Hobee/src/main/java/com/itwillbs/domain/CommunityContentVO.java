@@ -16,21 +16,25 @@ public class CommunityContentVO {
     private String content;
 
     private int user_num;
-    private String tag;
+
+    private int category_id;       // community_category FK
+    private Integer category_main_num;  // category_main FK (nullable)
+    private Integer lecture_num;
 
     private int views;
     private int is_visible;
     private int is_deleted;
 
-    private int board_id;
-    private int category_main_num;
-    private Integer lecture_num;
-
     private Timestamp created_at;
     private Timestamp updated_at;
 
-    // 🔥 JOIN 조회용 필드
-    private String user_name;             // user.nickname
-    private String category_main_name;   // category_main.category_main_name
-    private String lecture_title;        // lecture.title
+    // JOIN 필드
+    private String user_name;
+    private String category_name;        // 말머리(community_category)
+    private String category_main_name;   // 메인 카테고리(category_main)
+    private String lecture_title;
+
+    private Integer comment_count;
+    private Integer like_count;
+    private Integer dislike_count;
 }

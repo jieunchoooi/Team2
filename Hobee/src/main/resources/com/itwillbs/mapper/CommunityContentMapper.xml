@@ -1,39 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.CommunityContentMapper">
-	<!-- 	게시글 페이징 처리해서 가져오기 -->
-	<select id="getCommunityList"
-		resultType="com.itwillbs.domain.CommunityContentVO">
-		SELECT
-		c.post_id,
-		c.title,
-		c.views,
-		c.created_at,
-		u.user_name,
-		cm.category_main_name
-		FROM community_content c
-		JOIN user u ON c.user_num = u.user_num
-		JOIN category_main cm ON c.category_main_num = cm.category_main_num
-		WHERE c.is_deleted = 0
-		<if test="category_main_num != null">
-			AND c.category_main_num = #{category_main_num}
-		</if>
-		ORDER BY c.post_id DESC
-		LIMIT #{offset}, #{limit}
-	</select>
 
-
+	<!-- ======================================================
+	     0. 단일 카운트
+	====================================================== -->
 	<select id="getCommunityCount" resultType="int">
 		SELECT COUNT(*)
 		FROM community_content
-		WHERE is_deleted = 0
-		<if test="category_main_num != null">
-			AND category_main_num = #{category_main_num}
-		</if>
+		WHERE category_main_num = #{category_main_num}
 	</select>
 
+
+	<!-- ======================================================
+	     1. 인기글
+	====================================================== -->
+	<select id="getPopularPosts" resultType="com.itwillbs.domain.CommunityContentVO">
+		SELECT
+			c.post_id,
+			c.title,
+			c.views,
+			c.created_at,
+			u.user_name,
+			cm.category_main_name,
+
+			(SELECT COUNT(*)
+			 FROM community_content_like l
+			 WHERE l.post_id = c.post_id AND l.is_like = 1) AS like_count
+
+		FROM community_content c
+		JOIN user u ON c.user_num = u.user_num
+		JOIN category_main cm ON c.category_main_num = cm.category_main_num
+
+		ORDER BY like_count DESC, c.views DESC
+		LIMIT 5
+	</select>
+
+
+	<!-- ======================================================
+	     2. 게시글 좋아요/싫어요
+	====================================================== -->
+	<select id="getUserPostReaction" resultType="int">
+		SELECT is_like
+		FROM community_content_like
+		WHERE post_id = #{post_id}
+		  AND user_num = #{user_num}
+	</select>
+
+	<insert id="insertPostReaction">
+		INSERT INTO community_content_like (post_id, user_num, is_like)
+		VALUES (#{post_id}, #{user_num}, #{is_like})
+	</insert>
+
+	<update id="updatePostReaction">
+		UPDATE community_content_like
+		SET is_like = #{is_like}
+		WHERE post_id = #{post_id}
+		  AND user_num = #{user_num}
+	</update>
+
+	<delete id="deletePostReaction">
+		DELETE FROM community_content_like
+		WHERE post_id = #{post_id}
+		  AND user_num = #{user_num}
+	</delete>
+
+	<!-- 좋아요/싫어요 카운트 -->
+	<select id="getPostReactionCount" resultType="com.itwillbs.domain.ReactionCountVO">
+		SELECT
+			SUM(CASE WHEN is_like = 1 THEN 1 ELSE 0 END) AS like_count,
+			SUM(CASE WHEN is_like = 0 THEN 1 ELSE 0 END) AS dislike_count
+		FROM community_content_like
+		WHERE post_id = #{post_id}
+	</select>
+
+
+	<!-- ======================================================
+	     3. 메인 카테고리 리스트 (상단 chip 버튼)
+	====================================================== -->
+	<select id="getCategoryMainList" resultType="com.itwillbs.domain.CommunityContentVO">
+		SELECT
+			category_main_num,
+			category_main_name
+		FROM category_main
+		ORDER BY category_main_num ASC
+	</select>
+
+
+
+	<!-- ======================================================
+	     4. 게시글 목록 (검색 + 필터 + 정렬 + 페이징)
+	====================================================== -->
+	<select id="getCommunityList" resultType="com.itwillbs.domain.CommunityContentVO">
+		SELECT
+			c.post_id,
+			c.title,
+			c.content,
+			c.user_num,
+			c.tag,
+			c.views,
+			c.is_visible,
+			c.is_deleted,
+			c.category_main_num,
+			c.lecture_num,
+			c.category_id,
+			c.created_at,
+			c.updated_at,
+
+			u.user_name,
+			cm.category_main_name,
+			cc.category_name AS category_name,
+			cc.category_key AS category_key,
+
+			(SELECT COUNT(*)
+			 FROM community_comment cc2
+			 WHERE cc2.post_id = c.post_id AND cc2.is_deleted = 0) AS comment_count,
+
+			(SELECT COUNT(*)
+			 FROM community_content_like l1
+			 WHERE l1.post_id = c.post_id AND l1.is_like = 1) AS like_count,
+
+			(SELECT COUNT(*)
+			 FROM community_content_like l2
+			 WHERE l2.post_id = c.post_id AND l2.is_like = 0) AS dislike_count
+
+		FROM community_content c
+		JOIN user u ON c.user_num = u.user_num
+		JOIN category_main cm ON c.category_main_num = cm.category_main_num
+		LEFT JOIN community_category cc ON c.category_id = cc.category_id
+	</select>
+
+
+
+	<!-- ======================================================
+	     5. 총 개수
+	====================================================== -->
+	<select id="getTotalCount" resultType="int">
+
+		SELECT COUNT(*)
+		FROM community_content c
+		LEFT JOIN community_category cc ON c.category_id = cc.category_id
+
+		<where>
+			<if test="category_id != null">
+				AND c.category_id = #{category_id}
+			</if>
+
+			<if test="category_main_num != null">
+				AND c.category_main_num = #{category_main_num}
+			</if>
+
+			<choose>
+				<when test="period == 'today'">
+					AND DATE(c.created_at) = CURDATE()
+				</when>
+				<when test="period == 'week'">
+					AND c.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+				</when>
+				<when test="period == 'month'">
+					AND c.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+				</when>
+			</choose>
+
+			<if test="keyword != null and keyword != ''">
+				<choose>
+					<when test="searchType == 'title'">
+						AND c.title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+
+					<when test="searchType == 'titleContent'">
+						AND (c.title LIKE CONCAT('%', #{keyword}, '%')
+						OR c.content LIKE CONCAT('%', #{keyword}, '%'))
+					</when>
+
+					<when test="searchType == 'writer'">
+						AND u.user_name LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+
+					<when test="searchType == 'comment'">
+						AND co.content LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+				</choose>
+			</if>
+
+		</where>
+	</select>
 
 </mapper>
