@@ -31,7 +31,10 @@ public class CommunityService {
     public int getCommunityCount(Integer categoryMainNum) {
         return communityContentMapper.getCommunityCount(categoryMainNum);
     }
-
+    // 🔥 실시간 HOT TOPIC */
+    public List<CommunityContentVO> getHotTopicList() {
+        return communityContentMapper.getHotTopicList();
+    }
 
     // ============================================
     // 📌 인기글 Top N

@@ -75,6 +75,10 @@ public class CommunityController {
      // <%-- 인기글 목록 --%>
      List<CommunityContentVO> popularList = communityService.getPopularPosts();
 
+     // 🔥 실시간 핫토픽
+     List<CommunityContentVO> hotTopicList = communityService.getHotTopicList();
+     model.addAttribute("hotTopicList", hotTopicList);
+
      // <%-- 모델 등록 --%>
      model.addAttribute("communityList", communityList);
      model.addAttribute("categoryMainList", categoryMainList);

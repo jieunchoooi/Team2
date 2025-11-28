@@ -22,6 +22,8 @@ public interface CommunityContentMapper {
     // ============================================
     int getCommunityCount(@Param("category_main_num") Integer categoryMainNum);
 
+ // 🔥 실시간 HOT TOPIC 가져오기
+    public List<CommunityContentVO> getHotTopicList();
 
     // ============================================
     // 📌 인기글 Top N

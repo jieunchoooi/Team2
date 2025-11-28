@@ -21,15 +21,213 @@ body {
 ================================================ */
 .main-content {
     margin-left: 240px;
-    padding: 35px 40px;
+    padding: 35px 40px 50px 40px;
     flex: 1;
 }
 
 .main-content h1 {
     font-size: 1.8rem;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     color: #222;
+}
+
+/* ================================================
+   🔥 상단 실시간 HOT TOPIC 슬라이더
+   - 1개씩 넘어가는 풀사이즈 카드
+================================================ */
+.hot-topic-wrapper {
+    max-width: 1200px;
+    margin: 0 auto 35px auto;
+}
+
+.hot-topic-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.hot-topic-title-row h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1f2d5c;
+}
+
+.hot-topic-sub {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* 슬라이더 영역 */
+.hot-slider {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #eaf0ff 0%, #fff8ed 100%);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    padding: 26px 30px;
+    min-height: 210px;
+}
+
+/* 슬라이드 컨테이너 */
+.hot-slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+/* 각 슬라이드 */
+.hot-slide {
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
+
+/* 작성자 썸네일 */
+.hot-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.hot-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 핫토픽 텍스트 영역 */
+.hot-content {
+    flex: 1;
+}
+
+.hot-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    color: #3a6df0;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.hot-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f2d5c;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.hot-summary {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    max-height: 4.8rem; /* 3줄 제한 */
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.hot-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.hot-meta-left {
+    display: flex;
+    gap: 14px;
+}
+
+.hot-meta-right {
+    color: #888;
+}
+
+/* 슬라이더 버튼 */
+.hot-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #3a6df0;
+    transition: 0.2s;
+}
+
+.hot-nav-btn:hover {
+    background: #3a6df0;
+    color: #fff;
+}
+
+.hot-nav-prev {
+    left: 16px;
+}
+
+.hot-nav-next {
+    right: 16px;
+}
+
+/* 슬라이더 인디케이터 */
+.hot-dots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+}
+
+.hot-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.hot-dot.active {
+    width: 18px;
+    border-radius: 999px;
+    background: #3a6df0;
+}
+
+/* ================================================
+   🔥 2열 레이아웃: 왼쪽 피드 + 오른쪽 주간 인기글
+================================================ */
+.community-layout {
+    display: flex;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.community-left {
+    flex: 1;
+}
+
+.community-right {
+    width: 320px;
+    position: sticky;
+    top: 110px;
 }
 
 /* ================================================
@@ -39,23 +237,23 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .chip {
     display: inline-block;
     padding: 7px 18px;
     border-radius: 22px;
-    background: #eef1f6;
+    background: #eef2ff;
     color: #555;
     font-size: 0.9rem;
     text-decoration: none;
     transition: 0.2s;
-    border: 1px solid #d8dce5;
+    border: 1px solid #d3dcff;
 }
 
 .chip:hover {
-    background: #e3e7ef;
+    background: #dde6ff;
 }
 
 .chip.active {
@@ -63,7 +261,7 @@ body {
     color: #fff;
     border-color: #3a6df0;
     font-weight: 600;
-    box-shadow: 0 3px 8px rgba(58, 109, 240, 0.3);
+    box-shadow: 0 3px 8px rgba(58, 109, 240, 0.35);
 }
 
 /* ================================================
@@ -74,10 +272,10 @@ body {
     align-items: center;
     gap: 15px;
     background: #fff;
-    padding: 15px 20px;
+    padding: 14px 18px;
     border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-    margin-bottom: 30px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
 }
 
 .filter-bar select {
@@ -100,14 +298,14 @@ body {
     border: 1px solid #c8ccd5;
     border-radius: 6px;
     height: 36px;
-    width: 200px;
+    width: 220px;
     background: #fff;
 }
 
 .search-box button {
     background: #3a6df0;
     border: none;
-    width: 38px;
+    width: 42px;
     height: 36px;
     color: #fff;
     font-size: 1rem;
@@ -121,68 +319,198 @@ body {
 }
 
 /* ================================================
-   🔥 게시글 리스트 (줄형)
+   🔥 대형 카드형 피드 (1열)
 ================================================ */
-.list-container {
-    background: #fff;
-    border-radius: 12px;
-    padding: 10px 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
 }
 
-/* 반응형 GRID 자동 정렬 */
-.list-row {
-    display: grid;
-    grid-template-columns: 140px 1fr 90px 110px 120px 60px;
-    padding: 14px 20px;
-    border-bottom: 1px solid #eef0f5;
+/* 전체 카드 */
+.post-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 22px 24px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.06);
     cursor: pointer;
-    align-items: center;
     transition: 0.2s;
+    width: 100%;
 }
 
-.list-row:hover {
-    background: #f5f7fc;
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.09);
 }
 
-.tag {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #3a6df0;
+/* 카드 상단: 프로필 + 카테고리 */
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
-.title {
-    font-size: 1rem;
-    font-weight: 600;
+.post-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    flex-shrink: 0;
+    border: 2px solid #eaf0ff;
 }
 
-.likes {
-    color: #ff3c3c;
+.post-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.post-header-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: #666;
+}
+
+.post-category-pill {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #3a53a5;
     font-weight: 600;
 }
 
-.writer {
-    color: #444;
-    font-size: 0.9rem;
+.post-writer {
+    font-weight: 500;
 }
 
-.date {
+/* 제목 & 요약 */
+.post-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    color: #1f2d5c;
+}
+
+.post-summary {
+    margin: 4px 0 14px;
+    color: #555;
+    font-size: 0.96rem;
+    line-height: 1.7;
+    max-height: 5.1rem; /* 약 3줄 */
+    overflow: hidden;
+}
+
+/* 메타 & 반응 */
+.post-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.86rem;
+    color: #666;
+}
+
+.post-meta-left {
+    display: flex;
+    gap: 10px;
+}
+
+.post-meta-right {
+    display: flex;
+    gap: 14px;
+    font-weight: 500;
+}
+
+.post-meta-right span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ================================================
+   🔥 주간 인기글 사이드바
+================================================ */
+.popular-box {
+    background: #ffffff;
+    padding: 18px 18px 16px 18px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.popular-box h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: #1f2d5c;
+}
+
+.popular-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.popular-row {
+    padding: 8px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.15s;
+    display: flex;
+    gap: 8px;
+}
+
+.popular-row:hover {
+    background: #f3f5ff;
+}
+
+/* 작은 썸네일 */
+.popular-thumb {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #eaeaea;
+}
+
+.popular-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.popular-text {
+    flex: 1;
+}
+
+.p-title {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+    color: #333;
+}
+
+.p-summary {
+    font-size: 0.8rem;
     color: #777;
-    font-size: 0.85rem;
+    max-height: 2.4rem;
+    overflow: hidden;
+    margin-bottom: 4px;
 }
 
-.views {
-    font-size: 0.9rem;
-    color: #444;
-}
-
-.no-data {
-    padding: 25px 0;
-    text-align: center;
-    color: #777;
+.p-meta {
+    font-size: 0.78rem;
+    color: #888;
 }
 
 /* ================================================
@@ -191,7 +519,7 @@ body {
 .pagination {
     display: flex;
     justify-content: center;
-    margin: 30px 0;
+    margin: 30px 0 0 0;
     gap: 8px;
 }
 
@@ -203,6 +531,7 @@ body {
     color: #333;
     text-decoration: none;
     transition: 0.2s;
+    font-size: 0.9rem;
 }
 
 .pagination a:hover {
@@ -216,148 +545,45 @@ body {
 }
 
 /* ================================================
-   🔥 카드형 리스트
-================================================ */
-.card-list {
-    display: none; /* 'grid' 로 전환됨 */
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-}
-
-.post-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    transition: 0.2s;
-    cursor: pointer;
-}
-
-.post-card:hover {
-    transform: translateY(-4px);
-}
-
-.post-card .post-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.post-card .post-meta {
-    font-size: 0.85rem;
-    color: #555;
-    margin-bottom: 12px;
-}
-
-.post-card .post-stats {
-    font-size: 0.85rem;
-    color: #666;
-    display: flex;
-    gap: 12px;
-}
-/* ===============================================================
-   🔥 오른쪽 사이드바(인기 글 TOP10) 레이아웃
-   - main-content 내부 구조를 2열로 만들기 위해 추가
-   - 기존 CSS 절대 수정 ❌ / 오직 추가만 함
-=============================================================== */
-
-/* 메인 전체를 2열 배치로 감싸는 래퍼 */
-.community-layout {
-    display: flex;
-    gap: 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-    align-items: flex-start;
-}
-
-/* 왼쪽 콘텐츠(카테고리/리스트/카드 등 기존 모든 것) */
-.community-left {
-    flex: 1;
-}
-
-/* 오른쪽 사이드바 */
-.community-right {
-    width: 300px;
-    position: sticky;
-    top: 120px; /* 헤더 높이만큼 여백 → 스크롤 내려도 고정됨 */
-}
-
-/* ===============================================================
-   🔥 인기글 TOP10 박스 스타일
-=============================================================== */
-.popular-box {
-    background: #ffffff;
-    padding: 20px 20px;
-    border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.popular-box h2 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 18px;
-    color: #222;
-}
-
-.popular-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.popular-row {
-    cursor: pointer;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #ececec;
-    transition: 0.2s;
-}
-
-.popular-row:hover {
-    background: #f7f9ff;
-    border-radius: 6px;
-    padding-left: 6px;
-}
-
-.p-title {
-    display: block;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 5px;
-    font-size: 0.95rem;
-}
-
-.p-meta {
-    font-size: 0.8rem;
-    color: #777;
-}
-
-.no-data.small {
-    padding: 10px 0;
-    font-size: 0.85rem;
-    color: #999;
-    text-align: center;
-}
-
-
-/* ================================================
-   🔥 반응형 (태블릿 이하)
+   🔥 반응형
 ================================================ */
 @media (max-width: 1100px) {
-    .list-row {
-        grid-template-columns: 120px 1fr 70px 90px 90px 60px;
+    .main-content {
+        margin-left: 0;
+        padding: 25px 20px 40px 20px;
+    }
+
+    .community-layout {
+        flex-direction: column;
+    }
+
+    .community-right {
+        width: 100%;
+        position: static;
+        margin-top: 24px;
     }
 }
 
-@media (max-width: 900px) {
-    .main-content {
-        margin-left: 0;
-        padding: 25px;
+@media (max-width: 768px) {
+    .hot-slider {
+        padding: 20px 18px 36px 18px;
     }
 
-    .list-row {
-        grid-template-columns: 1fr 70px 90px 70px;
+    .hot-slide {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    .tag { display: none; }
-    .writer { display: none; }
+    .hot-avatar {
+        width: 56px;
+        height: 56px;
+    }
+
+    .card-list {
+        gap: 18px;
+    }
+
+    .post-card {
+        padding: 18px 16px;
+    }
 }
