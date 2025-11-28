@@ -157,6 +157,45 @@ public class LectureController {
 		return "category/reviewModal";
 	}
 	
+	@RequestMapping(value="/recommendList")
+	public String recommendList(@RequestParam(required = false, defaultValue = "전체") String category_detail,
+            Model model, HttpSession session) {
+		System.out.println("LectureController recommendList()");
+		
+		List<LectureVO> lectureList;
+	    List<LectureVO> top10List;
+	    
+	    if (category_detail.equals("전체")) {
+	        lectureList = lectureService.getAllLectures();
+	        top10List = lectureService.getTop10();
+	    } else {
+	        lectureList = lectureService.getLecturesByCategory(category_detail);
+	        top10List = lectureService.getTop10ByCategory(category_detail);
+	    }
+	    
+	    UserVO userVO = (UserVO) session.getAttribute("userVO");
+	      if(userVO != null) {
+	          List<Integer> scrapLectureNums = scrapService.getScrapList(userVO.getUser_num())
+	                                                     .stream()
+	                                                     .map(ScrapVO::getLecture_num)
+	                                                     .collect(Collectors.toList());
+	          
+	          // 강의 목록에 bookmark 정보 세팅
+	          for(LectureVO lecture : lectureList) {
+	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+	          }
+	          for(LectureVO lecture : top10List) {
+	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+	          }
+	      }
+	    
+	    model.addAttribute("lectureList", lectureList);
+	    model.addAttribute("top10List", top10List);
+	    model.addAttribute("category_detail", category_detail);
+		
+		return "category/recommendList";
+	}
+	
 	
 
 }
