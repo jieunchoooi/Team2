@@ -1,12 +1,14 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AdminBoardVO;
+import com.itwillbs.domain.AdminPostVO;
 import com.itwillbs.mapper.AdminBoardMapper;
 
 @Service
@@ -53,6 +55,40 @@ public class AdminBoardService {
     public void enableBoard(int board_id) {
     	System.out.println(" AdminBoardService : enableBoard() 실행");
     	adminBoardMapper.enableBoard(board_id);
+    }
+    
+    public void updateBoardOrder(AdminBoardVO vo) {
+        adminBoardMapper.updateBoardOrder(vo);
+    }
+    
+  
+    public AdminBoardVO getBoardDetail(int board_id) {
+        return adminBoardMapper.getBoardDetail(board_id);
+    }
+
+ 
+    public List<AdminPostVO> getRecentPosts(int board_id) {
+        return adminBoardMapper.getRecentPosts(board_id);
+    }
+    
+    public List<Map<String, Object>> getWeeklyPostStats(int board_id) {
+        return adminBoardMapper.getWeeklyPostStats(board_id);
+    }
+    
+    public List<AdminPostVO> getTopViewPosts(int board_id) {
+        return adminBoardMapper.getTopViewPosts(board_id);
+    }
+    
+    public List<AdminPostVO> getTopReportPosts(int board_id) {
+        return adminBoardMapper.getTopReportPosts(board_id);
+    }
+    
+    public List<AdminBoardVO> getParentCategories() {
+        return adminBoardMapper.getParentCategories();
+    }
+    
+    public List<AdminBoardVO> getChildCategories(int parent_id) {
+        return adminBoardMapper.getChildCategories(parent_id);
     }
 
 }

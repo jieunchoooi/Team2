@@ -115,9 +115,16 @@
     text-align: center;
 }
 
+.styled-table td:nth-child(5),
+.styled-table th:nth-child(5) {
+    text-align: center;
+    width: 120px;
+}
+
+
 /* 5️⃣ 관리 버튼: 가운데 + 폭 고정 */
-.styled-table th:nth-child(5),
-.styled-table td:nth-child(5) {
+.styled-table th:nth-child(6),
+.styled-table td:nth-child(6) {
     width: 180px;
     text-align: center;
 }
@@ -181,3 +188,49 @@ td.btn-group {
     font-size: 15px;
     color: #666;
 }
+
+tr:hover {
+    cursor: move;
+}
+
+/* 드래그 가능한 영역 커서 모양 */
+#board-sortable tr {
+    cursor: move;
+}
+
+/* 끼어들 자리 하이라이트 */
+.sortable-highlight {
+    height: 50px;
+    background: #e3f0ff;
+    border: 2px dashed #4a74ff;
+}
+
+/* 대분류 */
+.parent-row {
+    background: #ffffff;
+    font-weight: 600;
+}
+
+/* 소분류 */
+.child-row {
+    background: #f9fafe;
+}
+
+.child-indent {
+    padding-left: 25px;
+    color: #444;
+}
+
+/* 들여쓰기 화살표 */
+.child-indent::before {
+    content: "↳ ";
+    color: #888;
+}
+
+/* 드래그 핸들 */
+.drag-icon {
+    cursor: move;
+    color: #777;
+}
+
+

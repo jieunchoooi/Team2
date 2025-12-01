@@ -27,21 +27,50 @@
 
         <div class="edit-title">게시판 정보 수정</div>
 
-        <form action="${pageContext.request.contextPath}/admin/adminBoardEditPro" method="post" class="edit-form">
+        <form action="${pageContext.request.contextPath}/admin/adminBoardEditPro" 
+              method="post" 
+              class="edit-form">
 
             <input type="hidden" name="board_id" value="${board.board_id}">
 
+            <!-- 게시판 이름 -->
             <label>게시판 이름</label>
             <input type="text" name="board_name" value="${board.board_name}" required>
 
+            <!-- 게시판 설명 -->
             <label>설명</label>
             <input type="text" name="board_desc" value="${board.board_desc}" required>
 
+            <!-- 사용 여부 -->
             <label>사용 여부</label>
             <select name="is_active">
                 <option value="1" ${board.is_active == 1 ? 'selected' : ''}>사용</option>
                 <option value="0" ${board.is_active == 0 ? 'selected' : ''}>숨김</option>
             </select>
+
+            <!-- ⭐ 대분류/소분류 선택 -->
+            <label>카테고리 위치</label>
+            <select name="parent_id" class="select-box">
+
+                <!-- 대분류로 설정 -->
+                <option value="" 
+                    <c:if test="${board.parent_id == null}">selected</c:if>>
+                    (대분류로 설정)
+                </option>
+
+                <!-- 모든 대분류 리스트 -->
+                <c:forEach var="parent" items="${parentList}">
+                    <!-- 본인을 본인의 부모로 선택 방지 -->
+                    <c:if test="${parent.board_id != board.board_id}">
+                        <option value="${parent.board_id}"
+                            <c:if test="${board.parent_id == parent.board_id}">selected</c:if>>
+                            ${parent.board_name}
+                        </option>
+                    </c:if>
+                </c:forEach>
+
+            </select>
+
 
             <!-- 버튼 영역 -->
             <div class="btn-area">

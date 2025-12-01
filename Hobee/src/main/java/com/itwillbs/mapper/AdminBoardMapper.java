@@ -1,10 +1,12 @@
 package com.itwillbs.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.domain.AdminBoardVO;
+import com.itwillbs.domain.AdminPostVO;
 
 @Mapper
 public interface AdminBoardMapper {
@@ -28,5 +30,22 @@ public interface AdminBoardMapper {
 	public void disableBoard(int board_id);
 
 	public void enableBoard(int board_id);
+	
+	public void updateBoardOrder(AdminBoardVO vo);
+	
+	public AdminBoardVO getBoardDetail(int board_id);
+	
+	public List<AdminPostVO> getRecentPosts(int board_id);
 
+	public List<Map<String, Object>> getWeeklyPostStats(int board_id);
+
+    public List<AdminPostVO> getTopViewPosts(int board_id);
+
+    public List<AdminPostVO> getTopReportPosts(int board_id);
+
+	public List<AdminBoardVO> getParentCategories();
+
+	public List<AdminBoardVO> getChildCategories(int parent_id);
+	
+	
 }

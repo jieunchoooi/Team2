@@ -4,56 +4,231 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminBoardMapper">
 
-    <!-- ========== Result Map ========== -->
+    <!-- ================================================================= -->
+    <!-- RESULT MAP -->
+    <!-- ================================================================= -->
     <resultMap id="boardMap" type="com.itwillbs.domain.AdminBoardVO">
         <id property="board_id" column="board_id"/>
         <result property="board_name" column="board_name"/>
         <result property="board_desc" column="board_desc"/>
         <result property="is_active" column="is_active"/>
         <result property="created_at" column="created_at"/>
+        <result property="board_order" column="board_order"/>
+        <result property="post_count" column="post_count"/>
     </resultMap>
 
-    <!-- ========== 목록 조회 ========== -->
-    <select id="getBoardList" resultMap="boardMap">
-        SELECT *
-        FROM board_category
-        ORDER BY board_id DESC
-    </select>
 
-    <!-- ========== 단일 조회 ========== -->
+    <!-- ================================================================= -->
+    <!-- 1) 게시판 목록 -->
+    <!-- ================================================================= -->
+    <select id="getBoardList" resultType="com.itwillbs.domain.AdminBoardVO">
+    	SELECT
+        	b.board_id,
+        	b.parent_id,
+        	b.board_name,
+        	b.board_desc,
+        	b.is_active,
+        	b.created_at,
+        	b.board_order,
+
+        	(SELECT COUNT(*) 
+         	FROM community_content c 
+         	WHERE c.category_id = b.board_id) AS post_count
+
+    	FROM board_category b
+    	ORDER BY 
+        	CASE WHEN parent_id IS NULL THEN board_order ELSE (SELECT board_order FROM board_category p WHERE p.board_id = b.parent_id) END,
+        	parent_id,
+        	board_order
+	</select>
+
+    <!-- ================================================================= -->
+    <!-- 2) 게시판 단일 조회 -->
+    <!-- ================================================================= -->
     <select id="getBoard" resultMap="boardMap" parameterType="int">
         SELECT *
         FROM board_category
         WHERE board_id = #{board_id}
     </select>
 
-    <!-- ========== 추가 ========== -->
+
+    <!-- ================================================================= -->
+    <!-- 3) 게시판 상세 + 통계 -->
+    <!-- ================================================================= -->
+    <select id="getBoardDetail" parameterType="int"
+            resultType="com.itwillbs.domain.AdminBoardVO">
+
+        SELECT
+            b.board_id,
+            b.board_name,
+            b.board_desc,
+            b.is_active,
+            b.created_at,
+
+            (SELECT COUNT(*) 
+             FROM community_content c
+             WHERE c.category_id = b.board_id) AS post_count,
+
+            (SELECT COUNT(*) 
+             FROM community_content c
+             WHERE c.category_id = b.board_id
+               AND c.created_at >= DATE_FORMAT(NOW(), '%Y-%m-01')) 
+             AS post_count_month,
+
+            (SELECT COUNT(*)
+             FROM community_content c
+             WHERE c.category_id = b.board_id
+               AND c.is_deleted = 0) AS post_count_visible,
+
+            (SELECT COUNT(*)
+             FROM report r
+             JOIN community_content c ON r.post_id = c.post_id
+             WHERE c.category_id = b.board_id) AS report_count
+
+        FROM board_category b
+        WHERE b.board_id = #{board_id}
+    </select>
+
+
+    <!-- ================================================================= -->
+    <!-- 🔥  최근 게시글 5개 -->
+    <!-- ================================================================= -->
+    <select id="getRecentPosts" parameterType="int"
+            resultType="com.itwillbs.domain.AdminPostVO">
+
+        SELECT 
+            post_id,
+            title,
+            user_num,
+            created_at,
+            is_deleted
+        FROM community_content
+        WHERE category_id = #{board_id}
+        ORDER BY created_at DESC
+        LIMIT 5
+    </select>
+
+
+    <!-- ================================================================= -->
+    <!-- 🔥 4) 인기글 TOP 5 (조회수 순) -->
+    <!-- ================================================================= -->
+    <select id="getTopViewPosts" 
+            parameterType="int"
+            resultType="com.itwillbs.domain.AdminPostVO">
+
+        SELECT 
+            post_id,
+            title,
+            views,
+            0 AS report_count   <!-- 기본값 -->
+        FROM community_content
+        WHERE category_id = #{board_id}
+        ORDER BY views DESC
+        LIMIT 5
+    </select>
+
+
+    <!-- ================================================================= -->
+    <!-- 🔥 5) 신고 많은 글 TOP 5 -->
+    <!-- ================================================================= -->
+    <select id="getTopReportPosts" 
+            parameterType="int"
+            resultType="com.itwillbs.domain.AdminPostVO">
+
+        SELECT
+            c.post_id,
+            c.title,
+            c.views,
+            COUNT(*) AS report_count
+        FROM report r
+        JOIN community_content c ON r.post_id = c.post_id
+        WHERE c.category_id = #{board_id}
+        GROUP BY c.post_id, c.title, c.views
+        ORDER BY report_count DESC
+        LIMIT 5
+    </select>
+
+
+    <!-- ================================================================= -->
+    <!-- 🔥 6) 최근 7일 게시글 증가량 (그래프용) -->
+    <!-- ================================================================= -->
+    <select id="getWeeklyPostStats"
+            parameterType="int"
+            resultType="map">
+
+        SELECT 
+            DATE(created_at) AS day,
+            COUNT(*) AS count
+        FROM community_content
+        WHERE category_id = #{board_id}
+          AND created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        GROUP BY DATE(created_at)
+        ORDER BY day ASC
+    </select>
+    
+    <select id="getParentCategories" resultType="com.itwillbs.domain.AdminBoardVO">
+    	SELECT * 
+    	FROM board_category
+    	WHERE parent_id IS NULL
+    	ORDER BY board_order ASC
+	</select>
+	
+	<select id="getChildCategories" resultType="com.itwillbs.domain.AdminBoardVO" parameterType="int">
+    	SELECT *
+    	FROM board_category
+    	WHERE parent_id = #{parent_id}
+    	ORDER BY board_order ASC
+	</select>
+	
+    
+    <!-- ================================================================= -->
+    <!-- 4) 게시판 추가 -->
+    <!-- ================================================================= -->
     <insert id="insertBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
         INSERT INTO board_category (board_name, board_desc, is_active, created_at)
         VALUES (#{board_name}, #{board_desc}, #{is_active}, NOW())
     </insert>
 
-    <!-- ========== 수정 ========== -->
+
+    <!-- ================================================================= -->
+    <!-- 5) 게시판 수정 -->
+    <!-- ================================================================= -->
     <update id="updateBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
         UPDATE board_category
         SET 
             board_name = #{board_name},
             board_desc = #{board_desc},
             is_active = #{is_active}
+            parent_id = #{parent_id}
         WHERE board_id = #{board_id}
     </update>
 
-    <!-- ========== 삭제 ========== -->
+
+    <!-- ================================================================= -->
+    <!-- 6) 사용/숨김 -->
+    <!-- ================================================================= -->
     <update id="disableBoard" parameterType="int">
-    	UPDATE board_category
-    	SET is_active = 0
-   		WHERE board_id = #{board_id}
-	</update>
-	
-	<update id="enableBoard" parameterType="int">
-    	UPDATE board_category
-    	SET is_active = 1
-    	WHERE board_id = #{board_id}
+        UPDATE board_category
+        SET is_active = 0
+        WHERE board_id = #{board_id}
     </update>
-	
+
+    <update id="enableBoard" parameterType="int">
+        UPDATE board_category
+        SET is_active = 1
+        WHERE board_id = #{board_id}
+    </update>
+
+
+    <!-- ================================================================= -->
+    <!-- 7) 게시판 순서 변경 -->
+    <!-- ================================================================= -->
+    <update id="updateBoardOrder">
+        UPDATE board_category
+        SET board_order = #{board_order}
+        WHERE board_id = #{board_id}
+    </update>
+    
+    
+
 </mapper>
