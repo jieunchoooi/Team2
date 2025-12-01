@@ -60,6 +60,8 @@ public interface AdminPostMapper {
 
     List<Map<String, Object>> getTopCommentPosts();
 
-	List<AdminPostVO> getDeletedPostList();
-}
+    List<AdminPostVO> getDeletedPostList();
 
+    List<String> getAutoComplete(@Param("keyword") String keyword);
+
+}

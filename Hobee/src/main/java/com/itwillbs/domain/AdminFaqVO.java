@@ -15,5 +15,7 @@ public class AdminFaqVO {
     private String answer;     // 답변
     private int is_visible;    // 공개 여부 (1=공개, 0=숨김)
     private String created_at; // 등록일
+    private String updated_at;
+    private int faq_order;
 
 }

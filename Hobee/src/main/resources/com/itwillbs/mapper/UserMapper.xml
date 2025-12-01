@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.UserMapper">
 
     <!-- ✅ 회원 가입 -->
     <insert id="insertUser" parameterType="com.itwillbs.domain.UserVO">
         INSERT INTO user (
-            user_id,
-            user_password,
-            user_name,
-            user_phone,
-            user_email,
-            user_zipcode,
-            user_address1,
-            user_address2,
-            user_gender,
-            user_file,
-            user_role,
-            user_status,
-            grade_id,
-            points
+        user_id,
+        user_password,
+        user_name,
+        user_phone,
+        user_email,
+        user_zipcode,
+        user_address1,
+        user_address2,
+        user_gender,
+        user_file,
+        user_role,
+        user_status,
+        grade_id,
+        points
         )
         VALUES (
-            #{user_id},
-            #{user_password},
-            #{user_name},
-            #{user_phone},
-            #{user_email},
-            #{user_zipcode},
-            #{user_address1},
-            #{user_address2},
-            #{user_gender},
-            #{user_file},
-            'user',
-            'active',
-            1,
-            0
+        #{user_id},
+        #{user_password},
+        #{user_name},
+        #{user_phone},
+        #{user_email},
+        #{user_zipcode},
+        #{user_address1},
+        #{user_address2},
+        #{user_gender},
+        #{user_file},
+        'user',
+        'active',
+        1,
+        0
         )
     </insert>
 
@@ -68,7 +68,7 @@
         SELECT *
         FROM user
         WHERE user_id = #{user_id}
-          AND user_email = #{user_email}
+        AND user_email = #{user_email}
     </select>
 
     <!-- 임시 비밀번호 업데이트 -->
@@ -90,31 +90,31 @@
         SELECT *
         FROM user
         WHERE user_name = #{user_name}
-          AND user_email = #{user_email}
+        AND user_email = #{user_email}
     </select>
 
-   
-   
+
+
     <!-- 회원 정보 조회 -->
     <select id="getUserByNum" parameterType="int" resultType="com.itwillbs.domain.UserVO">
-        SELECT 
-            user_num,
-            user_id,
-            user_password,
-            user_name,
-            user_phone,
-            user_email,
-            user_zipcode,
-            user_address1,
-            user_address2,
-            user_gender,
-            user_role,
-            user_status,
-            grade_id,
-            points,
-            user_file,
-            created_at,
-            updated_at
+        SELECT
+        user_num,
+        user_id,
+        user_password,
+        user_name,
+        user_phone,
+        user_email,
+        user_zipcode,
+        user_address1,
+        user_address2,
+        user_gender,
+        user_role,
+        user_status,
+        grade_id,
+        points,
+        user_file,
+        created_at,
+        updated_at
         FROM user
         WHERE user_num = #{user_num}
     </select>
@@ -123,7 +123,7 @@
     <update id="updateUserPoints" parameterType="com.itwillbs.domain.UserVO">
         UPDATE user
         SET points = #{points},
-            updated_at = NOW()
+        updated_at = NOW()
         WHERE user_num = #{user_num}
     </update>
 
@@ -131,7 +131,7 @@
     <update id="updateUserGrade" parameterType="com.itwillbs.domain.UserVO">
         UPDATE user
         SET grade_id = #{grade_id},
-            updated_at = NOW()
+        updated_at = NOW()
         WHERE user_num = #{user_num}
     </update>
 
@@ -144,6 +144,44 @@
         WHERE user_num = #{userNum}
     </select>
 
+    <!-- 로그인 실패 횟수 증가 -->
+    <update id="increaseFailCount">
+        UPDATE user
+        SET
+        login_fail_count = login_fail_count + 1,
+        last_fail_time = NOW()
+        WHERE user_id = #{user_id}
+    </update>
 
+    <!-- 로그인 실패 횟수 초기화 -->
+    <update id="resetFailCount">
+        UPDATE user
+        SET
+        login_fail_count = 0,
+        last_fail_time = NULL
+        WHERE user_id = #{user_id}
+    </update>
+
+    <!-- 강제 계정 잠금 -->
+    <update id="lockUser">
+        UPDATE user
+        SET
+        login_fail_count = 5,
+        last_fail_time = NOW()
+        WHERE user_id = #{user_id}
+    </update>
+
+    <!-- 마지막 로그인 시간 업데이트 -->
+    <update id="updateLastLoginTime">
+        UPDATE user
+        SET last_login_at = NOW()
+        WHERE user_id = #{user_id}
+    </update>
+
+    <update id="updatePasswordUpdatedAt">
+        UPDATE user
+        SET password_updated_at = NOW()
+        WHERE user_id = #{user_id}
+    </update>
 
 </mapper>

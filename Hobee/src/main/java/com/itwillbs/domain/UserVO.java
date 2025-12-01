@@ -1,8 +1,5 @@
 package com.itwillbs.domain;
 
-import java.io.Serializable;
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,9 +7,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UserVO implements Serializable  {
-	
-	  private static final long serialVersionUID = 1L;
+public class UserVO {
     private int user_num;
     private String user_id;
     private String user_password;
@@ -33,9 +28,18 @@ public class UserVO implements Serializable  {
     private String created_at;
     private String updated_at;
     private String updated_sat;
-    
+
     // 결제 관련 보조 필드
     private int used_points;
     private int saved_points;
-    
+
+    // 🔥 로그인 보안 관련
+    private int login_fail_count;    // 실패 횟수
+    private String last_fail_time;   // 마지막 실패 시간
+
+    private String last_login_at;   // 마지막 로그인 시간
+
+    private String password_updated_at;
+
+
 }

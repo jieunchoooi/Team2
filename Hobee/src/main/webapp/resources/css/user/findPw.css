@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /* 전체 컨테이너 */
 .findpw-container {
     max-width: 420px;
@@ -88,3 +90,42 @@
 .bottom-link a:hover {
     text-decoration: underline;
 }
+
+.popup-ok-btn {
+    margin-top: 18px;
+    padding: 10px 22px;
+    background: #1e5eff;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.popup-ok-btn:hover {
+    background: #154ed4;
+}
+
+/* 버튼 내부 스피너 */
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid #fff;
+    border-top: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 버튼 비활성화 */
+.findpw-btn.loading {
+    background: #9bb8ff;
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+

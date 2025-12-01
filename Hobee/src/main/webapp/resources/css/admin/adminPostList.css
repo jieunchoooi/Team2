@@ -146,7 +146,7 @@ body, button, input, select {
 .styled-table td:nth-child(2) { width: 70px; text-align: center; }
 
 .styled-table th:nth-child(3),
-.styled-table td:nth-child(3) { 
+.styled-table td:nth-child(3) {
     width: 260px;
     text-align: center;
 }
@@ -280,3 +280,64 @@ body, button, input, select {
 .batch-mode .rowCheck {
     display: inline-block;
 }
+
+.auto-box {
+    display: none;        /* ⭐ 기본 숨김 */
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 100;
+}
+
+
+.auto-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.auto-item:hover {
+    background: #eef3ff;
+}
+
+/* ============================= */
+/* 🔥 자동완성 박스 스타일 */
+/* ============================= */
+/* 검색창 감싸는 wrapper → 기준점이 됨 */
+.search-wrapper {
+    position: relative;     /* ⭐ 자동완성 박스 위치 기준 */
+    display: inline-block;  /* 자동완성 너비를 input과 동일하게 */
+}
+
+/* 자동완성 박스 */
+.auto-box {
+    position: absolute;     /* ⭐ 검색창 아래에 위치 */
+    top: 45px;              /* input 아래 정확히 위치 */
+    left: 0;
+
+    width: 100%;            /* 검색창과 동일 너비 */
+    background: white;
+    padding: 8px 0;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;          /* 기본 숨김 */
+    z-index: 50;
+}
+
+.auto-item {
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.auto-item:hover {
+    background: #f5f7ff;
+}
+
+

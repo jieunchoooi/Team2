@@ -5,43 +5,36 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminFaqMapper">
 
-    <!-- FAQ 목록 -->
-    <select id="getFaqList" resultType="com.itwillbs.domain.AdminFaqVO">
-        SELECT
-            faq_id,
-            category,
-            question,
-            answer,
-            is_visible,
-            created_at
+    <!-- FAQ 목록 (필터 전용) -->
+    <select id="getFaqListFiltered" resultType="com.itwillbs.domain.AdminFaqVO">
+        SELECT faq_id, category, question, answer, is_visible, created_at, updated_at, faq_order
         FROM faq
-        ORDER BY faq_id DESC
+        WHERE 1=1
+
+        <if test="category != null and category != ''">
+            AND category = #{category}
+        </if>
+
+        <if test="keyword != null and keyword != ''">
+            AND question LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+
+        ORDER BY faq_order ASC
     </select>
 
     <!-- FAQ 등록 -->
     <insert id="insertFaq">
         INSERT INTO faq (
-            category,
-            question,
-            answer,
-            is_visible
+        category, question, answer, is_visible, faq_order
         ) VALUES (
-            #{category},
-            #{question},
-            #{answer},
-            #{is_visible}
+        #{category}, #{question}, #{answer}, #{is_visible},
+        (SELECT IFNULL(MAX(faq_order), 0) + 1 FROM faq)
         )
     </insert>
 
     <!-- FAQ 상세 -->
     <select id="getFaqDetail" resultType="com.itwillbs.domain.AdminFaqVO">
-        SELECT
-            faq_id,
-            category,
-            question,
-            answer,
-            is_visible,
-            created_at
+        SELECT faq_id, category, question, answer, is_visible, created_at, updated_at, faq_order
         FROM faq
         WHERE faq_id = #{faq_id}
     </select>
@@ -49,25 +42,102 @@
     <!-- FAQ 수정 -->
     <update id="updateFaq">
         UPDATE faq
-        SET
-            category = #{category},
-            question = #{question},
-            answer = #{answer},
-            is_visible = #{is_visible}
+        SET category = #{category},
+        question = #{question},
+        answer = #{answer},
+        is_visible = #{is_visible},
+        updated_at = NOW()
         WHERE faq_id = #{faq_id}
     </update>
 
     <!-- FAQ 삭제 -->
     <delete id="deleteFaq">
-        DELETE FROM faq
-        WHERE faq_id = #{faq_id}
+        DELETE FROM faq WHERE faq_id = #{faq_id}
     </delete>
 
     <!-- FAQ 공개/숨김 변경 -->
     <update id="updateVisible">
         UPDATE faq
-        SET is_visible = #{is_visible}
+        SET is_visible = #{is_visible},
+        updated_at = NOW()
         WHERE faq_id = #{faq_id}
+    </update>
+
+    <!-- 페이징 + 필터 + 정렬 -->
+    <select id="getFaqListPaged" resultType="com.itwillbs.domain.AdminFaqVO">
+        SELECT faq_id, category, question, answer, is_visible, created_at, updated_at, faq_order
+        FROM faq
+        WHERE 1=1
+
+        <if test="category != null and category != ''">
+            AND category = #{category}
+        </if>
+
+        <if test="keyword != null and keyword != ''">
+            AND question LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+
+        <choose>
+            <when test="sort == 'new'">
+                ORDER BY faq_id DESC
+            </when>
+            <when test="sort == 'old'">
+                ORDER BY faq_id ASC
+            </when>
+            <when test="sort == 'category'">
+                ORDER BY category ASC, faq_id DESC
+            </when>
+            <otherwise>
+                ORDER BY faq_order ASC
+            </otherwise>
+        </choose>
+
+        LIMIT #{startRow}, #{pageSize}
+    </select>
+
+    <!-- 총 개수 -->
+    <select id="getFaqCount" resultType="int">
+        SELECT COUNT(*)
+        FROM faq
+        WHERE 1=1
+
+        <if test="category != null and category != ''">
+            AND category = #{category}
+        </if>
+
+        <if test="keyword != null and keyword != ''">
+            AND question LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <!-- 일괄 공개/숨김 -->
+    <update id="updateVisibleBatch">
+        UPDATE faq
+        SET is_visible = #{is_visible},
+        updated_at = NOW()
+        WHERE faq_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!-- 일괄 삭제 -->
+    <delete id="deleteBatch">
+        DELETE FROM faq
+        WHERE faq_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 드래그 정렬 저장 -->
+    <update id="updateOrder">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE faq
+            SET faq_order = #{item.faq_order},
+            updated_at = NOW()
+            WHERE faq_id = #{item.faq_id}
+        </foreach>
     </update>
 
 </mapper>

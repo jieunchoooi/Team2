@@ -9,19 +9,20 @@
           📌 1. 게시글 상세 조회
     ============================================================ -->
     <select id="getPostDetail" resultType="com.itwillbs.domain.AdminPostVO">
-        SELECT 
-            c.post_id,
-            c.title,
-            c.content,
-            c.author,
-            c.tag,
-            c.views,
-            c.is_visible,
-            c.is_deleted,
-            c.created_at,
-            b.board_name
+        SELECT
+        c.post_id,
+        c.title,
+        c.content,
+        u.user_name AS author,
+        c.tag,
+        c.views,
+        c.is_visible,
+        c.is_deleted,
+        c.created_at,
+        b.board_name
         FROM community_content c
-        LEFT JOIN board_category b ON c.board_id = b.board_id
+        LEFT JOIN board_category b ON c.category_id = b.board_id
+        LEFT JOIN user u ON c.user_num = u.user_num
         WHERE c.post_id = #{post_id}
     </select>
 
@@ -32,11 +33,11 @@
         UPDATE community_content
         SET is_visible = CASE WHEN is_visible = 1 THEN 0 ELSE 1 END
         WHERE post_id = #{post_id}
-          AND is_deleted = 0
+        AND is_deleted = 0
     </update>
 
     <!-- ============================================================
-          📌 3. Soft Delete — 게시글 삭제 (is_deleted = 1)
+          📌 3. Soft Delete
     ============================================================ -->
     <update id="deletePost">
         UPDATE community_content
@@ -45,7 +46,7 @@
     </update>
 
     <!-- ============================================================
-          📌 4. 전체 게시글 개수 (삭제된 글 제외)
+          📌 4. 전체 게시글 개수
     ============================================================ -->
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
@@ -58,19 +59,20 @@
     ============================================================ -->
     <select id="getPostListPagingSorted" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT
-            c.post_id,
-            c.title,
-            c.author,
-            c.content,
-            c.tag,
-            c.views,
-            c.is_visible,
-            c.created_at,
-            b.board_name,
-            (SELECT COUNT(*) FROM comment cm 
-                WHERE cm.post_id = c.post_id AND cm.is_deleted = 0) AS reply_count
+        c.post_id,
+        c.title,
+        u.user_name AS author,
+        c.content,
+        c.tag,
+        c.views,
+        c.is_visible,
+        c.created_at,
+        b.board_name,
+        (SELECT COUNT(*) FROM comment cm
+        WHERE cm.post_id = c.post_id AND cm.is_deleted = 0) AS reply_count
         FROM community_content c
-        LEFT JOIN board_category b ON c.board_id = b.board_id
+        LEFT JOIN board_category b ON c.category_id = b.board_id
+        LEFT JOIN user u ON c.user_num = u.user_num
         WHERE c.is_deleted = 0
 
         <choose>
@@ -96,25 +98,25 @@
     ============================================================ -->
     <select id="getSearchPostListSorted" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT
-            c.post_id,
-            c.title,
-            c.author,
-            c.content,
-            c.tag,
-            c.views,
-            c.is_visible,
-            c.created_at,
-            b.board_name,
-            (SELECT COUNT(*) FROM comment cm 
-                WHERE cm.post_id = c.post_id AND cm.is_deleted = 0) AS reply_count
+        c.post_id,
+        c.title,
+        u.user_name AS author,
+        c.content,
+        c.tag,
+        c.views,
+        c.is_visible,
+        c.created_at,
+        b.board_name,
+        (SELECT COUNT(*) FROM comment cm
+        WHERE cm.post_id = c.post_id AND cm.is_deleted = 0) AS reply_count
         FROM community_content c
-        LEFT JOIN board_category b ON c.board_id = b.board_id
-
+        LEFT JOIN board_category b ON c.category_id = b.board_id
+        LEFT JOIN user u ON c.user_num = u.user_num
         WHERE c.is_deleted = 0
         AND (
-                (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
-             OR (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
-             OR (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+        (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
+        OR (#{type} = 'A' AND u.user_name LIKE CONCAT('%', #{keyword}, '%'))
+        OR (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
         )
 
         <choose>
@@ -141,12 +143,13 @@
     <select id="getSearchTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM community_content c
-        LEFT JOIN board_category b ON c.board_id = b.board_id
+        LEFT JOIN board_category b ON c.category_id = b.board_id
+        LEFT JOIN user u ON c.user_num = u.user_num
         WHERE c.is_deleted = 0
         AND (
-                (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
-             OR (#{type} = 'A' AND c.author LIKE CONCAT('%', #{keyword}, '%'))
-             OR (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
+        (#{type} = 'T' AND c.title LIKE CONCAT('%', #{keyword}, '%'))
+        OR (#{type} = 'A' AND u.user_name LIKE CONCAT('%', #{keyword}, '%'))
+        OR (#{type} = 'B' AND b.board_name LIKE CONCAT('%', #{keyword}, '%'))
         )
     </select>
 
@@ -189,25 +192,26 @@
     </update>
 
     <!-- ============================================================
-          📌 11. Soft Delete 된 게시글만 조회
+          📌 11. 삭제된 게시글 목록
     ============================================================ -->
     <select id="getDeletedPostList" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT
-            c.post_id,
-            c.title,
-            c.author,
-            c.created_at,
-            c.views,
-            c.is_visible,
-            b.board_name
+        c.post_id,
+        c.title,
+        u.user_name AS author,
+        c.created_at,
+        c.views,
+        c.is_visible,
+        b.board_name
         FROM community_content c
-        LEFT JOIN board_category b ON c.board_id = b.board_id
+        LEFT JOIN board_category b ON c.category_id = b.board_id
+        LEFT JOIN user u ON c.user_num = u.user_num
         WHERE c.is_deleted = 1
         ORDER BY c.post_id DESC
     </select>
 
     <!-- ============================================================
-          📌 12. Soft Delete → 복구
+          📌 12. 복구
     ============================================================ -->
     <update id="restorePost">
         UPDATE community_content
@@ -215,7 +219,6 @@
         WHERE post_id = #{post_id}
     </update>
 
-    
 
     <!-- ============================================================
           📌 14. 조회수 TOP 10

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- 카카오 우편번호 -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- confetti 효과 -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 
 </head>
 <body>
@@ -70,15 +74,22 @@
         <div class="nav-right">
 
             <c:choose>
-              
+
                 <c:when test="${empty sessionScope.user_id}">
                     <a href="#" id="openLoginModal" class="auth-link">로그인</a>
                     <a href="#" id="openInsertModal" class="auth-link">회원가입</a>
                 </c:when>
 
-              
+
                 <c:otherwise>
                     <span class="welcome-text">${sessionScope.user_name}님</span>
+
+                    <c:if test="${not empty sessionScope.userVO.last_login_at}">
+                        <span class="last-login-info">
+                            (최근 로그인: ${fn:substring(sessionScope.userVO.last_login_at, 0, 16)})
+                        </span>
+                    </c:if>
+
                     <a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
 
                     <c:if test="${sessionScope.user_role eq 'admin' or sessionScope.user_role eq 'super_admin'}">
@@ -118,7 +129,7 @@ $(document).ready(function () {
         e.preventDefault(); // a 태그 기본 동작 막기
         openLoginModal();   // 전역 함수 호출
     });
-    
+
  	// 로그인 모달 열기
     window.openLoginModal = function() {
         $("#loginModal").fadeIn().css("display", "flex");
@@ -166,15 +177,14 @@ $(document).ready(function () {
  $("#loginBtn").click(function () {
      loginRequest();
  });
-    
-    /* 엔터키 로그인 */
-    $("#loginForm input").keypress(function(e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            loginRequest();
-        }
-    });
 
+ /* 엔터키 로그인 */
+ $("#loginForm input").keypress(function(e) {
+     if (e.which === 13) {
+         e.preventDefault();
+         loginRequest();
+     }
+ });
 
  function loginRequest() {
      $.ajax({
@@ -184,25 +194,74 @@ $(document).ready(function () {
          dataType: "json",
 
          success: function (res) {
-             if (res.result === "success") {
 
+             /* =============================
+                1) 계정 잠금
+                ============================= */
+             if (res.result === "locked") {
                  $("#loginError")
-                     .css("color", "#2ecc71")
-                     .text(res.user_name + "님 환영합니다!").fadeIn(200);
-
-                 $("#loginSpinner").fadeIn(150);
-
-                 setTimeout(() => {
-                     $("#loginModal").fadeOut();
-                     location.href = contextPath + "/main/main";
-                 }, 700);
-
+                     .removeClass("success")
+                     .addClass("error")
+                     .html("⚠ 비밀번호 5회 실패로 로그인 제한 상태입니다.<br>30분 후 다시 시도해주세요.")
+                     .fadeIn(200);
                  return;
              }
 
+             /* =============================
+                2) 로그인 성공
+                ============================= */
+            if (res.result === "success") {
+
+                // 1) 비밀번호 변경 경고
+                if (res.pw_change_alert) {
+                    alert(res.pw_change_alert);
+                }
+
+                // 2) 통합 팝업
+                let msg = res.user_name + "님 환영합니다!\n";
+
+                msg += "마지막 로그인: "
+                       + (res.last_login_at ? res.last_login_at : "첫 로그인")
+                       + "\n";
+
+                // 🔥 지역 표시
+                msg += "현재 접속 지역: " + res.current_location + "\n";
+
+                if (res.last_location) {
+                    msg += "이전 접속 지역: " + res.last_location + "\n";
+
+                    if (res.current_location !== res.last_location) {
+                        msg += "\n⚠ 보안 알림: 이전 접속 지역과 다릅니다!";
+                    }
+                }
+
+                msg += "\n최근 로그인 기기:\n";
+
+                if (res.recent_devices) {
+                    res.recent_devices.forEach(d => {
+                        msg += " - " + d + "\n";
+                    });
+                }
+
+                alert(msg);
+
+                // 이동 처리
+                setTimeout(() => {
+                    $("#loginModal").fadeOut();
+                    location.href = contextPath + "/main/main";
+                }, 700);
+
+                return;
+            }
+
+
+             /* =============================
+                3) 일반 실패
+                ============================= */
              $("#loginError")
-                 .text(res.message)
-                 .css("color", "#e74c3c")
+                 .removeClass("success")
+                 .addClass("error")
+                 .html(res.message.replace(/\n/g, "<br>"))
                  .fadeIn(200);
 
              $(".login-modal-content").addClass("shake");
@@ -213,12 +272,27 @@ $(document).ready(function () {
 
          error: function () {
              $("#loginError")
+                 .removeClass("success")
+                 .addClass("error")
                  .text("서버 오류가 발생했습니다.")
-                 .css("color", "#e74c3c");
+                 .fadeIn(200);
          }
      });
  }
 
+ /** --------------------------------------------------
+         🔥 3-1) 로그인 비밀번호 보기 / 숨기기  (← 핵심)
+     -------------------------------------------------- */
+     $(document).on("click", "#togglePw", function () {
+
+         const $pw = $("#login_pw");
+         const nowType = $pw.attr("type");
+         const newType = nowType === "password" ? "text" : "password";
+
+         $pw.attr("type", newType);
+
+         $(this).text(newType === "text" ? "🙈" : "👁");
+     });
 
     /* --------------------------------------------------
        4) 회원가입 — 아이디 중복 체크
@@ -324,11 +398,11 @@ $(document).ready(function () {
             if (strength === 1) {
                 msg = "🟡 보통 (문자 종류가 부족해요)";
                 color = "#f1c40f";
-            } 
+            }
             else if (strength === 2) {
                 msg = "🔵 강함!";
                 color = "#3498db";
-            } 
+            }
             else if (strength === 3) {
                 if (pw.length >= 10) {
                     msg = "🟢 매우 강함!";
@@ -365,18 +439,45 @@ $(document).ready(function () {
         }
     });
 
-
-    /* --------------------------------------------------
-       8) 전화번호 자동 하이픈 처리
-    -------------------------------------------------- */
+    /* ================================
+       전화번호 실시간 유효성 검사
+    ================================ */
     $("#ins_user_phone").on("input", function () {
 
         let v = $(this).val().replace(/[^0-9]/g, "");
 
-        if (v.length < 4) $(this).val(v);
-        else if (v.length < 7) $(this).val(v.substring(0, 3) + "-" + v.substring(3));
-        else if (v.length < 11) $(this).val(v.substring(0, 3) + "-" + v.substring(3, 6) + "-" + v.substring(6));
-        else $(this).val(v.substring(0, 3) + "-" + v.substring(3, 7) + "-" + v.substring(7, 11));
+        // 자동 포맷
+        if (v.length < 4) {
+            $(this).val(v);
+        } else if (v.length < 7) {
+            $(this).val(v.substring(0, 3) + "-" + v.substring(3));
+        } else if (v.length <= 11) {
+            $(this).val(
+                v.substring(0, 3) + "-" +
+                v.substring(3, 7) + "-" +
+                v.substring(7)
+            );
+        }
+
+        const phoneFormatted = $(this).val();
+        const phonePattern = /^010-\d{4}-\d{4}$/;
+
+        // 입력 없으면 메시지 삭제
+        if (phoneFormatted.length === 0) {
+            $("#phoneMsg").text("");
+            return;
+        }
+
+        // 자리 부족 / 형식 불완전
+        if (!phonePattern.test(phoneFormatted)) {
+            $("#phoneMsg")
+                .text("휴대폰 번호를 정확히 입력해주세요.")
+                .css("color", "#e74c3c");
+        } else {
+            $("#phoneMsg")
+                .text("사용 가능한 전화번호입니다 ✔")
+                .css("color", "#2ecc71");
+        }
     });
 
 
@@ -398,7 +499,7 @@ $(document).ready(function () {
                 // 상세주소 이동
                 $("#ins_user_address2").focus();
             }
-        }).open();
+        });
     });
 
 
@@ -448,6 +549,13 @@ $(document).ready(function () {
             $("#insertError").text("상세주소를 입력해주세요.");
             return;
         }
+        // 🔥 전화번호 유효성 검사 (010-1234-5678 형태 정확히 체크)
+        const phonePattern = /^010-\d{4}-\d{4}$/;
+
+        if (!phonePattern.test($("#ins_user_phone").val())) {
+            $("#insertError").text("전화번호를 정확히 입력해주세요. (예: 010-1234-5678)");
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -457,9 +565,29 @@ $(document).ready(function () {
 
             success: function (res) {
                 if (res.result === "success") {
-                    alert("회원가입 완료! 다시 로그인해주세요.");
-                    $("#insertModal").fadeOut();
-                    $("#loginModal").fadeIn().css("display", "flex");
+                   // 🔥 회원가입 성공 애니메이션 팝업
+                   $("#joinSuccessPopup").fadeIn(200);
+
+                   // confetti 효과
+                   confetti({
+                       particleCount: 120,
+                       spread: 90,
+                       origin: { y: 0.6 }
+                   });
+
+                   // 1.2초 후 팝업 닫고 로그인 모달 열기
+                   setTimeout(() => {
+                       $("#joinSuccessPopup").fadeOut(300);
+                       $("#insertModal").fadeOut(200);
+                       $("#loginModal").fadeIn().css("display", "flex");
+
+                       // 팝업 체크 애니메이션 초기화
+                       $(".checkmark").removeClass("draw");
+                   }, 1200);
+
+                   // 체크 애니메이션 발동
+                   $(".checkmark").addClass("draw");
+
                 } else {
                     $("#insertError").text(res.message);
                 }
@@ -512,7 +640,170 @@ $(document).ready(function () {
         $("#loginModal").fadeIn().css("display", "flex");
     }
 
+    /* ================================
+       🔥 CapsLock 감지 (이 위치가 BEST!)
+    ================================ */
+    $("#ins_user_password").on("keydown keyup", function (e) {
+
+        const isCapsOn = e.originalEvent.getModifierState &&
+                         e.originalEvent.getModifierState("CapsLock");
+
+        if (isCapsOn) {
+            $("#capsLockMsg")
+                .text("⚠ CapsLock이 켜져 있습니다.")
+                .show();
+        } else {
+            $("#capsLockMsg").hide();
+        }
+    });
+
+    /* =====================================================
+       비밀번호 체크리스트 (실시간 만족도 체크)
+    ===================================================== */
+    $("#ins_user_password").on("keyup", function () {
+
+        const pw = $(this).val();
+
+        const hasLetter = /[A-Za-z]/.test(pw);
+        const hasNumber = /[0-9]/.test(pw);
+        const hasSpecial = /[!@#$%^*]/.test(pw);
+        const isLength = pw.length >= 8 && pw.length <= 12;
+        const notStartNumber = pw.length > 0 && !/^[0-9]/.test(pw);
+
+        function setRule(ruleId, ok, label) {
+            const el = $(ruleId);
+            el.text(label);
+            if (ok) {
+                el.addClass("valid");
+            } else {
+                el.removeClass("valid");
+            }
+        }
+
+        setRule("#ruleLength", isLength, "8~12자");
+        setRule("#ruleLetter", hasLetter, "영문 포함");
+        setRule("#ruleNumber", hasNumber, "숫자 포함");
+        setRule("#ruleSpecial", hasSpecial, "특수문자 포함");
+        setRule("#ruleStart", notStartNumber, "숫자로 시작 금지");
+    });
+
+    /* ================================
+       비밀번호 강도 게이지
+    ================================ */
+    $("#ins_user_password").on("keyup", function () {
+
+        const pw = $(this).val();
+
+        let strength = 0;
+
+        const hasLetter = /[A-Za-z]/.test(pw);
+        const hasNumber = /[0-9]/.test(pw);
+        const hasSpecial = /[!@#$%^*]/.test(pw);
+
+        if (pw.length >= 8) strength++;
+        if (hasLetter) strength++;
+        if (hasNumber) strength++;
+        if (hasSpecial) strength++;
+        if (pw.length >= 10) strength++;   // 10자 이상이면 추가 점수
+
+        const bar = $("#pwMeterBar");
+        const text = $("#pwStrengthText");
+
+        // 강도 단계별 UI 변경
+        switch (strength) {
+            case 0:
+            case 1:
+                bar.css({ width: "25%", background: "#e74c3c" }); // red
+                text.text("약함").css("color", "#e74c3c");
+                break;
+
+            case 2:
+                bar.css({ width: "50%", background: "#f39c12" }); // orange
+                text.text("보통").css("color", "#f39c12");
+                break;
+
+            case 3:
+            case 4:
+                bar.css({ width: "75%", background: "#3498db" }); // blue
+                text.text("강함").css("color", "#3498db");
+                break;
+
+            case 5:
+                bar.css({ width: "100%", background: "#2ecc71" }); // green
+                text.text("매우 강함").css("color", "#2ecc71");
+                break;
+        }
+
+        // 입력 없으면 초기화
+        if (pw.length === 0) {
+            bar.css({ width: "0%" });
+            text.text("");
+        }
+    });
+
+    /* ===========================
+       회원가입 Progress Step 계산
+    =========================== */
+    function updateSignupProgress() {
+        let progress = 0;
+
+        const id = $("#ins_user_id").val().trim();
+        const idValid = /^[a-z][a-z0-9]{5,7}$/.test(id);
+        if (idValid) {
+            $("#stepId").removeClass().addClass("step-item complete");
+            progress += 20;
+        } else {
+            $("#stepId").removeClass().addClass("step-item active");
+        }
+
+        const pw = $("#ins_user_password").val();
+        const pwValid = pw.length >= 8;
+        if (pwValid) {
+            $("#stepPw").removeClass().addClass("step-item complete");
+            progress += 20;
+        } else {
+            $("#stepPw").removeClass().addClass("step-item active");
+        }
+
+        const phone = $("#ins_user_phone").val();
+        const phoneValid = /^010-\d{4}-\d{4}$/.test(phone);
+        if (phoneValid) {
+            $("#stepPhone").removeClass().addClass("step-item complete");
+            progress += 20;
+        } else {
+            $("#stepPhone").removeClass().addClass("step-item active");
+        }
+
+        const addr = $("#ins_user_address1").val();
+        const addrValid = addr.trim() !== "";
+        if (addrValid) {
+            $("#stepAddress").removeClass().addClass("step-item complete");
+            progress += 20;
+        } else {
+            $("#stepAddress").removeClass().addClass("step-item active");
+        }
+
+        const agreeValid = $(".ins-agree-item:checked").length === $(".ins-agree-item").length;
+        if (agreeValid) {
+            $("#stepAgree").removeClass().addClass("step-item complete");
+            progress += 20;
+        } else {
+            $("#stepAgree").removeClass().addClass("step-item active");
+        }
+
+       $("#progressFill").css("width", progress + "%");
+       $("#progressPercent").text(progress + "%");
+
+    }
+
+    /* 모든 입력 필드 변화 감지 */
+    $("#ins_user_id, #ins_user_password, #ins_user_phone, #ins_user_address1, #ins_user_zipcode, .ins-agree-item")
+        .on("input change", updateSignupProgress);
+
+
 });
+
+
 </script>
 
 </body>

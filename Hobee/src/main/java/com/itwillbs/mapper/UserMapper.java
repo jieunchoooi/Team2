@@ -37,7 +37,7 @@ public interface UserMapper {
 
     // 회원 등급 업데이트
     int updateUserGrade(UserVO userVO);
-    
+
     // 특정 회원 정보 조회 (로그인/세션 재로딩용) */
     UserVO getUserByNum(int user_num);
 
@@ -47,5 +47,12 @@ public interface UserMapper {
     // 회원 포인트 업데이트 */
     int updateUserPoints(UserVO userVO);
 
-    
+    void increaseFailCount(@Param("user_id") String user_id);
+    void resetFailCount(@Param("user_id") String user_id);
+    void lockUser(@Param("user_id") String user_id);
+
+    void updateLastLoginTime(@Param("user_id") String user_id);
+
+    void updatePasswordUpdatedAt(@Param("user_id") String user_id);
+
 }

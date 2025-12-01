@@ -1,97 +1,168 @@
 @charset "UTF-8";
 
 /* ================================
-      메인 레이아웃
+      카드 박스
 ================================ */
-.main-content {
-    margin-left: 220px;
+.write-card {
+    background: #fff;
     padding: 40px;
-    min-height: 100vh;
-    background: #f6f7fb;
-}
-
-.main-header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #333;
-}
-
-/* ================================
-      입력 카드
-================================ */
-.form-card {
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    background: #fff;
-    padding: 35px;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
 /* ================================
-      입력 폼
+      입력 요소
 ================================ */
-.form-group {
-    margin-bottom: 25px;
-}
-
-.form-group label {
-    display: block;
+label {
     font-weight: 700;
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 8px;
+    margin-top: 20px;
+    display: block;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.input-box,
+.textarea-box,
+.select-box {
     width: 100%;
-    padding: 12px 14px;
-    font-size: 14px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    background: white;
+    margin-top: 6px;
+    font-size: 14px;
 }
 
-.form-group textarea {
+.textarea-box {
     height: 200px;
     resize: none;
     line-height: 1.6;
 }
 
 /* ================================
-      버튼 영역
+      글자 수 카운터
 ================================ */
-.btn-area {
-    margin-top: 30px;
-    display: flex;
-    gap: 10px;
+.count-box {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+    text-align: right;
 }
 
-button {
+.count-box.red {
+    color: #ff4d4f;
+    font-weight: 700;
+}
+
+/* ================================
+      미리보기
+================================ */
+.preview-title {
+    margin-top: 25px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.preview-box {
+    margin-top: 10px;
+    background: #f8faff;
+    padding: 15px;
+    white-space: pre-line;
+    border-radius: 10px;
+    min-height: 80px;
+    line-height: 1.6;
+}
+
+/* ================================
+      버튼
+================================ */
+.btn-area {
+    margin-top: 35px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-blue {
+    background: #2573ff;
+    color: white;
     padding: 10px 20px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    font-size: 14px;
-    color: white;
+    font-weight: 600;
 }
 
-/* 파란 버튼 */
-.btn-blue {
-    background: #397dff;
-}
-.btn-blue:hover {
-    background: #2f67d4;
-}
+.btn-blue:hover { background:#1b5fd4; }
 
-/* 회색 버튼 */
 .btn-gray {
-    background: #aaa;
+    background: #777;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
 }
-.btn-gray:hover {
-    background: #888;
+
+.btn-gray:hover { background:#555;
 }
+
+/* 미리보기 모달 */
+.preview-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.preview-content {
+    background: white;
+    width: 600px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.preview-content h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.preview-box {
+    padding: 20px;
+    background: #f7f9ff;
+    border-left: 4px solid #4c7df5;
+    border-radius: 8px;
+}
+
+#pvQuestion {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+#pvAnswer {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.btn-green {
+    background: #28a745;
+    color: #fff;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-green:hover {
+    background: #208738;
+}
+
+

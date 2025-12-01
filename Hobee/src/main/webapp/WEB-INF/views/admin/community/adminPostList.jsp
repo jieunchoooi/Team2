@@ -23,32 +23,31 @@
 
     <div class="card-box">
 
-        <!-- 검색 영역 -->
-        <form method="get" class="search-box">
+       <!-- 검색 영역 -->
+       <form method="get" class="search-box">
 
-            <select name="type" class="search-select">
-                <option value="T" ${type == 'T' ? 'selected' : ''}>제목</option>
-                <option value="A" ${type == 'A' ? 'selected' : ''}>작성자</option>
-                <option value="B" ${type == 'B' ? 'selected' : ''}>게시판</option>
-            </select>
+           <select name="type" class="search-select">
+               <option value="T" ${type == 'T' ? 'selected' : ''}>제목</option>
+               <option value="A" ${type == 'A' ? 'selected' : ''}>작성자</option>
+               <option value="B" ${type == 'B' ? 'selected' : ''}>게시판</option>
+           </select>
 
-            <select name="sort" class="search-select" onchange="this.form.submit()">
-                <option value="recent" ${sort == 'recent' ? 'selected' : ''}>최신순</option>
-                <option value="views" ${sort == 'views' ? 'selected' : ''}>조회순</option>
-                <option value="reply" ${sort == 'reply' ? 'selected' : ''}>댓글순</option>
-                <option value="visible" ${sort == 'visible' ? 'selected' : ''}>공개순</option>
-            </select>
+           <select name="sort" class="search-select" onchange="this.form.submit()">
+               <option value="recent">최신순</option>
+               <option value="views">조회순</option>
+               <option value="reply">댓글순</option>
+               <option value="visible">공개순</option>
+           </select>
 
-            <input type="text" name="keyword" value="${keyword}" placeholder="검색어를 입력하세요" class="search-input">
+           <!-- ⭐ 검색 입력 -->
+           <div class="search-wrapper">
+               <input type="text" name="keyword" class="search-input" placeholder="검색어 입력">
+               <div id="autoBox" class="auto-box"></div> <!-- ⭐ 반드시 여기! -->
+           </div>
 
-            <button type="submit" class="search-btn">검색</button>
+           <button type="submit" class="search-btn">검색</button>
 
-            <button type="button" class="reset-btn"
-                    onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'">
-                전체 목록
-            </button>
-
-        </form>
+       </form>
 
         <!-- 일괄 처리 버튼 -->
         <div class="batch-actions">
@@ -202,6 +201,53 @@ function batchAction(action) {
     form.submit();
 }
 </script>
+
+<!-- ⭐ 자동완성 AJAX 코드 -->
+<script>
+const input = document.querySelector(".search-input");
+const autoBox = document.getElementById("autoBox");
+
+input.addEventListener("keyup", function () {
+    const keyword = this.value.trim();
+
+    // 입력 없으면 바로 숨김
+    if (keyword === "") {
+        autoBox.innerHTML = "";
+        autoBox.style.display = "none";
+        return;
+    }
+
+    fetch("${pageContext.request.contextPath}/admin/post/searchAuto?keyword=" + keyword)
+        .then(res => res.json())
+        .then(list => {
+
+            // 결과가 없으면 자동완성 숨김
+            if (!list || list.length === 0) {
+                autoBox.innerHTML = "";
+                autoBox.style.display = "none";   // ⭐ 핵심
+                return;
+            }
+
+            // 결과가 있을 때만 표시
+            autoBox.innerHTML = list
+                .map(item => `<div class="auto-item" onclick="selectKeyword('${item}')">${item}</div>`)
+                .join("");
+
+            autoBox.style.display = "block";   // ⭐ 여기서만 보이도록
+        })
+        .catch(err => {
+            console.error("자동완성 오류:", err);
+            autoBox.style.display = "none";
+        });
+});
+
+function selectKeyword(value) {
+    input.value = value;
+    autoBox.style.display = "none";
+}
+
+</script>
+
 
 </body>
 </html>

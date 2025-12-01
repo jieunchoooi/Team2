@@ -50,5 +50,36 @@ public class AdminFaqService {
     	System.out.println("AdminFaqService : updateVisible() 실행");
     	adminFaqMapper.updateVisible(vo);
     }
-	
+
+    // 필터 + 검색
+    public List<AdminFaqVO> getFaqListFiltered(String category, String keyword) {
+        return adminFaqMapper.getFaqListFiltered(category, keyword);
+    }
+
+    public List<AdminFaqVO> getFaqListPaged(
+            int startRow, int pageSize, String category,
+            String keyword, String sort) {
+        return adminFaqMapper.getFaqListPaged(startRow, pageSize, category, keyword, sort);
+    }
+
+
+    public int getFaqCount(String category, String keyword) {
+        return adminFaqMapper.getFaqCount(category, keyword);
+    }
+
+    public void updateVisibleBatch(List<Integer> ids, int isVisible) {
+        adminFaqMapper.updateVisibleBatch(ids, isVisible);
+    }
+
+    public void deleteBatch(List<Integer> ids) {
+        adminFaqMapper.deleteBatch(ids);
+    }
+
+    public void updateOrder(List<AdminFaqVO> list) {
+        adminFaqMapper.updateOrder(list);
+    }
+
+
+
+
 }

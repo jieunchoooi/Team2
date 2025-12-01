@@ -12,6 +12,23 @@
 
         <form id="insertForm">
 
+            <!-- 🔵 회원가입 진행 단계 표시 -->
+            <div id="signupProgressBox" class="signup-progress-box">
+                <div class="step-wrapper">
+                    <div class="step-item" id="stepId">아이디</div>
+                    <div class="step-item" id="stepPw">비밀번호</div>
+                    <div class="step-item" id="stepPhone">연락처</div>
+                    <div class="step-item" id="stepAddress">주소</div>
+                    <div class="step-item" id="stepAgree">약관</div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div id="progressPercent" class="progress-percent">0%</div>
+            </div>
+
             <!-- 아이디 -->
             <label>아이디</label>
             <div class="input-row">
@@ -27,6 +44,23 @@
                    class="insert-input" placeholder="영문/숫자/특수문자 포함 8~12자" />
             <div id="pwStrengthMsg" class="msg"></div>
 
+            <div id="capsLockMsg" class="caps-msg"></div>
+
+            <!-- 비밀번호 강도 게이지 -->
+            <div class="pw-meter">
+                <div class="pw-meter-bar" id="pwMeterBar"></div>
+            </div>
+            <div id="pwStrengthText" class="pw-strength-text"></div>
+
+            <!-- 🔥 비밀번호 체크리스트 추가  -->
+            <div id="pwCheckList" class="pw-check-list">
+                <div class="pw-rule" id="ruleLength">● 8~12자</div>
+                <div class="pw-rule" id="ruleLetter">● 영문 포함</div>
+                <div class="pw-rule" id="ruleNumber">● 숫자 포함</div>
+                <div class="pw-rule" id="ruleSpecial">● 특수문자 포함</div>
+                <div class="pw-rule" id="ruleStart">● 숫자로 시작 금지</div>
+            </div>
+
             <!-- 비밀번호 확인 -->
             <label>비밀번호 확인</label>
             <input type="password" id="ins_user_password2" class="insert-input"
@@ -38,19 +72,14 @@
             <input type="text" id="ins_user_name" name="user_name"
                    class="insert-input" placeholder="이름을 입력하세요" />
 
-            <!-- 이메일 -->
-            <label>이메일</label>
-            <div class="input-row">
-                <input type="text" id="ins_user_email" name="user_email"
-                       class="insert-input" placeholder="예: example@naver.com" />
-                <button type="button" id="ins_checkEmailBtn" class="check-btn">중복확인</button>
-            </div>
-            <div id="ins_emailCheckMsg" class="msg"></div>
-
-            <!-- 전화번호 -->
-            <label>전화번호</label>
-            <input type="text" id="ins_user_phone" name="user_phone"
-                   class="insert-input" placeholder="예: 010-1234-5678" />
+             <!-- 이메일 -->
+             <label>이메일</label>
+             <div class="input-row">
+                  <input type="text" id="ins_user_email" name="user_email"
+                         class="insert-input" placeholder="예: example@naver.com" />
+                  <button type="button" id="ins_checkEmailBtn" class="check-btn">중복확인</button>
+             </div>
+             <div id="ins_emailCheckMsg" class="msg"></div>
 
             <!-- 주소 -->
             <label>주소</label>
@@ -125,6 +154,54 @@
     </div>
 </div>
 
+<!-- 🔥 회원가입 성공 애니메이션 팝업 -->
+<div id="joinSuccessPopup" class="join-success-popup" style="display:none;">
+    <div class="join-success-box">
+        <div class="checkmark-circle">
+            <div class="checkmark draw"></div>
+        </div>
+        <h3>회원가입 완료!</h3>
+        <p>Hobee에 오신 것을 환영합니다 😄</p>
+    </div>
+</div>
+
+<!-- 🔍 Hobee 주소검색 레이어 -->
+<div id="daumPostLayerWrapper"
+     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.45); z-index:10000;">
+
+    <div id="daumPostLayer"
+         style="position:absolute; background:#fff; border-radius:16px;
+                width:550px; height:620px; left:50%; top:50%;
+                transform:translate(-50%, -50%);
+                box-shadow:0 10px 40px rgba(0,0,0,0.25); overflow:hidden;">
+
+        <!-- Header -->
+        <div class="hobee-post-header"
+             style="height:55px; background:#1e5eff; color:#fff;
+                    padding:0 40px; display:flex; align-items:center;
+                    justify-content:space-between; font-size:18px;
+                    font-weight:700;">
+            <span>🔍 주소 검색</span>
+            <span id="btnCloseDaumPost"
+                  style="cursor:pointer; font-size:22px; font-weight:600;">×</span>
+        </div>
+
+        <!-- 카카오 주소검색 embed 영역 -->
+        <div id="daumPostEmbed"
+             style="width:100%; height:500px; border-radius:0; overflow:hidden;"></div>
+
+        <!-- Footer -->
+        <div class="hobee-post-footer"
+             style="height:65px; background:#f7f9fc; display:flex; align-items:center;
+                    justify-content:center; font-size:14px; color:#666;">
+            Hobee · Online Class Platform
+        </div>
+
+    </div>
+</div>
+
+
 <!-- CSS -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/resources/css/include/insertModal.css?v=20251120">
@@ -134,15 +211,41 @@
 
 <script>
 // ============================
-// 주소 검색 기능
+// Daum 주소검색 (레이어 방식)
 // ============================
-document.getElementById("btnFindAddress").onclick = function() {
+
+// 레이어 닫기
+function closeDaumPostLayer() {
+    document.getElementById("daumPostLayerWrapper").style.display = "none";
+}
+
+// 닫기 버튼
+document.getElementById("btnCloseDaumPost").onclick = closeDaumPostLayer;
+
+
+// 레이어 열기
+function openDaumPostLayer() {
+
+    const wrapper = document.getElementById("daumPostLayerWrapper");
+    const embed = document.getElementById("daumPostEmbed");
+
     new daum.Postcode({
         oncomplete: function(data) {
+
+            // 값 채우기
             document.getElementById("ins_user_zipcode").value = data.zonecode;
             document.getElementById("ins_user_address1").value = data.roadAddress || data.jibunAddress;
             document.getElementById("ins_user_address2").focus();
-        }
-    }).open();
-};
+
+            closeDaumPostLayer();
+        },
+        width: "100%",
+        height: "100%"
+    }).embed(embed);
+
+    wrapper.style.display = "block";
+}
+
+// 버튼 클릭 → 열기
+document.getElementById("btnFindAddress").onclick = openDaumPostLayer;
 </script>

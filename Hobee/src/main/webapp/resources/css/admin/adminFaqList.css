@@ -1,8 +1,5 @@
 @charset "UTF-8";
 
-/* ================================
-      메인 레이아웃
-================================ */
 .main-content {
     margin-left: 220px;
     padding: 40px;
@@ -17,9 +14,6 @@
     color: #333;
 }
 
-/* ================================
-      카드 박스
-================================ */
 .table-card {
     width: 100%;
     max-width: 1200px;
@@ -30,18 +24,12 @@
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* ================================
-      우측 버튼 (FAQ 작성)
-================================ */
 .right-area {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 15px;
 }
 
-/* ================================
-      테이블 공통
-================================ */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -55,32 +43,26 @@
     padding: 14px 10px;
     text-align: center;
     font-size: 14px;
-    color: #333;
 }
 
 .admin-table td {
     padding: 12px 10px;
-    font-size: 14px;
     text-align: center;
     border-bottom: 1px solid #ececec;
 }
 
-/* 질문(Question)은 왼쪽 정렬 */
 td.left {
     text-align: left;
     padding-left: 12px;
 }
 
 .empty-text {
-    text-align: center;
     padding: 30px;
+    text-align: center;
     color: #777;
     font-size: 15px;
 }
 
-/* ================================
-      제목 링크
-================================ */
 .title-link {
     color: #397dff;
     font-weight: 600;
@@ -91,35 +73,139 @@ td.left {
     text-decoration: underline;
 }
 
-/* ================================
-      버튼 스타일
-================================ */
 button {
     padding: 7px 14px;
     border-radius: 6px;
-    cursor: pointer;
     border: none;
+    color: white;
+    cursor: pointer;
     font-size: 13px;
-    color: #fff;
 }
 
-.btn-blue {
-    background: #397dff;
-}
-.btn-blue:hover {
-    background: #2f67d4;
+.btn-blue { background: #397dff; }
+.btn-blue:hover { background: #2f67d4; }
+
+.btn-gray { background: #aaa; }
+.btn-gray:hover { background: #888; }
+
+.btn-red { background: #e74a3b; }
+.btn-red:hover { background: #cf2f23; }
+
+.filter-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-.btn-gray {
-    background: #aaa;
-}
-.btn-gray:hover {
-    background: #888;
+.filter-box select,
+.filter-box input {
+    height: 36px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
-.btn-red {
-    background: #e74a3b;
+.paging {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
 }
-.btn-red:hover {
-    background: #cf2f23;
+
+.page-btn, .page-num {
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #f5f5f5;
+    color: #333;
+    text-decoration: none;
+    border: 1px solid #ddd;
 }
+
+.page-num.active {
+    background: #2573ff;
+    color: white;
+    font-weight: bold;
+}
+
+/* 드래그 핸들 */
+.drag-handle {
+    cursor: move;
+    font-size: 20px;
+    color: #666;
+}
+
+/* 배지 색상 */
+.faq-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+}
+
+.badge-account { background: #3b82f6; }
+.badge-payment { background: #8b5cf6; }
+.badge-community { background: #10b981; }
+.badge-class { background: #f97316; }
+.badge-etc { background: #6b7280; }
+
+/* 체크박스 숨김 모드 */
+.row-check, #checkAll { display: none; }
+.show-check .row-check, .show-check #checkAll { display: inline-block; }
+
+/* 일괄 처리 버튼 영역 */
+.batch-area {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.drag-handle {
+    cursor: grab;
+    font-size: 18px;
+    color: #555;
+    user-select: none;
+}
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.faq-answer-box {
+    background: #f9fbff;
+    border-left: 4px solid #397dff;
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+}
+
+.faq-question {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.faq-answer-row td {
+    border-bottom: 1px solid #e6e6e6;
+}
+
+/* FAQ 답변 기본 접힘 */
+.faq-answer-row {
+    display: none;
+}
+
+/* 답변 보이는 박스 스타일 */
+.faq-answer-box {
+    padding: 15px;
+    background: #fafbff;
+    border-left: 4px solid #4c7df5;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+
+
+
+
