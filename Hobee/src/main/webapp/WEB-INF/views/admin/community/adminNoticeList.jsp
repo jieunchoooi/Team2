@@ -45,12 +45,13 @@
                 <input type="text" name="keyword" class="search-input"
                        value="${param.keyword}" placeholder="검색어를 입력하세요">
 
-                <button class="btn-blue" type="submit">검색</button>
+                <button class="btn-search" type="submit">검색</button>
+
             </form>
 
             <!-- ➕ 공지작성 + 선택삭제 -->
             <div class="right-area">
-                <button class="btn-blue"
+                <button class="btn-write"
                         onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeWrite'">
                     + 공지 작성
                 </button>
@@ -161,7 +162,7 @@
                     </td>
 
                     <td>
-                        <button class="btn-blue"
+                        <button class="btn-edit"
                                 onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeEdit?notice_id=${n.notice_id}'">
                             수정
                         </button>

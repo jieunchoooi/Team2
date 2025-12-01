@@ -122,16 +122,17 @@
                         </span>
                     </td>
 
-                    <td class="left faq-question" data-id="${f.faq_id}">
+                    <td class="faq-question" data-id="${f.faq_id}">
                         ${f.question}
                     </td>
 
-                    <td>
-                        <button class="toggle-visible ${f.is_visible==1?'btn-blue':'btn-gray'}"
-                                data-id="${f.faq_id}" data-visible="${f.is_visible}">
-                            ${f.is_visible==1?'공개':'숨김'}
-                        </button>
-                    </td>
+                   <td>
+    					<button class="toggle-visible ${f.is_visible==1?'btn-green':'btn-gray'}"
+           						data-id="${f.faq_id}" data-visible="${f.is_visible}">
+        					${f.is_visible==1?'공개':'숨김'}
+    					</button>
+				    </td>
+
 
                     <td>
                         <button class="btn-blue"
@@ -141,7 +142,7 @@
                     </td>
 
                     <td>
-                        <button class="btn-blue"
+                        <button class="btn-purple"
                                 onclick="location.href='${pageContext.request.contextPath}/admin/adminFaqEdit?faq_id=${f.faq_id}'">
                             수정
                         </button>

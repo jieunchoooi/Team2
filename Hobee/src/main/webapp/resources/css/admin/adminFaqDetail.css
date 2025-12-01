@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
-/* 페이지 전체 */
+/* ================================
+   전체 레이아웃
+================================ */
 .main-content {
     margin-left: 260px;
     padding: 40px;
@@ -12,27 +14,30 @@
 .main-header h1 {
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 25px;
     color: #222;
+    margin-bottom: 40px !important;
 }
 
-/* 상세 카드 */
+/* ================================
+   상세 카드 박스
+================================ */
 .detail-card {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    background: #fcfcfe !important;              /* 부드러운 화이트 */
+    padding: 45px;
+    border-radius: 22px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    padding-bottom: 50px; /* 버튼이 안 잘리도록 */
 }
 
-/* 행 */
+/* ================================
+   행 기본 구조
+================================ */
 .detail-row {
     display: flex;
     padding: 14px 0;
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid #e2e5ec !important;
 }
 
 /* 라벨 */
@@ -40,6 +45,8 @@
     width: 160px;
     font-weight: 700;
     color: #333;
+    text-align: right;
+    padding-right: 20px;
 }
 
 /* 값 */
@@ -49,17 +56,23 @@
     line-height: 1.6;
 }
 
-/* 답변 영역 */
+/* ================================
+   답변 박스
+================================ */
 .detail-content-area {
     flex: 1;
-    background: #f8faff;
-    padding: 18px;
-    border-radius: 10px;
-    line-height: 1.7;
+    background: #f4f7ff !important;           /* 연 파스텔 블루로 강조 */
+    border-left: 4px solid #3b82f6 !important;
+    border-radius: 12px;
+    padding: 20px 25px !important;
+    line-height: 1.75;
+    color: #333;
     white-space: pre-line;
 }
 
-/* 버튼 영역 */
+/* ================================
+   버튼 영역
+================================ */
 .btn-area {
     margin-top: 40px;
     display: flex;
@@ -67,49 +80,51 @@
     justify-content: flex-end;
 }
 
-/* 버튼들 */
+/* 공통 버튼 스타일 */
+.btn-blue,
+.btn-red,
+.btn-gray {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* 수정 */
 .btn-blue {
     background: #2573ff;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
 }
-
 .btn-blue:hover {
     background: #1b5fd4;
 }
 
+/* 삭제 */
 .btn-red {
     background: #ff4d4f;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
 }
-
 .btn-red:hover {
     background: #d9363e;
 }
 
-.btn-gray {
-    background: #999;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
+/* 목록으로 */
+button.btn-gray {
+    background: #f1f2f4 !important;
+    color: #444 !important;
+    border: 1px solid #c5c7cc !important;
 }
 
-.btn-gray:hover {
-    background: #777;
+button.btn-gray:hover {
+    background: #e3e5e8 !important;
 }
 
+
+/* ================================
+   공개/숨김 토글 버튼
+================================ */
 .visible-btn {
     padding: 8px 18px;
     border-radius: 8px;
@@ -126,5 +141,15 @@
 .btn-off {
     background: #777;
     color: white;
+}
+
+main.main-content > .main-header > h1 {
+    margin-bottom: 55px !important;
+    display: block !important;   /* 일부 reset이 inline-block 처리한 경우 대비 */
+}
+
+.detail-label {
+    width: 140px !important;
+    text-align: center !important;
 }
 

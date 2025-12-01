@@ -238,5 +238,68 @@ button {
     background: #d8e6ff;
 }
 
+/* ================================ */
+/*      신규 버튼 컬러 시스템       */
+/* ================================ */
+
+/* 🔵 검색(Search) */
+.btn-search {
+    background: #2573ff !important;
+    color: white !important;
+}
+.btn-search:hover {
+    background: #1b5fd4 !important;
+}
+
+/* 🟢 공지 작성(Add) */
+.btn-write {
+    background: #22c55e !important;
+    color: white !important;
+}
+.btn-write:hover {
+    background: #16a34a !important;
+}
+
+/* 🟣 수정(Edit) */
+.btn-edit {
+    background: #8b5cf6 !important;
+    color: white !important;
+}
+.btn-edit:hover {
+    background: #7c3aed !important;
+}
+
+/* 🔴 삭제는 기존 클래스(btn-red) 그대로 유지 */
+/* 🟠 고정은 btn-orange 그대로 유지 */
+
+/* 검색창 + 버튼 높이를 완전히 일치시키기 */
+.search-input {
+    height: 40px !important;      /* 버튼과 동일한 높이 */
+    padding: 0 12px !important;   
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* 검색 버튼 */
+.btn-search {
+    height: 40px !important;      /* input과 동일하게 */
+    line-height: 40px !important;
+    padding: 0 18px !important;
+}
+
+/* 공지작성 버튼 */
+.btn-write {
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 0 18px !important;
+}
+
+/* 선택삭제 버튼 */
+.btn-delete-select {
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 0 18px !important;
+}
+
 
 

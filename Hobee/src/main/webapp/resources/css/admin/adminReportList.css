@@ -1,437 +1,299 @@
 @charset "UTF-8";
 
-/* ================================
-      메인 레이아웃
-================================ */
+/* ======================================
+   🔵 메인 레이아웃
+====================================== */
 .main-content {
     margin-left: 220px;
-    padding: 40px;
-    background: #f6f7fb;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     min-height: 100vh;
+    background: #f6f7fb;
 }
 
+/* 신고 관리 제목(H1) 예쁘게 여백 맞추기 */
 .main-header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #333;
+    margin-left: 20px !important;
+    margin-top: 20px !important;
+    margin-bottom: 10px !important;
+
+    font-size: 30px;
+    font-weight: 800;
+    color: #222;
 }
 
-/* ================================
-      카드 박스
-================================ */
+/* 신고관리 제목을 댓글관리와 동일하게 여백 설정 */
+.main-header h1,
+.page-title {
+    padding-top: 20px !important;    /* 위쪽 충분한 여백 */
+    padding-left: 20px !important;   /* 왼쪽 여백 */
+    margin-bottom: 25px !important;
+
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #111 !important;
+}
+
+
+/* ======================================
+   🔵 중앙 정렬 고정 레이아웃(1200px)
+====================================== */
+.center-wrapper,
+.stats-box,
+.filter-box,
 .table-card {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
-
-/* ================================
-      테이블 스타일
-================================ */
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.admin-table thead {
-    background: #e9efff;
-}
-
-.admin-table th {
-    padding: 14px 10px;
-    text-align: center;
-    font-size: 14px;
-    color: #333;
-}
-
-.admin-table td {
-    padding: 12px 10px;
-    text-align: center;
-    font-size: 14px;
-    border-bottom: 1px solid #ececec;
-}
-
-.empty-text {
-    text-align: center;
-    padding: 30px;
-    color: #777;
-    font-size: 15px;
-}
-
-/* ================================
-      상태 배지
-================================ */
-.status-badge {
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    color: #fff;
-}
-
-.status-badge.done {
-    background: #3c8dff;
-}
-
-.status-badge.wait {
-    background: #e74a3b;
-}
-
-/* ================================
-      버튼 스타일
-================================ */
-button {
-    padding: 10px 18px !important;   /* 버튼 높이+넓이 증가 */
-    font-size: 15px !important;      /* 글자 키우기 */
-    font-weight: 600;
-    border-radius: 8px;
+    width: 1200px !important;   /* 🔥 모든 박스 동일 폭 */
+    margin: 0 auto !important;  /* 🔥 완전 중앙 */
 }
 
 
-.btn-blue {
-    background: #397dff;
-    color: #fff;
-}
-
-.btn-blue:hover {
-    background: #2f67d4;
-}
-
-.btn-gray {
-    background: #aaa;
-    color: #fff;
-}
-
-.btn-gray:hover {
-    background: #888;
-}
-
-.btn-red {
-    background: #e74a3b;
-    color: #fff;
-}
-
-.btn-red:hover {
-    background: #cf2f23;
-}
-
-/* 신고 내용 말줄임 처리 */
-.reason-cell {
-    max-width: 280px;   /* 원하는 폭 설정 */
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    cursor: pointer;    /* 마우스 커서 손가락 모양 */
-}
-
-/* 마우스 올렸을 때 말풍선 느낌 */
-.reason-cell:hover {
-    color: #2573ff;
-}
-
-/* 🔎 필터 박스 */
-.filter-box {
-    margin-bottom: 20px;
-    display: flex;
-    gap: 10px;
-}
-
-.filter-select {
-    height: 38px;
-    padding: 5px 10px;
-    border-radius: 8px;
-    border: 1px solid #dcdcdc;
-    font-size: 14px;
-}
-
-/* 필터 적용 버튼 (연한 파랑) */
-.filter-box .btn-blue {
-    background-color: #4F8BFF !important;
-    border: none;
-    padding: 7px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 8px;
-}
-
-.filter-box .btn-blue:hover {
-    background-color: #3A74E8 !important;
-}
-
-/* 필터 적용 버튼 색상 강제 적용 */
-.filter-box button.btn-blue {
-    background-color: #4F8BFF !important;
-    border: none !important;
-    padding: 7px 16px !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-}
-
-.filter-box button.btn-blue:hover {
-    background-color: #3A74E8 !important;
-}
-
-/* 필터 적용 버튼 (연한 파랑) — 최종 우선순위 강제 */
-.filter-box form > button.btn-blue {
-    background-color: #4F8BFF !important;
-    color: #fff !important;
-    border: none !important;
-    padding: 7px 16px !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-}
-
-.filter-box form > button.btn-blue:hover {
-    background-color: #3A74E8 !important;
-}
-
-/* 페이지네이션 */
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.page-btn {
-    display: inline-block;
-    padding: 8px 14px;
-    margin: 0 4px;
-    font-size: 14px;
-    color: #397dff;
-    border: 1px solid #397dff;
-    border-radius: 6px;
-    text-decoration: none;
-}
-
-.page-btn:hover {
-    background: #397dff;
-    color: #fff;
-}
-
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.page-btn {
-    display: inline-block;
-    padding: 7px 12px;
-    margin: 0 3px;
-    font-size: 14px;
-    color: #397dff;
-    border: 1px solid #397dff;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-.page-btn:hover {
-    background: #397dff;
-    color: #fff;
-}
-
-
-/* 통계 박스 전체 너비 자동 */
+/* ======================================
+   🔵 통계 4개 카드
+====================================== */
 .stats-box {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
     display: flex;
-    justify-content: space-between;   /* 양쪽 끝까지 확장 */
-    gap: 20px;
-    margin: 20px auto 25px auto !important;
-    width: 100%;                      /* 전체 너비 */
-    max-width: 1200px;                /* 하지만 너무 넓어지지 않도록 */
+    justify-content: space-between;
+    gap: 15px;
 }
-
 
 .stat-card {
     flex: 1;
     background: #fff;
-    padding: 20px;
+    padding: 18px 16px;
     border-radius: 14px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     text-align: center;
 }
 
 .stat-title {
-    font-size: 15px;
-    color: #555;
-    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
     font-weight: 600;
 }
 
 .stat-value {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
     color: #2573ff;
 }
 
-.status-badge.reject {
-    background: #888 !important;
-}
 
-/* 🔥 상태 배지(반려/완료/대기)만 크기 업그레이드 */
-.status-badge {
-    padding: 10px 18px !important;   /* 크기 증가 */
-    font-size: 15px !important;      /* 글자 크기 증가 */
-    border-radius: 10px !important;  /* 둥글게 */
-    font-weight: 700 !important;
-}
+/* ======================================
+   🔵 필터 박스 (폭 통일 + 오른쪽 정렬)
+====================================== */
+.filter-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
 
-
-/* 상태 컬러 유지 */
-.status-badge.wait {
-    background: #e74a3b !important;
-}
-
-.status-badge.done {
-    background: #397dff !important;
-}
-
-/* 메인 콘텐츠 영역 스크롤 가능하게 수정 */
-.main-content {
-    min-height: 100vh !important;
-    height: auto !important;
-    overflow: visible !important;
-    padding-bottom: 100px !important;
-}
-
-/* 신고 카드 박스 */
-.card-box {
-    margin-top: 20px;
-    background: #fff;
-    padding: 30px;
+    background: rgba(255,255,255,0.9);
+    padding: 14px 20px;
     border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    width: 100%;
-    min-height: auto !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+
+    margin-bottom: 20px !important;
 }
 
-/* 테이블이 잘리지 않도록 */
-.styled-table {
+.filter-select {
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid #d0d4e4;
+    font-size: 15px;
+}
+
+/* 필터 적용 버튼 */
+.filter-box .btn-blue {
+    height: 44px;
+    padding: 0 20px;
+    background: #397dff;
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    border-radius: 10px;
+}
+.filter-box .btn-blue:hover {
+    background: #2f67d4;
+}
+
+
+/* ======================================
+   🔵 테이블 카드
+====================================== */
+.table-card {
+    background: #fff;
+    padding: 28px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.admin-table {
     width: 100%;
-    min-width: 1000px;      /* 테이블 폭 보장 */
+    border-collapse: collapse;
     table-layout: fixed;
 }
 
-
-.status-badge.done {
-    background: #397dff; /* 파랑 */
+.admin-table th,
+.admin-table td {
+    padding: 16px 10px;
+    font-size: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
 }
 
-.status-badge.reject {
-    background: #888; /* 회색 */
+.admin-table thead {
+    background: #eef2ff;
 }
+
+.admin-table tbody tr:hover {
+    background: #f8f9ff;
+}
+
 
 /* ================================
-   🔥 신고관리 화면 — 레이아웃 재정렬
+   🔵 신고 내용 말줄임
 ================================ */
-
-/* 제목은 왼쪽 상단 고정 */
-.main-header h1 {
-    margin-left: 10px !important;
-    margin-top: 10px !important;
-    font-size: 30px !important;
-    font-weight: 800 !important;
+.reason-cell {
+    max-width: 270px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
 }
-
-/* 전체 콘텐츠는 기본 패딩만 유지 */
-.main-content {
-    padding-top: 40px !important;
+.reason-cell:hover {
+    color: #2573ff;
 }
 
 
-/* 🔥 모든 박스(통계/필터/테이블)를 같은 라인에서 중앙정렬 */
-.center-wrapper {
-    width: 1200px;      /* 고정폭 */
-    margin: 0 auto;     /* 중앙 정렬 */
-}
-
-/* 통계 박스 중앙으로 */
-.stats-box {
-    width: 1200px;
-    margin: 20px auto 25px auto !important;
-}
-
-/* 필터박스도 중앙 */
-.filter-box {
-    display: flex;
-    align-items: center;
-    gap: 12px;     /* 박스 간 간격 */
-    width: 1200px;
-    margin: 0 auto 20px;
-}
-
-
-
-/* 테이블 카드박스도 중앙 */
-.table-card {
-    width: 1200px !important;
-    margin: 0 auto !important;
-}
-
-/* 필터 select 크기 조금 키우기 */
-.filter-select {
-    height: 46px;
-    padding: 0 12px;
-    border-radius: 10px;
-    border: 1px solid #dcdcdc;
-    font-size: 15px;
-}
-
-
-
-/* 🔵 필터 적용 버튼 크게 + 테두리 제거 */
-.filter-box button.btn-blue {
-    height: 46px;        /* select와 높이 맞춤 */
-    padding: 0 20px;
-    font-size: 15px;
-    border-radius: 10px;
-    border: none;
-    background-color: #4F8BFF;
-}
-
-
-
-
-/* 테이블 글자/줄 간격 조금 키우기 */
-/* 📌 테이블 텍스트 전체 업 */
-.admin-table td,
-.admin-table th {
-    font-size: 16px !important;
-    padding: 18px 12px !important;  /* 줄 간격도 자연스럽게↑ */
-}
-
-
-
-.center-wrapper {
-    width: 1200px;
-    margin: 0 auto;
-}
-
-/* 🔘 리스트 테이블 버튼 크기 업 */
-.admin-table button,
-.admin-table .btn-blue,
-.admin-table .btn-gray,
-.admin-table .btn-red {
-    padding: 10px 18px !important;    /* 버튼 전체 크기↑ */
-    font-size: 15px !important;       /* 글자 크기↑ */
+/* ================================
+   🔵 버튼들 (크기 완벽 통일)
+================================ */
+.btn-blue,
+.btn-gray,
+.btn-red {
+    padding: 10px 20px !important;
     border-radius: 10px !important;
-    border: none !important;          /* 테두리 완전 제거 */
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    min-width: 70px !important;
+    cursor: pointer;
+}
+
+.btn-blue  { background: #397dff; color: #fff; }
+.btn-blue:hover { background: #2f67d4; }
+
+.btn-gray  { background: #9a9ea4; color: #fff; }
+.btn-gray:hover { background: #7e8287; }
+
+.btn-red   { background: #ff5a65; color: #fff; }
+.btn-red:hover { background: #e34650; }
+
+
+
+
+/* ================================
+   🔵 페이지네이션
+================================ */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.page-btn {
+    padding: 8px 14px;
+    border: 1px solid #397dff;
+    color: #397dff;
+    border-radius: 8px;
+    margin: 0 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+.page-btn:hover {
+    background: #397dff;
+    color: #fff;
+}
+
+/* 📌 center-wrapper: 모든 박스를 이 안에 넣어야 진짜 중앙 정렬 */
+.center-wrapper {
+    width: 1200px;
+    margin: 0 auto;     /* 중앙정렬 */
+}
+
+
+/* 📌 stats/filter/table 공통 — width 제거 (center-wrapper가 처리함) */
+.filter-box,
+.table-card {
+    width: 100% !important;      /* center-wrapper 기준으로 맞춤 */
+    box-sizing: border-box;      /* 패딩 포함해도 정렬 유지 */
+}
+
+
+/* ================================
+   🔵 상태 배지도 버튼 크기랑 통일
+================================ */
+/* 상태배지 크기를 상세/처리 버튼과 동일하게 */
+.status-badge {
+    padding: 6px 12px !important;    /* 크기 동일하게 */
+    font-size: 14px !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    min-width: 60px !important;      /* 최소 가로 크기 통일 */
+    text-align: center !important;
+}
+
+/* 색상 유지 */
+.status-badge.reject { background: #9A9EA4 !important; } /* 반려 */
+.status-badge.done   { background: #3CB878 !important; } /* 완료 */
+.status-badge.wait   { background: #FF8A65 !important; } /* 대기 */
+
+/* 모든 버튼 공통크기 업그레이드 */
+.admin-table button,
+.status-badge {
+    padding: 8px 18px !important;   /* 크기 +10~15% 증가 */
+    font-size: 15px !important;
+    border-radius: 10px !important;
+    min-width: 70px !important;
     font-weight: 700 !important;
 }
 
+/* 짝수줄 은은한 배경 */
+.admin-table tbody tr:nth-child(even) {
+    background: #f7f9ff;
+}
 
+/* hover 시 강조 */
+.admin-table tbody tr:hover {
+    background: #e8f0ff !important;
+    transition: 0.2s;
+}
 
+.admin-table th:nth-child(1),  /* 신고자 */
+.admin-table td:nth-child(1) { width: 10%; }
 
+.admin-table th:nth-child(2),  /* 대상 */
+.admin-table td:nth-child(2) { width: 13%; }
 
+.admin-table th:nth-child(3),  /* 유형 */
+.admin-table td:nth-child(3) { width: 10%; }
 
+.admin-table th:nth-child(4),  /* 신고내용 */
+.admin-table td:nth-child(4) { width: 32%; } /* 가장 넓게 */
 
+.admin-table th:nth-child(5),  /* 신고일 */
+.admin-table td:nth-child(5) { width: 15%; }
 
+.admin-table th:nth-child(6),  /* 상태 */
+.admin-table td:nth-child(6) { width: 10%; }
 
+.admin-table th:nth-child(7),  /* 상세 버튼 */
+.admin-table td:nth-child(7) { width: 10%; }
 
+.admin-table th:nth-child(8),  /* 처리 버튼 */
+.admin-table td:nth-child(8) { width: 10%; }
 
 
 

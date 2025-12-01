@@ -218,3 +218,138 @@ button {
 
 .btn-red { background: #e74a3b; }
 .btn-red:hover { background: #cf2f23; }
+
+/* ============================================
+   🔮 1) 입력창 포커스(보라 강조)
+   ============================================ */
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    transition: 0.25s ease;
+    background: #fff;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #8c5bff !important;
+    box-shadow: 0 0 0 3px rgba(140, 91, 255, 0.25);
+    background: #ffffff !important;
+}
+
+
+/* ============================================
+   🔮 2) 버튼 공통 스타일 (Glass 느낌)
+   ============================================ */
+
+button,
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    backdrop-filter: blur(6px);
+}
+
+/* 파란 버튼 — 기본 동작/저장/확인 */
+.btn-blue,
+.btn-primary {
+    background: rgba(63, 118, 255, 0.9);
+    color: #fff;
+}
+.btn-blue:hover,
+.btn-primary:hover {
+    background: rgba(63, 118, 255, 1);
+    transform: translateY(-2px);
+}
+
+/* 보라 버튼 — 미리보기/강조용 */
+.btn-purple {
+    background: rgba(140, 91, 255, 0.9);
+    color: white;
+}
+.btn-purple:hover {
+    background: rgba(140, 91, 255, 1);
+    transform: translateY(-2px);
+}
+
+/* 초록 버튼 — 저장 완료, 적용 */
+.btn-green {
+    background: rgba(52, 168, 83, 0.9);
+    color: white;
+}
+.btn-green:hover {
+    background: rgba(52, 168, 83, 1);
+    transform: translateY(-2px);
+}
+
+/* 빨강 버튼 — 삭제, 위험 동작 */
+.btn-red,
+button.delete-btn {
+    background: rgba(255, 82, 82, 0.9);
+    color: white;
+}
+.btn-red:hover,
+button.delete-btn:hover {
+    background: rgba(255, 82, 82, 1);
+    transform: translateY(-2px);
+}
+
+/* 회색 버튼 — 목록으로, 취소 등 */
+.btn-gray {
+    background: rgba(160, 160, 160, 0.5);
+    color: #333;
+}
+.btn-gray:hover {
+    background: rgba(160, 160, 160, 0.7);
+    transform: translateY(-2px);
+}
+
+
+/* ============================================
+   🔮 3) Glass 카드 스타일 (더 고급스럽게)
+   ============================================ */
+
+.form-card,
+.detail-card {
+    background: rgba(255, 255, 255, 0.82);
+    padding: 40px;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ============================================
+   🔮 4) 제목 스타일 (살짝 강조)
+   ============================================ */
+
+.main-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.main-header h1::after {
+    content: "";
+    display: block;
+    width: 45px;
+    height: 4px;
+    margin-top: 6px;
+    background: linear-gradient(90deg, #8c5bff, #4c7ef5);
+    border-radius: 10px;
+}
+
+
+
+
+

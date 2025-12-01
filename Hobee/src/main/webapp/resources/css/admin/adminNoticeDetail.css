@@ -1,121 +1,169 @@
 @charset "UTF-8";
 
 /* ================================
-      메인 레이아웃
+   메인 레이아웃
 ================================ */
 .main-content {
     margin-left: 220px;
     padding: 40px;
-    min-height: 100vh;
     background: #f6f7fb;
+    min-height: 100vh;
 }
 
 .main-header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 60px !important;   /* 기존 25px → 40px로 늘리기 */
-    color: #333;
+    font-size: 28px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 35px !important;
 }
 
 /* ================================
-      상세 카드
+   상세 카드
 ================================ */
 .detail-card {
-    background: #fff;
     width: 100%;
-    max-width: 900px;
-    margin: 30px auto;   /* 🔥 추가: 박스를 아래로 내림 */
-    padding: 35px;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    max-width: 1100px;       /* 🔥 넓게 확장 */
+    background: #fff;
+    margin: 20px auto;
+    padding: 45px 50px;
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
-
+/* improved layout: grid */
 .detail-row {
-    display: flex;
-    padding: 12px 0;
-    border-bottom: 1px solid #e9e9e9;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    padding: 14px 0;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .detail-label {
-    width: 150px;
     font-weight: 700;
-    color: #444;
-}
-
-.detail-value {
-    flex-grow: 1;
     color: #333;
 }
 
+.detail-value {
+    color: #444;
+    line-height: 1.6;
+}
+
 /* ================================
-      공개/숨김 배지
+   공개/숨김 배지
 ================================ */
 .visible-on {
-    background: #397dff;
-    color: #fff;
+    background: #2563eb;
+    color: white;
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 13px;
 }
-
 .visible-off {
-    background: #aaa;
-    color: #fff;
+    background: #6b7280;
+    color: white;
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 13px;
 }
 
 /* ================================
-      내용 영역
+   내용 영역 확장
 ================================ */
 .detail-content-area {
-    background: #fafafa;
-    line-height: 1.6;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    min-height: 160px;
-    white-space: pre-wrap;
     width: 100%;
+    background: #f9faff;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 4px solid #4c7df5;
+    min-height: 180px;
+    line-height: 1.75;
+    white-space: pre-wrap;
 }
 
 /* ================================
-      버튼 영역
+   버튼 영역
 ================================ */
 .btn-area {
-    margin-top: 30px;
+    margin-top: 32px;
     display: flex;
-    gap: 10px;
+    gap: 12px;
 }
 
+/* 공통 버튼 */
 button {
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    transition: 0.2s;
     color: #fff;
 }
 
+/* 🔵 공개/숨김 토글 */
 .btn-blue {
-    background: #397dff;
+    background: #2563eb;
 }
 .btn-blue:hover {
-    background: #2f67d4;
+    background: #1d4ed8;
 }
 
+/* ⚫ 숨김으로 변경(중립/차분) */
 .btn-gray {
-    background: #aaa;
+    background: #6b7280;
 }
 .btn-gray:hover {
-    background: #888;
+    background: #4b5563;
 }
 
+/* 🟠 고정/해제 */
+.btn-orange {
+    background: #f97316;
+    color: #fff !important;
+}
+.btn-orange:hover {
+    background: #ea580c;
+}
+
+/* 🟣 수정 */
+.btn-edit {
+    background: #8b5cf6;
+    color: white;
+}
+.btn-edit:hover {
+    background: #7c3aed;
+}
+
+/* 🔴 삭제 */
 .btn-red {
-    background: #e74a3b;
+    background: #ef4444;
 }
 .btn-red:hover {
-    background: #cf2f23;
+    background: #dc2626;
 }
+
+/* 목록 */
+.btn-list {
+    background: #9ca3af;
+    color: white;
+}
+.btn-list:hover {
+    background: #6b7280;
+}
+
+/* 내용 부분만 전체폭으로 확장 */
+.detail-row.content-full {
+    display: block !important;    /* flex / grid 제거하고 1열 구조로 변경 */
+}
+
+.detail-row.content-full .detail-label {
+    display: block !important;
+    margin-bottom: 10px;
+}
+
+.detail-row.content-full .detail-content-area {
+    width: 100% !important;        /* 카드 전체폭 사용 */
+    margin-left: 0 !important;      
+}
+

@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+/* ==============================
+   메인 페이지 레이아웃
+============================== */
 .main-content {
     margin-left: 220px;
     padding: 40px;
@@ -14,26 +17,79 @@
     color: #333;
 }
 
+/* ==============================
+   카드 박스
+============================== */
 .table-card {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     background: #fff;
-    padding: 30px;
+    padding: 35px;
     border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
 }
 
+/* ==============================
+   작성 버튼 (우측)
+============================== */
 .right-area {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
+/* ==============================
+   🔎 필터 박스 (크기 통일)
+============================== */
+/* 🔥 필터 박스 크기 고정 */
+.filter-box {
+    width: fit-content;
+    margin-bottom: 20px;
+}
+
+/* 🔥 필터 폼 */
+.filter-box form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* 🔥 select/input 폭 강제 통일 */
+.filter-box select,
+.filter-box input {
+    width: 150px !important;
+    height: 38px;
+    box-sizing: border-box;
+    flex: none !important;        /* ← 아주 중요! 자동 늘어남 방지 */
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* 🔥 버튼 크기 통일 */
+.filter-box button {
+    width: 90px !important;
+    height: 38px;
+    flex: none !important;        /* 버튼 자동 늘어남 방지 */
+}
+
+/* ==============================
+   테이블
+============================== */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
 }
+
+/* 버튼 전체 크기 통일 */
+.admin-table button {
+    width: 60px;      /* ← 버튼 폭 고정 */
+    text-align: center;
+    padding: 7px 0;
+}
+
 
 .admin-table thead {
     background: #e9efff;
@@ -56,111 +112,61 @@ td.left {
     padding-left: 12px;
 }
 
-.empty-text {
-    padding: 30px;
-    text-align: center;
-    color: #777;
-    font-size: 15px;
-}
-
-.title-link {
-    color: #397dff;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.title-link:hover {
-    text-decoration: underline;
-}
-
+/* ==============================
+   버튼 스타일 (색상 구분)
+============================== */
 button {
     padding: 7px 14px;
     border-radius: 6px;
     border: none;
-    color: white;
     cursor: pointer;
     font-size: 13px;
+    color: #fff;
 }
 
-.btn-blue { background: #397dff; }
-.btn-blue:hover { background: #2f67d4; }
+/* 공개/숨김  → 초록/회색 */
+.btn-green { background: #16a34a; }
+.btn-green:hover { background: #118538; }
 
-.btn-gray { background: #aaa; }
-.btn-gray:hover { background: #888; }
+.btn-gray { background: #6b7280; }
+.btn-gray:hover { background: #555; }
 
+/* 상세 → 파란색 */
+.btn-blue { background: #3b82f6; }
+.btn-blue:hover { background: #336ed1; }
+
+/* 수정 → 보라색 */
+.btn-purple { background: #8b5cf6; }
+.btn-purple:hover { background: #7347d4; }
+
+/* 삭제 → 빨강 */
 .btn-red { background: #e74a3b; }
-.btn-red:hover { background: #cf2f23; }
+.btn-red:hover { background: #c93327; }
 
-.filter-box {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.filter-box select,
-.filter-box input {
-    height: 36px;
-    padding: 5px 10px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.paging {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-}
-
-.page-btn, .page-num {
-    padding: 6px 12px;
-    border-radius: 6px;
-    background: #f5f5f5;
-    color: #333;
-    text-decoration: none;
-    border: 1px solid #ddd;
-}
-
-.page-num.active {
-    background: #2573ff;
-    color: white;
-    font-weight: bold;
-}
-
-/* 드래그 핸들 */
-.drag-handle {
-    cursor: move;
-    font-size: 20px;
-    color: #666;
-}
-
-/* 배지 색상 */
+/* ==============================
+   카테고리 배지 (정렬 통일)
+============================== */
 .faq-badge {
     display: inline-block;
-    padding: 5px 12px;
+    width: 80px;              /* ← 고정 폭 */
+    text-align: center;       /* ← 글씨 가운데 */
+    padding: 6px 0;           /* ← 높이 일정 */
     border-radius: 12px;
     font-size: 13px;
     font-weight: 600;
     color: white;
+    box-sizing: border-box;
 }
 
+
+/* 카테고리 색 */
 .badge-account { background: #3b82f6; }
 .badge-payment { background: #8b5cf6; }
 .badge-community { background: #10b981; }
 .badge-class { background: #f97316; }
 .badge-etc { background: #6b7280; }
 
-/* 체크박스 숨김 모드 */
-.row-check, #checkAll { display: none; }
-.show-check .row-check, .show-check #checkAll { display: inline-block; }
-
-/* 일괄 처리 버튼 영역 */
-.batch-area {
-    margin-bottom: 15px;
-    display: flex;
-    gap: 10px;
-}
-
+/* 드래그 핸들 */
 .drag-handle {
     cursor: grab;
     font-size: 18px;
@@ -171,41 +177,122 @@ button {
     cursor: grabbing;
 }
 
-.faq-answer-box {
-    background: #f9fbff;
-    border-left: 4px solid #397dff;
-    padding: 12px 16px;
-    margin: 0;
-    font-size: 14px;
-    color: #444;
-    line-height: 1.6;
-}
-
-.faq-question {
-    cursor: pointer;
-    font-weight: 600;
-}
-
+/* =====================================
+   FAQ 답변 행(td) 스타일 — 밝은 배경 + 여백
+===================================== */
 .faq-answer-row td {
-    border-bottom: 1px solid #e6e6e6;
+    background: #f1f5ff !important;   /* 연한 하늘색 배경 */
+    padding: 25px 0 !important;
+    border-bottom: none !important;
 }
 
-/* FAQ 답변 기본 접힘 */
-.faq-answer-row {
-    display: none;
-}
-
-/* 답변 보이는 박스 스타일 */
+/* =====================================
+   FAQ 답변 박스 디자인 (가운데 배치)
+===================================== */
 .faq-answer-box {
-    padding: 15px;
-    background: #fafbff;
-    border-left: 4px solid #4c7df5;
+    width: 85% !important;            /* 가운데 박스 너비 */
+    margin: 0 auto !important;        /* 중앙 정렬 */
+    background: #ffffff !important;   /* 흰 박스 */
+    border-radius: 12px !important;
+    border-left: 5px solid #4c7df5 !important; /* 파란 강조 라인 */
+    padding: 20px 25px !important;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+
+    color: #333 !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+}
+
+/* strong 강조 텍스트 */
+.faq-answer-box strong {
+    color: #2563eb !important;
+    font-weight: 700 !important;
+}
+
+/* 질문 텍스트 가운데 정렬 */
+.admin-table td.faq-question {
+    text-align: center !important;
+}
+
+.faq-answer-box {
+    text-align: center !important;
+}
+
+/* ================================
+   페이징 디자인 (네이버/카카오 스타일)
+================================ */
+.paging {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.page-num,
+.page-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 36px;
+    height: 36px;
+
     border-radius: 8px;
     font-size: 14px;
+    text-decoration: none;
+
+    background: #e5e7eb;
     color: #333;
+    border: none;
+    transition: all 0.15s ease;
 }
 
+/* hover 효과 */
+.page-num:hover,
+.page-btn:hover {
+    background: #d1d5db;
+}
 
+/* 현재 페이지 */
+.page-num.active {
+    background: #3b82f6 !important;   /* 파란색 */
+    color: white !important;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
 
+/* ================================
+   FAQ 질문 밑줄 + 강조 효과
+================================ */
+.faq-question {
+    position: relative;
+    padding-bottom: 4px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* 기본 밑줄 */
+.faq-question::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #d4d4d8;  /* 연한 회색 밑줄 */
+    border-radius: 2px;
+    transition: background 0.2s ease, height 0.2s ease;
+}
+
+/* hover 시 강조 */
+.faq-question:hover {
+    color: #2563eb; /* 파란 포인트 */
+}
+
+.faq-question:hover::after {
+    background: #2563eb;  /* 파란색 밑줄 */
+    height: 2px;
+}
 
 

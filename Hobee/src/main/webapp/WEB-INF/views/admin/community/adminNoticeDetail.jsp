@@ -95,7 +95,7 @@
    			</span>
 		</div>
 
-        <div class="detail-row">
+        <div class="detail-row content-full">
             <span class="detail-label" style="vertical-align:top;">내용</span>
             <div class="detail-content-area">${notice.content}</div>
         </div>
@@ -138,7 +138,7 @@
             </form>
 
             <!-- 수정 -->
-            <button class="btn-blue"
+            <button class="btn-edit"
                 onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeEdit?notice_id=${notice.notice_id}'">
                 수정
             </button>
@@ -154,7 +154,7 @@
             </form>
 
             <!-- 목록 -->
-            <button class="btn-gray"
+            <button class="btn-list"
                 onclick="location.href='${pageContext.request.contextPath}/admin/adminNoticeList'">
                 목록으로
             </button>
