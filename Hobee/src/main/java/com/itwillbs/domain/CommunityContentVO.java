@@ -41,4 +41,6 @@ public class CommunityContentVO {
     private Integer comment_count;
     private Integer like_count;
     private Integer dislike_count;
+    private Double trendingScore;   // 🔥 조회용 - DB 컬럼 없음!
+
 }

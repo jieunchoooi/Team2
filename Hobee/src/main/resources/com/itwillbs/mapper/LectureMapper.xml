@@ -334,5 +334,71 @@
 		    AND lecture_num = #{lecture_num}
 		</select>
 		
+		<select id="getRecoLectures" resultType="com.itwillbs.domain.LectureVO" parameterType="int">
+		    WITH user_tags AS (
+		        SELECT DISTINCT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(l.lecture_tag, ',', numbers.n), ',', -1)) AS tag
+		        FROM enrollment e
+		        JOIN lecture l ON e.lecture_num = l.lecture_num
+		        JOIN (
+		            SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+		            UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
+		        ) numbers ON CHAR_LENGTH(l.lecture_tag) - CHAR_LENGTH(REPLACE(l.lecture_tag, ',', '')) >= numbers.n - 1
+		        WHERE e.user_num = #{user_num}
+		    ),
+		    scrap_tags AS (
+		        SELECT DISTINCT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(l.lecture_tag, ',', numbers.n), ',', -1)) AS tag
+		        FROM scrap s
+		        JOIN lecture l ON s.lecture_num = l.lecture_num
+		        JOIN (
+		            SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+		            UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
+		        ) numbers ON CHAR_LENGTH(l.lecture_tag) - CHAR_LENGTH(REPLACE(l.lecture_tag, ',', '')) >= numbers.n - 1
+		        WHERE s.user_num = #{user_num}
+		    )
+		    SELECT
+		        l.lecture_num,
+		        l.user_num,
+		        l.lecture_title,
+		        l.lecture_author,
+		        l.lecture_price,
+		        l.category_detail,
+		        l.readcount,
+		        l.lecture_img,
+		        l.lecture_detail,
+		        l.lecture_tag,
+		        COALESCE(ROUND(AVG(r.review_score), 1), 0) AS avg_score,
+		        COALESCE(COUNT(DISTINCT r.review_num), 0) AS review_count,
+		        COALESCE(COUNT(DISTINCT e2.enrollment_id), 0) AS student_count,
+		        (
+		            SELECT COUNT(*) FROM user_tags ut WHERE FIND_IN_SET(ut.tag, l.lecture_tag)
+		        ) +
+		        (
+		            SELECT COUNT(*) FROM scrap_tags st WHERE FIND_IN_SET(st.tag, l.lecture_tag)
+		        ) AS match_count
+		    FROM lecture l
+		    LEFT JOIN review r ON l.lecture_num = r.lecture_num
+		    LEFT JOIN enrollment e2 ON l.lecture_num = e2.lecture_num
+		    WHERE l.lecture_num NOT IN (
+		        SELECT lecture_num FROM enrollment WHERE user_num = #{user_num}
+		    )
+		    GROUP BY
+		        l.lecture_num,
+		        l.user_num,
+		        l.lecture_title,
+		        l.lecture_author,
+		        l.lecture_price,
+		        l.category_detail,
+		        l.readcount,
+		        l.lecture_img,
+		        l.lecture_detail,
+		        l.lecture_tag
+		    ORDER BY
+		        match_count DESC,
+		        l.readcount DESC
+		</select>
+
+        
+
+		
 </mapper>
   

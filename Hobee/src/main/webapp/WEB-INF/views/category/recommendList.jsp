@@ -30,29 +30,113 @@ main {
 	padding: 0 20px;
 	gap: 40px;
 }
+
+/* ====== 사이드바 스타일 ====== */
 .sidebar {
 	width: 220px;
 	background: #fff;
-	padding: 20px;
+	padding: 24px;
 	border-radius: 16px;
 	box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 	height: fit-content;
 }
-.sidebar ul {
-	list-style: none;
+
+.sidebar-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid #f0f0f0;
 }
-.sidebar li {
-	padding: 10px 0;
+
+.sidebar-header h3 {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: #222;
+}
+
+.reset-btn {
+	background: transparent;
+	border: none;
+	color: #666;
+	font-size: 0.85rem;
 	cursor: pointer;
-	color: #555;
-	font-size: 0.95rem;
-	transition: color 0.2s;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 8px;
+	border-radius: 4px;
+	transition: all 0.2s;
 }
-.sidebar li:hover,
-.sidebar li.active {
+
+.reset-btn:hover {
+	background: #f5f5f5;
 	color: #2573ff;
+}
+
+.filter-category {
+	margin-bottom: 24px;
+}
+
+.filter-category-title {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 12px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.filter-category-title i {
+	font-size: 0.85rem;
+	color: #2573ff;
+}
+
+.tag-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.tag-btn {
+	padding: 4px 11px;
+	border: 1px solid #e0e0e0;
+	background: #fff;
+	color: #666;
+	border-radius: 20px;
+	font-size: 0.75rem;
+	cursor: pointer;
+	transition: all 0.2s;
+	white-space: nowrap;
+}
+
+.tag-btn:hover {
+	border-color: #2573ff;
+	color: #2573ff;
+	background: #f0f7ff;
+}
+
+.tag-btn.active {
+	border-color: #2573ff;
+	background: #2573ff;
+	color: #fff;
 	font-weight: 600;
 }
+
+/* 선택된 태그 카운트 */
+.selected-count {
+	display: inline-block;
+	background: #2573ff;
+	color: white;
+	font-size: 0.75rem;
+	padding: 2px 6px;
+	border-radius: 10px;
+	margin-left: 4px;
+	font-weight: 600;
+}
+
 .content {
 	flex: 1;
 }
@@ -162,33 +246,19 @@ main {
 .card-body {
 	padding: 14px;
 }
-/*강의제목 말줄임표 1줄로 제한 */
- .card-title { 
- 	font-size: 1rem; 
- 	font-weight: 600; 
- 	color: #222; 
- 	line-height: 1.4; 
- 	margin-bottom: 6px; 
- 	overflow: hidden; 
- 	text-overflow: ellipsis; 
- 	display: -webkit-box; 
- 	-webkit-line-clamp: 1; 
- 	-webkit-box-orient: vertical; 
- } 
 
-/*강의제목 말줄임표 2줄로 제한 */
-/* .card-title { */
-/* 	font-size: 1rem; */
-/* 	font-weight: 600; */
-/* 	color: #222; */
-/* 	line-height: 1.4; */
-/* 	margin-bottom: 6px; */
-/* 	overflow: hidden; */
-/* 	text-overflow: ellipsis; */
-/* 	display: -webkit-box; */
-/* 	-webkit-line-clamp: 2; */
-/* 	-webkit-box-orient: vertical; */
-/* } */
+.card-title { 
+	font-size: 1rem; 
+	font-weight: 600; 
+	color: #222; 
+	line-height: 1.4; 
+	margin-bottom: 6px; 
+	overflow: hidden; 
+	text-overflow: ellipsis; 
+	display: -webkit-box; 
+	-webkit-line-clamp: 1; 
+	-webkit-box-orient: vertical; 
+} 
 
 .card-instructor {
 	font-size: 0.85rem;
@@ -236,93 +306,7 @@ main {
 	font-size: 1rem;
 	margin-top: 4px;
 }
-/* ====== Top10 슬라이더 ====== */
-.top10-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 20px;
-}
-.top10-header h3 {
-	margin: 0;
-}
-.slider-controls {
-	display: flex;
-	gap: 15px;
-	align-items: center;
-}
-.top10-slider-container {
-	overflow: hidden;
-}
-.top10-slide {
-	display: none;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 24px;
-	width: 100%;
-}
-.top10-slide.active {
-	display: grid;
-}
-.top10-slide .card {
-	width: 100%;
-}
-.top10-slide .card img {
-	height: 200px;
-}
-.top10-slide .card-body {
-	padding: 16px;
-}
-.top10-slide .card-title {
-	font-size: 1.05rem;
-	margin-bottom: 6px;
-}
-.top10-slide .card-instructor {
-	font-size: 0.9rem;
-	margin-bottom: 10px;
-}
-.top10-slide .card-price {
-	font-size: 1.1rem;
-}
-/* 화살표 버튼 */
-.slider-btn {
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	font-size: 1.5rem;
-	color: #2573ff;
-	transition: color 0.2s;
-	padding: 0;
-	width: 35px;
-	height: 35px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.slider-btn:hover {
-	color: #0056d6;
-}
-.slider-dots {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	margin-top: 25px;
-}
-.dot {
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-	background: #ddd;
-	cursor: pointer;
-	transition: all 0.3s;
-}
-.dot:hover {
-	background: #999;
-}
-.dot.active {
-	background: #2573ff;
-	width: 24px;
-	border-radius: 5px;
-}
+
 /* ====== 전체 강의 ====== */
 .all-grid {
 	display: grid;
@@ -348,6 +332,7 @@ main {
 .all-grid .card-price {
 	font-size: 0.95rem;
 }
+
 /* ====== 푸터 ====== */
 footer {
 	background: #fff;
@@ -368,43 +353,77 @@ footer {
 <jsp:include page="../include/header.jsp"></jsp:include>
 
 <main>
-	<!-- ✅ 사이드 메뉴 (category_detail 기준 active 처리 포함) -->
+	<!-- ✅ 태그 필터 사이드바 -->
 	<aside class="sidebar">
-	  <ul>
-	    <li class="${param.category_detail == null || param.category_detail == '전체' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" style="text-decoration:none; color:inherit;">전체</a>
-	    </li>
-	    <li class="${param.category_detail == '디지털드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" style="text-decoration:none; color:inherit;">디지털드로잉</a>
-	    </li>
-	    <li class="${param.category_detail == '드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" style="text-decoration:none; color:inherit;">드로잉</a>
-	    </li>
-	    <li class="${param.category_detail == '공예' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" style="text-decoration:none; color:inherit;">공예</a>
-	    </li>
-	    <li class="${param.category_detail == 'AI 스킬업' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
-	    </li>
-	    <li class="${param.category_detail == '프로그래밍' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" style="text-decoration:none; color:inherit;">프로그래밍</a>
-	    </li>
-	    <li class="${param.category_detail == '데이터사이언스' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" style="text-decoration:none; color:inherit;">데이터사이언스</a>
-	    </li>
-	    <li class="${param.category_detail == '영어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" style="text-decoration:none; color:inherit;">영어</a>
-	    </li>
-	    <li class="${param.category_detail == '제2외국어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" style="text-decoration:none; color:inherit;">제2외국어</a>
-	    </li>
-	    <li class="${param.category_detail == '외국어 시험' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험" style="text-decoration:none; color:inherit;">외국어 시험</a>
-	    </li>
-	  </ul>
+		<div class="sidebar-header">
+			<h3>카테고리</h3>
+			<button class="reset-btn" onclick="resetFilters()">
+				<i class="fas fa-redo"></i> 초기화
+			</button>
+		</div>
+		
+		<!-- 크리에이티브 카테고리 -->
+		<div class="filter-category">
+			<div class="filter-category-title">
+				ART
+			</div>
+			<div class="tag-container">
+				<button class="tag-btn" data-tag="디지털드로잉" onclick="toggleTag(this)">디지털 드로잉</button>
+				<button class="tag-btn" data-tag="드로잉" onclick="toggleTag(this)">드로잉</button>
+				<button class="tag-btn" data-tag="공예" onclick="toggleTag(this)">공예</button>
+			</div>
+		</div>
+		
+		<!-- 요리 카테고리 -->
+		<div class="filter-category">
+			<div class="filter-category-title">
+				요리
+			</div>
+			<div class="tag-container">
+				<button class="tag-btn" data-tag="베이킹" onclick="toggleTag(this)">한식</button>
+				<button class="tag-btn" data-tag="창업" onclick="toggleTag(this)">일식 & 중식 </button>
+				<button class="tag-btn" data-tag="창업" onclick="toggleTag(this)">양식</button>
+				<button class="tag-btn" data-tag="창업" onclick="toggleTag(this)">베이킹</button>
+			</div>
+		</div>
+		
+		<!-- 디지털 스킬 카테고리 -->
+		<div class="filter-category">
+			<div class="filter-category-title">
+				IT
+			</div>
+			<div class="tag-container">
+				<button class="tag-btn" data-tag="AI스킬업" onclick="toggleTag(this)">AI스킬업</button>
+				<button class="tag-btn" data-tag="프로그래밍" onclick="toggleTag(this)">프로그래밍</button>
+				<button class="tag-btn" data-tag="데이터사이언스" onclick="toggleTag(this)">데이터사이언스</button>
+			</div>
+		</div>
+		
+		
+		<!-- IT 카테고리 -->
+<!-- 		<div class="filter-category"> -->
+<!-- 			<div class="filter-category-title"> -->
+<!-- 				IT 개발 -->
+<!-- 			</div> -->
+<!-- 			<div class="tag-container"> -->
+<!-- 				<button class="tag-btn" data-tag="프로그래밍" onclick="toggleTag(this)">프로그래밍</button> -->
+<!-- 				<button class="tag-btn" data-tag="AI스킬업" onclick="toggleTag(this)">AI 스킬업</button> -->
+<!-- 				<button class="tag-btn" data-tag="데이터사이언스" onclick="toggleTag(this)">데이터사이언스</button> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+		
+		<!-- 외국어 카테고리 -->
+		<div class="filter-category">
+			<div class="filter-category-title">
+				외국어
+			</div>
+			<div class="tag-container">
+				<button class="tag-btn" data-tag="영어" onclick="toggleTag(this)">영어</button>
+				<button class="tag-btn" data-tag="제2외국어" onclick="toggleTag(this)">제2 외국어</button>
+				<button class="tag-btn" data-tag="외국어시험" onclick="toggleTag(this)">외국어 시험</button>
+			</div>
+		</div>
 	</aside>
-
-
 
 	<!-- ✅ 메인 콘텐츠 -->
 	<section class="content">
@@ -412,85 +431,16 @@ footer {
 			<i class="fa-solid fa-magnifying-glass"></i>
 			<input type="text" id="searchInput" placeholder="원하는 강의를 검색해보세요" onkeydown="if(event.key === 'Enter'){ searchLecture(); }"/>
 		</div>
-	
-		<!-- 🔹 Top10 슬라이더 -->
-		<div class="section">
-		    <div class="top10-header">
-		        <h3 id="top10-title">${param.category_detail == null ? '전체' : param.category_detail} Top 10</h3>
-		        <div class="slider-controls">
-		            <button class="slider-btn prev" onclick="moveSlide(-1)">
-		                <i class="fa-solid fa-chevron-left"></i>
-		            </button>
-		            <button class="slider-btn next" onclick="moveSlide(1)">
-		                <i class="fa-solid fa-chevron-right"></i>
-		            </button>
-		        </div>
-		    </div>
-	    
-			<div class="top10-slider-container">
-			    <div class="top10-grid" id="top10Slider">
-			        <c:forEach var="top" items="${top10List}" varStatus="status">
-			
-			            <!-- 0,3,6,... 3개마다 새로운 slide 열기 -->
-			            <c:if test="${status.index % 3 == 0}">
-			                <div class="top10-slide ${status.index == 0 ? 'active' : ''}">
-			            </c:if>
-			
-			            <!-- 개별 카드 -->
-			            <div class="card">
-			                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
-			                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
-			                    <button class="bookmark-btn  ${top.bookmark ? 'active' : ''}" 
-			                    		data-lecture-num="${top.lecture_num}"
-			                    		onclick="event.preventDefault(); toggleBookmark(${top.lecture_num}, this);">
-			                        <i class="far fa-bookmark"></i>
-			                    </button>
-			                </a>
-			                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
-			                    <div class="card-body">
-			                        <div class="card-title">${top.lecture_title}</div>
-			                        <div class="card-instructor">${top.lecture_author}</div>
-			                        <div class="card-meta">
-			                            <div class="card-price">
-			                                <fmt:formatNumber value="${top.lecture_price}" type="number" />원
-			                            </div>
-			                            <div class="card-stats">
-			                                <span class="rating">
-			                                    <i class="fas fa-star"></i> ${top.avg_score}
-			                                    <span class="review-count">(${top.review_count})</span>
-			                                </span>
-			                                <span class="student-count">
-			                                    <i class="fas fa-user"></i> ${top.student_count}+
-			                                </span>
-			                            </div>
-			                        </div>
-			                    </div>
-			                </a>
-			            </div>
-			
-			            <!-- 3번째 카드마다 또는 마지막 요소에서 slide 닫기 -->
-			            <c:if test="${(status.index + 1) % 3 == 0 || status.last}">
-			                </div> <!-- top10-slide 끝 -->
-			            </c:if>
-			
-			        </c:forEach>
-			    </div>
-			</div>
-
-	    
-			    <div class="slider-dots" id="sliderDots"></div>
-			    
-			    <c:if test="${empty top10List}">
-			        <p>Top10 강의가 없습니다.</p>
-			    </c:if>
-		</div>
 		
 		<!-- 🔹 전체 강의 -->
 		<div class="section">
-		    <h3 id="all-title">${param.category_detail == null ? '전체' : param.category_detail} 전체 강의</h3>
-		    <div class="all-grid">
+		    <h3 id="all-title">
+		    	<span id="filter-title">'${sessionScope.user_name}' 님 맞춤 추천 강의</span>
+		    	<span id="selected-count" class="selected-count" style="display:none;">0</span>
+		    </h3>
+		    <div class="all-grid" id="lectureGrid">
 		        <c:forEach var="lec" items="${lectureList}">
-		            <div class="card">
+		            <div class="card" data-category="${lec.category_detail}">
 		                <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
 		                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
 		                    <button class="bookmark-btn ${lec.bookmark ? 'active' : ''}" 
@@ -530,6 +480,71 @@ footer {
 </main>
 
 <script>
+// 선택된 태그들을 저장하는 Set
+let selectedTags = new Set();
+
+// 태그 토글 함수
+function toggleTag(button) {
+	const tag = button.dataset.tag;
+	
+	if(button.classList.contains('active')) {
+		// 이미 선택된 태그 -> 제거
+		button.classList.remove('active');
+		selectedTags.delete(tag);
+	} else {
+		// 새로운 태그 선택 -> 추가
+		button.classList.add('active');
+		selectedTags.add(tag);
+	}
+	
+	// 필터 적용
+	applyFilter();
+}
+
+// 필터 초기화
+function resetFilters() {
+	// 모든 태그 버튼 비활성화
+	document.querySelectorAll('.tag-btn').forEach(btn => {
+		btn.classList.remove('active');
+	});
+	
+	selectedTags.clear();
+	applyFilter();
+}
+
+// 필터 적용 함수
+function applyFilter() {
+	const cards = document.querySelectorAll('.all-grid .card');
+	const countBadge = document.getElementById('selected-count');
+	const filterTitle = document.getElementById('filter-title');
+	
+	// 선택된 태그 개수 업데이트
+	if(selectedTags.size > 0) {
+		countBadge.textContent = selectedTags.size;
+		countBadge.style.display = 'inline-block';
+		filterTitle.textContent = '선택한 카테고리 강의';
+	} else {
+		countBadge.style.display = 'none';
+		filterTitle.textContent = "'${sessionScope.user_name}' 님 맞춤 추천 강의";
+	}
+	
+	// 필터링 로직
+	cards.forEach(card => {
+		const category = card.dataset.category;
+		
+		if(selectedTags.size === 0) {
+			// 선택된 태그가 없으면 모두 표시
+			card.style.display = 'block';
+		} else {
+			// 선택된 태그 중 하나라도 일치하면 표시
+			if(selectedTags.has(category)) {
+				card.style.display = 'block';
+			} else {
+				card.style.display = 'none';
+			}
+		}
+	});
+}
 
 function searchLecture(){
 	const search = document.getElementById('searchInput').value.trim();
@@ -538,51 +553,6 @@ function searchLecture(){
 		return;
 	}
 	window.location.href='${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
-}
-
-
-let currentSlide = 0;
-const slides = document.querySelectorAll('.top10-slide');
-const totalSlides = slides.length;
-
-// 닷 생성
-function createDots() {
-    const dotsContainer = document.getElementById('sliderDots');
-    dotsContainer.innerHTML = '';
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('span');
-        dot.className = 'dot' + (i === 0 ? ' active' : '');
-        dot.onclick = () => goToSlide(i);
-        dotsContainer.appendChild(dot);
-    }
-}
-
-// 슬라이드 이동
-function moveSlide(direction) {
-    currentSlide += direction;
-    if (currentSlide < 0) currentSlide = totalSlides - 1;
-    if (currentSlide >= totalSlides) currentSlide = 0;
-    showSlide(currentSlide);
-}
-
-// 특정 슬라이드로 이동
-function goToSlide(index) {
-    currentSlide = index;
-    showSlide(currentSlide);
-}
-
-// 슬라이드 표시
-function showSlide(index) {
-    slides.forEach((slide, i) => {
-        slide.classList.remove('active');
-        if (i === index) slide.classList.add('active');
-    });
-    
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach((dot, i) => {
-        dot.classList.remove('active');
-        if (i === index) dot.classList.add('active');
-    });
 }
 
 //북마크 토글 로직
@@ -615,11 +585,6 @@ function toggleBookmark(lectureNum, btn) {
             }
          }
      });
-}
-
-// 초기화
-if (totalSlides > 0) {
-    createDots();
 }
 </script>
 

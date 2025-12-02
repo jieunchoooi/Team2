@@ -121,6 +121,12 @@ public class LectureService {
 		return lectureMapper.getAllLectures(search);
 	}
 
+	public List<LectureVO> getRecoLectures(UserVO userVO) {
+		System.out.println("LectureService getRecoLectures(userVO)");
+		return lectureMapper.getRecoLectures(userVO);
+	}
+
+
 
 
 

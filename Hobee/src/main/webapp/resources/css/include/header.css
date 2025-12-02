@@ -131,6 +131,7 @@ nav a:hover {
    color: #2573ff;
    margin-bottom: 12px;
    font-size: 1rem;
+   margin-left:10px;
 }
 .mega-column ul {
    list-style: none;

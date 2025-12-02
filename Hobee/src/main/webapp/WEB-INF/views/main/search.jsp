@@ -348,17 +348,7 @@ main {
 .all-grid .card-price {
 	font-size: 0.95rem;
 }
-/* ====== 푸터 ====== */
-footer {
-	background: #fff;
-	text-align: center;
-	padding: 20px;
-	font-size: 0.9rem;
-	color: #777;
-	border-radius: 20px 20px 0 0;
-	box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
-	margin-top: 60px;
-}
+
 </style>
 
 </head>
@@ -456,8 +446,6 @@ footer {
 	</section>
 </main>
 
-<footer>© 2025 Hobee | 당신의 취미 파트너</footer>
-
 <script>
 
 function searchLecture(){
@@ -480,6 +468,8 @@ if (totalSlides > 0) {
     createDots();
 }
 </script>
+
+<jsp:include page="../include/footer.jsp"></jsp:include>
 
 </body>
 </html>

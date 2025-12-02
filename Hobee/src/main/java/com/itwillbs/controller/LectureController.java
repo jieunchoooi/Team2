@@ -161,19 +161,17 @@ public class LectureController {
 	public String recommendList(@RequestParam(required = false, defaultValue = "전체") String category_detail,
             Model model, HttpSession session) {
 		System.out.println("LectureController recommendList()");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		
 		List<LectureVO> lectureList;
-	    List<LectureVO> top10List;
 	    
 	    if (category_detail.equals("전체")) {
-	        lectureList = lectureService.getAllLectures();
-	        top10List = lectureService.getTop10();
+	        lectureList = lectureService.getRecoLectures(userVO);
 	    } else {
 	        lectureList = lectureService.getLecturesByCategory(category_detail);
-	        top10List = lectureService.getTop10ByCategory(category_detail);
 	    }
 	    
-	    UserVO userVO = (UserVO) session.getAttribute("userVO");
+	    
 	      if(userVO != null) {
 	          List<Integer> scrapLectureNums = scrapService.getScrapList(userVO.getUser_num())
 	                                                     .stream()
@@ -184,13 +182,9 @@ public class LectureController {
 	          for(LectureVO lecture : lectureList) {
 	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
 	          }
-	          for(LectureVO lecture : top10List) {
-	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
-	          }
 	      }
 	    
 	    model.addAttribute("lectureList", lectureList);
-	    model.addAttribute("top10List", top10List);
 	    model.addAttribute("category_detail", category_detail);
 		
 		return "category/recommendList";

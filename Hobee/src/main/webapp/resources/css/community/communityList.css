@@ -1,6 +1,6 @@
-/* ================================================
-   🔥 전역 초기화
-================================================ */
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
 * {
     margin: 0;
     padding: 0;
@@ -11,88 +11,100 @@
 body {
     background: #f4f6fa;
     color: #222;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
-/* ================================================
-   🔥 메인 콘텐츠 영역
-================================================ */
+/* =========================================================
+   MAIN CONTENT (Left sidebar space + Center layout)
+========================================================= */
 .main-content {
-    margin-left: 240px;
-    padding: 35px 40px 50px 40px;
-    flex: 1;
+/*     margin-left: 240px; Sidebar 공간 */
+    max-width:980px;
+    margin: 0 auto;
+    position: flex;
+    
 }
 
-.main-content h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #222;
+.community-right {
+    position: fixed;
+    top: 147px;
+     left: calc(50% + 510px);
+    /* 50% = 화면 절반
+       640px = 1280px / 2
+       → 메인 박스 오른쪽 끝 좌표
+       +20px = 살짝 여백 줌 */
+
+    width: 400px;
+    z-index: 20;
 }
 
-/* ================================================
-   🔥 상단 실시간 HOT TOPIC 슬라이더
-   - 1개씩 넘어가는 풀사이즈 카드
-================================================ */
-.hot-topic-wrapper {
+.content-inner {
     max-width: 1200px;
-    margin: 0 auto 35px auto;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.hot-topic-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.hot-topic-title-row h2 {
+/* =========================================================
+   HOT TOPIC SLIDER (Swiper 적용)
+========================================================= */
+.hot-title-text {
     font-size: 1.4rem;
     font-weight: 700;
     color: #1f2d5c;
+    margin-bottom: 16px;
+    padding-left: 4px;
 }
 
-.hot-topic-sub {
-    font-size: 0.9rem;
-    color: #777;
-}
-
-/* 슬라이더 영역 */
-.hot-slider {
-    position: relative;
-    overflow: hidden;
+.hotSwiper {
+    width: 100%;
+    padding: 0;
     border-radius: 18px;
-    background: linear-gradient(135deg, #eaf0ff 0%, #fff8ed 100%);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-    padding: 26px 30px;
-    min-height: 210px;
-}
-
-/* 슬라이드 컨테이너 */
-.hot-slides {
-    display: flex;
-    transition: transform 0.5s ease;
-}
-
-/* 각 슬라이드 */
-.hot-slide {
-    min-width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 26px;
-}
-
-/* 작성자 썸네일 */
-.hot-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
+    background: linear-gradient(135deg,#eaf0ff,#fff8ed);
     overflow: hidden;
+    margin-bottom: 35px; /* 🔹 아래 커뮤니티와 간격 */
+}
+
+/* Swiper 기본 트랙 */
+.swiper-wrapper {
+    display: flex;
+}
+
+/* 슬라이드 하나 (카드) */
+.hot-slide {
+    width: 100%;
     flex-shrink: 0;
-    border: 3px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    align-items: flex-start;
+
+    background: #fff;
+    padding: 28px 65px;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: 0.25s;
+
+    height: 160px;          /* 🔹 카드 높이 고정 */
+    box-sizing: border-box;
+}
+
+.hot-slide:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 24px rgba(0,0,0,0.10);
+}
+
+/* 아바타 */
+.hot-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 3px solid rgba(255,255,255,0.8);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+    margin-right: 22px;      /* 🔹 내부 간격 – gap 대신 margin 사용 */
 }
 
 .hot-avatar img {
@@ -101,159 +113,167 @@ body {
     object-fit: cover;
 }
 
-/* 핫토픽 텍스트 영역 */
+/* 내용 영역 */
 .hot-content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
+/* 태그 / 텍스트 */
 .hot-tag {
     display: inline-block;
     padding: 3px 10px;
+    background: rgba(255,255,255,0.85);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.8);
-    font-size: 0.8rem;
-    color: #3a6df0;
+    font-size: 0.78rem;
     font-weight: 600;
-    margin-bottom: 8px;
+    color: #325ad6;
+    margin-bottom: 6px;
 }
 
 .hot-title {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #1f2d5c;
-    margin-bottom: 8px;
-    line-height: 1.5;
+    margin-bottom: 6px;
 }
 
+/* summary 2줄 고정 */
 .hot-summary {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     color: #555;
-    line-height: 1.6;
-    max-height: 4.8rem; /* 3줄 제한 */
+    line-height: 1.4rem;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-bottom: 12px;
+    max-height: calc(1.4rem * 2);
+    margin-bottom: 8px;
 }
 
+/* 메타 영역은 카드 아래쪽에 고정 느낌 */
 .hot-meta-row {
+    margin-top: auto;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    color: #555;
+    font-size: 0.82rem;
+    color: #666;
 }
 
-.hot-meta-left {
-    display: flex;
-    gap: 14px;
+
+/* 스와이프 버튼 크기 조절 */
+/* 🔽 버튼 크기만 줄임 */
+.swiper-button-prev,
+.swiper-button-next {
+    width: 26px !important;   /* 기존 32px → 26px */
+    height: 26px !important;
 }
 
-.hot-meta-right {
-    color: #888;
+/* 🔽 안의 화살표 아이콘 크기 축소 */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-size: 0.9rem !important; /* 화살표 아이콘 크기 줄임 */
 }
 
-/* 슬라이더 버튼 */
-.hot-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    color: #3a6df0;
-    transition: 0.2s;
+/* 🔽 버튼 위치 조정 (왼쪽/오른쪽 여백 살짝 안쪽으로) */
+.swiper-button-prev {
+    left: 10px !important;
 }
 
-.hot-nav-btn:hover {
+.swiper-button-next {
+    right: 10px !important;
+}
+
+
+
+/* dots (Swiper pagination) */
+.swiper-pagination-bullet {
+    background: rgba(255,255,255,0.7);
+    opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
     background: #3a6df0;
-    color: #fff;
+    width: 18px;
+    border-radius: 999px;
+    transition: width 0.25s;
 }
 
-.hot-nav-prev {
-    left: 16px;
-}
 
-.hot-nav-next {
-    right: 16px;
-}
 
-/* 슬라이더 인디케이터 */
+/* Dots (기존 hot-dots) */
 .hot-dots {
+    display: flex;
     position: absolute;
-    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    gap: 6px;
+    bottom: 10px;
 }
 
 .hot-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255,255,255,0.7);
     cursor: pointer;
     transition: 0.2s;
+    margin-right: 6px;       /* 🔹 gap 대신 margin 사용 */
+}
+
+.hot-dot:last-child {
+    margin-right: 0;
 }
 
 .hot-dot.active {
     width: 18px;
-    border-radius: 999px;
     background: #3a6df0;
+    border-radius: 999px;
 }
 
-/* ================================================
-   🔥 2열 레이아웃: 왼쪽 피드 + 오른쪽 주간 인기글
-================================================ */
+/* =========================================================
+   COMMUNITY 2-COLUMN LAYOUT (LEFT posts + RIGHT popular)
+========================================================= */
 .community-layout {
-    display: flex;
+    display: block;
     gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: flex-start;
+    margin-top: 20px;
+      align-items: flex-start;   /* 🔥 부모 높이 깨짐 방지 */
 }
 
-.community-left {
-    flex: 1;
-}
 
-.community-right {
-    width: 320px;
-    position: sticky;
-    top: 110px;
-}
 
-/* ================================================
-   🔥 카테고리 CHIP
-================================================ */
+
+* =========================================================
+   CATEGORY CHIPS
+========================================================= */
 .category-chips {
-    display: flex;
-    flex-wrap: wrap;
+       flex-wrap: wrap;    /* 🔥 줄바꿈 허용 */
     gap: 10px;
-    margin-bottom: 20px;
+     align-items: center;   /* 🔥 핵심 FIX */
+    height: auto;       /* 🔥 40px 고정 제거 */
+    text-align: center
 }
 
 .chip {
-    display: inline-block;
     padding: 7px 18px;
-    border-radius: 22px;
     background: #eef2ff;
-    color: #555;
+    border: 1px solid #d3dcff;
+    border-radius: 22px;
     font-size: 0.9rem;
+    color: #444;
     text-decoration: none;
     transition: 0.2s;
-    border: 1px solid #d3dcff;
+    display: inline-block;
+    width:80px;
+    height 36px;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .chip:hover {
-    background: #dde6ff;
+    background: #dce5ff;
 }
 
 .chip.active {
@@ -261,99 +281,109 @@ body {
     color: #fff;
     border-color: #3a6df0;
     font-weight: 600;
-    box-shadow: 0 3px 8px rgba(58, 109, 240, 0.35);
+    box-shadow: 0 3px 8px rgba(58,109,240,0.35);
 }
 
-/* ================================================
-   🔥 필터바 (정렬/기간/검색)
-================================================ */
+/* =========================================================
+   FILTER BAR
+========================================================= */
 .filter-bar {
     display: flex;
+    flex-wrap: wrap;    /* 🔥 줄바꿈 허용 */
     align-items: center;
-    gap: 15px;
-    background: #fff;
-    padding: 14px 18px;
+    gap: 12px;
+    margin-bottom:20px;
+    background: #ffffff;
+    padding: 14px 20px;
     border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-    margin-bottom: 24px;
+     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    
+    border: 1px solid #e5e9f2;
 }
-
 .filter-bar select {
-    padding: 7px 12px;
-    border-radius: 6px;
-    border: 1px solid #c8ccd5;
-    height: 36px;
-    background: #fff;
+    padding: 8px 12px;
+    height: 38px;
+    border: 1px solid #d6dbea;
+    border-radius: 8px;
+
+    background: #f8faff;
+    color: #333;
+    font-size: 0.9rem;
+    appearance: none;
+     cursor: pointer;
+  /* ▼ 화살표 (더 진하게, 더 크고 중앙 맞춤) */
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px; /* 더 크게 */
 }
 
+/* 🔍 검색 영역 */
 .search-box {
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: auto;
 }
 
 .search-box input {
-    padding: 7px 12px;
-    border: 1px solid #c8ccd5;
-    border-radius: 6px;
-    height: 36px;
     width: 220px;
-    background: #fff;
+    height: 38px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #d6dbea;
+    background: #f8faff;
+    font-size: 0.9rem;
 }
-
+/*  검색버튼 */
 .search-box button {
-    background: #3a6df0;
-    border: none;
+    height: 38px;
     width: 42px;
-    height: 36px;
-    color: #fff;
-    font-size: 1rem;
-    border-radius: 6px;
+    border: none;
+    border-radius: 8px;
+    background:#3a6df0;
+    color: white;
     cursor: pointer;
-    transition: 0.2s;
+    font-size: 1rem;
+    transition: 0.15s;
 }
-
 .search-box button:hover {
-    background: #2c54c9;
+    background: #6A7FDA;
 }
 
-/* ================================================
-   🔥 대형 카드형 피드 (1열)
-================================================ */
+
+/* =========================================================
+   POST CARDS
+========================================================= */
 .card-list {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 18px; /* 🔥 22 → 약간 간격 축소 */
 }
 
-/* 전체 카드 */
 .post-card {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 22px 24px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    background: #fff;
+    padding: 18px 20px;           /* 🔥 22px 24px → 전체 박스 조금 줄임 */
+    border-radius: 14px;          /* 🔥 18 → 14 */
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05); /* 🔥 그림자 약간 완화 */
     cursor: pointer;
     transition: 0.2s;
-    width: 100%;
 }
 
 .post-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.09);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
-/* 카드 상단: 프로필 + 카테고리 */
 .post-header {
     display: flex;
+    gap: 10px;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .post-avatar {
-    width: 44px;
-    height: 44px;
+    width: 40px;   /* 🔥 44 → 조금 축소 */
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
@@ -366,120 +396,103 @@ body {
     object-fit: cover;
 }
 
-.post-header-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.post-header-top {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.82rem;
-    color: #666;
-}
-
-.post-category-pill {
-    padding: 2px 10px;
-    border-radius: 999px;
-    background: #eef2ff;
-    color: #3a53a5;
-    font-weight: 600;
-}
-
-.post-writer {
-    font-weight: 500;
-}
-
-/* 제목 & 요약 */
 .post-title {
-    font-size: 1.35rem;
+    font-size: 1.18rem;  /* 🔥 1.32 → 살짝 줄임 */
     font-weight: 700;
-    margin-bottom: 8px;
-    line-height: 1.5;
     color: #1f2d5c;
+    margin-bottom: 4px;
 }
 
+/* 🔥 summary 2줄 clamp */
 .post-summary {
-    margin: 4px 0 14px;
+    font-size: 0.93rem;
     color: #555;
-    font-size: 0.96rem;
-    line-height: 1.7;
-    max-height: 5.1rem; /* 약 3줄 */
+    line-height: 1.5rem;
+    margin-bottom: 10px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
+    max-height: calc(1.5rem * 2);
 }
 
-/* 메타 & 반응 */
 .post-meta-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 0.86rem;
+    font-size: 0.83rem;
     color: #666;
 }
 
-.post-meta-left {
-    display: flex;
-    gap: 10px;
+/* 말머리 Pill */
+.post-category-pill {
+    background-color: #eef5ff;
+    color: #3564d3;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-right: 6px;
+    font-weight: 600;
 }
 
-.post-meta-right {
-    display: flex;
-    gap: 14px;
+/* 메인 카테고리 (작은 dot 구분자) */
+.post-maincategory {
+    color: #777;
+    font-size: 13px;
+    margin-right: 6px;
+}
+
+/* 작성자 */
+.post-writer {
+    color: #444;
+    font-size: 13px;
     font-weight: 500;
+    margin-left: 2px;
 }
 
-.post-meta-right span {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* ================================================
-   🔥 주간 인기글 사이드바
-================================================ */
+/* =========================================================
+   POPULAR (RIGHT SIDEBAR)
+========================================================= */
 .popular-box {
-    background: #ffffff;
-    padding: 18px 18px 16px 18px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
-
-.popular-box h2 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 14px;
-    color: #1f2d5c;
+	width:350px;
+    background: #fff;
+    padding: 16px;          /* 🔥 18 → 약간 컴팩트 */
+    border-radius: 14px;    /* 🔥 16 → 14 */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
 }
 
 .popular-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;   /* 🔥 12 → 간격 조금 줄임 */
 }
 
 .popular-row {
-    padding: 8px 6px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.15s;
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    padding: 10px 0;              /* 🔥 좌우 패딩 제거 + 위아래만 */
+    cursor: pointer;
+
+    border-bottom: 1px solid #eceff5; /* 🔥 연한 밑줄 */
+    border-radius: 0 !important;      /* 박스 느낌 제거 */
+    background: none !important;      /* 박스 배경 제거 */
 }
 
+/* hover 최소한 유지 또는 제거 가능 */
 .popular-row:hover {
-    background: #f3f5ff;
+    background: none;
 }
 
-/* 작은 썸네일 */
+/* 마지막 항목 밑줄 제거 */
+.popular-row:last-child {
+    border-bottom: none;
+}
+
 .popular-thumb {
-    width: 34px;
-    height: 34px;
+    width: 50px;   /* 🔥 34 → 32 */
+    height: 50px;
     border-radius: 50%;
     overflow: hidden;
-    flex-shrink: 0;
-    background: #eaeaea;
 }
 
 .popular-thumb img {
@@ -488,39 +501,31 @@ body {
     object-fit: cover;
 }
 
-.popular-text {
-    flex: 1;
-}
-
 .p-title {
-    display: block;
-    font-size: 0.92rem;
-    font-weight: 600;
-    margin-bottom: 3px;
-    color: #333;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 2px;
 }
 
 .p-summary {
-    font-size: 0.8rem;
-    color: #777;
-    max-height: 2.4rem;
-    overflow: hidden;
-    margin-bottom: 4px;
-}
-
-.p-meta {
     font-size: 0.78rem;
-    color: #888;
+    line-height: 1.2rem;
+	width:250px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: calc(1.2rem * 2);
 }
 
-/* ================================================
-   🔥 페이징
-================================================ */
+/* =========================================================
+   PAGINATION
+========================================================= */
 .pagination {
-    display: flex;
     justify-content: center;
-    margin: 30px 0 0 0;
+    display: flex;
     gap: 8px;
+    margin-top: 24px; /* 🔥 30 → 살짝 줄임 */
 }
 
 .pagination a {
@@ -528,14 +533,6 @@ body {
     border-radius: 6px;
     background: #fff;
     border: 1px solid #ddd;
-    color: #333;
-    text-decoration: none;
-    transition: 0.2s;
-    font-size: 0.9rem;
-}
-
-.pagination a:hover {
-    background: #e9ecf4;
 }
 
 .pagination a.active {
@@ -544,46 +541,31 @@ body {
     border-color: #3a6df0;
 }
 
-/* ================================================
-   🔥 반응형
-================================================ */
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 @media (max-width: 1100px) {
     .main-content {
         margin-left: 0;
-        padding: 25px 20px 40px 20px;
+        padding: 25px 20px;
     }
 
     .community-layout {
+    
         flex-direction: column;
+    }
+
+    .community-left,
+    .community-right {
+        max-width: 100%;
+        flex: 0 0 100%;
     }
 
     .community-right {
         width: 100%;
         position: static;
-        margin-top: 24px;
-    }
-}
-
-@media (max-width: 768px) {
-    .hot-slider {
-        padding: 20px 18px 36px 18px;
-    }
-
-    .hot-slide {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .hot-avatar {
-        width: 56px;
-        height: 56px;
-    }
-
-    .card-list {
-        gap: 18px;
-    }
-
-    .post-card {
-        padding: 18px 16px;
+        margin-top: 20px;
     }
 }
