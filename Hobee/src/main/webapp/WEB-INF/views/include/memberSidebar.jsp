@@ -44,16 +44,9 @@
 <!-- 	</div> -->
     <div class="menu-item ${page eq 'classAdd' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage'">
-					📋 <span>강의 관리</span>
+					➕ <span>강의 관리</span>
 	</div>
   </div>
 
-<!--   <button class="logout-btn" onclick="logout()">로그아웃</button> -->
 
-<!--   <script> -->
-<!-- //     function logout() { -->
-<!-- //       alert("로그아웃되었습니다."); -->
-<%-- //       location.href = "${pageContext.request.contextPath}/member/logout"; --%>
-<!-- //     } -->
-<!--   </script> -->
 </aside>

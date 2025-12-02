@@ -2,6 +2,8 @@ package com.itwillbs.mapper;
 
 import java.util.List;
 
+import com.itwillbs.domain.ChapterDetailVO;
+import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.UserVO;
 
@@ -28,6 +30,19 @@ public interface MemberMapper {
 	public List<LectureVO> waitingClass(String user_name);
 
 	public List<LectureVO> rejectClass(String user_name);
+
+	public List<LectureVO> deleteClass(String user_name);
+	
+	public void LectureUpdate(LectureVO lectureVO);
+
+	public void insertChapter(ChapterVO chapterVO);
+
+	public void insertChapterDetail(ChapterDetailVO chapterDetailVO);
+
+	public int teacherMyPageDelete(String user_name);
+
+	public void deleteRequest(int lecture_num);
+
 
 
 	

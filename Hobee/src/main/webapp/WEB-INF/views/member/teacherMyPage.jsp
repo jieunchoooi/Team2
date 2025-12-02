@@ -42,15 +42,16 @@
 				<h3>반려</h3>
 				<div class="stat-number">${teacherMyPageReject}</div>
 			</div>
+			<div class="stat-card gray ${filter == 'delete' ? 'approval' : ''}" onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage?filter=delete'">
+				<h3>삭제된 강의</h3>
+				<div class="stat-number">${teacherMyPageDelete}</div>
+			</div>
 		</div>
 		
 		<!-- 강의 목록 -->
 		<div class="table-container">
 			<div class="table-header">
 				<h2>내 강의 목록</h2>
-<!-- 				<button class="btn btn-add"> -->
-<!-- 					+ 강의 추가 -->
-<!-- 				</button> -->
 				<a class="btn btn-add" href="${pageContext.request.contextPath}/member/classAdd">+ 강의 추가</a>
 			</div>
 			
@@ -103,11 +104,18 @@
 						<c:if test="${lectureVO.status eq 'reject'}">	
 							<span class="badg badge-rejected">반려</span>
 						</c:if>
+						<c:if test="${lectureVO.status eq 'deleteWaiting'}">	
+							<span class="badg badge-deleteWaiting">삭제요청</span>
+						</c:if>
 						</td>
 						<td>${lectureVO.created_at}</td>
 						<td>
-							<button type="button" class="btn btn-edit-small">수정</button>
-							<button type="button" class="btn btn-delete-small">삭제</button>
+						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting'}">
+							<button type="button" class="btn btn-edit-small" data-num="${lectureVO.lecture_num}">수정</button>
+						</c:if>	
+						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting'}">
+							<button type="button" class="btn btn-delete-small" data-num="${lectureVO.lecture_num}">삭제</button>
+						</c:if>	
 						</td>
 					</tr>
 					</c:forEach>
@@ -135,9 +143,11 @@
 let deleteButtons = document.querySelectorAll('.btn-delete-small');
 deleteButtons.forEach(function(btn) {
     btn.onclick = function() {
+        let lectureNum = this.getAttribute('data-num');
+
         if(confirm("정말 이 강의를 삭제하시겠습니까?")) {
-            alert("강의가 삭제되었습니다.");
-            // location.href = "deleteLecture?lecture_num=" + lectureNum;
+            alert("강의 삭제 요청 하였습니다.");
+            location.href = "${pageContext.request.contextPath}/member/deleteLecture?lecture_num=" + lectureNum;
         }
     }
 });
@@ -146,17 +156,12 @@ deleteButtons.forEach(function(btn) {
 let editButtons = document.querySelectorAll('.btn-edit-small');
 editButtons.forEach(function(btn) {
     btn.onclick = function() {
-        // location.href = "editLecture?lecture_num=" + lectureNum;
-        alert("수정 페이지로 이동합니다.");
+        let lectureNum = this.getAttribute('data-num');
+//         alert("수정 페이지로 이동합니다.");
+        location.href = "${pageContext.request.contextPath}/member/editLecture?lecture_num=" + lectureNum;
     }
 });
 
-// 정보 수정
-// let editInfoButton = document.querySelector('.btn-edit');
-// editInfoButton.onclick = function() {
-//     // location.href = "editInfo";
-//     alert("정보 수정 페이지로 이동합니다.");
-// }
 
 // 강의 등록하기 (빈 메시지에서)
 let primaryButton = document.querySelector('.btn-primary');

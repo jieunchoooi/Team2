@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.ChapterDetailVO;
+import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.MemberMapper;
@@ -74,6 +76,37 @@ public class MemberService {
 		System.out.println("MemberService rejectClass()");
 		return memberMapper.rejectClass(user_name);
 	}
+
+	public List<LectureVO> deleteClass(String user_name) {
+		System.out.println("MemberService deleteClass()");
+		return memberMapper.deleteClass(user_name);
+	}
+	
+	public void LectureUpdate(LectureVO lectureVO) {
+		System.out.println("MemberService LectureUpdate()");
+		memberMapper.LectureUpdate(lectureVO);
+	}
+
+	public void insertChapter(ChapterVO chapterVO) {
+		System.out.println("MemberService insertChapter()");
+		memberMapper.insertChapter(chapterVO);
+	}
+
+	public void insertChapterDetail(ChapterDetailVO chapterDetailVO) {
+		System.out.println("MemberService insertChapter()");
+		memberMapper.insertChapterDetail(chapterDetailVO);
+	}
+
+	public int teacherMyPageDelete(String user_name) {
+		System.out.println("MemberService teacherMyPageDelete()");
+		return memberMapper.teacherMyPageDelete(user_name);
+	}
+
+	public void deleteRequest(int lecture_num) {
+		System.out.println("MemberService deleteRequest()");
+		memberMapper.deleteRequest(lecture_num);
+	}
+
 
 
 

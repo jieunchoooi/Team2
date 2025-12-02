@@ -142,26 +142,26 @@
 		WHERE user_role = 'instructor'
 	</select>
 
-	<insert id="LectureUpdate" parameterType="com.itwillbs.domain.LectureVO" 
-		useGeneratedKeys="true" keyProperty="lecture_num">
-		INSERT INTO lecture
-		(lecture_title, category_detail, lecture_detail, lecture_author, 
-		lecture_price, lecture_img, lecture_tag, user_num)
-		VALUES(#{lecture_title}, #{category_detail}, #{lecture_detail}, 
-		#{lecture_author}, #{lecture_price}, #{lecture_img}, #{lecture_tag}, #{user_num})
-	</insert>
+<!-- 	<insert id="LectureUpdate" parameterType="com.itwillbs.domain.LectureVO"  -->
+<!-- 		useGeneratedKeys="true" keyProperty="lecture_num"> -->
+<!-- 		INSERT INTO lecture -->
+<!-- 		(lecture_title, category_detail, lecture_detail, lecture_author,  -->
+<!-- 		lecture_price, lecture_img, lecture_tag, user_num) -->
+<!-- 		VALUES(#{lecture_title}, #{category_detail}, #{lecture_detail},  -->
+<!-- 		#{lecture_author}, #{lecture_price}, #{lecture_img}, #{lecture_tag}, #{user_num}) -->
+<!-- 	</insert> -->
 
-	<insert id="insertChapter" parameterType="com.itwillbs.domain.ChapterVO" 
-		useGeneratedKeys="true" keyProperty="chapter_num">
-		INSERT INTO chapter (lecture_num, chapter_order, chapter_title)
-		VALUES (#{lecture_num}, #{chapter_order}, #{chapter_title})
-	</insert>
+<!-- 	<insert id="insertChapter" parameterType="com.itwillbs.domain.ChapterVO"  -->
+<!-- 		useGeneratedKeys="true" keyProperty="chapter_num"> -->
+<!-- 		INSERT INTO chapter (lecture_num, chapter_order, chapter_title) -->
+<!-- 		VALUES (#{lecture_num}, #{chapter_order}, #{chapter_title}) -->
+<!-- 	</insert> -->
 
-	<insert id="insertChapterDetail" parameterType="com.itwillbs.domain.ChapterDetailVO"
-		useGeneratedKeys="true" keyProperty="detail_num">
-		INSERT INTO chapter_detail (chapter_num, detail_order, detail_title, detail_time)
-		VALUES (#{chapter_num}, #{detail_order}, #{detail_title}, #{detail_time})
-	</insert>
+<!-- 	<insert id="insertChapterDetail" parameterType="com.itwillbs.domain.ChapterDetailVO" -->
+<!-- 		useGeneratedKeys="true" keyProperty="detail_num"> -->
+<!-- 		INSERT INTO chapter_detail (chapter_num, detail_order, detail_title, detail_time) -->
+<!-- 		VALUES (#{chapter_num}, #{detail_order}, #{detail_title}, #{detail_time}) -->
+<!-- 	</insert> -->
 
 	<!-- 강의 리스트 -->
 	<select id="listLecture" resultType="com.itwillbs.domain.LectureVO">
