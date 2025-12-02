@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.CommunityCommentVO;
 import com.itwillbs.domain.CommunityContentVO;
+import com.itwillbs.domain.CommunityDetailDTO;
 import com.itwillbs.domain.CommunitySearchCriteria;
 import com.itwillbs.domain.ReactionCountVO;
 import com.itwillbs.mapper.CommunityContentMapper;
@@ -98,16 +100,26 @@ public class CommunityService {
     }
 
 
-    // ============================================
-    // 📌 2) 검색 전용 — 예전 코드 호환 위해 유지하지만 내부는 동일 방식
-    //     (굳이 분리할 필요 없지만 네 기존 구조 유지 목적)
-    // ============================================
-    public List<CommunityContentVO> searchCommunityList(CommunitySearchCriteria cri) {
-        return communityContentMapper.searchCommunityList(cri);
-    }
+    
+    //게시글 상세 조회 로직
+    public CommunityDetailDTO getDetailPage(int post_id, Integer user_num) {
 
-    public int getSearchCommunityListCount(CommunitySearchCriteria cri) {
-        return communityContentMapper.getSearchCommunityListCount(cri);
+        // 1) 조회수 증가
+        communityContentMapper.updateViewCount(post_id);
+
+        // 2) 게시글 조회
+        CommunityContentVO post = communityContentMapper.getPostDetail(post_id);
+
+        // 3) 댓글 조회
+        List<CommunityCommentVO> comments =
+                communityContentMapper.getCommentsByPostId(post_id, user_num);
+
+        // 4) 조합
+        CommunityDetailDTO communityDetailDTO = new CommunityDetailDTO();
+        communityDetailDTO.setPost(post);
+        communityDetailDTO.setComments(comments);
+
+        return communityDetailDTO;
     }
 
 }

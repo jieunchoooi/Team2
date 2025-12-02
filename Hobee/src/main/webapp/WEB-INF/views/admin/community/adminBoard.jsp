@@ -59,99 +59,66 @@
                 </tr>
             </thead>
 
-           <tbody id="board-sortable">
+            <tbody id="board-sortable">
+                <c:forEach var="board" items="${boardList}">
+                    <tr data-id="${board.board_id}">
 
-    <c:forEach var="board" items="${boardList}">
-
-        <!-- ⭐ 대분류 -->
-        <c:if test="${board.parent_id == null}">
-            <tr class="parent-row" data-id="${board.board_id}">
-
-                <td class="drag-icon">≡</td>
-                <td>${board.board_id}</td>
-                <td class="title-cell">
-                    <strong>📁 ${board.board_name}</strong>
-                </td>
-                <td>${board.board_desc}</td>
-                <td>${board.post_count}</td>
-
-                <td>
-                    <span class="${board.is_active == 1 ? 'badge-active' : 'badge-inactive'}">
-                        ${board.is_active == 1 ? "사용" : "숨김"}
-                    </span>
-                </td>
-
-                <td class="btn-group">
-                    <a href="${contextPath}/admin/adminBoardEdit?board_id=${board.board_id}">
-                        <button class="btn detail">수정</button>
-                    </a>
-
-                    <c:if test="${board.is_active == 1}">
-                        <form action="${contextPath}/admin/adminBoardDisable" method="post">
-                            <input type="hidden" name="board_id" value="${board.board_id}">
-                            <button class="btn btn-red">숨기기</button>
-                        </form>
-                    </c:if>
-
-                    <c:if test="${board.is_active == 0}">
-                        <form action="${contextPath}/admin/adminBoardEnable" method="post">
-                            <input type="hidden" name="board_id" value="${board.board_id}">
-                            <button class="btn btn-green">표시</button>
-                        </form>
-                    </c:if>
-                </td>
-
-            </tr>
-
-            <!-- ⭐ 소분류 반복 -->
-            <c:forEach var="child" items="${boardList}">
-                <c:if test="${child.parent_id == board.board_id}">
-                    <tr class="child-row" data-id="${child.board_id}">
+                        <!-- 드래그 아이콘 -->
                         <td class="drag-icon">≡</td>
-                        <td>${child.board_id}</td>
 
-                        <td class="title-cell child-indent">
-                            ↳ ${child.board_name}
+                        <td>${board.board_id}</td>
+
+                        <!-- 제목 → 상세 페이지 이동 -->
+                        <td class="title-cell">
+                            <a href="${pageContext.request.contextPath}/admin/adminBoardDetail?board_id=${board.board_id}">
+                                ${board.board_name}
+                            </a>
                         </td>
 
-                        <td>${child.board_desc}</td>
-                        <td>${child.post_count}</td>
+                        <td>${board.board_desc}</td>
 
+                        <td>${board.post_count}</td>
+
+                        <!-- 표시/숨김 뱃지 -->
                         <td>
-                            <span class="${child.is_active == 1 ? 'badge-active' : 'badge-inactive'}">
-                                ${child.is_active == 1 ? "사용" : "숨김"}
+                            <span class="${board.is_active == 1 ? 'badge-active' : 'badge-inactive'}">
+                                ${board.is_active == 1 ? "사용" : "숨김"}
                             </span>
                         </td>
 
+                        <!-- 버튼 그룹 -->
                         <td class="btn-group">
-                            <a href="${contextPath}/admin/adminBoardEdit?board_id=${child.board_id}">
-                                <button class="btn detail">수정</button>
+
+                            <!-- 수정 -->
+                            <a href="${pageContext.request.contextPath}/admin/adminBoardEdit?board_id=${board.board_id}">
+                                <button type="button" class="btn detail">수정</button>
                             </a>
 
-                            <c:if test="${child.is_active == 1}">
-                                <form action="${contextPath}/admin/adminBoardDisable" method="post">
-                                    <input type="hidden" name="board_id" value="${child.board_id}">
-                                    <button class="btn btn-red">숨기기</button>
+                            <!-- 숨김/표시 -->
+                            <c:if test="${board.is_active == 1}">
+                                <form action="${pageContext.request.contextPath}/admin/adminBoardDisable" method="post">
+                                    <input type="hidden" name="board_id" value="${board.board_id}">
+                                    <button type="submit" class="btn btn-red">숨기기</button>
                                 </form>
                             </c:if>
 
-                            <c:if test="${child.is_active == 0}">
-                                <form action="${contextPath}/admin/adminBoardEnable" method="post">
-                                    <input type="hidden" name="board_id" value="${child.board_id}">
-                                    <button class="btn btn-green">표시</button>
+                            <c:if test="${board.is_active == 0}">
+                                <form action="${pageContext.request.contextPath}/admin/adminBoardEnable"
+                                      method="post"
+                                      style="display:inline-block;">
+
+                                    <input type="hidden" name="board_id" value="${board.board_id}">
+
+                                    <button type="submit" class="btn btn-show">표시</button>
                                 </form>
                             </c:if>
+
                         </td>
 
                     </tr>
-                </c:if>
-            </c:forEach>
+                </c:forEach>
+            </tbody>
 
-        </c:if>
-
-    </c:forEach>
-
-</tbody>
 
         </table>
 
@@ -162,34 +129,27 @@
 <!-- 드래그 스크립트 -->
 <script>
 $(function() {
-
     $("#board-sortable").sortable({
         placeholder: "sortable-highlight",
-        handle: ".drag-handle",
+        handle: ".drag-icon",
+        cancel: "a, button, input, select",
+        axis: "y",
         update: function(event, ui) {
-
             let orderData = "";
-
             $("#board-sortable tr").each(function(index) {
                 let boardId = $(this).data("id");
                 let order = index + 1;
                 orderData += boardId + ":" + order + ",";
             });
-
             orderData = orderData.slice(0, -1);
-
-            $.ajax({
-                url: "${pageContext.request.contextPath}/admin/updateBoardOrder",
-                type: "POST",
-                data: { orderData: orderData },
-                success: function(res) {
-                    console.log("정렬 저장 완료");
-                }
-            });
+            $.post("${pageContext.request.contextPath}/admin/updateBoardOrder",
+                { orderData: orderData },
+                function(res){ console.log("저장됨", res); }
+            );
         }
     });
-
 });
+
 </script>
 
 </body>

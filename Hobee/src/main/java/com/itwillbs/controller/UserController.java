@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.mail.javamail.JavaMailSender;
@@ -154,9 +155,19 @@ public class UserController {
 ========================================================== */
     @PostMapping("/loginPro")
     @ResponseBody
-    public Map<String, Object> loginPro(@ModelAttribute UserVO userVO, HttpSession session) {
+    public Map<String, Object> loginPro(@ModelAttribute UserVO userVO,
+                                       HttpSession session,
+                                       HttpServletRequest request) {
 
         Map<String, Object> result = new HashMap<>();
+        
+        
+
+        /* ==========================================================
+           🔥 0) loginType 체크 (일반 user / 강사 teacher)
+        ========================================================== */
+        String loginType = request.getParameter("loginType");
+        System.out.println("로그인 타입: " + loginType);
 
         // 1) 아이디로 DB 조회
         UserVO dbUser = userService.loginUser(userVO);
@@ -168,19 +179,26 @@ public class UserController {
             return result;
         }
 
-    /* ==========================================================
-       🔥 2-1. 로그인 실패 횟수 & 시간 검사 (30분 제한)
-    ========================================================== */
-        // 🔥 로그인 실패 횟수 & 시간 변수 선언 (필수)
+        /* ==========================================================
+           🔥 1-1) 강사 로그인 요청인데 강사 계정이 아닐 경우 차단
+        ========================================================== */
+        if ("teacher".equals(loginType) && !"instructor".equals(dbUser.getUser_role())) {
+            result.put("result", "fail");
+            result.put("message", "강사 전용 로그인이며, 강사 계정만 로그인할 수 있습니다.");
+            return result;
+        }
+
+        /* ==========================================================
+           🔥 2-1. 로그인 실패 횟수 & 시간 검사 (30분 제한)
+        ========================================================== */
         int failCount = dbUser.getLogin_fail_count();
         String lastFailTime = dbUser.getLast_fail_time();
 
-        if (
-                failCount >= 5 &&
-                        lastFailTime != null &&
-                        !lastFailTime.equals("") &&
-                        !lastFailTime.equals("null")
-        ) {
+        if (failCount >= 5 &&
+                lastFailTime != null &&
+                !lastFailTime.equals("") &&
+                !lastFailTime.equals("null")) {
+
             LocalDateTime lastFail = LocalDateTime.parse(
                     lastFailTime,
                     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -196,10 +214,9 @@ public class UserController {
             }
         }
 
-
-    /* ==========================================================
-       🔥 3) 비밀번호 불일치 시 → 실패 횟수 증가
-    ========================================================== */
+        /* ==========================================================
+           🔥 3) 비밀번호 불일치 처리
+        ========================================================== */
         if (!dbUser.getUser_password().equals(userVO.getUser_password())) {
 
             userService.increaseFailCount(dbUser.getUser_id());
@@ -216,9 +233,11 @@ public class UserController {
             result.put("message", "비밀번호가 일치하지 않습니다. (남은 시도: " + remain + ")");
             return result;
         }
-    /* ==========================================================
-       🔥 4) 계정 상태 체크
-    ========================================================== */
+
+
+        /* ==========================================================
+           🔥 4) 계정 상태 체크
+        ========================================================== */
         String status = dbUser.getUser_status();
 
         if ("withdraw".equals(status) || "self-withdraw".equals(status)) {
@@ -233,67 +252,45 @@ public class UserController {
             return result;
         }
 
-        // 🔥 5) 로그인 성공 → 실패 횟수 초기화 + 세션 저장
+        /* ==========================================================
+           🔥 5) 로그인 성공 → 실패 횟수 초기화
+        ========================================================== */
         userService.resetFailCount(dbUser.getUser_id());
-
-        // 🔥 마지막 로그인 시간 저장
         userService.updateLastLoginTime(dbUser.getUser_id());
 
-        // 🔥 🔥 🔥 로그인 기기 기록 저장
-        String userAgent = ((ServletRequestAttributes) RequestContextHolder
-                .currentRequestAttributes())
+
+        /* ==========================================================
+           🔥 6) 로그인 기기, 지역 저장 (기존 코드 유지)
+        ========================================================== */
+
+        String userAgent = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest().getHeader("User-Agent");
 
         String deviceInfo = detectDevice(userAgent);
 
-        // 지역 기능
+        String ip = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getRemoteAddr();
 
-        // 1) 클라이언트 IP 가져오기
-        String ip = ((ServletRequestAttributes) RequestContextHolder
-                .currentRequestAttributes())
-                .getRequest()
-                .getRemoteAddr();
-
-        // 로컬 개발환경 → 테스트 IP 대체
         if (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
-            ip = "1.234.5.6";  // 서울 강남구 테스트용
+            ip = "1.234.5.6"; // 테스트용
         }
 
-        // 현재 지역 (대한민국 서울특별시 강남구)
         String currentLocation = getLocationFromIP(ip);
-
-        // 이전 로그인 지역 조회
         String lastLocation = userService.getLastLocation(dbUser.getUser_id());
 
-        // 4) login_history 저장 (지역 포함)
         userService.insertLoginHistory(dbUser.getUser_id(), deviceInfo, currentLocation);
 
-        // 🔥 🔥 🔥 최근 로그인 기기 3개 조회
-        List<String> recentDevices =
-                userService.getRecentLoginDevices(dbUser.getUser_id());
+        List<String> recentDevices = userService.getRecentLoginDevices(dbUser.getUser_id());
 
-        result.put("recent_devices", recentDevices);
-
-        // 🔥 비밀번호 변경 주기(90일) 체크
-        if (dbUser.getPassword_updated_at() != null) {
-
-            LocalDateTime lastPwChange = LocalDateTime.parse(
-                    dbUser.getPassword_updated_at(),
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            );
-
-            long days = Duration.between(lastPwChange, LocalDateTime.now()).toDays();
-
-            if (days >= 90) {
-                result.put("pw_change_alert",
-                        "비밀번호 변경한 지 " + days + "일이 지났습니다! 보안을 위해 변경을 권장합니다.");
-            }
-        }
-
-        // 등급 정보 가져오기
+        session.setAttribute("current_location", currentLocation);
+        session.setAttribute("last_location", lastLocation);
+        session.setAttribute("recent_devices", recentDevices);
+        
+        /* ==========================================================
+           🔥 7) 세션 저장
+        ========================================================== */
         GradeVO gradeVO = gradeService.getGradeByUser(dbUser.getUser_num());
 
-        // 세션 저장
         session.setAttribute("gradeVO", gradeVO);
         session.setAttribute("userVO", dbUser);
         session.setAttribute("user_id", dbUser.getUser_id());
@@ -301,7 +298,9 @@ public class UserController {
         session.setAttribute("user_role", dbUser.getUser_role());
 
 
-        // 🔥 마지막 로그인 시간 화면에서도 사용하려고 JSON으로 전송
+        /* ==========================================================
+           🔥 8) 로그인 성공 응답 + 리다이렉트 정보 전달
+        ========================================================== */
         result.put("result", "success");
         result.put("user_name", dbUser.getUser_name());
         result.put("last_login_at", dbUser.getLast_login_at());
@@ -309,8 +308,41 @@ public class UserController {
         result.put("current_location", currentLocation);
         result.put("last_location", lastLocation);
 
+      
+        result.put("redirect", "/main/main"); // 일반 사용자
+        
         return result;
     }
+    
+ // 🔥 ⬇⬇ 여기 추가하면 됨! (로그인 직후 정보 확인용 API)
+    @GetMapping("/loginInfo")
+    @ResponseBody
+    public Map<String, Object> loginInfo(HttpSession session) {
+
+        System.out.println("====== 🔥 loginInfo() 세션 값 확인 ======");
+        System.out.println("user_name = " + session.getAttribute("user_name"));
+        System.out.println("last_login_at = " +
+                (session.getAttribute("userVO") != null ?
+                 ((UserVO)session.getAttribute("userVO")).getLast_login_at() : "null"));
+        System.out.println("current_location = " + session.getAttribute("current_location"));
+        System.out.println("last_location = " + session.getAttribute("last_location"));
+        System.out.println("recent_devices = " + session.getAttribute("recent_devices"));
+        System.out.println("============================================");
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("user_name", session.getAttribute("user_name"));
+        map.put("last_login_at",
+                session.getAttribute("userVO") != null ?
+                ((UserVO)session.getAttribute("userVO")).getLast_login_at() : null);
+        map.put("current_location", session.getAttribute("current_location"));
+        map.put("last_location", session.getAttribute("last_location"));
+        map.put("recent_devices", session.getAttribute("recent_devices"));
+
+        return map;
+    }
+
+
 
     /* ==========================================================
        7. 로그아웃

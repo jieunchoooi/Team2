@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <!-- loginModal.jsp -->
 <div id="loginModal" class="modal" style="display:none;">
     <div class="modal-overlay"></div>

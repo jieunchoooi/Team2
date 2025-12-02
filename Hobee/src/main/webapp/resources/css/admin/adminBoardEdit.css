@@ -3,60 +3,68 @@
 /* 메인 콘텐츠 */
 .main-content {
     margin-left: 260px;
-    padding: 40px;
+    padding: 50px 40px;
+    background: #f6f7fb;
+    min-height: 100vh;
 }
 
 /* 페이지 제목 */
 .page-title {
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 800;
-    margin-bottom: 30px;
-    padding-left: 10px;
+    margin-bottom: 35px;
+    padding-left: 5px;
 }
 
-/* 카드 박스 — 보더 제거, 그림자 강조 */
+/* 카드 박스 */
 .card-box {
-    background: #fff;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+
+    background: #ffffff;
     padding: 45px 55px;
     border-radius: 18px;
 
-    /* 테두리 제거 */
-    border: none;
-
-    /* 그림자 강화 */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.10);
-
-    /* 크기 확대 */
-    max-width: 900px;
-    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* 내부 제목 */
+/* 섹션 제목 */
 .edit-title {
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 25px;
 }
 
-/* 폼 */
-.edit-form {
+/* 각 섹션 */
+.edit-section {
+    margin-bottom: 45px;
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 15px;  /* label + input 간 간격 */
 }
 
-.edit-form input,
-.edit-form select {
-    padding: 14px;
+/* 라벨 */
+.edit-section label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* input + select 공통 */
+.edit-section input,
+.edit-section select {
+    width: 100%;
+    padding: 14px 14px;
     border-radius: 10px;
     border: 1px solid #d0d0d0;
     background: #fafafa;
     font-size: 15px;
 }
 
-/* 버튼 */
+/* 버튼 영역 */
 .btn-area {
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     gap: 12px;
 }
@@ -82,3 +90,117 @@
     border: none;
     cursor: pointer;
 }
+
+/* 모든 입력창, 드롭다운 크기 완전 통일 */
+.edit-section input,
+.edit-section select {
+    width: 100%;
+    height: 52px;              /* ✔ 동일한 높이 */
+    padding: 0 16px;           /* ✔ 동일한 padding */
+    font-size: 16px;
+
+    border: 2px solid #e0e0e0; /* ✔ 테두리 두께 통일 */
+    border-radius: 10px;
+    background: #f9f9f9;
+    box-sizing: border-box;     /* ✔ width 고정 */
+
+    outline: none;
+}
+
+/* focus 시에도 동일한 스타일 유지 */
+.edit-section input:focus,
+.edit-section select:focus {
+    border: 2px solid #4a74ff;   /* ✔ 포커스 스타일 통일 */
+    background: #ffffff;
+}
+
+/* select 기본 화살표 디자인 정리 */
+.edit-section select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 18px;
+    padding-right: 45px;  /* 화살표 공간 */
+}
+
+/* -----------------------------------
+   🔥 입력창 기본 스타일 (이미 적용된 부분 개선)
+----------------------------------- */
+.edit-section input,
+.edit-section select {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    font-size: 16px;
+
+    border: 1.8px solid #e2e2e2;
+    border-radius: 10px;
+    background: #fafafa;
+
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* -----------------------------------
+   🔥 Hover 시 – 은은한 그림자 + 테두리 강조
+----------------------------------- */
+.edit-section input:hover,
+.edit-section select:hover {
+    background: #ffffff;
+    border-color: #bfc7ff;
+    box-shadow: 0 0 0 3px rgba(100, 120, 255, 0.12);
+}
+
+/* -----------------------------------
+   🔥 Focus 시 – 명확한 입력 중 느낌
+----------------------------------- */
+.edit-section input:focus,
+.edit-section select:focus {
+    background: #ffffff;
+    border-color: #4a74ff;
+    box-shadow: 0 0 0 3px rgba(74, 116, 255, 0.25);
+    outline: none;
+}
+
+/* -----------------------------------
+   🔥 drop-down 아이콘 업그레이드 (더 고급스럽게)
+----------------------------------- */
+.edit-section select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 18px;
+    padding-right: 45px;
+}
+
+/* -----------------------------------
+   🔥 섹션 제목 아래 깔끔한 라인
+----------------------------------- */
+.edit-title {
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ececec;
+}
+
+/* -----------------------------------
+   🔥 카드 박스 – 더 고급스러운 그림자
+----------------------------------- */
+.card-box {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 45px 55px;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08),
+                0 2px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+/* 카드 hover 시 깊이감 */
+.card-box:hover {
+    box-shadow: 0 12px 38px rgba(0,0,0,0.12),
+                0 4px 12px rgba(0,0,0,0.06);
+}
+
+
