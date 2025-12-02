@@ -51,6 +51,9 @@ public interface LectureMapper {
 
 	List<LectureVO> getAllLectures(String search);
 
+	List<LectureVO> getRecoLectures(UserVO userVO);
+
+
 	
 
 
