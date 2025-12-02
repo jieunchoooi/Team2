@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.domain.CommunityCommentVO;
 import com.itwillbs.domain.CommunityContentVO;
 import com.itwillbs.domain.CommunitySearchCriteria;
 import com.itwillbs.domain.ReactionCountVO;
@@ -81,8 +82,34 @@ public interface CommunityContentMapper {
     // 📌 2) 검색 전용 (과거 호환 위해 유지)
     //     - 내부는 동일하게 Criteria 사용
     // ============================================
-    List<CommunityContentVO> searchCommunityList(CommunitySearchCriteria cri);
+   
+    
+    //여기부터 상세 페이지 조회!!
+    /** 게시글 상세 */
+    CommunityContentVO getPostDetail(@Param("post_id") int post_id);
 
-    int getSearchCommunityListCount(CommunitySearchCriteria cri);
+    /** 게시글 조회수 증가 */
+    int updateViewCount(@Param("post_id") int post_id);
+
+    /** 댓글 조회 (좋아요 상태 & count 포함) */
+    List<CommunityCommentVO> getCommentsByPostId(
+            @Param("post_id") int post_id,
+            @Param("user_num") Integer user_num);
+
+    /** 댓글 좋아요 토글(insert/update/delete)용 */
+    int insertCommentLike(@Param("comment_id") int comment_id,
+                          @Param("user_num") int user_num,
+                          @Param("is_like") int is_like);
+
+    int updateCommentLike(@Param("comment_id") int comment_id,
+                          @Param("user_num") int user_num,
+                          @Param("is_like") int is_like);
+
+    int deleteCommentLike(@Param("comment_id") int comment_id,
+                          @Param("user_num") int user_num);
+
+    /** 댓글 좋아요/싫어요 count 조회 */
+    int getCommentLikeCount(@Param("comment_id") int comment_id);
+    int getCommentDislikeCount(@Param("comment_id") int comment_id);
 
 }

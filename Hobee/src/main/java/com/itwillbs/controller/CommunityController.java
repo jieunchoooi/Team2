@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.CommunityContentVO;
+import com.itwillbs.domain.CommunityDetailDTO;
 import com.itwillbs.domain.CommunitySearchCriteria;
 import com.itwillbs.domain.PageDTO;
 import com.itwillbs.domain.ReactionCountVO;
@@ -41,56 +42,56 @@ public class CommunityController {
     - CommunitySearchCriteria 로 통합
     - 파라미터 이름 절대 변경 안 함
     ============================================================ */
- @GetMapping("/list")
- public String communityList(CommunitySearchCriteria cri, Model model) {
-
-     // <%-- 기본값 설정 (널 또는 빈값일 때) --%>
-     if (cri.getSort() == null || cri.getSort().equals("")) {
-         cri.setSort("latest");
-     }
-
-     if (cri.getPeriod() == null || cri.getPeriod().equals("")) {
-         cri.setPeriod("all");
-     }
-
-     if (cri.getPage() <= 0) {
-         cri.setPage(1);
-     }
-
-     if (cri.getAmount() <= 0) {
-         cri.setAmount(10);
-     }
-  // offset 계산
-     cri.setOffset((cri.getPage() - 1) * cri.getAmount());
-     // <%-- 게시글 목록 조회 --%>
-     List<CommunityContentVO> communityList = communityService.getCommunityList(cri);
-
-     // <%-- 총 게시글 수 조회 --%>
-     int totalCount = communityService.getTotalCount(cri);
-     PageDTO pageMaker = new PageDTO(cri.getPage(), cri.getAmount(), totalCount);
-
-     // <%-- 카테고리 메인 목록(Chip 버튼용) --%>
-     List<CommunityContentVO> categoryMainList = communityService.getCategoryMainList();
-
-     // <%-- 인기글 목록 --%>
-     List<CommunityContentVO> popularList = communityService.getPopularPosts();
-
-     // 🔥 실시간 핫토픽
-     List<CommunityContentVO> hotTopicList = communityService.getHotTopicList();
-     System.out.println("핫토픽 리스트 "+hotTopicList);
-     model.addAttribute("hotTopicList", hotTopicList);
-
-     // <%-- 모델 등록 --%>
-     model.addAttribute("communityList", communityList);
-     model.addAttribute("categoryMainList", categoryMainList);
-     model.addAttribute("popularList", popularList);
-     model.addAttribute("pageMaker", pageMaker);
-
-     // <%-- 검색/필터 상태유지 --%>
-     model.addAttribute("cri", cri);
-
-     return "community/communityList";
- }
+	 @GetMapping("/list")
+	 public String communityList(CommunitySearchCriteria cri, Model model) {
+	
+	     // <%-- 기본값 설정 (널 또는 빈값일 때) --%>
+	     if (cri.getSort() == null || cri.getSort().equals("")) {
+	         cri.setSort("latest");
+	     }
+	
+	     if (cri.getPeriod() == null || cri.getPeriod().equals("")) {
+	         cri.setPeriod("all");
+	     }
+	
+	     if (cri.getPage() <= 0) {
+	         cri.setPage(1);
+	     }
+	
+	     if (cri.getAmount() <= 0) {
+	         cri.setAmount(10);
+	     }
+	  // offset 계산
+	     cri.setOffset((cri.getPage() - 1) * cri.getAmount());
+	     // <%-- 게시글 목록 조회 --%>
+	     List<CommunityContentVO> communityList = communityService.getCommunityList(cri);
+	
+	     // <%-- 총 게시글 수 조회 --%>
+	     int totalCount = communityService.getTotalCount(cri);
+	     PageDTO pageMaker = new PageDTO(cri.getPage(), cri.getAmount(), totalCount);
+	
+	     // <%-- 카테고리 메인 목록(Chip 버튼용) --%>
+	     List<CommunityContentVO> categoryMainList = communityService.getCategoryMainList();
+	
+	     // <%-- 인기글 목록 --%>
+	     List<CommunityContentVO> popularList = communityService.getPopularPosts();
+	
+	     // 🔥 실시간 핫토픽
+	     List<CommunityContentVO> hotTopicList = communityService.getHotTopicList();
+	     System.out.println("핫토픽 리스트 "+hotTopicList);
+	     model.addAttribute("hotTopicList", hotTopicList);
+	
+	     // <%-- 모델 등록 --%>
+	     model.addAttribute("communityList", communityList);
+	     model.addAttribute("categoryMainList", categoryMainList);
+	     model.addAttribute("popularList", popularList);
+	     model.addAttribute("pageMaker", pageMaker);
+	
+	     // <%-- 검색/필터 상태유지 --%>
+	     model.addAttribute("cri", cri);
+	
+	     return "community/communityList";
+	 }
 
 
     // ============================================
@@ -130,5 +131,22 @@ public class CommunityController {
 
         return result;
     }
+    
+    @GetMapping("/detail")
+    public String detail(@RequestParam("post_id") int post_id,
+                         HttpSession session,
+                         Model model) {
+
+        UserVO userVO = (UserVO) session.getAttribute("userVO");
+        Integer user_num = userVO != null ? userVO.getUser_num() : null;
+
+        CommunityDetailDTO communityDetailDTO = communityService.getDetailPage(post_id, user_num);
+
+        model.addAttribute("post", communityDetailDTO.getPost());
+        model.addAttribute("comments", communityDetailDTO.getComments());
+
+        return "community/communityDetail";
+    }
+
 
 }
