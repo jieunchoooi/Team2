@@ -37,10 +37,10 @@ public class AdminService {
 		return adminMapper.countMemberList(pageVO);
 	}
 
-	public void LectureUpdate(LectureVO lectureVO) {
-		System.out.println("AdminService LectureUpdate()");
-		adminMapper.LectureUpdate(lectureVO);
-	}
+//	public void LectureUpdate(LectureVO lectureVO) {
+//		System.out.println("AdminService LectureUpdate()");
+//		adminMapper.LectureUpdate(lectureVO);
+//	}
 
 	public List<LectureVO> listLecture(PageVO pageVO) {
 		System.out.println("AdminService listLecture()");
@@ -227,15 +227,15 @@ public class AdminService {
 		return adminMapper.withDeleteUserMember(pageVO);
 	}
 
-	public void insertChapter(ChapterVO chapterVO) {
-		System.out.println("AdminService insertChapter()");
-		adminMapper.insertChapter(chapterVO);
-	}
+//	public void insertChapter(ChapterVO chapterVO) {
+//		System.out.println("AdminService insertChapter()");
+//		adminMapper.insertChapter(chapterVO);
+//	}
 
-	public void insertChapterDetail(ChapterDetailVO detailVO) {
-		System.out.println("AdminService insertChapterDetail()");
-		adminMapper.insertChapterDetail(detailVO);
-	}
+//	public void insertChapterDetail(ChapterDetailVO detailVO) {
+//		System.out.println("AdminService insertChapterDetail()");
+//		adminMapper.insertChapterDetail(detailVO);
+//	}
 
 	public List<UserVO> getInstructorList() {
 		System.out.println("AdminService insertChapterDetail()");

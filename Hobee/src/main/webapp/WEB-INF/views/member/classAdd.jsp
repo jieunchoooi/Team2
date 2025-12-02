@@ -21,7 +21,7 @@
 
 		<form id="classAddForm" class="form-container"
 			action="${pageContext.request.contextPath}/member/classAddPro"
-			method="post" enctype="multipart/form-data" onsubmit="return reindexChapters()">
+			method="post" enctype="multipart/form-data">
 			
 			<div class="profile-pic">
 				<span>📚</span>
@@ -102,7 +102,7 @@
 			</div>
 
 			<div style="text-align: center;">
-				<button class="btn" type="submit">등록하기</button>
+				<button class="btn btn-submit" type="submit">승인요청</button>
 			</div>
 		</form>
 	</main>
@@ -121,94 +121,96 @@ let detail_time = document.querySelector(".detail_time");
 let tag_input = document.querySelector("#tag-input");
 let add_tag_btn = document.querySelector("#add-tag-btn");
 let allDetailTitles = document.querySelectorAll(".detail-title");
+let btn = document.querySelector(".btn-submit");
 
+btn.onclick = function(e){
+    e.preventDefault(); // ✅ 기본 submit 방지
+    
+    // ✅ 1. 먼저 모든 검증 수행
+    if(lecture_img.files.length === 0){
+        alert("썸네일을 넣어주세요.");
+        lecture_img.focus();
+        return false;
+    }
+    
+    if(lecture_title.value.length < 1 || lecture_title.value == ""){
+        alert("강의명을 입력해주세요.");
+        lecture_title.focus();
+        return false;
+    }
+    
+    if(lecture_price.value.length < 1 || lecture_price.value == ""){
+        alert("금액을 입력해주세요.");
+        lecture_price.focus();
+        return false;
+    }
+    
+    if(lecture_detail.value.length < 1 || lecture_detail.value == ""){
+        alert("상세정보를 입력해주세요.");
+        lecture_detail.focus();
+        return false;
+    }
 
-classAddForm.onsubmit = function(e){
-	
-	if(lecture_img.files.length === 0){
-		e.preventDefault(); 
-		alert("썸네일을 넣어주세요.");
-		lecture_img.focus();
-		return false;
-	}
-	
-	if(lecture_title.value.length < 1 && lecture_title.value == ""){
-		e.preventDefault(); 
-		alert("강의명을 입력해주세요.");
-		lecture_title.focus();
-		return false;
-	}
-	
-	if(lecture_price.value.length < 1 && lecture_price.value == ""){
-		e.preventDefault(); 
-		alert("금액을 입력해주세요.");
-		lecture_price.focus();
-		return false;
-	}
-	
-	if(lecture_detail.value.length < 1 && lecture_detail.value == ""){
-		e.preventDefault(); 
-		alert("상세정보를 입력해주세요.");
-		lecture_detail.focus();
-		return false;
-	}
-
-	// ✅ 모든 챕터 제목 검증
-	const chapterTitles = document.querySelectorAll('.chapter-title');
-	for(let i = 0; i < chapterTitles.length; i++){
-		if(!chapterTitles[i].value.trim()){
-			e.preventDefault();
-			alert(`Chapter ${i + 1}의 제목을 입력해주세요.`);
-			chapterTitles[i].focus();
-			return false;
-		}
-	}
-	
-	// ✅ 모든 강의 제목 검증
-	const detailTitles = document.querySelectorAll('.detail-title');
-	for(let i = 0; i < detailTitles.length; i++){
-		if(!detailTitles[i].value.trim()){
-			e.preventDefault();
-			alert("모든 강의 제목을 입력해주세요.");
-			detailTitles[i].focus();
-			return false;
-		}
-	}
-	
-	// ✅ 모든 강의 시간 검증 (비어있는지)
-	const detailTimes = document.querySelectorAll('.detail-time');
-	for(let i = 0; i < detailTimes.length; i++){
-		if(!detailTimes[i].value.trim()){
-			e.preventDefault(); 
-			alert("모든 강의 시간을 입력해주세요.");
-			detailTimes[i].focus();
-			return false;
-		}
-	}
-	
-	// ✅ 모든 강의 시간 형식 검증
-	const timePattern = /^(\d{2}:\d{2}(:\d{2})?)$/;
-	for(let i = 0; i < detailTimes.length; i++){
-		if(!timePattern.test(detailTimes[i].value)){
-			e.preventDefault();
-			alert("시간 형식이 올바르지 않습니다. MM:SS 또는 HH:MM:SS 형태로 입력해주세요.");
-			detailTimes[i].focus();
-			return false;
-		}
-	}
-	
-	// ✅ 태그 검증
-	const hiddenTags = document.getElementById("lecture_tag_hidden").value;
-	if (!hiddenTags || hiddenTags.trim() === "") {
-		e.preventDefault();
-		alert("태그를 1개 이상 입력해주세요.");
-		document.getElementById("tag-input").focus();
-		return false;
-	}
-	
-	// ✅✅✅ 중요! 모든 검증 통과 후 챕터 인덱스 재정렬
-	return reindexChapters();
+    // ✅ 모든 챕터 제목 검증
+    const chapterTitles = document.querySelectorAll('.chapter-title');
+    for(let i = 0; i < chapterTitles.length; i++){
+        if(!chapterTitles[i].value.trim()){
+            alert("모든 Chapter 의 제목을 입력해주세요.");
+            chapterTitles[i].focus();
+            return false;
+        }
+    }
+    
+    // ✅ 모든 강의 제목 검증
+    const detailTitles = document.querySelectorAll('.detail-title');
+    for(let i = 0; i < detailTitles.length; i++){
+        if(!detailTitles[i].value.trim()){
+            alert("모든 강의 제목을 입력해주세요.");
+            detailTitles[i].focus();
+            return false;
+        }
+    }
+    
+    // ✅ 모든 강의 시간 검증 (비어있는지)
+    const detailTimes = document.querySelectorAll('.detail-time');
+    for(let i = 0; i < detailTimes.length; i++){
+        if(!detailTimes[i].value.trim()){
+            alert("모든 강의 시간을 입력해주세요.");
+            detailTimes[i].focus();
+            return false;
+        }
+    }
+    
+    // ✅ 모든 강의 시간 형식 검증
+    const timePattern = /^(\d{2}:\d{2}(:\d{2})?)$/;
+    for(let i = 0; i < detailTimes.length; i++){
+        if(!timePattern.test(detailTimes[i].value)){
+            alert("시간 형식이 올바르지 않습니다. MM:SS 또는 HH:MM:SS 형태로 입력해주세요.");
+            detailTimes[i].focus();
+            return false;
+        }
+    }
+    
+    // ✅ 태그 검증
+    const hiddenTags = document.getElementById("lecture_tag_hidden").value;
+    if (!hiddenTags || hiddenTags.trim() === "") {
+        alert("태그를 1개 이상 입력해주세요.");
+        document.getElementById("tag-input").focus();
+        return false;
+    }
+    
+    // ✅ 2. 모든 검증 통과 후 마지막에 확인 창
+    let result = confirm("승인 요청 하시겠습니까?");
+    if(result){
+        reindexChapters(); // 챕터 인덱스 재정렬
+        classAddForm.submit(); // 폼 제출
+        alert("요청되었습니다.");
+    } else {
+        alert("취소되었습니다.");
+        return false;
+    }
 }
+
 
 // 파일 선택 시 미리보기
 document.getElementById("lecture_img").addEventListener('change', function(e) {
@@ -311,30 +313,43 @@ document.getElementById("lecture_img").addEventListener('change', function(e) {
 	        let newBox = document.createElement("div");
 	        newBox.classList.add("detail-item");
 	        newBox.innerHTML = 
-	            '<span class="detail-order">' + lectureNum + '</span>' 
+	        	'<span class="detail-order">' + lectureNum + '</span>' 
 	            +'<input type="text" name="detail_title_0[]" placeholder="강의 제목" class="detail-title">' 
 	            +'<input type="text" name="detail_time_0[]" placeholder="00:00 (분:초)" class="detail-time" maxlength="8">'
-	            +'<button type="button" class="btn-remove-detail">-</button><br>';
-	        
+	            +'<button type="button" class="btn-remove-detail">-</button><br>'; 
+
 	        detailsContainer.appendChild(newBox);
 	        
-	        let fileInput = detailsContainer.querySelector('input[type="file"]');
-	        if (fileInput) {
-	            detailsContainer.appendChild(fileInput);
+	        // ✅ detail-item 추가 후, details-container에 파일 input 추가
+		    let fileInput = document.createElement("input");
+		    fileInput.type = "file";
+		    fileInput.name = "noFile";
+		    detailsContainer.appendChild(fileInput);
+	    }
+	 // 강의 삭제 버튼
+	    if (e.target.classList.contains('btn-remove-detail')){
+	        let detailItem = e.target.closest('.detail-item');
+	        let detailsContainer = detailItem.parentElement;
+
+	        if (detailsContainer.querySelectorAll('.detail-item').length > 1) {
+	            // ✅ detail-item의 인덱스 찾기
+	            let detailItems = Array.from(detailsContainer.querySelectorAll('.detail-item'));
+	            let detailIndex = detailItems.indexOf(detailItem);
+	            
+	            // ✅ 해당 인덱스에 해당하는 파일 input 찾아서 삭제
+	            let fileInputs = detailsContainer.querySelectorAll('input[type="file"]');
+	            if (fileInputs[detailIndex]) {
+	                fileInputs[detailIndex].remove();
+	            }
+	            
+	            // ✅ detail-item 삭제
+	            detailsContainer.removeChild(detailItem);
+	            
+	            updateDetailNumbers(detailsContainer); // 강의 번호 업데이트
+	        } else {
+	            alert('최소 1개의 강의가 필요합니다.');
 	        }
 	    }
-		// 강의 삭제 버튼
-		if (e.target.classList.contains('btn-remove-detail')){
-		    let detailItem = e.target.closest('.detail-item');
-		    let detailsContainer = detailItem.parentElement;
-	    
-		    if (detailsContainer.querySelectorAll('.detail-item').length > 1) {
-		        detailsContainer.removeChild(detailItem);
-		        updateDetailNumbers(detailsContainer); // 강의 번호 업데이트
-		    } else {
-		        alert('최소 1개의 강의가 필요합니다.');
-		    }
-		}
 	});
 	
 	// 강의 번호 업데이트 함수
@@ -386,14 +401,89 @@ document.getElementById("lecture_img").addEventListener('change', function(e) {
 let tagBtn = document.querySelector(".btn-add-detail1");
 let lectureTag = document.querySelector(".lecture_tag");
 
-// tagBtn.click = function(){
-// 	lectureTag.value = 
-// }
 
 
+// 태그 추가/삭제 기능
+document.addEventListener("DOMContentLoaded", function () {
+    let tagInput = document.getElementById("tag-input"); 
+    let addTagBtn = document.getElementById("add-tag-btn");
+    let tagContainer = document.getElementById("tag-container");
+    let hiddenInput = document.getElementById("lecture_tag_hidden");
+    let tags = [];
+    
+    function updateHiddenInput() {
+        hiddenInput.value = tags.join(",");
+    }
+    
+    function addTag(tagText) {
+        tagText = tagText.trim();
+        
+        if (tagText === "") {
+            alert("태그를 입력하세요.");
+            return;
+        }
+        if (tags.length >= 10){
+            alert("최대 10개까지 입력 가능합니다.");
+            return;
+        }
+        if (tags.includes(tagText)){
+            alert("이미 추가된 태그 입니다.");
+            return;
+        }
+        
+        tags.push(tagText);
+        
+        let tagChip = document.createElement("div");
+        tagChip.className = "tag-chip";
+        tagChip.innerHTML = '<span class="tag-text">#' + tagText + '</span>' + '<button type="button" class="tag-remove-btn">×</button>';
+        
+        tagChip.querySelector(".tag-remove-btn").addEventListener("click", function(){
+            let index = tags.indexOf(tagText);
+            if(index > -1) {
+                tags.splice(index, 1);
+            }
+            tagChip.remove();
+            updateHiddenInput();	
+        });
+        
+        tagContainer.appendChild(tagChip);
+        updateHiddenInput();
+        tagInput.value = "";
+        tagInput.focus();
+    }
+    
+    addTagBtn.addEventListener("click", function(){
+        addTag(tagInput.value);
+    });
+    
+    tagInput.addEventListener("keypress", function(e){
+        if(e.key === "Enter"){
+            e.preventDefault();
+            addTag(tagInput.value);
+        }
+    });
+});
 
-
-
+//✅ 폼 제출 전 챕터 인덱스 재정렬 함수
+function reindexChapters() {
+    let allChapters = document.querySelectorAll('.chapter-item');
+    
+    allChapters.forEach(function(chapter, chapterIndex) {
+        // 해당 챕터의 모든 detail-title, detail-time input의 name 속성 변경
+        let detailTitles = chapter.querySelectorAll('.detail-title');
+        let detailTimes = chapter.querySelectorAll('.detail-time');
+        
+        detailTitles.forEach(function(input) {
+            input.name = 'detail_title_' + chapterIndex + '[]';
+        });
+        
+        detailTimes.forEach(function(input) {
+            input.name = 'detail_time_' + chapterIndex + '[]';
+        });
+    });
+    
+    return true; // 폼 제출 계속 진행
+}
 
 
 

@@ -36,16 +36,22 @@
 					<label for="user_num">번호</label> <span class="form-value">${user.user_num}</span>
 				</div>
 				<div class="form-group">
-    		    	<label>권한</label>
-      				<select name="user_role" id="category" required>
-        				<option value="user" ${user.user_role == 'user' ? 'selected' : ''}>유저</option>
-        				<option value="instructor" ${user.user_role == 'instructor' ? 'selected' : ''}>강사</option>
-        				<c:if test="${userVO.user_role == 'super_admin'}">
-	        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option>
-        				</c:if>
+<!--     		    	<label>권한</label> -->
+<!--       				<select name="user_role" id="category" required> -->
+<%--         				<option value="user" ${user.user_role == 'user' ? 'selected' : ''}>유저</option> --%>
+<%--         				<option value="instructor" ${user.user_role == 'instructor' ? 'selected' : ''}>강사</option> --%>
+<%--         				<c:if test="${userVO.user_role == 'super_admin'}"> --%>
+<%-- 	        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option> --%>
+<%--         				</c:if> --%>
         				
-      				</select>
-   			    </div>
+<!--       				</select> -->
+					<label for="user_role">권한</label> 
+					<c:if test="${user.user_role} == 'user'">
+						<span class="form-value">${user.user_role}</span>
+					
+					</c:if>
+				</div>
+   			    
 				<div class="form-group">
 					<label for="userId">아이디</label> <span class="form-value">${user.user_id}</span>
 				</div>

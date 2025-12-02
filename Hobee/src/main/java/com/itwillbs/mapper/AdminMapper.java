@@ -16,7 +16,7 @@ public interface AdminMapper {
 
 	public int countMemberList(PageVO pageVO);
 
-	public void LectureUpdate(LectureVO lectureVO);
+//	public void LectureUpdate(LectureVO lectureVO);
 
 	public List<LectureVO> listLecture(PageVO pageVO);
 
@@ -74,9 +74,9 @@ public interface AdminMapper {
 
 	public List<UserVO> withDeleteUserMember(PageVO pageVO);
 
-	public void insertChapter(ChapterVO chapterVO);
+//	public void insertChapter(ChapterVO chapterVO);
 
-	public void insertChapterDetail(ChapterDetailVO detailVO);
+//	public void insertChapterDetail(ChapterDetailVO detailVO);
 
 	public List<UserVO> getInstructorList();
 
