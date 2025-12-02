@@ -86,7 +86,7 @@
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY 
-		        l.readcount DESC
+		        review_count DESC
 		    LIMIT 10
 		</select>
 		

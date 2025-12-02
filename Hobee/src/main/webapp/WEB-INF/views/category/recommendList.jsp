@@ -380,10 +380,10 @@ footer {
 				요리
 			</div>
 			<div class="tag-container">
-				<button class="tag-btn" data-tag="베이킹" onclick="toggleTag(this)">한식</button>
-				<button class="tag-btn" data-tag="창업" onclick="toggleTag(this)">일식 & 중식 </button>
-				<button class="tag-btn" data-tag="창업" onclick="toggleTag(this)">양식</button>
-				<button class="tag-btn" data-tag="창업" onclick="toggleTag(this)">베이킹</button>
+				<button class="tag-btn" data-tag="한식" onclick="toggleTag(this)">한식</button>
+				<button class="tag-btn" data-tag="중식일식" onclick="toggleTag(this)">중식&일식</button>
+				<button class="tag-btn" data-tag="양식" onclick="toggleTag(this)">양식</button>
+				<button class="tag-btn" data-tag="베이킹" onclick="toggleTag(this)">베이킹</button>
 			</div>
 		</div>
 		
@@ -393,24 +393,11 @@ footer {
 				IT
 			</div>
 			<div class="tag-container">
-				<button class="tag-btn" data-tag="AI스킬업" onclick="toggleTag(this)">AI스킬업</button>
+				<button class="tag-btn" data-tag="AI 스킬업" onclick="toggleTag(this)">AI 스킬업</button>
 				<button class="tag-btn" data-tag="프로그래밍" onclick="toggleTag(this)">프로그래밍</button>
 				<button class="tag-btn" data-tag="데이터사이언스" onclick="toggleTag(this)">데이터사이언스</button>
 			</div>
 		</div>
-		
-		
-		<!-- IT 카테고리 -->
-<!-- 		<div class="filter-category"> -->
-<!-- 			<div class="filter-category-title"> -->
-<!-- 				IT 개발 -->
-<!-- 			</div> -->
-<!-- 			<div class="tag-container"> -->
-<!-- 				<button class="tag-btn" data-tag="프로그래밍" onclick="toggleTag(this)">프로그래밍</button> -->
-<!-- 				<button class="tag-btn" data-tag="AI스킬업" onclick="toggleTag(this)">AI 스킬업</button> -->
-<!-- 				<button class="tag-btn" data-tag="데이터사이언스" onclick="toggleTag(this)">데이터사이언스</button> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
 		
 		<!-- 외국어 카테고리 -->
 		<div class="filter-category">
@@ -419,7 +406,7 @@ footer {
 			</div>
 			<div class="tag-container">
 				<button class="tag-btn" data-tag="영어" onclick="toggleTag(this)">영어</button>
-				<button class="tag-btn" data-tag="제2외국어" onclick="toggleTag(this)">제2 외국어</button>
+				<button class="tag-btn" data-tag="제2외국어" onclick="toggleTag(this)">제2외국어</button>
 				<button class="tag-btn" data-tag="외국어시험" onclick="toggleTag(this)">외국어 시험</button>
 			</div>
 		</div>
