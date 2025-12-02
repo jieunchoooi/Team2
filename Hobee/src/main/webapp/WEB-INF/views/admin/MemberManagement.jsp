@@ -13,9 +13,7 @@
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
-	href="${ pageContext.request.contextPath }/resources/css/member/mypage.css">
-<link rel="stylesheet"
-	href="${ pageContext.request.contextPath }/resources/css/include/profileCard.css">
+	href="${ pageContext.request.contextPath }/resources/css/admin/MemberManagement.css">
 	
 </head>
 <body>
@@ -29,7 +27,6 @@
 	<main class="main-content">
 		<h1>회원 관리</h1>
 		<div class="content-wrapper">
-							<jsp:include page="../include/profileCard.jsp" />
 			
 			<div class="form-container">
 				<div class="form-group">
@@ -46,9 +43,11 @@
         				
 <!--       				</select> -->
 					<label for="user_role">권한</label> 
-					<c:if test="${user.user_role} == 'user'">
-						<span class="form-value">${user.user_role}</span>
-					
+					<c:if test="${user.user_role == 'user'}">
+						<span class="form-value">유저</span>
+					</c:if>
+					<c:if test="${user.user_role == 'instructor'}">
+						<span class="form-value">강사</span>
 					</c:if>
 				</div>
    			    
@@ -82,8 +81,10 @@
 					<label for="grade_id">현재등급</label> <span class="form-value">${user.grade_id}</span>
 				</div>
 				
-				<button class="btn" type="button" onclick="history.back();">목록</button>
-				<button class="btn" type="submit" onclick="return submitForm();">정보 수정</button>
+				<div class="btnBox">
+					<button class="btn" type="button" onclick="history.back();">목록</button>
+<!-- 					<button class="btn" type="submit" onclick="return submitForm();">정보 수정</button> -->
+				</div>
 <!-- 				<a onclick="history.back();"> 목록</a>				 -->
 			</div>
 		</div>

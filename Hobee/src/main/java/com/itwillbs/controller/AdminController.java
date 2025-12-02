@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,30 @@ public class AdminController {
    @Resource(name = "uploadPath1")
    private String uploadPath1;
 
+	// ⭐ 모든 /member/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
+	@ModelAttribute("page")
+	public String setPageIdentifier(HttpServletRequest req) {
+	    String uri = req.getRequestURI();
+
+	    if (uri.contains("adminCategory")) return "category";
+	    if (uri.contains("adminClassList")) return "classList";
+	    if (uri.contains("adminMemberList")) return "memberList";
+	    if (uri.contains("adminTeacherList")) return "teacherList";
+	    if (uri.contains("adminWithdrawList")) return "withdrawList";
+	    if (uri.contains("adminPaymentList")) return "paymentList"; // ⭐ 상세 페이지도 동일 그룹
+	    if (uri.contains("adminPostList")) return "postList";
+	    if (uri.contains("adminPostDeletedList")) return "deletedPostList";
+	    if (uri.contains("adminCommentList")) return "commentList";
+	    if (uri.contains("adminReportList")) return "reportList";
+	    if (uri.contains("adminPostStats")) return "postStats";
+	    if (uri.contains("adminNoticeList")) return "noticeList";
+	    if (uri.contains("adminFaqList")) return "faqList";
+	    return "";
+	}
+   
+   
+   
+   
    @GetMapping("/adminCategory")
    public String adminCategory(Model model) {
       System.out.println("AdminController adminCategory()");
