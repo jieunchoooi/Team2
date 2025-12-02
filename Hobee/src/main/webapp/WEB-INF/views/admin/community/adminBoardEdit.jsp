@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -8,10 +7,9 @@
     <meta charset="UTF-8">
     <title>게시판 수정 | Hobee Admin</title>
 
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/css/admin/adminBoardEdit.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminBoardEdit.css">
+
 </head>
 
 <body>
@@ -19,92 +17,144 @@
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
-<main class="main-content">
+<div class="main-content">
 
-    <!-- 페이지 제목 -->
     <div class="page-title">게시판 수정</div>
 
-    <!-- 카드 박스 -->
-    <div class="card-box">
+    <form action="/hobee/admin/adminBoardEditPro" method="post">
 
-        <form action="${pageContext.request.contextPath}/admin/adminBoardEditPro"
-              method="post">
+        <input type="hidden" name="board_id" value="${board.board_id}"/>
 
-            <input type="hidden" name="board_id" value="${board.board_id}"/>
+        <div class="edit-wrapper">
 
-            <!-- 게시판 기본 정보 -->
-            <div class="edit-section">
-                <h3 class="edit-title">게시판 기본 정보</h3>
+            <!-- ====================================== -->
+            <!-- 📄 기본 정보 -->
+            <!-- ====================================== -->
+            <div class="edit-card basic-card">
 
-                <label>게시판 이름</label>
-                <input type="text" name="board_name"
-                       value="${board.board_name}" required>
+                <div class="card-header">
+                    <h3>📄 게시판 기본 정보</h3>
+                    <p class="card-desc">게시판의 기본적인 설정을 입력하세요.</p>
+                </div>
 
-                <label>게시판 설명</label>
-                <input type="text" name="board_desc"
-                       value="${board.board_desc}" required>
+                <div class="form-grid-basic">
 
-                <label>사용 여부</label>
-                <select name="is_active">
-                    <option value="1" ${board.is_active == 1 ? 'selected' : ''}>사용</option>
-                    <option value="0" ${board.is_active == 0 ? 'selected' : ''}>숨김</option>
-                </select>
+                    <!-- 게시판 이름 -->
+                    <div class="form-item">
+                        <label><i class="ri-chat-3-line"></i> 게시판 이름</label>
+                        <p class="desc">사용자에게 표시되는 게시판 명칭입니다.</p>
+                        <input type="text" name="board_name" value="${board.board_name}">
+                    </div>
+
+                    <!-- 사용 여부 -->
+                    <div class="form-item">
+                        <label><i class="ri-eye-line"></i> 사용 여부</label>
+                        <p class="desc">비활성화 시 사용자에게 노출되지 않습니다.</p>
+                        <select name="is_active">
+                            <option value="1" ${board.is_active == 1 ? 'selected' : ''}>사용</option>
+                            <option value="0" ${board.is_active == 0 ? 'selected' : ''}>숨김</option>
+                        </select>
+                    </div>
+
+                    <!-- 설명 -->
+                    <div class="form-item full">
+                        <label><i class="ri-file-text-line"></i> 게시판 설명</label>
+                        <p class="desc">게시판의 목적이나 용도를 간단히 작성하세요.</p>
+                        <input type="text" name="board_desc" value="${board.board_desc}">
+                    </div>
+
+                </div>
             </div>
 
-            <!-- 게시판 옵션 -->
-            <div class="edit-section">
-                <h3 class="edit-title">게시판 옵션 설정</h3>
+            <!-- ====================================== -->
+            <!-- ⚙ 옵션 설정 (3열 컴팩트형) -->
+            <!-- ====================================== -->
+            <div class="edit-card option-card">
 
-                <label>댓글 허용</label>
-                <select name="allow_comment">
-                    <option value="1" ${board.allow_comment == 1 ? 'selected' : ''}>허용</option>
-                    <option value="0" ${board.allow_comment == 0 ? 'selected' : ''}>금지</option>
-                </select>
+                <div class="card-header">
+                    <h3>⚙ 게시판 옵션 설정</h3>
+                    <p class="card-desc">게시판 작성/첨부/승인 관련 옵션을 설정합니다.</p>
+                </div>
 
-                <label>이미지 첨부</label>
-                <select name="allow_image">
-                    <option value="1" ${board.allow_image == 1 ? 'selected' : ''}>허용</option>
-                    <option value="0" ${board.allow_image == 0 ? 'selected' : ''}>금지</option>
-                </select>
+                <div class="form-grid-3">
 
-                <label>파일 첨부</label>
-                <select name="allow_file">
-                    <option value="1" ${board.allow_file == 1 ? 'selected' : ''}>허용</option>
-                    <option value="0" ${board.allow_file == 0 ? 'selected' : ''}>금지</option>
-                </select>
+                    <!-- 댓글 허용 -->
+                    <div class="form-item">
+                        <label><i class="ri-message-3-line"></i> 댓글 허용</label>
+                        <p class="desc">게시글에 댓글 등록을 허용합니다.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="opt_comment" name="allow_comment"
+                                   ${board.allow_comment == 1 ? 'checked' : ''}>
+                            <label for="opt_comment"></label>
+                        </div>
+                    </div>
 
-                <label>작성 권한</label>
-                <select name="write_role">
-                    <option value="all" ${board.write_role == 'all' ? 'selected' : ''}>전체 사용자</option>
-                    <option value="member" ${board.write_role == 'member' ? 'selected' : ''}>로그인 사용자만</option>
-                    <option value="admin" ${board.write_role == 'admin' ? 'selected' : ''}>관리자만</option>
-                </select>
+                    <!-- 이미지 첨부 -->
+                    <div class="form-item">
+                        <label><i class="ri-image-line"></i> 이미지 첨부</label>
+                        <p class="desc">이미지 파일 첨부 가능 여부 설정.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="opt_image" name="allow_image"
+                                   ${board.allow_image == 1 ? 'checked' : ''}>
+                            <label for="opt_image"></label>
+                        </div>
+                    </div>
 
-                <label>게시글 승인 필요 여부</label>
-                <select name="require_approval">
-                    <option value="0" ${board.require_approval == 0 ? 'selected' : ''}>승인 불필요</option>
-                    <option value="1" ${board.require_approval == 1 ? 'selected' : ''}>승인 필요</option>
-                </select>
+                    <!-- 파일 첨부 -->
+                    <div class="form-item">
+                        <label><i class="ri-attachment-2"></i> 파일 첨부</label>
+                        <p class="desc">문서/자료 파일 첨부 허용 여부.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="opt_file" name="allow_file"
+                                   ${board.allow_file == 1 ? 'checked' : ''}>
+                            <label for="opt_file"></label>
+                        </div>
+                    </div>
 
-                <label>금지 단어 (쉼표로 구분)</label>
-                <input type="text" name="banned_words"
-                       placeholder="예: 욕설1, 욕설2"
-                       value="${board.banned_words}">
+                    <!-- 승인 필요 -->
+                    <div class="form-item">
+                        <label><i class="ri-shield-check-line"></i> 승인 필요</label>
+                        <p class="desc">게시글 등록 시 관리자 승인 필요 여부.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="opt_approve" name="require_approval"
+                                   ${board.require_approval == 1 ? 'checked' : ''}>
+                            <label for="opt_approve"></label>
+                        </div>
+                    </div>
+
+                    <!-- 작성 권한 -->
+                    <div class="form-item">
+                        <label><i class="ri-user-settings-line"></i> 작성 권한</label>
+                        <p class="desc">게시글 작성이 가능한 사용자 그룹.</p>
+                        <select name="write_role">
+                            <option value="ALL" ${board.write_role == 'ALL' ? 'selected' : ''}>전체 사용자</option>
+                            <option value="ADMIN" ${board.write_role == 'ADMIN' ? 'selected' : ''}>관리자만</option>
+                        </select>
+                    </div>
+
+                    <!-- 금지 단어 -->
+                    <div class="form-item full">
+                        <label><i class="ri-forbid-line"></i> 금지 단어 (쉼표 구분)</label>
+                        <p class="desc">입력된 단어 포함 시 게시글 등록이 제한됩니다.</p>
+                        <input type="text" name="banned_words" value="${board.banned_words}">
+                    </div>
+
+                </div>
             </div>
 
-            <!-- 저장 버튼 -->
+            <!-- ====================================== -->
+            <!-- 버튼 -->
+            <!-- ====================================== -->
             <div class="btn-area">
                 <button type="submit" class="btn-blue">저장하기</button>
-                <a href="${pageContext.request.contextPath}/admin/adminBoardList">
-                    <button type="button" class="btn-gray">목록으로</button>
-                </a>
+                <button type="button" class="btn-gray"
+                        onclick="location.href='/hobee/admin/adminBoardList'">목록으로</button>
             </div>
 
-        </form>
+        </div>
+    </form>
 
-    </div>
-
-</main>
+</div>
 
 </body>
 </html>

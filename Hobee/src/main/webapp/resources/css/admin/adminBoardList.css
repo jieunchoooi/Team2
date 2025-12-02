@@ -1,38 +1,50 @@
 @charset "UTF-8";
 
 /* ===========================
-   메인 콘텐츠
+   📌 메인 콘텐츠 
 =========================== */
 .main-content {
     margin-left: 260px !important;
-    padding-top: 40px !important;
-    padding-right: 40px;
+    padding: 45px 50px 60px 50px !important;
 }
 
 /* ===========================
-   페이지 제목
+   📌 큰 제목
 =========================== */
 .page-title {
     font-size: 30px;
     font-weight: 800;
-    margin-bottom: 25px;
+    margin-bottom: 28px;
     padding-left: 5px;
+    color: #111;
 }
 
 /* ===========================
-   카드 박스
+   📌 카드 박스 (유튜브 스타일)
 =========================== */
 .card-box {
     background: #fff;
     padding: 30px;
     border-radius: 16px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+
+    /* 유튜브 느낌 테두리 + 미세 그림자 */
+    border: 1px solid #e3e6ec;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+
     max-width: 1150px;
     margin: 0 auto;
+
+    transition: all 0.25s ease;
+}
+
+/* 마우스 올리면 살짝 떠오르는 효과 */
+.card-box:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
 }
 
 /* ===========================
-   추가 폼
+   📌 추가 폼
 =========================== */
 .add-form {
     display: flex;
@@ -46,6 +58,7 @@
     border-radius: 8px;
     border: 1px solid #dcdcdc;
     font-size: 14px;
+    background: #fafafa;
 }
 
 .btn-blue {
@@ -55,10 +68,16 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-blue:hover {
+    background: #365dff;
 }
 
 /* ===========================
-   테이블 기본 스타일
+   📌 테이블 기본 스타일
 =========================== */
 .styled-table {
     width: 100%;
@@ -66,188 +85,137 @@
     margin-top: 15px;
 }
 
+/* 헤더 (유튜브 관리자 톤) */
 .styled-table thead tr {
-    background-color: #eef3ff;
+    background-color: #f5f7ff;
 }
 
 .styled-table th,
 .styled-table td {
     padding: 14px 12px;
     font-size: 15px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #e5e7eb;
     vertical-align: middle;
     white-space: nowrap;
     text-align: center !important;
 }
 
 /* ===========================
-   정확한 열 정렬 (단일 구조)
+   📌 열 크기 정렬
 =========================== */
-
-/* 0️⃣ 드래그 핸들 */
-.styled-table th:nth-child(1),
-.styled-table td:nth-child(1) {
-    width: 40px;
-    text-align: center;
-}
-
-/* 1️⃣ ID */
-.styled-table th:nth-child(2),
-.styled-table td:nth-child(2) {
-    width: 80px;
-    text-align: center;
-}
-
-/* 2️⃣ 게시판 이름 */
 .styled-table th:nth-child(3),
 .styled-table td:nth-child(3) {
-    width: 220px;
     text-align: left;
     padding-left: 10px;
 }
 
-/* 3️⃣ 설명 */
 .styled-table th:nth-child(4),
 .styled-table td:nth-child(4) {
-    width: 350px;
     text-align: left;
 }
 
-/* 4️⃣ 게시글 수 */
-.styled-table th:nth-child(5),
-.styled-table td:nth-child(5) {
-    width: 120px;
-    text-align: center;
+/* ===========================
+   📌 테이블 Hover 강조
+=========================== */
+.styled-table tbody tr:hover {
+    background: #f7faff;
+    transition: background 0.2s;
 }
 
-/* 5️⃣ 사용 여부 */
-.styled-table th:nth-child(6),
-.styled-table td:nth-child(6) {
-    width: 120px;
-    text-align: center;
-}
-
-/* 6️⃣ 관리 버튼 */
-.styled-table th:nth-child(7),
-.styled-table td:nth-child(7) {
-    width: 200px;
-    text-align: center;
-}
-
+/* ===========================
+   📌 버튼 그룹
+=========================== */
 td.btn-group {
     display: flex;
     justify-content: center;
     gap: 8px;
 }
 
-/* ===========================
-   버튼 스타일
-=========================== */
-/* 공통 버튼 테두리 제거 */
-/* 공통 버튼 스타일 (크기 완전 통일) */
+/* 공통 버튼 */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
     min-width: 72px;
     height: 36px;
-
     padding: 0 14px !important;
     border-radius: 8px;
 
     border: none !important;
     outline: none !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05) !important;
 
     font-size: 14px;
     font-weight: 500;
+
+    transition: all 0.2s ease;
 }
 
-.btn-group form button,
-.btn-group a button {
-    width: 70px !important;
+/* 버튼 Hover */
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
 }
 
-/* 표시 버튼 (노란색) */
-.btn-show {                /* 표시 */
-    background: #ffcc33 !important;
-    color: #111 !important;
-    border: none !important;         /* 테두리 제거 */
-}
-
-/* 표시 버튼 호버 효과 (선택 사항) */
-.btn-show:hover {
-    background: #ffb300 !important;
-}
-
-.btn.detail {              /* 수정 */
-    background: #4a74ff;
-    color: #fff;
-}
-
-.btn.btn-red {             /* 숨기기 */
-    background: #ff4d4d;
-    color: #fff;
-}
-
-.btn.btn-green {
-    background: #28a745;
-    color: #fff;
-}
+/* 색상 */
+.btn.detail { background: #4a74ff; color: #fff; }
+.btn.btn-red { background: #ff4d4d; color: #fff; }
+.btn-show { background: #ffcc33; color: #111; }
 
 /* ===========================
-   배지
+   📌 배지(사용 여부)
 =========================== */
 .badge-active {
-    background: #28a745;
+    background: #1fa34a;
     color: #fff;
     padding: 6px 14px;
     border-radius: 12px;
+    font-weight: 500;
 }
 
 .badge-inactive {
-    background: #6c757d;
+    background: #6e7680;
     color: #fff;
     padding: 6px 14px;
     border-radius: 12px;
+    font-weight: 500;
 }
 
 /* ===========================
-   드래그 효과
+   📌 드래그 아이콘
 =========================== */
-#board-sortable tr {
-    cursor: move;
-}
-
-.sortable-highlight {
-    height: 55px;
-    background: #e3f0ff;
-    border: 2px dashed #4a74ff;
-}
-
-/* 기본 아이콘 모양 */
 .drag-icon {
     cursor: grab;
-    color: #777;
+    color: #9aa0a6;
+    font-size: 18px;
+    transition: color 0.2s;
 }
 
-/* 드래그 중인 복제 행(helper)에서 아이콘 숨기기 */
-#board-sortable .ui-sortable-helper .drag-icon {
-    visibility: hidden;
+#board-sortable tr:hover .drag-icon {
+    color: #4a74ff;
 }
 
-/* 끼어들 자리(placeholder)에서도 아이콘 숨기기 */
+/* 드래그 중 */
+#board-sortable .ui-sortable-helper .drag-icon,
 .sortable-highlight .drag-icon {
     visibility: hidden;
 }
 
-/* ===========================
-   🔥 계층 구조용 CSS 완전 삭제
-=========================== */
-.parent-row,
-.child-row,
-.child-indent,
-.child-indent::before {
-    display: none !important;
+.sortable-highlight {
+    height: 55px;
+    background: #eaf1ff;
+    border: 2px dashed #4a74ff;
 }
+
+/* ===========================
+   게시판 이름 링크 스타일 (옵션 B)
+=========================== */
+.title-cell a {
+    color: #444 !important;      /* 기본 회색: 깔끔하고 절제된 느낌 */
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.title-cell a:hover {
+    color: #2a4eff !important;   /* hover 시 파란색 */
+    text-decoration: underline;  /* 관리자용 클릭 강조 */
+}
+

@@ -1,175 +1,203 @@
 @charset "UTF-8";
 
-/* 전체 레이아웃 */
+/* ===========================
+   메인 레이아웃
+=========================== */
 .main-content {
-    margin-left: 220px;
-    padding: 40px 50px;
-    background: #f6f7fb;
-    min-height: 100vh;
+    margin-left: 220px !important;
+    padding: 40px 50px !important;
+    background: linear-gradient(to bottom, #f7f9ff, #eef1ff);
 }
 
-/* 페이지 제목 */
 .page-title {
     font-size: 32px;
     font-weight: 800;
     margin-bottom: 30px;
     color: #111;
+    padding-left: 5px;
+}
+
+/* 공통 wrapper */
+.detail-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 
-/* info-grid (위 2박스) */
+/* ===========================
+   📌 Glass 카드 공통 스타일
+=========================== */
+.card-box,
+.detail-section {
+    position: relative;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 26px 32px;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+
+/* Hover */
+.card-box:hover,
+.detail-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+}
+
+/* 상단 Gradient 라벨바 */
+.card-box::before,
+.detail-section::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+}
+
+
+/* ===========================
+   📌 카드별 라벨 색상
+=========================== */
+.info-card.basic::before {
+    background: linear-gradient(to right, #6A8DFF, #8AB2FF);
+}
+
+.info-card.options::before {
+    background: linear-gradient(to right, #20C997, #66EAC0);
+}
+
+.stats-wrapper.card-box::before {
+    background: linear-gradient(to right, #8A7CFF, #B0A5FF);
+}
+
+.detail-section.recent-section::before {
+    background: linear-gradient(to right, #FFA36C, #FFC09B);
+}
+
+.detail-section.topviews-section::before {
+    background: linear-gradient(to right, #FF6B81, #FF8C9B);
+}
+
+
+/* ===========================
+   📌 1행: 기본정보 + 옵션설정
+=========================== */
 .info-grid {
     display: grid;
-    grid-template-columns: calc(50% - 25px) calc(50% - 25px);
-    gap: 50px;
-
-    max-width: 1200px;
-    margin: 0 auto 30px;
-    padding: 0;
-    box-sizing: border-box;
-
-    justify-content: space-between;  /* ★ 양쪽 끝에 정확히 붙게 */
-    
-    margin-bottom: 15px !important;   /* 기존 30px → 15px */
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
-/* 통계 전체 박스 */
-.card-box.stats-wrapper {
-    background: #fff;
-    padding: 30px 32px !important;
-    box-sizing: border-box;
-    border-radius: 20px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.09);
-
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto 40px;
-    
-    margin-top: 10px !important;      /* 기존보다 15~20px 감소 효과 */
+.info-card {
+    padding: 22px 26px !important;
 }
 
-
-/* 모든 카드 공통 */
-.card-box {
-    background: #fff;
-    padding: 30px 35px;
-    border-radius: 18px;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.06);
-    margin-bottom: 40px;
-}
-
-/* 카드 내부 제목 */
 .section-title {
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 8px;
     color: #222;
 }
 
-/* 카드 내부 레이아웃 */
 .info-item {
     display: grid;
-    grid-template-columns: 180px auto;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-    align-items: center;
-    column-gap: 30px;
+    grid-template-columns: 120px auto;
+    gap: 22px;
+    padding: 10px 14px;
+    border: 1px solid #eaeaea;
+    background: rgba(255,255,255,0.65);
+    border-radius: 14px;
+    margin-bottom: 10px;
 }
 
-.info-item:last-child {
-    border-bottom: none;
+.info-item:hover {
+    background: rgba(255,255,255,0.9);
 }
 
-.info-item strong {
-    font-weight: 700;
-    color: #333;
-}
-
+.info-item strong,
 .info-item span {
-    display: flex;
-    align-items: center;
+    font-size: 15px;
 }
 
-/* 옵션 버튼 */
+
+/* ===========================
+   📌 옵션 버튼
+=========================== */
 .option-buttons {
     display: flex;
-    gap: 18px;
+    gap: 14px;
 }
 
 .opt-btn {
-    padding: 7px 20px;
+    padding: 10px 26px;
+    font-size: 15px;
     border-radius: 20px;
     border: 1px solid #dcdcdc;
-    background: #f8f8f8;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(4px);
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .opt-btn.active {
     background: #4a74ff;
-    border-color: #4a74ff;
     color: #fff;
+    border-color: #4a74ff;
 }
 
 .opt-btn:hover {
-    background: #e8ecff;
+    background: rgba(74,116,255,0.15);
 }
 
-/* 뱃지 */
-.badge {
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #fff;
+
+/* ===========================
+   📌 2행: 통계
+=========================== */
+.stats-wrapper {
+    margin-bottom: 28px;
 }
 
-.badge-green { background: #4CAF50; }
-.badge-gray { background: #777; }
-
-.detail-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-bottom: 40px;
-}
-
-/* 통계 4칸 그리드 */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;                /* ✔ 카드 간격 넓힘 */
-    margin-top: 20px;
+    gap: 24px;
 }
 
-/* 통계 카드 */
 .stats-card {
-    background: #fff;
-    padding: 26px 18px;        /* ✔ 높이 증가 */
-    border-radius: 18px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     text-align: center;
-    transition: all 0.25s ease;
+    padding: 20px 14px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
 }
 
-/* Hover 효과 */
 .stats-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
 }
 
-
-/* 아이콘 강조 */
 .stats-icon {
-    font-size: 40px;      /* ✔ 더 크게 */
-    margin-bottom: 16px;
+    font-size: 42px;
+    opacity: 0.9;
+    margin-bottom: 10px;
 }
+
+.stats-icon.blue { color: #4a74ff; }
+.stats-icon.green { color: #1fa34a; }
+.stats-icon.red { color: #ff4d4d; }
+.stats-icon.navy { color: #3b4e78; }
 
 .stats-title {
     font-size: 14px;
     color: #666;
-    margin-bottom: 6px;
 }
 
 .stats-count {
@@ -179,194 +207,92 @@
 }
 
 
-/* 최근 게시글 / 조회수 TOP5 / 신고 많은 게시글 — 통계박스와 동일한 너비 적용 */
-.detail-section {
-    background: #fff;
-    width: 95%;
-    margin: 0 auto 35px;
-    padding: 35px 45px;
-    border-radius: 20px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.09);
-}
-
-.detail-section .section-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+/* ===========================
+   📌 3행: 최근게시글 + TOP5
+=========================== */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
 }
 
 .detail-section table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
-    text-align: center; /* ✔ 전체 중앙 정렬 */
+    margin-top: 12px;
 }
 
-.detail-section th,
+.detail-section th {
+    background: rgba(245,246,250,0.9);
+    padding: 12px;
+    border-bottom: 2px solid #ddd;
+    font-weight: 700;
+}
+
 .detail-section td {
-    padding: 14px 10px;
-    border-bottom: 1px solid #eee;
+    padding: 12px;
+    border-bottom: 1px solid #ececec;
     font-size: 15px;
 }
 
-.detail-section tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* 제목 컬럼만 왼쪽 정렬이 이쁘면 이렇게 조절 가능 */
-.detail-section td:first-child,
-.detail-section th:first-child {
-    text-align: left;
-    padding-left: 20px;
+.detail-section tbody tr:hover {
+    background: rgba(250,252,255,0.8);
 }
 
 
-/* 테이블 스타일 보완 */
-.detail-section .styled-table {
-    width: 100%;
-}
-
-
-.detail-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-
-/* ================================
-   🔥 최근 게시글 + 조회수 TOP5 2개 카드 레이아웃
-================================ */
-/* 🔥 최근 게시글 + 조회수 TOP5 두 카드 정렬 */
-.bottom-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;   /* ← 왼쪽 카드 넓게, 오른쪽 조금 좁게 */
-    gap: 30px;                           /* ← 카드 간격 */
-    
-    max-width: 1200px;                   /* ← 통계박스와 동일 폭 */
-    margin: 30px auto 60px;              /* ← 중앙 정렬 */
-}
-
-
-/* 각 카드 공통 스타일 */
-.bottom-grid .detail-section {
-    background: #ffffff;
-    width: 100%;                         /* ← 칼럼 비율 내에서 꽉 채우기 */
-    padding: 30px 32px;
-    border-radius: 18px;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.06);
-    box-sizing: border-box;              /* ← 패딩이 폭을 늘리지 않도록 */
-}
-
-/* 제목 (섹션 타이틀) */
-.bottom-grid .section-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 18px;
-    color: #222;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* 테이블 스타일 */
-.bottom-grid table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-}
-
-.bottom-grid th {
-    background: #f5f6fa;
-    font-weight: 700;
-    padding: 12px 10px;
-    border-bottom: 2px solid #eaeaea;
-}
-
-.bottom-grid td {
-    padding: 12px 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.bottom-grid tr:last-child td {
-    border-bottom: none;
-}
-
-/* =============================
-   🔥 기본정보/옵션 설정 박스와 정렬 맞추기
-   아래 박스(통계 + 최근게시글 + 조회수 TOP5)를 동일 폭 중앙 정렬
-============================= */
-
-/* 공통 wrapper */
-.detail-wrapper {
-    max-width: 1200px !important;   /* ✔ info-grid와 폭 통일 */
-    margin: 0 auto;                 /* ✔ 중앙 정렬 */
-}
-
-/* 통계 박스 */
-.stats-box,
-.detail-section {
-    max-width: 1200px !important;   /* ✔ 기본정보 카드와 같은 가로폭 */
-    margin: 0 auto 40px !important; /* ✔ 가운데 배치 + 아래 여백 */
-}
-
-/* 하단 2개 박스(최근 게시글 + 조회수 top5)를 가로로 정렬 */
-.bottom-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* ✔ 반반 정렬 */
-    gap: 30px;
-    max-width: 1200px;
-    margin: 20px auto 60px;
-}
-
-/* 각 박스 내부 스타일 통일 */
-.bottom-grid .detail-section {
-    background: #ffffff;
-    padding: 30px 32px;
-    border-radius: 18px;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.06);
-    margin-bottom: 10px !important;
-}
-
-/* info card 자체도 들여쓰기 제거 */
-.info-card {
-    padding: 30px 35px;     /* 기본 유지 */
-}
-
-/* 오른쪽 카드 오른쪽 라인 통계박스와 정확히 맞추기 */
-.info-grid > .info-card:nth-child(2) {
-    margin-right: 0 !important;      /* ★ 오른쪽 여백 제거 */
-}
-
-/* 버튼 영역 왼쪽 정렬 */
+/* ===========================
+   📌 4행: 버튼
+=========================== */
 .btn-area {
     display: flex;
-    gap: 12px;
-    margin-top: 25px;
-    justify-content: flex-start !important; /* ← 왼쪽 정렬 강제 */
-    padding-left: 5px; /* 제목 기준 살짝 들여쓰기 */
+    gap: 18px;
+    margin-top: 20px;
 }
 
-
+/* Glass Button */
 .btn-area button {
-    padding: 12px 26px;
+    position: relative;
+    min-width: 140px;
+    height: 46px;
+    padding: 0 24px;
+    border-radius: 14px;
     font-size: 15px;
     font-weight: 600;
-    border-radius: 8px;
+
+    backdrop-filter: blur(8px);
+    border: 2px solid transparent;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transition: all 0.25s ease;
     cursor: pointer;
-    border: none;
+    z-index: 1;
 }
 
+/* Gradient Border */
+.btn-area button::before {
+    content: "";
+    position: absolute;
+    top: -2px; left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    border-radius: 16px;
+    background: linear-gradient(45deg, #6A8DFF, #9AB5FF);
+    z-index: -1;
+}
+
+/* Hover */
+.btn-area button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+}
+
+/* 개별 버튼 색상 */
 .btn-blue {
-    background: #4A74FF;
-    color: white;
+    background: linear-gradient(45deg, #5078ff, #6e99ff);
+    color: #fff;
 }
 
 .btn-gray {
-    background: #e5e7eb;
+    background: linear-gradient(45deg, #dfe1e6, #f4f5f7);
     color: #333;
 }
-
-

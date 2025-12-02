@@ -30,7 +30,7 @@
         <div class="info-grid">
 
             <!-- 기본 정보 카드 -->
-            <div class="card-box info-card">
+            <div class="card-box info-card basic">
                 <h3 class="section-title">📌 기본 정보</h3>
 
                 <div class="info-item">
@@ -64,7 +64,7 @@
             </div>
 
             <!-- 옵션 설정 카드 -->
-            <div class="card-box info-card">
+            <div class="card-box info-card options">
                 <h3 class="section-title">⚙ 옵션 설정</h3>
 
                 <!-- 댓글 허용 -->
@@ -180,7 +180,7 @@
        <div class="bottom-grid">
 
            <!-- 🔵 최근 게시글 -->
-           <div class="detail-section">
+           <div class="detail-section recent-section">
                <h3 class="section-title">📝 최근 게시글</h3>
 
                <table class="styled-table">
@@ -204,7 +204,7 @@
            </div>
 
            <!-- 🔥 조회수 TOP5 -->
-           <div class="detail-section">
+           <div class="detail-section topviews-section">
                <h3 class="section-title">🔥 조회수 TOP 5</h3>
 
                <table class="styled-table">
