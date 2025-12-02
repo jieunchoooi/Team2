@@ -42,7 +42,7 @@
 <%-- 					onclick="location.href='${pageContext.request.contextPath}/admin/adminClassAdd'"> --%>
 <!-- 					➕ <span>강의 등록</span> -->
 <!-- 	</div> -->
-    <div class="menu-item ${page eq 'classAdd' ? 'active' : ''}"
+    <div class="menu-item ${page eq 'teacherMP' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage'">
 					➕ <span>강의 관리</span>
 	</div>

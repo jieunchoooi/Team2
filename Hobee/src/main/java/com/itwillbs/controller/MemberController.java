@@ -78,6 +78,7 @@ public class MemberController {
 	    if (uri.contains("editInfo")) return "edit";
 	    if (uri.contains("updatePassWord")) return "edit";
 	    if (uri.contains("pointHistory")) return "pointHistory";
+	    if (uri.contains("teacherMyPage")) return "teacherMP";
 	    return "";
 	}
 
