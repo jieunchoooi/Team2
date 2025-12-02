@@ -77,6 +77,7 @@ public class CommunityController {
 
      // 🔥 실시간 핫토픽
      List<CommunityContentVO> hotTopicList = communityService.getHotTopicList();
+     System.out.println("핫토픽 리스트 "+hotTopicList);
      model.addAttribute("hotTopicList", hotTopicList);
 
      // <%-- 모델 등록 --%>

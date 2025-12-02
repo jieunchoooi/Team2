@@ -5,27 +5,32 @@
 
 <mapper namespace="com.itwillbs.mapper.CommunityContentMapper">
 
-	<!-- ======================================================
-	     0. 단일 카운트
-	====================================================== -->
-	<select id="getCommunityCount" resultType="int">
-		SELECT COUNT(*)
-		FROM community_content
-		WHERE category_main_num = #{category_main_num}
-	</select>
+    <!-- ======================================================
+         0. 단일 카운트
+    ====================================================== -->
+    <select id="getCommunityCount" resultType="int">
+        SELECT COUNT(*)
+        FROM community_content
+        WHERE category_main_num = #{category_main_num}
+    </select>
 
-	<!-- 
-     🔥 핫토픽: 최근 2시간 반응 높은 글 TOP10
- -->
+
+    <!-- ======================================================
+         🔥 1. 핫토픽 (summary = 120자)
+         ※ CDATA 적용
+    ====================================================== -->
+    <!-- ======================================================
+     🔥 1. 핫토픽 (summary = 120자, 트렌드 점수 적용)
+     ※ CDATA 적용
+====================================================== -->
 <select id="getHotTopicList"
         resultType="com.itwillbs.domain.CommunityContentVO">
-
-<![CDATA[
+    <![CDATA[
     SELECT
         c.post_id,
         c.title,
 
-        -- 본문 요약 (HTML 제거 + 120자)
+        -- 본문 요약 (120자)
         SUBSTRING(
             REGEXP_REPLACE(
                 REGEXP_REPLACE(
@@ -37,19 +42,26 @@
             1, 120
         ) AS summary,
 
-        -- 게시글 좋아요
         COUNT(DISTINCT l.like_id) AS like_count,
-
-        -- 댓글 수
         COUNT(DISTINCT cc.comment_id) AS comment_count,
-
         c.views,
         c.created_at,
 
         u.user_name,
-        u.user_file,   -- 🔥 여기 수정 완료 (프로필 이미지)
+        u.user_file,
+        cm.category_main_name AS category_name,
 
-        cm.category_main_name AS category_name
+        -- ⭐ 트렌드 점수 (조회용 필드)
+        (
+            (COUNT(DISTINCT l.like_id) * 4)
+            + (COUNT(DISTINCT cc.comment_id) * 3)
+            + (c.views * 0.2)
+        )
+        /
+        POW(
+            TIMESTAMPDIFF(HOUR, c.created_at, NOW()) + 1,
+            1.3
+        ) AS trendingScore
 
     FROM community_content c
     JOIN user u
@@ -57,209 +69,229 @@
     LEFT JOIN category_main cm
         ON c.category_main_num = cm.category_main_num
 
-    -- 게시글 좋아요
     LEFT JOIN community_content_like l
         ON l.post_id = c.post_id
 
-    -- 댓글
     LEFT JOIN community_comment cc
         ON cc.post_id = c.post_id
 
-    -- 최근 2시간 핫토픽
-    WHERE c.created_at >= NOW() - INTERVAL 2 HOUR
+    -- 🔥 기존 2시간 → 24시간으로 확장
+    WHERE c.created_at >= NOW() - INTERVAL 24 HOUR
 
     GROUP BY c.post_id
 
-    ORDER BY
-          (COUNT(DISTINCT l.like_id) * 3)
-        + (COUNT(DISTINCT cc.comment_id) * 5)
-        + (c.views * 0.2)
-      DESC
+    ORDER BY trendingScore DESC
 
     LIMIT 10
-]]>
+    ]]>
 </select>
 
 
 
 
-	
-	<!-- ======================================================
-	     1. 인기글
-	====================================================== -->
-	<select id="getPopularPosts" resultType="com.itwillbs.domain.CommunityContentVO">
-    SELECT
-        c.post_id,
-        c.title,
-        c.views,
-        c.created_at,
-        u.user_name,
-        u.user_file,              -- 🔥 추가됨
-        cm.category_main_name,
+    <!-- ======================================================
+         2. 인기글 (summary = 60자)
+         ※ CDATA 적용
+    ====================================================== -->
+    <select id="getPopularPosts" resultType="com.itwillbs.domain.CommunityContentVO">
+        <![CDATA[
+        SELECT
+            c.post_id,
+            c.title,
+            c.views,
+            c.created_at,
+            u.user_name,
+            u.user_file,
+            cm.category_main_name,
 
-        (SELECT COUNT(*)
-         FROM community_content_like l
-         WHERE l.post_id = c.post_id AND l.is_like = 1) AS like_count
+            -- summary 60자
+            SUBSTRING(
+                REGEXP_REPLACE(
+                    REGEXP_REPLACE(
+                        REGEXP_REPLACE(c.content, '<[^>]*>', ''),
+                        '[<>]', ''
+                    ),
+                    '&[^;]+;', ''
+                ),
+                1, 60
+            ) AS summary,
 
-    FROM community_content c
-    JOIN user u ON c.user_num = u.user_num
-    JOIN category_main cm ON c.category_main_num = cm.category_main_num
+            (SELECT COUNT(*)
+             FROM community_content_like l
+             WHERE l.post_id = c.post_id AND l.is_like = 1) AS like_count
 
-    ORDER BY like_count DESC, c.views DESC
-    LIMIT 5
-</select>
+        FROM community_content c
+        JOIN user u ON c.user_num = u.user_num
+        JOIN category_main cm ON c.category_main_num = cm.category_main_num
 
-
-
-	<!-- ======================================================
-	     2. 게시글 좋아요/싫어요
-	====================================================== -->
-	<select id="getUserPostReaction" resultType="int">
-		SELECT is_like
-		FROM community_content_like
-		WHERE post_id = #{post_id}
-		  AND user_num = #{user_num}
-	</select>
-
-	<insert id="insertPostReaction">
-		INSERT INTO community_content_like (post_id, user_num, is_like)
-		VALUES (#{post_id}, #{user_num}, #{is_like})
-	</insert>
-
-	<update id="updatePostReaction">
-		UPDATE community_content_like
-		SET is_like = #{is_like}
-		WHERE post_id = #{post_id}
-		  AND user_num = #{user_num}
-	</update>
-
-	<delete id="deletePostReaction">
-		DELETE FROM community_content_like
-		WHERE post_id = #{post_id}
-		  AND user_num = #{user_num}
-	</delete>
-
-	<!-- 좋아요/싫어요 카운트 -->
-	<select id="getPostReactionCount" resultType="com.itwillbs.domain.ReactionCountVO">
-		SELECT
-			SUM(CASE WHEN is_like = 1 THEN 1 ELSE 0 END) AS like_count,
-			SUM(CASE WHEN is_like = 0 THEN 1 ELSE 0 END) AS dislike_count
-		FROM community_content_like
-		WHERE post_id = #{post_id}
-	</select>
-
-
-	<!-- ======================================================
-	     3. 메인 카테고리 리스트 (상단 chip 버튼)
-	====================================================== -->
-	<select id="getCategoryMainList" resultType="com.itwillbs.domain.CommunityContentVO">
-		SELECT
-			category_main_num,
-			category_main_name
-		FROM category_main
-		ORDER BY category_main_num ASC
-	</select>
+        ORDER BY like_count DESC, c.views DESC
+        LIMIT 5
+        ]]>
+    </select>
 
 
 
-	<!-- ======================================================
-	     4. 게시글 목록 (검색 + 필터 + 정렬 + 페이징)
-	====================================================== -->
-	<select id="getCommunityList" resultType="com.itwillbs.domain.CommunityContentVO">
-    SELECT
-        c.post_id,
-        c.title,
-        c.content,
-        c.user_num,
-        c.tag,
-        c.views,
-        c.is_visible,
-        c.is_deleted,
-        c.category_main_num,
-        c.lecture_num,
-        c.category_id,
-        c.created_at,
-        c.updated_at,
+    <!-- ======================================================
+         3. 게시글 좋아요/싫어요
+    ====================================================== -->
+    <select id="getUserPostReaction" resultType="int">
+        SELECT is_like
+        FROM community_content_like
+        WHERE post_id = #{post_id}
+          AND user_num = #{user_num}
+    </select>
 
-        u.user_name,
-        u.user_file,                    -- 🔥 추가됨
-        cm.category_main_name,
-        cc.category_name AS category_name,
-        cc.category_key AS category_key,
+    <insert id="insertPostReaction">
+        INSERT INTO community_content_like (post_id, user_num, is_like)
+        VALUES (#{post_id}, #{user_num}, #{is_like})
+    </insert>
 
-        (SELECT COUNT(*)
-         FROM community_comment cc2
-         WHERE cc2.post_id = c.post_id AND cc2.is_deleted = 0) AS comment_count,
+    <update id="updatePostReaction">
+        UPDATE community_content_like
+        SET is_like = #{is_like}
+        WHERE post_id = #{post_id}
+          AND user_num = #{user_num}
+    </update>
 
-        (SELECT COUNT(*)
-         FROM community_content_like l1
-         WHERE l1.post_id = c.post_id AND l1.is_like = 1) AS like_count,
+    <delete id="deletePostReaction">
+        DELETE FROM community_content_like
+        WHERE post_id = #{post_id}
+          AND user_num = #{user_num}
+    </delete>
 
-        (SELECT COUNT(*)
-         FROM community_content_like l2
-         WHERE l2.post_id = c.post_id AND l2.is_like = 0) AS dislike_count
-
-    FROM community_content c
-    JOIN user u ON c.user_num = u.user_num
-    JOIN category_main cm ON c.category_main_num = cm.category_main_num
-    LEFT JOIN community_category cc ON c.category_id = cc.category_id
-</select>
+    <select id="getPostReactionCount" resultType="com.itwillbs.domain.ReactionCountVO">
+        SELECT
+            SUM(CASE WHEN is_like = 1 THEN 1 ELSE 0 END) AS like_count,
+            SUM(CASE WHEN is_like = 0 THEN 1 ELSE 0 END) AS dislike_count
+        FROM community_content_like
+        WHERE post_id = #{post_id}
+    </select>
 
 
 
+    <!-- ======================================================
+         4. 상단 메인 카테고리 리스트
+    ====================================================== -->
+    <select id="getCategoryMainList" resultType="com.itwillbs.domain.CommunityContentVO">
+        SELECT
+            category_main_num,
+            category_main_name
+        FROM category_main
+        ORDER BY category_main_num ASC
+    </select>
 
-	<!-- ======================================================
-	     5. 총 개수
-	====================================================== -->
-	<select id="getTotalCount" resultType="int">
 
-		SELECT COUNT(*)
-		FROM community_content c
-		LEFT JOIN community_category cc ON c.category_id = cc.category_id
 
-		<where>
-			<if test="category_id != null">
-				AND c.category_id = #{category_id}
-			</if>
+    <!-- ======================================================
+         5. 게시글 목록 (summary = 120자)
+         ※ CDATA 적용
+    ====================================================== -->
+    <select id="getCommunityList" resultType="com.itwillbs.domain.CommunityContentVO">
+        <![CDATA[
+        SELECT
+            c.post_id,
+            c.title,
+            c.content,
+            c.user_num,
+            c.tag,
+            c.views,
+            c.is_visible,
+            c.is_deleted,
+            c.category_main_num,
+            c.lecture_num,
+            c.category_id,
+            c.created_at,
+            c.updated_at,
 
-			<if test="category_main_num != null">
-				AND c.category_main_num = #{category_main_num}
-			</if>
+            u.user_name,
+            u.user_file,
+            cm.category_main_name,
+            cc.category_name AS category_name,
+            cc.category_key AS category_key,
 
-			<choose>
-				<when test="period == 'today'">
-					AND DATE(c.created_at) = CURDATE()
-				</when>
-				<when test="period == 'week'">
-					AND c.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-				</when>
-				<when test="period == 'month'">
-					AND c.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-				</when>
-			</choose>
+            -- summary 120자
+            SUBSTRING(
+                REGEXP_REPLACE(
+                    REGEXP_REPLACE(
+                        REGEXP_REPLACE(c.content, '<[^>]*>', ''),
+                        '[<>]', ''
+                    ),
+                    '&[^;]+;', ''
+                ),
+                1, 120
+            ) AS summary,
 
-			<if test="keyword != null and keyword != ''">
-				<choose>
-					<when test="searchType == 'title'">
-						AND c.title LIKE CONCAT('%', #{keyword}, '%')
-					</when>
+            (SELECT COUNT(*)
+             FROM community_comment cc2
+             WHERE cc2.post_id = c.post_id AND cc2.is_deleted = 0) AS comment_count,
 
-					<when test="searchType == 'titleContent'">
-						AND (c.title LIKE CONCAT('%', #{keyword}, '%')
-						OR c.content LIKE CONCAT('%', #{keyword}, '%'))
-					</when>
+            (SELECT COUNT(*)
+             FROM community_content_like l1
+             WHERE l1.post_id = c.post_id AND l1.is_like = 1) AS like_count,
 
-					<when test="searchType == 'writer'">
-						AND u.user_name LIKE CONCAT('%', #{keyword}, '%')
-					</when>
+            (SELECT COUNT(*)
+             FROM community_content_like l2
+             WHERE l2.post_id = c.post_id AND l2.is_like = 0) AS dislike_count
 
-					<when test="searchType == 'comment'">
-						AND co.content LIKE CONCAT('%', #{keyword}, '%')
-					</when>
-				</choose>
-			</if>
+        FROM community_content c
+        JOIN user u ON c.user_num = u.user_num
+        JOIN category_main cm ON c.category_main_num = cm.category_main_num
+        LEFT JOIN community_category cc ON c.category_id = cc.category_id
+        ]]>
+    </select>
 
-		</where>
-	</select>
+
+
+    <!-- ======================================================
+         6. 총 개수 (이건 summary 없음)
+    ====================================================== -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM community_content c
+        LEFT JOIN community_category cc ON c.category_id = cc.category_id
+
+        <where>
+            <if test="category_id != null">
+                AND c.category_id = #{category_id}
+            </if>
+
+            <if test="category_main_num != null">
+                AND c.category_main_num = #{category_main_num}
+            </if>
+
+            <choose>
+                <when test="period == 'today'">
+                    AND DATE(c.created_at) = CURDATE()
+                </when>
+                <when test="period == 'week'">
+                    AND c.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                </when>
+                <when test="period == 'month'">
+                    AND c.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                </when>
+            </choose>
+
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'title'">
+                        AND c.title LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <when test="searchType == 'titleContent'">
+                        AND (c.title LIKE CONCAT('%', #{keyword}, '%')
+                        OR c.content LIKE CONCAT('%', #{keyword}, '%'))
+                    </when>
+
+                    <when test="searchType == 'writer'">
+                        AND u.user_name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <when test="searchType == 'comment'">
+                        AND co.content LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
 
 </mapper>
