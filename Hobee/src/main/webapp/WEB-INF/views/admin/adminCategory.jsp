@@ -28,7 +28,7 @@
   <!-- 오른쪽 메인 콘텐츠 -->
   <main class="main-content">
     <div class="main-header">
-      <h1>카테고리 관리</h1>
+     	<h1>카테고리 관리</h1>  
     </div>
 
 <div class="form-container">

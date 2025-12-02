@@ -156,9 +156,12 @@ body {
     margin: 30px 6px 0;
 }
 
-.btn:last-child{
-    background-color: #2573ff;
+.btn:hover{
+	background-color: #808080;
 }
+/* .btn:last-child{ */
+/*     background-color: #2573ff; */
+/* } */
 
 .btn-primary {
     background-color: #2573ff;
@@ -188,6 +191,10 @@ body {
     transform: translateY(0);
 }
 
+.btnBox{
+	text-align: center;
+    margin-top: 30px;
+}
 /* =========================== 반응형 디자인 =========================== */
 @media (max-width: 1024px) {
     .main-content {
