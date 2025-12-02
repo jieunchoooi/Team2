@@ -395,6 +395,15 @@ footer {
 	    <li class="${param.category_detail == '베이킹' ? 'active' : ''}">
 	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=베이킹" style="text-decoration:none; color:inherit;">베이킹</a>
 	    </li>
+	    <li class="${param.category_detail == '뷰티' ? 'active' : ''}">
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티" style="text-decoration:none; color:inherit;">뷰티</a>
+	    </li>
+	    <li class="${param.category_detail == '타로·사주' ? 'active' : ''}">
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로사주" style="text-decoration:none; color:inherit;">타로사주</a>
+	    </li>
+	    <li class="${param.category_detail == '게임·e스포츠' ? 'active' : ''}">
+	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임스포츠" style="text-decoration:none; color:inherit;">게임·e스포츠</a>
+	    </li>
 	    <li class="${param.category_detail == 'AI 스킬업' ? 'active' : ''}">
 	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
 	    </li>
