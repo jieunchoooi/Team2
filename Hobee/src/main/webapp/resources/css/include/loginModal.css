@@ -206,3 +206,32 @@
     color: #2e8b57;
 }
 
+#toast {
+    position: fixed;
+    top: 100px;
+    right: 40px;
+    background: #4a74ff;
+    color: white;
+    padding: 16px 22px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 99999;
+    animation: fadeInOut 3s ease forwards;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.swal2-container {
+    z-index: 10000 !important;
+}
+
+
+

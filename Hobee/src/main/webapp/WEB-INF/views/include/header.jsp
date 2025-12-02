@@ -27,7 +27,7 @@
 <!-- confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
@@ -84,19 +84,14 @@
 
                 <c:when test="${empty sessionScope.user_id}">
                     <a href="#" id="openLoginModal" class="auth-link">로그인</a>
+                    <a href="#" id="openTeacherLoginModal" class="auth-link">강사 로그인</a>
                     <a href="#" id="openInsertModal" class="auth-link">회원가입</a>
                 </c:when>
 
 
                 <c:otherwise>
-                    <span class="welcome-text">${sessionScope.user_name}님</span>
-
-                    <c:if test="${not empty sessionScope.userVO.last_login_at}">
-                        <span class="last-login-info">
-                            (최근 로그인: ${fn:substring(sessionScope.userVO.last_login_at, 0, 16)})
-                        </span>
-                    </c:if>
-
+                    <span class="welcome-text" id="openLoginLog">${sessionScope.user_name}님</span>
+                    
                     <a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
 
                     <c:if test="${sessionScope.user_role eq 'admin' or sessionScope.user_role eq 'super_admin'}">
@@ -133,9 +128,25 @@ $(document).ready(function () {
     -------------------------------------------------- */
  	// 로그인 버튼 클릭 시
     $("#openLoginModal").click(function(e) {
-        e.preventDefault(); // a 태그 기본 동작 막기
-        openLoginModal();   // 전역 함수 호출
+    e.preventDefault();
+
+    // 🔥 loginType=user 추가
+    $("#loginForm input[name='loginType']").remove();
+    $("#loginForm").append('<input type="hidden" name="loginType" value="user">');
+
+    openLoginModal();
+	});
+	
+    $("#openTeacherLoginModal").click(function(e) {
+        e.preventDefault();
+
+        // 🔥 loginType=teacher 추가
+        $("#loginForm input[name='loginType']").remove();
+        $("#loginForm").append('<input type="hidden" name="loginType" value="teacher">');
+
+        openLoginModal();
     });
+
 
  	// 로그인 모달 열기
     window.openLoginModal = function() {
@@ -217,49 +228,63 @@ $(document).ready(function () {
              /* =============================
                 2) 로그인 성공
                 ============================= */
-            if (res.result === "success") {
+                if (res.result === "success") {
 
-                // 1) 비밀번호 변경 경고
-                if (res.pw_change_alert) {
-                    alert(res.pw_change_alert);
-                }
-
-                // 2) 통합 팝업
-                let msg = res.user_name + "님 환영합니다!\n";
-
-                msg += "마지막 로그인: "
-                       + (res.last_login_at ? res.last_login_at : "첫 로그인")
-                       + "\n";
-
-                // 🔥 지역 표시
-                msg += "현재 접속 지역: " + res.current_location + "\n";
-
-                if (res.last_location) {
-                    msg += "이전 접속 지역: " + res.last_location + "\n";
-
-                    if (res.current_location !== res.last_location) {
-                        msg += "\n⚠ 보안 알림: 이전 접속 지역과 다릅니다!";
+                    // 1) 비밀번호 변경 경고
+                    if (res.pw_change_alert) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "비밀번호 변경 권장",
+                            text: res.pw_change_alert,
+                            confirmButtonColor: "#4a74ff"
+                        });
                     }
-                }
+                    
+                    $("#loginModal").fadeOut(0); // 
 
-                msg += "\n최근 로그인 기기:\n";
-
-                if (res.recent_devices) {
-                    res.recent_devices.forEach(d => {
-                        msg += " - " + d + "\n";
+                    // 🌟 2) 예쁜 SweetAlert 환영 팝업
+                    Swal.fire({
+                        icon: "success",
+                        title: res.user_name + "님 환영합니다! 😊",
+                        html: `
+                            <div style="margin-top:8px; font-size:15px; color:#555;">
+                                로그인에 성공했습니다.
+                            </div>
+                        `,
+                        confirmButtonColor: "#4a74ff",
+                        timer: 1800,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
+
+                    /* ============================================
+                       🧾 나머지 로그인 정보는 콘솔 LOG로만 출력
+                    ============================================ */
+                    console.log("========== [ 로그인 정보 LOG ] ==========");
+                    console.log("✔ 사용자:", res.user_name);
+                    console.log("✔ 마지막 로그인:", res.last_login_at || "첫 로그인");
+                    console.log("✔ 현재 접속 지역:", res.current_location);
+                    console.log("✔ 이전 접속 지역:", res.last_location);
+                    console.log("✔ 최근 로그인 기기:");
+                    if (res.recent_devices) {
+                        res.recent_devices.forEach(d => console.log("   - " + d));
+                    }
+                    console.log("==========================================");
+
+                    // 🔥 700ms 후 이동 처리
+                    setTimeout(() => {
+                        $("#loginModal").fadeOut();
+
+                        if (res.redirect) {
+                            location.href = contextPath + res.redirect;
+                        } else {
+                            location.href = contextPath + "/main/main";
+                        }
+                    }, 1500);  // SweetAlert 애니메이션 끝나고 이동
+
+                    return;
                 }
 
-                alert(msg);
-
-                // 이동 처리
-                setTimeout(() => {
-                    $("#loginModal").fadeOut();
-                    location.href = contextPath + "/main/main";
-                }, 700);
-
-                return;
-            }
 
 
              /* =============================
@@ -808,10 +833,80 @@ $(document).ready(function () {
         .on("input change", updateSignupProgress);
 
 
-});
+    /* =======================================================
+    🔥 헤더에서 로그인 상세 정보 보기 (관리자1님 클릭)
+ ======================================================= */
+ $(document).ready(function () {
+
+	    /* =============================
+	       ① 로그인 모달 열기 (걸려 있어야 클릭됨)
+	    ============================= */
+	    $("#openLoginModal").click(function(e) {
+	        e.preventDefault();
+	        $("#loginForm input[name='loginType']").remove();
+	        $("#loginForm").append('<input type="hidden" name="loginType" value="user">');
+	        openLoginModal();
+	    });
+
+	    $("#openTeacherLoginModal").click(function(e) {
+	        e.preventDefault();
+	        $("#loginForm input[name='loginType']").remove();
+	        $("#loginForm").append('<input type="hidden" name="loginType" value="teacher">');
+	        openLoginModal();
+	    });
 
 
-</script>
+	    /* =============================
+	       ② 로그인 로그 보기
+	    ============================= */
+	    $(document).on("click", "#openLoginLog", function () {
 
-</body>
+	        $.ajax({
+	            url: contextPath + "/user/loginInfo",
+	            method: "GET",
+	            success: function(res) {
+
+	                let userName = res.user_name || "정보 없음";
+	                let lastLogin = res.last_login_at || "첫 로그인";
+	                let currentLocation = res.current_location || "정보 없음";
+	                let lastLocation = res.last_location || "기록 없음";
+
+	                let deviceList = "";
+	                if (res.recent_devices && res.recent_devices.length > 0) {
+	                    res.recent_devices.forEach(d => {
+	                        deviceList += `<li>${d}</li>`;
+	                    });
+	                } else {
+	                    deviceList = "<li>기록 없음</li>";
+	                }
+
+	                Swal.fire({
+	                    title: "로그인 상세 정보 🔍",
+	                    html: `
+	                        <div style="text-align:left; font-size:15px; line-height:1.6;">
+	                            <b>✔ 사용자:</b> ${userName}<br>
+	                            <b>✔ 마지막 로그인:</b> ${lastLogin}<br>
+	                            <b>✔ 현재 접속 지역:</b> ${currentLocation}<br>
+	                            <b>✔ 이전 접속 지역:</b> ${lastLocation}<br>
+	                            <b>✔ 최근 로그인 기기:</b>
+	                            <ul style="padding-left:18px; margin-top:6px;">
+	                                ${deviceList}
+	                            </ul>
+	                        </div>
+	                    `,
+	                    width: "450px",
+	                    confirmButtonText: "닫기",
+	                    confirmButtonColor: "#4a74ff"
+	                });
+	            }
+	        });
+	        
+	    });
+	    
+ });
+
+	}); // ← document.ready는 딱 한 번!
+	</script>
+    </body>
+
 </html>

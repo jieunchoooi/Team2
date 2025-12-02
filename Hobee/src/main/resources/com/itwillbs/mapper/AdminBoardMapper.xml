@@ -1,107 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.AdminBoardMapper">
 
-    <!-- ================================================================= -->
-    <!-- RESULT MAP -->
-    <!-- ================================================================= -->
+    <!-- ============================================================ -->
+    <!--  RESULT MAP : 상세 화면에서만 사용 (resultType도 가능)        -->
+    <!-- ============================================================ -->
     <resultMap id="boardMap" type="com.itwillbs.domain.AdminBoardVO">
         <id property="board_id" column="board_id"/>
+
         <result property="board_name" column="board_name"/>
         <result property="board_desc" column="board_desc"/>
         <result property="is_active" column="is_active"/>
         <result property="created_at" column="created_at"/>
         <result property="board_order" column="board_order"/>
+
+        <!-- 통계용 -->
         <result property="post_count" column="post_count"/>
+        <result property="post_count_month" column="post_count_month"/>
+        <result property="post_count_visible" column="post_count_visible"/>
+        <result property="report_count" column="report_count"/>
+
+        <!-- 게시판 옵션 -->
+        <result property="allow_comment" column="allow_comment"/>
+        <result property="allow_image" column="allow_image"/>
+        <result property="allow_file" column="allow_file"/>
+        <result property="write_role" column="write_role"/>
+        <result property="banned_words" column="banned_words"/>
+        <result property="require_approval" column="require_approval"/>
     </resultMap>
 
 
-    <!-- ================================================================= -->
-    <!-- 1) 게시판 목록 -->
-    <!-- ================================================================= -->
+    <!-- ============================================================ -->
+    <!-- 1) 게시판 목록 (정렬 순서 포함)                                -->
+    <!-- ============================================================ -->
     <select id="getBoardList" resultType="com.itwillbs.domain.AdminBoardVO">
-    	SELECT
-        	b.board_id,
-        	b.parent_id,
-        	b.board_name,
-        	b.board_desc,
-        	b.is_active,
-        	b.created_at,
-        	b.board_order,
+        SELECT
+        board_id,
+        board_name,
+        board_desc,
+        is_active,
+        created_at,
+        board_order,
 
-        	(SELECT COUNT(*) 
-         	FROM community_content c 
-         	WHERE c.category_id = b.board_id) AS post_count
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id) AS post_count
 
-    	FROM board_category b
-    	ORDER BY 
-        	CASE WHEN parent_id IS NULL THEN board_order ELSE (SELECT board_order FROM board_category p WHERE p.board_id = b.parent_id) END,
-        	parent_id,
-        	board_order
-	</select>
+        FROM board_category b
+        ORDER BY board_order ASC
+    </select>
 
-    <!-- ================================================================= -->
-    <!-- 2) 게시판 단일 조회 -->
-    <!-- ================================================================= -->
-    <select id="getBoard" resultMap="boardMap" parameterType="int">
-        SELECT *
+
+    <!-- ============================================================ -->
+    <!-- 2) 게시판 단일 조회 (수정 화면)                               -->
+    <!-- ============================================================ -->
+    <select id="getBoard" resultType="com.itwillbs.domain.AdminBoardVO" parameterType="int">
+        SELECT
+        board_id,
+        board_name,
+        board_desc,
+        is_active,
+        created_at,
+        board_order,
+
+        allow_comment,
+        allow_image,
+        allow_file,
+        write_role,
+        banned_words,
+        require_approval
+
         FROM board_category
         WHERE board_id = #{board_id}
     </select>
 
 
-    <!-- ================================================================= -->
-    <!-- 3) 게시판 상세 + 통계 -->
-    <!-- ================================================================= -->
-    <select id="getBoardDetail" parameterType="int"
+    <!-- ============================================================ -->
+    <!-- 3) 게시판 상세 조회 + 통계 (통합버전)                         -->
+    <!-- ============================================================ -->
+    <select id="getBoardDetail"
+            parameterType="int"
             resultType="com.itwillbs.domain.AdminBoardVO">
 
         SELECT
-            b.board_id,
-            b.board_name,
-            b.board_desc,
-            b.is_active,
-            b.created_at,
+        b.board_id,
+        b.board_name,
+        b.board_desc,
+        b.is_active,
+        b.created_at,
+        b.board_order,
 
-            (SELECT COUNT(*) 
-             FROM community_content c
-             WHERE c.category_id = b.board_id) AS post_count,
+        b.allow_comment,
+        b.allow_image,
+        b.allow_file,
+        b.write_role,
+        b.banned_words,
+        b.require_approval,
 
-            (SELECT COUNT(*) 
-             FROM community_content c
-             WHERE c.category_id = b.board_id
-               AND c.created_at >= DATE_FORMAT(NOW(), '%Y-%m-01')) 
-             AS post_count_month,
+        -- 전체 글 수
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id) AS post_count,
 
-            (SELECT COUNT(*)
-             FROM community_content c
-             WHERE c.category_id = b.board_id
-               AND c.is_deleted = 0) AS post_count_visible,
+        -- 이번달 글 수
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id
+        AND c.created_at >= DATE_FORMAT(NOW(), '%Y-%m-01'))
+        AS post_count_month,
 
-            (SELECT COUNT(*)
-             FROM report r
-             JOIN community_content c ON r.post_id = c.post_id
-             WHERE c.category_id = b.board_id) AS report_count
+        -- 정상 글
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id
+        AND c.is_deleted = 0) AS post_count_visible,
+
+        -- 신고된 글
+        (SELECT COUNT(*)
+        FROM report r
+        JOIN community_content c ON r.post_id = c.post_id
+        WHERE c.category_id = b.board_id)
+        AS report_count
 
         FROM board_category b
         WHERE b.board_id = #{board_id}
     </select>
 
 
-    <!-- ================================================================= -->
-    <!-- 🔥  최근 게시글 5개 -->
-    <!-- ================================================================= -->
-    <select id="getRecentPosts" parameterType="int"
+    <!-- ============================================================ -->
+    <!-- 4) 최근 게시글 5개                                            -->
+    <!-- ============================================================ -->
+    <select id="getRecentPosts"
+            parameterType="int"
             resultType="com.itwillbs.domain.AdminPostVO">
 
-        SELECT 
-            post_id,
-            title,
-            user_num,
-            created_at,
-            is_deleted
+        SELECT
+        post_id,
+        title,
+        user_num,
+        created_at,
+        is_deleted
         FROM community_content
         WHERE category_id = #{board_id}
         ORDER BY created_at DESC
@@ -109,18 +150,18 @@
     </select>
 
 
-    <!-- ================================================================= -->
-    <!-- 🔥 4) 인기글 TOP 5 (조회수 순) -->
-    <!-- ================================================================= -->
-    <select id="getTopViewPosts" 
+    <!-- ============================================================ -->
+    <!-- 5) 인기글 TOP 5 (조회수 순)                                   -->
+    <!-- ============================================================ -->
+    <select id="getTopViewPosts"
             parameterType="int"
             resultType="com.itwillbs.domain.AdminPostVO">
 
-        SELECT 
-            post_id,
-            title,
-            views,
-            0 AS report_count   <!-- 기본값 -->
+        SELECT
+        post_id,
+        title,
+        views,
+        0 AS report_count
         FROM community_content
         WHERE category_id = #{board_id}
         ORDER BY views DESC
@@ -128,18 +169,18 @@
     </select>
 
 
-    <!-- ================================================================= -->
-    <!-- 🔥 5) 신고 많은 글 TOP 5 -->
-    <!-- ================================================================= -->
-    <select id="getTopReportPosts" 
+    <!-- ============================================================ -->
+    <!-- 6) 신고 많은 글 TOP 5                                          -->
+    <!-- ============================================================ -->
+    <select id="getTopReportPosts"
             parameterType="int"
             resultType="com.itwillbs.domain.AdminPostVO">
 
         SELECT
-            c.post_id,
-            c.title,
-            c.views,
-            COUNT(*) AS report_count
+        c.post_id,
+        c.title,
+        c.views,
+        COUNT(*) AS report_count
         FROM report r
         JOIN community_content c ON r.post_id = c.post_id
         WHERE c.category_id = #{board_id}
@@ -149,64 +190,59 @@
     </select>
 
 
-    <!-- ================================================================= -->
-    <!-- 🔥 6) 최근 7일 게시글 증가량 (그래프용) -->
-    <!-- ================================================================= -->
+    <!-- ============================================================ -->
+    <!-- 7) 최근 7일 게시글 증가량 (그래프용)                          -->
+    <!-- ============================================================ -->
     <select id="getWeeklyPostStats"
             parameterType="int"
             resultType="map">
 
-        SELECT 
-            DATE(created_at) AS day,
-            COUNT(*) AS count
+        SELECT
+        DATE(created_at) AS day,
+        COUNT(*) AS count
         FROM community_content
         WHERE category_id = #{board_id}
-          AND created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        AND created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
         GROUP BY DATE(created_at)
         ORDER BY day ASC
     </select>
-    
-    <select id="getParentCategories" resultType="com.itwillbs.domain.AdminBoardVO">
-    	SELECT * 
-    	FROM board_category
-    	WHERE parent_id IS NULL
-    	ORDER BY board_order ASC
-	</select>
-	
-	<select id="getChildCategories" resultType="com.itwillbs.domain.AdminBoardVO" parameterType="int">
-    	SELECT *
-    	FROM board_category
-    	WHERE parent_id = #{parent_id}
-    	ORDER BY board_order ASC
-	</select>
-	
-    
-    <!-- ================================================================= -->
-    <!-- 4) 게시판 추가 -->
-    <!-- ================================================================= -->
+
+
+    <!-- ============================================================ -->
+    <!-- 8) 게시판 추가                                                 -->
+    <!-- ============================================================ -->
     <insert id="insertBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
-        INSERT INTO board_category (board_name, board_desc, is_active, created_at)
-        VALUES (#{board_name}, #{board_desc}, #{is_active}, NOW())
+        INSERT INTO board_category
+        (board_name, board_desc, is_active, created_at, board_order,
+        allow_comment, allow_image, allow_file, write_role, banned_words, require_approval)
+        VALUES
+        (#{board_name}, #{board_desc}, #{is_active}, NOW(), 9999,
+        #{allow_comment}, #{allow_image}, #{allow_file}, #{write_role}, #{banned_words}, #{require_approval})
     </insert>
 
 
-    <!-- ================================================================= -->
-    <!-- 5) 게시판 수정 -->
-    <!-- ================================================================= -->
+    <!-- ============================================================ -->
+    <!-- 9) 게시판 수정                                                 -->
+    <!-- ============================================================ -->
     <update id="updateBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
         UPDATE board_category
-        SET 
-            board_name = #{board_name},
-            board_desc = #{board_desc},
-            is_active = #{is_active}
-            parent_id = #{parent_id}
+        SET
+        board_name       = #{board_name},
+        board_desc       = #{board_desc},
+        is_active        = #{is_active},
+        allow_comment    = #{allow_comment},
+        allow_image      = #{allow_image},
+        allow_file       = #{allow_file},
+        write_role       = #{write_role},
+        banned_words     = #{banned_words},
+        require_approval = #{require_approval}
         WHERE board_id = #{board_id}
     </update>
 
 
-    <!-- ================================================================= -->
-    <!-- 6) 사용/숨김 -->
-    <!-- ================================================================= -->
+    <!-- ============================================================ -->
+    <!-- 10) 사용 / 숨김                                                -->
+    <!-- ============================================================ -->
     <update id="disableBoard" parameterType="int">
         UPDATE board_category
         SET is_active = 0
@@ -220,15 +256,42 @@
     </update>
 
 
-    <!-- ================================================================= -->
-    <!-- 7) 게시판 순서 변경 -->
-    <!-- ================================================================= -->
-    <update id="updateBoardOrder">
+    <!-- ============================================================ -->
+    <!-- 11) 게시판 순서 변경                                           -->
+    <!-- ============================================================ -->
+    <update id="updateBoardOrder" parameterType="com.itwillbs.domain.AdminBoardVO">
         UPDATE board_category
         SET board_order = #{board_order}
         WHERE board_id = #{board_id}
     </update>
-    
-    
+
+    <!-- ============================= -->
+    <!-- 옵션 개별 변경 (허용/금지 등) -->
+    <!-- ============================= -->
+
+    <update id="updateAllowComment" parameterType="map">
+        UPDATE board_category
+        SET allow_comment = #{value}
+        WHERE board_id = #{board_id}
+    </update>
+
+    <update id="updateAllowImage" parameterType="map">
+        UPDATE board_category
+        SET allow_image = #{value}
+        WHERE board_id = #{board_id}
+    </update>
+
+    <update id="updateAllowFile" parameterType="map">
+        UPDATE board_category
+        SET allow_file = #{value}
+        WHERE board_id = #{board_id}
+    </update>
+
+    <update id="updateRequireApproval" parameterType="map">
+        UPDATE board_category
+        SET require_approval = #{value}
+        WHERE board_id = #{board_id}
+    </update>
+
 
 </mapper>
