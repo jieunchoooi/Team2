@@ -52,7 +52,17 @@
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예">공예</a></li>
                         </ul>
                     </div>
-
+                    
+                    <div class="mega-column">
+                        <h3>요리</h3>
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉">한식</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=중식일식">중식&일식</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=양식">양식</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예">베이킹</a></li>
+                        </ul>
+                    </div>
+                    
                     <div class="mega-column">
                         <h3>IT</h3>
                         <ul>
