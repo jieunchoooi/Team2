@@ -302,12 +302,12 @@
             <span class="info-value">${lectureVO.category_detail}</span>
           </div>
           <div class="info-item">
-            <span class="info-label">강의 시간</span>
-            <span class="info-value">${lectureVO.total_time}</span>
+            <span class="info-label">커리큘럼</span>
+            <span class="info-value">수업 ${lectureVO.curriculum_count}개</span>
           </div>
           <div class="info-item">
-            <span class="info-label">수강기한</span>
-            <span class="info-value">무제한</span>
+            <span class="info-label">강의시간</span>
+            <span class="info-value">${lectureVO.total_time}</span>
           </div>
         </div>
 
