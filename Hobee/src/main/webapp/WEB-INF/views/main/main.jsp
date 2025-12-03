@@ -37,7 +37,7 @@
            </a>
    
            <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" class="category-item">
-               <i class="fa-solid fa-palette"></i>
+               <i class="fa-solid fa-pen-to-square"></i>
                <span>디지털드로잉</span>
            </a>
    
@@ -47,32 +47,32 @@
            </a>
    
            <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" class="category-item">
-               <i class="fa-solid fa-brush"></i>
+               <i class="fa-solid fa-hammer"></i>
                <span>공예</span>
            </a>
            
-           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" class="category-item">
-               <i class="fa-solid fa-palette"></i>
+           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=한식" class="category-item">
+               <i class="fa-solid fa-utensils"></i>
                <span>요리</span>
            </a>
            
-           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" class="category-item">
-               <i class="fa-solid fa-paintbrush"></i>
+           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티" class="category-item">
+               <i class="fa-solid fa-brush"></i>
                <span>뷰티</span>
            </a>
    
-           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" class="category-item">
-               <i class="fa-solid fa-brush"></i>
-               <span>타로사주</span>
+           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로·사주" class="category-item">
+               <i class="fa-solid fa-hat-wizard"></i>
+               <span>타로·사주</span>
            </a>
            
-           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" class="category-item">
-               <i class="fa-solid fa-brush"></i>
+           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임" class="category-item">
+               <i class="fa-solid fa-gamepad"></i>
                <span>게임</span>
            </a>
    
-           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI" class="category-item">
-               <i class="fa-solid fa-gamepad"></i>
+           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI스킬업" class="category-item">
+               <i class="fa-solid fa-robot"></i>
                <span>AI스킬업</span>
            </a>
    
@@ -88,7 +88,7 @@
    
            <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" class="category-item">
                <i class="fa-solid fa-language"></i>
-               <span>외국어</span>
+               <span>영어</span>
            </a>
    
            <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" class="category-item">
@@ -96,7 +96,7 @@
                <span>제2외국어</span>
            </a>
    
-           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어" class="category-item">
+           <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어시험" class="category-item">
                <i class="fa-solid fa-graduation-cap"></i>
                <span>외국어시험</span>
            </a>

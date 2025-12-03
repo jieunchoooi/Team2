@@ -57,7 +57,7 @@
                         <h3>요리</h3>
                         <ul>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=한식">한식</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=중식일식">중식·일식</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=중식·일식">중식·일식</a></li>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=양식">양식</a></li>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=베이킹">베이킹</a></li>
                         </ul>
@@ -67,7 +67,7 @@
                         <h3>라이프스타일</h3>
                         <ul>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티">뷰티</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로사주">타로·사주</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로·사주">타로·사주</a></li>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임">게임</a></li>
                         </ul>
                     </div>

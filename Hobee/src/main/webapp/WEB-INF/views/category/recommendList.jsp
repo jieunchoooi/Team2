@@ -381,7 +381,7 @@ footer {
 			</div>
 			<div class="tag-container">
 				<button class="tag-btn" data-tag="한식" onclick="toggleTag(this)">한식</button>
-				<button class="tag-btn" data-tag="중식일식" onclick="toggleTag(this)">중식&일식</button>
+				<button class="tag-btn" data-tag="중식·일식" onclick="toggleTag(this)">중식·일식</button>
 				<button class="tag-btn" data-tag="양식" onclick="toggleTag(this)">양식</button>
 				<button class="tag-btn" data-tag="베이킹" onclick="toggleTag(this)">베이킹</button>
 			</div>
@@ -394,7 +394,7 @@ footer {
 			</div>
 			<div class="tag-container">
 				<button class="tag-btn" data-tag="뷰티" onclick="toggleTag(this)">뷰티</button>
-				<button class="tag-btn" data-tag="타로사주" onclick="toggleTag(this)">타로·사주</button>
+				<button class="tag-btn" data-tag="타로·사주" onclick="toggleTag(this)">타로·사주</button>
 				<button class="tag-btn" data-tag="게임" onclick="toggleTag(this)">게임</button>
 			</div>
 		</div>
