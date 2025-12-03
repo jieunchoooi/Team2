@@ -39,7 +39,7 @@
 	  
       <div class="course-meta">
       	<span><i class="fa-solid fa-clipboard-user"></i> &nbsp;${lectureVO.lecture_author} &nbsp;강사</span>&nbsp;
-        <span><i class="fas fa-users"></i> &nbsp;조회수 ${lectureVO.readcount}</span>
+        <span><i class="fas fa-users"></i> &nbsp;수강생</span>
       </div>
       <p class="course-description collapsed" id="courseDescription">
         ${lectureVO.lecture_detail}
@@ -275,14 +275,34 @@
         <h3 class="course-main-title">${lectureVO.lecture_title}</h3>
 
         <div class="price-section">
-          <div class="discount-rate">42% ₩50,000원</div>
+<!--           <div class="discount-rate">42% ₩50,000원</div> -->
           <div class="current-price">
 			  <fmt:formatNumber value="${lectureVO.lecture_price}" type="number" />원
 		  </div>
         </div>
+        
+        <!-- 강의 정보 섹션 -->
+        <div class="lecture-info-section">
+          <div class="info-item">
+            <span class="info-label">강사</span>
+            <span class="info-value">${lectureVO.lecture_author}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">카테고리</span>
+            <span class="info-value">${lectureVO.category_detail}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">강의 시간</span>
+            <span class="info-value">20시간 14분</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">수강기한</span>
+            <span class="info-value">무제한</span>
+          </div>
+        </div>
 
         <button class="btn-purchase">구매하기</button>
-
+        
         <div class="action-icons">
           <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div>
           <div class="action-icon"><i class="far fa-share-square"></i><span>공유</span></div>

@@ -387,6 +387,18 @@ footer {
 			</div>
 		</div>
 		
+		<!-- 라이프스타일 카테고리 -->
+		<div class="filter-category">
+			<div class="filter-category-title">
+				라이프스타일
+			</div>
+			<div class="tag-container">
+				<button class="tag-btn" data-tag="뷰티" onclick="toggleTag(this)">뷰티</button>
+				<button class="tag-btn" data-tag="타로사주" onclick="toggleTag(this)">타로·사주</button>
+				<button class="tag-btn" data-tag="게임스포츠" onclick="toggleTag(this)">게임·e스포츠</button>
+			</div>
+		</div>
+		
 		<!-- 디지털 스킬 카테고리 -->
 		<div class="filter-category">
 			<div class="filter-category-title">
@@ -422,7 +434,17 @@ footer {
 		<!-- 🔹 전체 강의 -->
 		<div class="section">
 		    <h3 id="all-title">
-		    	<span id="filter-title">'${sessionScope.user_name}' 님 맞춤 추천 강의</span>
+<%-- 		    	<span id="filter-title">'${sessionScope.user_name}' 님 맞춤 추천 강의</span> --%>
+				<span id="filter-title">
+				    <c:choose>
+				        <c:when test="${not empty sessionScope.user_name}">
+				            '${sessionScope.user_name}' 님 맞춤 추천 강의
+				        </c:when>
+				        <c:otherwise>
+				            로그인하시면 맞춤 추천 강의를 알려드려요!
+				        </c:otherwise>
+				    </c:choose>
+				</span>
 		    	<span id="selected-count" class="selected-count" style="display:none;">0</span>
 		    </h3>
 		    <div class="all-grid" id="lectureGrid">
