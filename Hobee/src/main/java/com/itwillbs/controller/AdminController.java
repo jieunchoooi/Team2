@@ -43,7 +43,7 @@ public class AdminController {
    @Resource(name = "uploadPath1")
    private String uploadPath1;
 
-	// ⭐ 모든 /member/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
+	// ⭐ 모든 /admin/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
 	@ModelAttribute("page")
 	public String setPageIdentifier(HttpServletRequest req) {
 	    String uri = req.getRequestURI();
@@ -53,14 +53,9 @@ public class AdminController {
 	    if (uri.contains("adminMemberList")) return "memberList";
 	    if (uri.contains("adminTeacherList")) return "teacherList";
 	    if (uri.contains("adminWithdrawList")) return "withdrawList";
-	    if (uri.contains("adminPaymentList")) return "paymentList"; // ⭐ 상세 페이지도 동일 그룹
+	    if (uri.contains("adminPaymentList")) return "paymentList"; 
 	    if (uri.contains("adminPostList")) return "postList";
-	    if (uri.contains("adminPostDeletedList")) return "deletedPostList";
-	    if (uri.contains("adminCommentList")) return "commentList";
-	    if (uri.contains("adminReportList")) return "reportList";
-	    if (uri.contains("adminPostStats")) return "postStats";
-	    if (uri.contains("adminNoticeList")) return "noticeList";
-	    if (uri.contains("adminFaqList")) return "faqList";
+	    
 	    return "";
 	}
    

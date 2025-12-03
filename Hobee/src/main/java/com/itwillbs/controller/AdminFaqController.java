@@ -2,6 +2,8 @@ package com.itwillbs.controller;
 
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,14 @@ public class AdminFaqController {
     @Inject
     private AdminFaqService adminFaqService;
 
+
+    @ModelAttribute("page")
+	public String setPageIdentifier(HttpServletRequest req) {
+	    String uri = req.getRequestURI();
+	    
+	    if (uri.contains("adminFaqList")) return "faqList";
+	    return "";
+	}
     // ⭐ FAQ 목록
     @GetMapping("adminFaqList")
     public String faqList(

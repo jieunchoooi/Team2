@@ -3,11 +3,13 @@ package com.itwillbs.controller;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,15 @@ public class AdminReportController {
     @Inject
     private AdminReportService adminReportService;
 
+    @ModelAttribute("page")
+	public String setPageIdentifier(HttpServletRequest req) {
+	    String uri = req.getRequestURI();
+	    
+	    if (uri.contains("adminReportList")) return "reportList";
+	    return "";
+	}
+   
+    
     // ⭐ 신고 목록 (필터 + 페이징)
     @GetMapping("/adminReportList")
     public String reportList(
