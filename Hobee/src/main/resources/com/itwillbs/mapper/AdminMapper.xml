@@ -201,8 +201,28 @@
 		order by lecture_num desc
 		LIMIT #{startRow}, #{pageSize}
 	</select>
+	
+<!-- 삭제된 강의 -->
+	<select id="deleteClass1" resultType="com.itwillbs.domain.LectureVO">
+		select * from lecture
+		where status = 'delete'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강사명'">
+				and lecture_author LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '강의명'">
+				and lecture_title LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
+		order by lecture_num desc
+		LIMIT #{startRow}, #{pageSize}
+	</select>
 
-<!-- 승인된 강의 -->
+<!-- 승인요청된 강의 -->
 	<select id="askClass" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
 		where status = 'waiting'
@@ -512,6 +532,12 @@
 		select count(*) from lecture
 		where status = 'approval'
 	</select>
+	
+	<!-- 삭제된 강의 갯수 카운트 -->
+	<select id="deleteClassCount" resultType="java.lang.Integer">
+		select count(*) from lecture
+		where status = 'delete'
+	</select>
 
 	<!-- 승인 요청된 강의 갯수 카운트 -->
 	<select id="askClassCount" resultType="java.lang.Integer">
@@ -650,7 +676,6 @@
 	        l.lecture_author,
 	        l.lecture_price,
 	        l.category_detail,
-	        l.readcount,
 	        l.lecture_img,
 	        l.lecture_detail,
 	        l.lecture_tag,
@@ -687,50 +712,7 @@
     	AND user_role = 'instructor'
 	</select>
 	
-<!-- 	<select id="instructorLecture" resultType="com.itwillbs.domain.LectureVO" parameterType="string"> -->
-<!-- 		SELECT  -->
-<!--     		l.lecture_num, -->
-<!--     		l.user_num, -->
-<!--     		l.lecture_title, -->
-<!--     		l.lecture_author, -->
-<!--     		l.lecture_price, -->
-<!--     		l.category_detail, -->
-<!--     		l.readcount, -->
-<!--     		l.lecture_img, -->
-<!--     		l.lecture_detail, -->
-<!--     		l.lecture_tag, -->
-<!--     		COALESCE(ROUND(AVG(r.review_score), 1), 0) as avg_score, -->
-<!--     		COALESCE(COUNT(DISTINCT r.review_num), 0) as review_count, -->
-<!--     		COALESCE(COUNT(DISTINCT e.enrollment_id), 0) as student_count, -->
-<!--    		 	u.user_name,       -->
-<!--     		u.user_email, -->
-<!--     		u.user_id, -->
-<!--     		u.user_phone, -->
-<!--     		u.created_at       -->
-<!-- 		FROM  -->
-<!--     		lecture l -->
-<!--     		LEFT JOIN review r ON l.lecture_num = r.lecture_num -->
-<!--     		LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num -->
-<!--     		LEFT JOIN user u ON l.user_num = u.user_num   -->
-<!-- 		GROUP BY  -->
-<!--     		l.lecture_num, -->
-<!--     		l.user_num, -->
-<!--     		l.lecture_title, -->
-<!--     		l.lecture_author, -->
-<!--     		l.lecture_price, -->
-<!--     		l.category_detail, -->
-<!--     		l.readcount, -->
-<!--     		l.lecture_img, -->
-<!--     		l.lecture_detail, -->
-<!--     		l.lecture_tag, -->
-<!--     		u.user_name,       -->
-<!--     		u.user_email, -->
-<!--     		u.user_id, -->
-<!--     		u.user_phone, -->
-<!--     		u.created_at       -->
-<!-- 		ORDER BY  -->
-<!--     		l.readcount DESC -->
-<!-- 	</select>	 -->
+
 	
 	
 	
