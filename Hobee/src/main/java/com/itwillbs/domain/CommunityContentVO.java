@@ -27,7 +27,7 @@ public class CommunityContentVO {
 
     private Timestamp created_at;
     private Timestamp updated_at;
-    
+    private int rn;
    
     // JOIN 필드
     private String user_name;
@@ -38,6 +38,7 @@ public class CommunityContentVO {
     private String summary;              // 요약문
     private String user_file;   // 작성자 썸네일
     
+    private Integer user_reaction;
     private Integer comment_count;
     private Integer like_count;
     private Integer dislike_count;
