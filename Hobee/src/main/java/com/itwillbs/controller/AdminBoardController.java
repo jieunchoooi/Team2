@@ -2,10 +2,12 @@ package com.itwillbs.controller;
 
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,19 @@ public class AdminBoardController {
 
     @Inject
     private AdminBoardService adminBoardService;
+    
+	// ⭐ 모든 /admin/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
+	@ModelAttribute("page")
+	public String setPageIdentifier(HttpServletRequest req) {
+	    String uri = req.getRequestURI();
+
+	    if (uri.contains("adminBoardList")) return "boardList";
+	    if (uri.contains("adminPostDeletedList")) return "deletedPostList";
+	    if (uri.contains("adminCommentList")) return "commentList";
+	    if (uri.contains("adminPostStats")) return "postStats";
+	    return "";
+	}
+   
 
 
     // 📌 게시판 목록

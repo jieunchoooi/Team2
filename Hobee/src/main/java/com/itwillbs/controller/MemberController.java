@@ -28,6 +28,7 @@ import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.EnrollmentVO;
 import com.itwillbs.domain.EnrollmentViewVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.PointHistoryVO;
 import com.itwillbs.domain.ScrapVO;
@@ -532,23 +533,24 @@ public class MemberController {
 	    public String editLecture(@RequestParam("lecture_num") int lecture_num, Model model) {
 	    	System.out.println("MemberController editLecture()");
 	    	LectureVO lectureVO = adminService.classEdit(lecture_num);
+	    	NotApprovedVO notApprovedVO= memberService.classReason(lecture_num);
 		    List<UserVO> instructorList = adminService.getInstructorList();
 		    List<CategoryVO> categoryList = adminService.categoryList();
 		    List<ChapterVO> chapterList = adminService.getChaptersByLectureNum(lecture_num);
 		    
 		    String tags = lectureVO.getLecture_tag(); // "드로잉,일러스트,취미"
 
-		    System.out.println("강사 수: " + (instructorList != null ? instructorList.size() : 0));
-		    if (instructorList != null) {
-		        for (UserVO user : instructorList) {
-		            System.out.println("강사: " + user.getUser_name() + " (" + user.getUser_id() + ")");
-		        }
-		    }
+//		    if (instructorList != null) {
+//		        for (UserVO user : instructorList) {
+//		            System.out.println("강사: " + user.getUser_name() + " (" + user.getUser_id() + ")");
+//		        }
+//		    }
 		    // 쉼표 기준으로 배열화
 			String[] tagArr = tags.split(",");
 
 			model.addAttribute("tagArr", tagArr);
 			model.addAttribute("lectureVO", lectureVO);
+			model.addAttribute("notApprovedVO", notApprovedVO);
 			model.addAttribute("categoryList", categoryList);
 			model.addAttribute("instructorList", instructorList);
 		    model.addAttribute("chapterList", chapterList); // 챕터 리스트 추가
@@ -560,7 +562,7 @@ public class MemberController {
 	   	@PostMapping("/classUpdate")
 	   	public String adminClassUpdate(HttpServletRequest request,
 	   	                               @RequestParam(value = "lecture_img", required = false) MultipartFile lecture_img) throws Exception {
-	   	    System.out.println("AdminController adminClassUpdate()");
+	   	    System.out.println("memberController classUpdate()");
 	   	    
 	   	    LectureVO lectureVO = new LectureVO();
 	   	    
@@ -672,6 +674,29 @@ public class MemberController {
 	   	    return "redirect:/member/teacherMyPage";
 	   	}
 	    
+	    @GetMapping("/cenceldeleteLecture")
+	    public String cenceldeleteLecture(@RequestParam("lecture_num") int lecture_num) {
+	 	   System.out.println("AdminController classRejectReason()");
+	 	   memberService.deleteCencel(lecture_num);
+	 	   
+	 	   return "redirect:/member/teacherMyPage";
+	    }
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
 	    
 	
 }

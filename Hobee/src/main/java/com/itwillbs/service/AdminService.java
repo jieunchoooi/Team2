@@ -11,6 +11,7 @@ import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.AdminMapper;
@@ -351,6 +352,43 @@ public class AdminService {
 		System.out.println("AdminService okClassCount()");
 		return adminMapper.okClassCount(pageVO);
 	}
+
+	public List<LectureVO> deleteClass1(PageVO pageVO) {
+		System.out.println("AdminService deleteClass()");
+		return adminMapper.deleteClass1(pageVO);
+	}
+
+	public int deleteClassCount(PageVO pageVO) {
+		System.out.println("AdminService deleteClassCount()");
+		return adminMapper.deleteClassCount(pageVO);
+	}
+
+	public void classApprovalUpdate(int lecture_num) {
+		System.out.println("AdminService classApprovalUpdate()");
+		adminMapper.classApprovalUpdate(lecture_num);
+	}
+
+	public void classNotApproval(NotApprovedVO notApprovedVO) {
+		System.out.println("AdminService classNotApproval()");
+		adminMapper.classNotApproval(notApprovedVO);
+	}
+
+	public void classReject(int lecture_num) {
+		System.out.println("AdminService classReject()");
+		adminMapper.classReject(lecture_num);
+	}
+
+	public void classApprovaldelete(int lecture_num) {
+		System.out.println("AdminService classApprovaldelete()");
+		adminMapper.classApprovaldelete(lecture_num);
+	}
+
+	public void cancelDelete(int lecture_num) {
+		System.out.println("AdminService cancelDelete()");
+		adminMapper.cancelDelete(lecture_num);
+	}
+
+	
 
 
 

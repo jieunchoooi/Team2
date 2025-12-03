@@ -27,6 +27,7 @@ import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
@@ -43,7 +44,7 @@ public class AdminController {
    @Resource(name = "uploadPath1")
    private String uploadPath1;
 
-	// ⭐ 모든 /member/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
+	// ⭐ 모든 /admin/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
 	@ModelAttribute("page")
 	public String setPageIdentifier(HttpServletRequest req) {
 	    String uri = req.getRequestURI();
@@ -53,14 +54,9 @@ public class AdminController {
 	    if (uri.contains("adminMemberList")) return "memberList";
 	    if (uri.contains("adminTeacherList")) return "teacherList";
 	    if (uri.contains("adminWithdrawList")) return "withdrawList";
-	    if (uri.contains("adminPaymentList")) return "paymentList"; // ⭐ 상세 페이지도 동일 그룹
+	    if (uri.contains("adminPaymentList")) return "paymentList"; 
 	    if (uri.contains("adminPostList")) return "postList";
-	    if (uri.contains("adminPostDeletedList")) return "deletedPostList";
-	    if (uri.contains("adminCommentList")) return "commentList";
-	    if (uri.contains("adminReportList")) return "reportList";
-	    if (uri.contains("adminPostStats")) return "postStats";
-	    if (uri.contains("adminNoticeList")) return "noticeList";
-	    if (uri.contains("adminFaqList")) return "faqList";
+	    
 	    return "";
 	}
    
@@ -193,12 +189,12 @@ public class AdminController {
       }
       
       int tCount = adminService.teacharCount(pageVO);
-//      List<LectureVO> lectureList = adminService.listLecture(pageVO);
       List<LectureVO> lectureList;
 
       int compClassCount = adminService.compClassCount(pageVO);
       int askClassCount = adminService.askClassCount(pageVO);
       int okClassCount = adminService.okClassCount(pageVO);
+      int deleteClassCount = adminService.deleteClassCount(pageVO);
       int classCount = adminService.classCount(pageVO);
       int count = adminService.countlectureList(pageVO);
       int pageBlock = 10;
@@ -215,6 +211,8 @@ public class AdminController {
     	  lectureList = adminService.askClass(pageVO);
       }else if("comp".equals(filter)) {
     	  lectureList = adminService.compClass(pageVO);
+      }else if("delete".equals(filter)){
+    	  lectureList = adminService.deleteClass1(pageVO);
       }else {
     	  lectureList = adminService.listLecture(pageVO);
       }
@@ -234,6 +232,7 @@ public class AdminController {
       model.addAttribute("compClassCount", compClassCount);
       model.addAttribute("askClassCount", askClassCount);
       model.addAttribute("okClassCount", okClassCount);
+      model.addAttribute("deleteClassCount", deleteClassCount);
 
       return "admin/adminClassList";
    }
@@ -639,6 +638,47 @@ public class AdminController {
            return "redirect:/admin/adminTeacherList";
        }
    }
+   
+   @GetMapping("/classApproval")
+   public String classApproval(@RequestParam("lecture_num") int lecture_num) {
+	   System.out.println("AdminController classApproval()");
+	   adminService.classApprovalUpdate(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   @GetMapping("/classNotApproval")
+   public String classNotApproval(@RequestParam("lecture_num") int lecture_num,
+		   						  @RequestParam("reason") String reason) {
+	   System.out.println("AdminController classNotApproval()");
+	   NotApprovedVO notApprovedVO = new NotApprovedVO();
+	   notApprovedVO.setLecture_num(lecture_num);
+	   notApprovedVO.setReason(reason);
+	   
+	   adminService.classNotApproval(notApprovedVO);
+	   adminService.classReject(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   @GetMapping("/deleteApproval")
+   public String deleteApproval(@RequestParam("lecture_num") int lecture_num) {
+	   System.out.println("AdminController classApproval()");
+	   adminService.classApprovaldelete(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   @GetMapping("/cancelDeleteApproval")
+   public String cancelDeleteApproval(@RequestParam("lecture_num") int lecture_num) {
+	   System.out.println("AdminController cancelDeleteApproval()");
+	   adminService.cancelDelete(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   
+   
    
 
 }

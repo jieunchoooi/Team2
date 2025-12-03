@@ -13,351 +13,371 @@
 <style>
 /* ====== 기본 스타일 ====== */
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 body {
-	background: #f9fafc;
-	color: #222;
+   background: #f9fafc;
+   color: #222;
 }
 main {
-	display: flex;
-	width: 100%;
-	max-width: 1280px;
-	margin: 80px auto;
-	padding: 0 20px;
-	gap: 40px;
+   display: flex;
+   width: 100%;
+   max-width: 1280px;
+   margin: 80px auto;
+   padding: 0 20px;
+   gap: 40px;
 }
 .sidebar {
-	width: 220px;
-	background: #fff;
-	padding: 20px;
-	border-radius: 16px;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-	height: fit-content;
+   width: 220px;
+   background: #fff;
+   padding: 20px;
+   border-radius: 16px;
+   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+   height: fit-content;
 }
 .sidebar ul {
-	list-style: none;
+   list-style: none;
 }
 .sidebar li {
-	padding: 10px 0;
-	cursor: pointer;
-	color: #555;
-	font-size: 0.95rem;
-	transition: color 0.2s;
+   padding: 8px 0;
+   cursor: pointer;
+   color: #555;
+   font-size: 0.95rem;
+   transition: color 0.2s;
+}
+/* 대분류 스타일 */
+.sidebar li.category-main {
+   color: #222;
+   font-weight: 700;
+   font-size: 1rem;
+   cursor: default;
+}
+.sidebar li.category-main:first-child {
+   margin-top: 0;
+}
+/* 소분류 스타일 */
+.sidebar li.category-sub {
+   padding-left: 12px;
+   font-size: 0.9rem;
 }
 .sidebar li:hover,
 .sidebar li.active {
-	color: #2573ff;
-	font-weight: 600;
+   color: #2573ff;
+   font-weight: 600;
+}
+/* 대분류는 hover 효과 없음 */
+.sidebar li.category-main:hover {
+   color: #222;
+   font-weight: 700;
 }
 .content {
-	flex: 1;
+   flex: 1;
 }
 .search-bar {
-	display: flex;
-	align-items: center;
-	position: relative;
-	margin-bottom: 30px;
+   display: flex;
+   align-items: center;
+   position: relative;
+   margin-bottom: 30px;
 }
 .search-bar i {
-	position: absolute;
-	left: 15px;
-	color: var(--primary, #2573ff);
-	font-size: 1rem;
+   position: absolute;
+   left: 15px;
+   color: var(--primary, #2573ff);
+   font-size: 1rem;
 }
 .search-bar input {
-	width: 100%;
-	padding: 12px 16px 12px 40px;
-	border: 1px solid #ddd;
-	border-radius: 30px;
-	font-size: 1rem;
-	outline: none;
-	transition: border-color 0.2s;
+   width: 100%;
+   padding: 12px 16px 12px 40px;
+   border: 1px solid #ddd;
+   border-radius: 30px;
+   font-size: 1rem;
+   outline: none;
+   transition: border-color 0.2s;
 }
 .search-bar input:focus {
-	border-color: #2573ff;
+   border-color: #2573ff;
 }
 .section {
-	margin-bottom: 60px;
+   margin-bottom: 60px;
 }
 .section h3 {
-	font-size: 1.4rem;
-	font-weight: 700;
-	margin-bottom: 20px;
-	color: #222;
+   font-size: 1.4rem;
+   font-weight: 700;
+   margin-bottom: 20px;
+   color: #222;
 }
 .card {
-	background: #fff;
-	border-radius: 16px;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-	overflow: hidden;
-	cursor: pointer;
-	transition: transform 0.2s, box-shadow 0.2s;
+   background: #fff;
+   border-radius: 16px;
+   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+   overflow: hidden;
+   cursor: pointer;
+   transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
-	transform: translateY(-4px);
-	box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+   transform: translateY(-4px);
+   box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
 /* 이미지 북마크 래퍼 */
 .card-img-wrapper {
-	position: relative;
-	display: block;
-	overflow: hidden;
+   position: relative;
+   display: block;
+   overflow: hidden;
 }
 
 .card img {
-	width: 100%;
-	object-fit: cover;
+   width: 100%;
+   object-fit: cover;
 }
 
 /* 북마크 버튼 */
 .bookmark-btn {
-	position: absolute;
-	top: 12px;
-	right: 12px;
-	width: 36px;
-	height: 36px;
-	background-color: transparent;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: all 0.2s ease;
-	box-shadow: none;
-	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-	z-index: 10;
+   position: absolute;
+   top: 12px;
+   right: 12px;
+   width: 36px;
+   height: 36px;
+   background-color: transparent;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: all 0.2s ease;
+   box-shadow: none;
+   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+   z-index: 10;
 }
 
 .bookmark-btn i {
-	font-size: 17px;
-	color: #ededed;
-	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-	transition: all 0.2s ease;
-	font-weight: 300;
+   font-size: 17px;
+   color: #ededed;
+   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+   transition: all 0.2s ease;
+   font-weight: 300;
 }
 
 .bookmark-btn:hover {
-	background-color: transparent;
-	transform: scale(1.1);
+   background-color: transparent;
+   transform: scale(1.1);
 }
 
 .bookmark-btn:hover i {
-	color: white;
-	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+   color: white;
+   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
 }
 
 /* 북마크 활성화 상태 */
 .bookmark-btn.active i {
-	color: white;
-	font-weight: 900;
-	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+   color: white;
+   font-weight: 900;
+   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
 }
 
 .card-body {
-	padding: 14px;
+   padding: 14px;
 }
 /*강의제목 말줄임표 1줄로 제한 */
  .card-title { 
- 	font-size: 1rem; 
- 	font-weight: 600; 
- 	color: #222; 
- 	line-height: 1.4; 
- 	margin-bottom: 6px; 
- 	overflow: hidden; 
- 	text-overflow: ellipsis; 
- 	display: -webkit-box; 
- 	-webkit-line-clamp: 1; 
- 	-webkit-box-orient: vertical; 
+    font-size: 1rem; 
+    font-weight: 600; 
+    color: #222; 
+    line-height: 1.4; 
+    margin-bottom: 6px; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical; 
  } 
 
 /*강의제목 말줄임표 2줄로 제한 */
 /* .card-title { */
-/* 	font-size: 1rem; */
-/* 	font-weight: 600; */
-/* 	color: #222; */
-/* 	line-height: 1.4; */
-/* 	margin-bottom: 6px; */
-/* 	overflow: hidden; */
-/* 	text-overflow: ellipsis; */
-/* 	display: -webkit-box; */
-/* 	-webkit-line-clamp: 2; */
-/* 	-webkit-box-orient: vertical; */
+/*    font-size: 1rem; */
+/*    font-weight: 600; */
+/*    color: #222; */
+/*    line-height: 1.4; */
+/*    margin-bottom: 6px; */
+/*    overflow: hidden; */
+/*    text-overflow: ellipsis; */
+/*    display: -webkit-box; */
+/*    -webkit-line-clamp: 2; */
+/*    -webkit-box-orient: vertical; */
 /* } */
 
 .card-instructor {
-	font-size: 0.85rem;
-	color: #666;
-	margin-bottom: 10px;
+   font-size: 0.85rem;
+   color: #666;
+   margin-bottom: 10px;
 }
 .card-meta {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
 }
 .card-stats {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	font-size: 0.85rem;
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   font-size: 0.85rem;
 }
 .rating {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	color: #333;
-	font-weight: 600;
+   display: flex;
+   align-items: center;
+   gap: 4px;
+   color: #333;
+   font-weight: 600;
 }
 .rating i {
-	color: #ffa41b;
-	font-size: 0.9rem;
+   color: #ffa41b;
+   font-size: 0.9rem;
 }
 .review-count {
-	color: #999;
-	font-weight: 400;
+   color: #999;
+   font-weight: 400;
 }
 .student-count {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	color: #666;
+   display: flex;
+   align-items: center;
+   gap: 4px;
+   color: #666;
 }
 .student-count i {
-	font-size: 0.85rem;
+   font-size: 0.85rem;
 }
 .card-price {
-	color: #2573ff;
-	font-weight: 700;
-	font-size: 1rem;
-	margin-top: 4px;
+   color: #2573ff;
+   font-weight: 700;
+   font-size: 1rem;
+   margin-top: 4px;
 }
 /* ====== Top10 슬라이더 ====== */
 .top10-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 20px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 20px;
 }
 .top10-header h3 {
-	margin: 0;
+   margin: 0;
 }
 .slider-controls {
-	display: flex;
-	gap: 15px;
-	align-items: center;
+   display: flex;
+   gap: 15px;
+   align-items: center;
 }
 .top10-slider-container {
-	overflow: hidden;
+   overflow: hidden;
 }
 .top10-slide {
-	display: none;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 24px;
-	width: 100%;
+   display: none;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 24px;
+   width: 100%;
 }
 .top10-slide.active {
-	display: grid;
+   display: grid;
 }
 .top10-slide .card {
-	width: 100%;
+   width: 100%;
 }
 .top10-slide .card img {
-	height: 200px;
+   height: 200px;
 }
 .top10-slide .card-body {
-	padding: 16px;
+   padding: 16px;
 }
 .top10-slide .card-title {
-	font-size: 1.05rem;
-	margin-bottom: 6px;
+   font-size: 1.05rem;
+   margin-bottom: 6px;
 }
 .top10-slide .card-instructor {
-	font-size: 0.9rem;
-	margin-bottom: 10px;
+   font-size: 0.9rem;
+   margin-bottom: 10px;
 }
 .top10-slide .card-price {
-	font-size: 1.1rem;
+   font-size: 1.1rem;
 }
 /* 화살표 버튼 */
 .slider-btn {
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	font-size: 1.5rem;
-	color: #2573ff;
-	transition: color 0.2s;
-	padding: 0;
-	width: 35px;
-	height: 35px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+   background: transparent;
+   border: none;
+   cursor: pointer;
+   font-size: 1.5rem;
+   color: #2573ff;
+   transition: color 0.2s;
+   padding: 0;
+   width: 35px;
+   height: 35px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 .slider-btn:hover {
-	color: #0056d6;
+   color: #0056d6;
 }
 .slider-dots {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	margin-top: 25px;
+   display: flex;
+   justify-content: center;
+   gap: 10px;
+   margin-top: 25px;
 }
 .dot {
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-	background: #ddd;
-	cursor: pointer;
-	transition: all 0.3s;
+   width: 10px;
+   height: 10px;
+   border-radius: 50%;
+   background: #ddd;
+   cursor: pointer;
+   transition: all 0.3s;
 }
 .dot:hover {
-	background: #999;
+   background: #999;
 }
 .dot.active {
-	background: #2573ff;
-	width: 24px;
-	border-radius: 5px;
+   background: #2573ff;
+   width: 24px;
+   border-radius: 5px;
 }
 /* ====== 전체 강의 ====== */
 .all-grid {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 20px;
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 20px;
 }
 .all-grid .card img {
-	height: 160px;
+   height: 160px;
 }
 .all-grid .card-body {
-	padding: 14px;
+   padding: 14px;
 }
 .all-grid .card-title {
-	font-size: 0.95rem;
+   font-size: 0.95rem;
 }
 .all-grid .card-instructor {
-	font-size: 0.8rem;
+   font-size: 0.8rem;
 }
 .all-grid .card-stats {
-	font-size: 0.8rem;
-	gap: 10px;
+   font-size: 0.8rem;
+   gap: 10px;
 }
 .all-grid .card-price {
-	font-size: 0.95rem;
+   font-size: 0.95rem;
 }
 /* ====== 푸터 ====== */
 footer {
-	background: #fff;
-	text-align: center;
-	padding: 20px;
-	font-size: 0.9rem;
-	color: #777;
-	border-radius: 20px 20px 0 0;
-	box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
-	margin-top: 60px;
+   background: #fff;
+   text-align: center;
+   padding: 20px;
+   font-size: 0.9rem;
+   color: #777;
+   border-radius: 20px 20px 0 0;
+   box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+   margin-top: 60px;
 }
 </style>
 
@@ -368,197 +388,212 @@ footer {
 <jsp:include page="../include/header.jsp"></jsp:include>
 
 <main>
-	<!-- ✅ 사이드 메뉴 (category_detail 기준 active 처리 포함) -->
-	<aside class="sidebar">
-	  <ul>
-	    <li class="${param.category_detail == null || param.category_detail == '전체' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" style="text-decoration:none; color:inherit;">전체</a>
-	    </li>
-	    <li class="${param.category_detail == '디지털드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" style="text-decoration:none; color:inherit;">디지털드로잉</a>
-	    </li>
-	    <li class="${param.category_detail == '드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" style="text-decoration:none; color:inherit;">드로잉</a>
-	    </li>
-	    <li class="${param.category_detail == '공예' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" style="text-decoration:none; color:inherit;">공예</a>
-	    </li>
-	    <li class="${param.category_detail == '한식' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=한식" style="text-decoration:none; color:inherit;">한식</a>
-	    </li>
-	    <li class="${param.category_detail == '중식&일식' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=중식일식" style="text-decoration:none; color:inherit;">중식&일식</a>
-	    </li>
-	    <li class="${param.category_detail == '양식' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=양식" style="text-decoration:none; color:inherit;">양식</a>
-	    </li>
-	    <li class="${param.category_detail == '베이킹' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=베이킹" style="text-decoration:none; color:inherit;">베이킹</a>
-	    </li>
-	    <li class="${param.category_detail == '뷰티' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티" style="text-decoration:none; color:inherit;">뷰티</a>
-	    </li>
-	    <li class="${param.category_detail == '타로·사주' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로사주" style="text-decoration:none; color:inherit;">타로사주</a>
-	    </li>
-	    <li class="${param.category_detail == '게임·e스포츠' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임스포츠" style="text-decoration:none; color:inherit;">게임·e스포츠</a>
-	    </li>
-	    <li class="${param.category_detail == 'AI 스킬업' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
-	    </li>
-	    <li class="${param.category_detail == '프로그래밍' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" style="text-decoration:none; color:inherit;">프로그래밍</a>
-	    </li>
-	    <li class="${param.category_detail == '데이터사이언스' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" style="text-decoration:none; color:inherit;">데이터사이언스</a>
-	    </li>
-	    <li class="${param.category_detail == '영어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" style="text-decoration:none; color:inherit;">영어</a>
-	    </li>
-	    <li class="${param.category_detail == '제2외국어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" style="text-decoration:none; color:inherit;">제2외국어</a>
-	    </li>
-	    <li class="${param.category_detail == '외국어 시험' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험" style="text-decoration:none; color:inherit;">외국어 시험</a>
-	    </li>
-	  </ul>
-	</aside>
+   <!-- ✅ 사이드 메뉴 (대분류-소분류 구조) -->
+   <aside class="sidebar">
+     <ul>
+       <li class="category-main ${param.category_detail == null || param.category_detail == '전체' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" style="text-decoration:none; color:inherit;">전체</a>
+       </li>
+       
+       <!-- ART -->
+       <li class="category-main">ART</li>
+       <li class="category-sub ${param.category_detail == '디지털드로잉' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" style="text-decoration:none; color:inherit;">디지털드로잉</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '드로잉' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" style="text-decoration:none; color:inherit;">드로잉</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '공예' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" style="text-decoration:none; color:inherit;">공예</a>
+       </li>
+       
+       <!-- 요리 -->
+       <li class="category-main">요리</li>
+       <li class="category-sub ${param.category_detail == '한식' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=한식" style="text-decoration:none; color:inherit;">한식</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '중식·일식' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=중식·일식" style="text-decoration:none; color:inherit;">중식·일식</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '양식' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=양식" style="text-decoration:none; color:inherit;">양식</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '베이킹' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=베이킹" style="text-decoration:none; color:inherit;">베이킹</a>
+       </li>
+       
+       <!-- 라이프스타일 -->
+       <li class="category-main">라이프스타일</li>
+       <li class="category-sub ${param.category_detail == '뷰티' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티" style="text-decoration:none; color:inherit;">뷰티</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '타로·사주' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로·사주" style="text-decoration:none; color:inherit;">타로·사주</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '게임' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임" style="text-decoration:none; color:inherit;">게임</a>
+       </li>
+       
+       <!-- IT -->
+       <li class="category-main">IT</li>
+       <li class="category-sub ${param.category_detail == 'AI 스킬업' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '프로그래밍' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" style="text-decoration:none; color:inherit;">프로그래밍</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '데이터사이언스' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" style="text-decoration:none; color:inherit;">데이터사이언스</a>
+       </li>
+       
+       <!-- 외국어 -->
+       <li class="category-main">외국어</li>
+       <li class="category-sub ${param.category_detail == '영어' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" style="text-decoration:none; color:inherit;">영어</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '제2외국어' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" style="text-decoration:none; color:inherit;">제2외국어</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '외국어 시험' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험" style="text-decoration:none; color:inherit;">외국어 시험</a>
+       </li>
+     </ul>
+   </aside>
 
 
 
-	<!-- ✅ 메인 콘텐츠 -->
-	<section class="content">
-		<div class="search-bar">
-			<i class="fa-solid fa-magnifying-glass"></i>
-			<input type="text" id="searchInput" placeholder="원하는 강의를 검색해보세요" onkeydown="if(event.key === 'Enter'){ searchLecture(); }"/>
-		</div>
-	
-		<!-- 🔹 Top10 슬라이더 -->
-		<div class="section">
-		    <div class="top10-header">
-		        <h3 id="top10-title">${param.category_detail == null ? '전체' : param.category_detail} Top 10</h3>
-		        <div class="slider-controls">
-		            <button class="slider-btn prev" onclick="moveSlide(-1)">
-		                <i class="fa-solid fa-chevron-left"></i>
-		            </button>
-		            <button class="slider-btn next" onclick="moveSlide(1)">
-		                <i class="fa-solid fa-chevron-right"></i>
-		            </button>
-		        </div>
-		    </div>
-	    
-			<div class="top10-slider-container">
-			    <div class="top10-grid" id="top10Slider">
-			        <c:forEach var="top" items="${top10List}" varStatus="status">
-			
-			            <!-- 0,3,6,... 3개마다 새로운 slide 열기 -->
-			            <c:if test="${status.index % 3 == 0}">
-			                <div class="top10-slide ${status.index == 0 ? 'active' : ''}">
-			            </c:if>
-			
-			            <!-- 개별 카드 -->
-			            <div class="card">
-			                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
-			                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
-			                    <button class="bookmark-btn  ${top.bookmark ? 'active' : ''}" 
-			                    		data-lecture-num="${top.lecture_num}"
-			                    		onclick="event.preventDefault(); toggleBookmark(${top.lecture_num}, this);">
-			                        <i class="far fa-bookmark"></i>
-			                    </button>
-			                </a>
-			                <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
-			                    <div class="card-body">
-			                        <div class="card-title">${top.lecture_title}</div>
-			                        <div class="card-instructor">${top.lecture_author}</div>
-			                        <div class="card-meta">
-			                            <div class="card-price">
-			                                <fmt:formatNumber value="${top.lecture_price}" type="number" />원
-			                            </div>
-			                            <div class="card-stats">
-			                                <span class="rating">
-			                                    <i class="fas fa-star"></i> ${top.avg_score}
-			                                    <span class="review-count">(${top.review_count})</span>
-			                                </span>
-			                                <span class="student-count">
-			                                    <i class="fas fa-user"></i> ${top.student_count}+
-			                                </span>
-			                            </div>
-			                        </div>
-			                    </div>
-			                </a>
-			            </div>
-			
-			            <!-- 3번째 카드마다 또는 마지막 요소에서 slide 닫기 -->
-			            <c:if test="${(status.index + 1) % 3 == 0 || status.last}">
-			                </div> <!-- top10-slide 끝 -->
-			            </c:if>
-			
-			        </c:forEach>
-			    </div>
-			</div>
+   <!-- ✅ 메인 콘텐츠 -->
+   <section class="content">
+      <div class="search-bar">
+         <i class="fa-solid fa-magnifying-glass"></i>
+         <input type="text" id="searchInput" placeholder="원하는 강의를 검색해보세요" onkeydown="if(event.key === 'Enter'){ searchLecture(); }"/>
+      </div>
+   
+      <!-- 🔹 Top10 슬라이더 -->
+      <div class="section">
+          <div class="top10-header">
+              <h3 id="top10-title">${param.category_detail == null ? '전체' : param.category_detail} Top 10</h3>
+              <div class="slider-controls">
+                  <button class="slider-btn prev" onclick="moveSlide(-1)">
+                      <i class="fa-solid fa-chevron-left"></i>
+                  </button>
+                  <button class="slider-btn next" onclick="moveSlide(1)">
+                      <i class="fa-solid fa-chevron-right"></i>
+                  </button>
+              </div>
+          </div>
+       
+         <div class="top10-slider-container">
+             <div class="top10-grid" id="top10Slider">
+                 <c:forEach var="top" items="${top10List}" varStatus="status">
+         
+                     <!-- 0,3,6,... 3개마다 새로운 slide 열기 -->
+                     <c:if test="${status.index % 3 == 0}">
+                         <div class="top10-slide ${status.index == 0 ? 'active' : ''}">
+                     </c:if>
+         
+                     <!-- 개별 카드 -->
+                     <div class="card">
+                         <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
+                             <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${top.lecture_img}" alt="${top.lecture_title}">
+                             <button class="bookmark-btn  ${top.bookmark ? 'active' : ''}" 
+                                   data-lecture-num="${top.lecture_num}"
+                                   onclick="event.preventDefault(); toggleBookmark(${top.lecture_num}, this);">
+                                 <i class="far fa-bookmark"></i>
+                             </button>
+                         </a>
+                         <a href="${pageContext.request.contextPath}/category/lecture?no=${top.lecture_num}" style="text-decoration:none;color:inherit;">
+                             <div class="card-body">
+                                 <div class="card-title">${top.lecture_title}</div>
+                                 <div class="card-instructor">${top.lecture_author}</div>
+                                 <div class="card-meta">
+                                     <div class="card-price">
+                                         <fmt:formatNumber value="${top.lecture_price}" type="number" />원
+                                     </div>
+                                     <div class="card-stats">
+                                         <span class="rating">
+                                             <i class="fas fa-star"></i> ${top.avg_score}
+                                             <span class="review-count">(${top.review_count})</span>
+                                         </span>
+                                         <span class="student-count">
+                                             <i class="fas fa-user"></i> ${top.student_count}+
+                                         </span>
+                                     </div>
+                                 </div>
+                             </div>
+                         </a>
+                     </div>
+         
+                     <!-- 3번째 카드마다 또는 마지막 요소에서 slide 닫기 -->
+                     <c:if test="${(status.index + 1) % 3 == 0 || status.last}">
+                         </div> <!-- top10-slide 끝 -->
+                     </c:if>
+         
+                 </c:forEach>
+             </div>
+         </div>
 
-	    
-			    <div class="slider-dots" id="sliderDots"></div>
-			    
-			    <c:if test="${empty top10List}">
-			        <p>Top10 강의가 없습니다.</p>
-			    </c:if>
-		</div>
-		
-		<!-- 🔹 전체 강의 -->
-		<div class="section">
-		    <h3 id="all-title">${param.category_detail == null ? '전체' : param.category_detail} 전체 강의</h3>
-		    <div class="all-grid">
-		        <c:forEach var="lec" items="${lectureList}">
-		            <div class="card">
-		                <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
-		                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
-		                    <button class="bookmark-btn ${lec.bookmark ? 'active' : ''}" 
-		                    		data-lecture-num="${lec.lecture_num}"
-		                    		onclick="event.preventDefault(); toggleBookmark(${lec.lecture_num}, this);">
-		                        <i class="far fa-bookmark"></i>
-		                    </button>
-		                </a>
-		                <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" style="text-decoration:none;color:inherit;">
-		                    <div class="card-body">
-		                        <div class="card-title">${lec.lecture_title}</div>
-		                        <div class="card-instructor">${lec.lecture_author}</div>
-		                        <div class="card-meta">
-		                            <div class="card-price">
-		                                <fmt:formatNumber value="${lec.lecture_price}" type="number" />원
-		                            </div>
-		                            <div class="card-stats">
-		                                <span class="rating">
-		                                    <i class="fas fa-star"></i> ${lec.avg_score}
-		                                    <span class="review-count">(${lec.review_count})</span>
-		                                </span>
-		                                <span class="student-count">
-		                                    <i class="fas fa-user"></i> ${lec.student_count}+
-		                                </span>
-		                            </div>
-		                        </div>
-		                    </div>
-		                </a>
-		            </div>
-		        </c:forEach>
-		        <c:if test="${empty lectureList}">
-		            <p>등록된 강의가 없습니다.</p>
-		        </c:if>
-		    </div>
-		</div>
-	</section>
+       
+             <div class="slider-dots" id="sliderDots"></div>
+             
+             <c:if test="${empty top10List}">
+                 <p>Top10 강의가 없습니다.</p>
+             </c:if>
+      </div>
+      
+      <!-- 🔹 전체 강의 -->
+      <div class="section">
+          <h3 id="all-title">${param.category_detail == null ? '전체' : param.category_detail} 전체 강의</h3>
+          <div class="all-grid">
+              <c:forEach var="lec" items="${lectureList}">
+                  <div class="card">
+                      <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
+                          <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
+                          <button class="bookmark-btn ${lec.bookmark ? 'active' : ''}" 
+                                data-lecture-num="${lec.lecture_num}"
+                                onclick="event.preventDefault(); toggleBookmark(${lec.lecture_num}, this);">
+                              <i class="far fa-bookmark"></i>
+                          </button>
+                      </a>
+                      <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" style="text-decoration:none;color:inherit;">
+                          <div class="card-body">
+                              <div class="card-title">${lec.lecture_title}</div>
+                              <div class="card-instructor">${lec.lecture_author}</div>
+                              <div class="card-meta">
+                                  <div class="card-price">
+                                      <fmt:formatNumber value="${lec.lecture_price}" type="number" />원
+                                  </div>
+                                  <div class="card-stats">
+                                      <span class="rating">
+                                          <i class="fas fa-star"></i> ${lec.avg_score}
+                                          <span class="review-count">(${lec.review_count})</span>
+                                      </span>
+                                      <span class="student-count">
+                                          <i class="fas fa-user"></i> ${lec.student_count}+
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </a>
+                  </div>
+              </c:forEach>
+              <c:if test="${empty lectureList}">
+                  <p>등록된 강의가 없습니다.</p>
+              </c:if>
+          </div>
+      </div>
+   </section>
 </main>
 
 <script>
 
 function searchLecture(){
-	const search = document.getElementById('searchInput').value.trim();
-	if(search === ''){
-		alert("검색어를 입력해주세요.");
-		return;
-	}
-	window.location.href='${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
+   const search = document.getElementById('searchInput').value.trim();
+   if(search === ''){
+      alert("검색어를 입력해주세요.");
+      return;
+   }
+   window.location.href='${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
 }
 
 
@@ -608,31 +643,31 @@ function showSlide(index) {
 
 //북마크 토글 로직
 function toggleBookmark(lectureNum, btn) {
-	
-	const isLogin = "${not empty sessionScope.user_id}" === "true";
+   
+   const isLogin = "${not empty sessionScope.user_id}" === "true";
      
-	if(!isLogin){
-    	 openLoginModal();
+   if(!isLogin){
+        openLoginModal();
         return;
      }
-	
+   
      $.ajax({
         url: '${pageContext.request.contextPath}/main/bookmark',
         method: 'POST',
         data: { lecture_num: lectureNum },
         success: function(response) {
             if(response.success) {
-         	   const allButtons = document.querySelectorAll('[data-lecture-num="' + lectureNum + '"]');
-         	   
-         	   if(response.bookmarked){
-         		   allButtons.forEach(button => {
-         			   button.classList.add('active'); //북마크 ON
-         		   });
-         	   } else {
-         		   allButtons.forEach(button =>{
-         			   button.classList.remove('active'); //북마크 OFF
-         		   });
-         	   }
+               const allButtons = document.querySelectorAll('[data-lecture-num="' + lectureNum + '"]');
+               
+               if(response.bookmarked){
+                  allButtons.forEach(button => {
+                     button.classList.add('active'); //북마크 ON
+                  });
+               } else {
+                  allButtons.forEach(button =>{
+                     button.classList.remove('active'); //북마크 OFF
+                  });
+               }
             }
          }
      });

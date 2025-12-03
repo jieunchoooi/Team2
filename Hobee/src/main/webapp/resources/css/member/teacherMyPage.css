@@ -344,6 +344,16 @@ tbody tr:last-child td {
     color: #757575;
 }
 
+.badge-delete {
+    background-color: #424242;
+    color: #ffffff;
+}
+
+.badge-cancelDelete {
+    background-color: #c0c0c0;
+    color: #000000;
+}
+
 .btn {
     border: none;
     border-radius: 10px;
@@ -406,6 +416,21 @@ tbody tr:last-child td {
     background-color: #1f65e0;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(37,115,255,0.3);
+}
+
+.btn-delete-small {
+    background-color: #ff4d4f;
+    color: white;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    margin: 0 3px;
+    box-shadow: 0 2px 6px rgba(255,77,79,0.2);
+}
+
+.btn-delete-small:hover {
+    background-color: #e04344;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(255,77,79,0.3);
 }
 
 .btn-delete-small {

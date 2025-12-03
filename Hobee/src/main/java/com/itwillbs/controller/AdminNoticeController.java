@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import com.itwillbs.domain.NoticeFileVO;
 import com.itwillbs.domain.PageDTO;
@@ -27,6 +28,14 @@ public class AdminNoticeController {
 
     @Inject
     private AdminNoticeService adminNoticeService;
+    
+    @ModelAttribute("page")
+   	public String setPageIdentifier(HttpServletRequest req) {
+   	    String uri = req.getRequestURI();
+   	    
+   	    if (uri.contains("adminNoticeList")) return "noticeList";
+   	    return "";
+   	}
 
     /** ============================================
      *  공지 목록

@@ -4,11 +4,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.itwillbs.mapper.LectureMapper">
-<!-- ?,?,? -> 대신 MemberVO 멤버변수 이름 작성 #{멤버변수이름} -->
-<!--    <insert id="insertMember"> -->
-<!--       insert into members(id,passwd,name,phone,email,gender,agree,content,rdate) -->
-<!--       values(#{id},#{passwd},#{name},#{phone},#{email},#{gender},#{agree},#{content},#{rdate}) -->
-<!--    </insert> -->
 		
 		<select id="getAllLectures" resultType="com.itwillbs.domain.LectureVO" parameterType="string">
 		   	SELECT 
@@ -18,7 +13,6 @@
 			    l.lecture_author,
 			    l.lecture_price,
 			    l.category_detail,
-			    l.readcount,
 			    l.lecture_img,
 			    l.lecture_detail,
 			    l.lecture_tag,
@@ -31,8 +25,9 @@
 			    LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
 			
 			<where>
+			    l.status = 'approval'
 			    <if test="_parameter != null and _parameter != ''">
-			       (   l.lecture_title LIKE CONCAT('%', #{_parameter}, '%')
+			       AND (   l.lecture_title LIKE CONCAT('%', #{_parameter}, '%')
 			        OR l.lecture_author LIKE CONCAT('%', #{_parameter}, '%')
 			        OR l.lecture_tag LIKE CONCAT('%', #{_parameter}, '%')
 			        OR l.category_detail LIKE CONCAT('%', #{_parameter}, '%'))
@@ -46,12 +41,11 @@
 			    l.lecture_author,
 			    l.lecture_price,
 			    l.category_detail,
-			    l.readcount,
 			    l.lecture_img,
 			    l.lecture_detail,
 			    l.lecture_tag
 			ORDER BY 
-			    l.readcount DESC
+			    l.lecture_tag DESC
 		</select>
 		
 		<!-- 인기 강의 TOP 10 조회 (통계 포함) -->
@@ -63,7 +57,6 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag,
@@ -74,6 +67,7 @@
 		        lecture l
 		        LEFT JOIN review r ON l.lecture_num = r.lecture_num
 		        LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
+		    WHERE l.status = 'approval'
 		    GROUP BY 
 		        l.lecture_num,
 		        l.user_num,
@@ -81,7 +75,6 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag
@@ -98,7 +91,6 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag,
@@ -109,7 +101,8 @@
 		        lecture l
 		        LEFT JOIN review r ON l.lecture_num = r.lecture_num
 		        LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
-		    WHERE category_detail = #{category_detail}
+		    WHERE l.category_detail = #{category_detail}
+		        AND l.status = 'approval'
 		    GROUP BY 
 		        l.lecture_num,
 		        l.user_num,
@@ -117,12 +110,11 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY 
-		        l.readcount DESC
+		        l.lecture_tag DESC
 		</select>
 		
 		<select id="getTop10ByCategory" resultType="com.itwillbs.domain.LectureVO">
@@ -133,7 +125,6 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag,
@@ -144,7 +135,8 @@
 		        lecture l
 		        LEFT JOIN review r ON l.lecture_num = r.lecture_num
 		        LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
-		    WHERE category_detail = #{category_detail}
+		    WHERE l.category_detail = #{category_detail}
+		        AND l.status = 'approval'
 		    GROUP BY 
 		        l.lecture_num,
 		        l.user_num,
@@ -152,25 +144,73 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY 
-		        l.readcount DESC
+		        l.lecture_tag DESC
 		    LIMIT 10
 		</select>
-		
-		<select id="contentLecture" resultType="com.itwillbs.domain.LectureVO">
-  			select * from lecture
-  			where lecture_num = #{lecture_num}
-  		</select>
+
+  		<select id="contentLecture" resultType="com.itwillbs.domain.LectureVO"> 
+		    SELECT  
+		        l.*, 
+		        IFNULL(e.student_count, 0) as student_count, 
+		        IFNULL(t.total_time, '0시간 0분') as total_time, 
+		        IFNULL(r.avg_score, 0) as avg_score, 
+		        IFNULL(r.review_count, 0) as review_count,
+		        IFNULL(cd.curriculum_count, 0) as curriculum_count
+		    FROM lecture l 
+		    LEFT JOIN ( 
+		        SELECT lecture_num, COUNT(DISTINCT user_num) as student_count 
+		        FROM enrollment 
+		        GROUP BY lecture_num 
+		    ) e ON l.lecture_num = e.lecture_num 
+		    LEFT JOIN ( 
+		        SELECT  
+		            c.lecture_num, 
+		            CONCAT( 
+		                FLOOR(SUM( 
+		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', 1) AS UNSIGNED) * 60 +  
+		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', -1) AS UNSIGNED) 
+		                ) / 60 / 60),         
+		                '시간 ', 
+		                FLOOR(SUM( 
+		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', 1) AS UNSIGNED) * 60 +  
+		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', -1) AS UNSIGNED) 
+		                ) / 60) % 60,         
+		                '분' 
+		            ) AS total_time 
+		        FROM chapter c 
+		        INNER JOIN chapter_detail cd ON c.chapter_num = cd.chapter_num 
+		        GROUP BY c.lecture_num 
+		    ) t ON l.lecture_num = t.lecture_num 
+		    LEFT JOIN ( 
+		        SELECT  
+		            lecture_num, 
+		            ROUND(AVG(review_score), 1) as avg_score, 
+		            COUNT(*) as review_count 
+		        FROM review 
+		        GROUP BY lecture_num 
+		    ) r ON l.lecture_num = r.lecture_num
+		    LEFT JOIN (
+		        SELECT 
+		            c.lecture_num,
+		            COUNT(cd.detail_num) as curriculum_count
+		        FROM chapter c
+		        INNER JOIN chapter_detail cd ON c.chapter_num = cd.chapter_num
+		        GROUP BY c.lecture_num
+		    ) cd ON l.lecture_num = cd.lecture_num
+		    WHERE l.lecture_num = #{lecture_num}
+		        AND l.status = 'approval'
+		</select>
   		
   		<select id="getUserImg" resultType="com.itwillbs.domain.UserVO">
   			select u.user_file, u.user_num
     		from lecture l
     		join user u on l.user_num = u.user_num
     		where l.lecture_num = #{lecture_num}
+    		    AND l.status = 'approval'
   		</select>
   		
 		<select id="authorLectures" resultType="com.itwillbs.domain.LectureVO">
@@ -181,7 +221,6 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag,
@@ -195,6 +234,7 @@
 		    WHERE 
 		        l.lecture_author = #{lecture_author}
 		        AND l.lecture_num != #{lecture_num}
+		        AND l.status = 'approval'
 		    GROUP BY 
 		        l.lecture_num,
 		        l.user_num,
@@ -202,12 +242,11 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY 
-		        l.readcount DESC
+		        l.lecture_tag DESC
 		    LIMIT 4
 		</select>
 		
@@ -219,7 +258,6 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag,
@@ -232,6 +270,7 @@
 		        LEFT JOIN enrollment e ON l.lecture_num = e.lecture_num
 		    WHERE 
 		        l.lecture_num != #{lecture_num}
+		        AND l.status = 'approval'
 		        <if test="tagList != null and tagList.size() > 0">
 		            AND (
 		                <foreach collection="tagList" item="tag" separator=" OR ">
@@ -246,12 +285,11 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY 
-		        l.readcount DESC
+		        l.lecture_tag DESC
 		    LIMIT 4
 		</select>
 		
@@ -314,12 +352,12 @@
 		        lecture_author,
 		        lecture_price,
 		        category_detail,
-		        readcount,
 		        lecture_img,
 		        lecture_detail,
 		        lecture_tag
 		    FROM lecture
 		    WHERE lecture_num = #{lecture_num}
+		        AND status = 'approval'
 		</select>
 		
 		<insert id="insertReview">
@@ -344,6 +382,7 @@
 		            UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
 		        ) numbers ON CHAR_LENGTH(l.lecture_tag) - CHAR_LENGTH(REPLACE(l.lecture_tag, ',', '')) >= numbers.n - 1
 		        WHERE e.user_num = #{user_num}
+		            AND l.status = 'approval'
 		    ),
 		    scrap_tags AS (
 		        SELECT DISTINCT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(l.lecture_tag, ',', numbers.n), ',', -1)) AS tag
@@ -354,6 +393,7 @@
 		            UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
 		        ) numbers ON CHAR_LENGTH(l.lecture_tag) - CHAR_LENGTH(REPLACE(l.lecture_tag, ',', '')) >= numbers.n - 1
 		        WHERE s.user_num = #{user_num}
+		            AND l.status = 'approval'
 		    )
 		    SELECT
 		        l.lecture_num,
@@ -362,7 +402,6 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag,
@@ -381,6 +420,7 @@
 		    WHERE l.lecture_num NOT IN (
 		        SELECT lecture_num FROM enrollment WHERE user_num = #{user_num}
 		    )
+		    AND l.status = 'approval'
 		    GROUP BY
 		        l.lecture_num,
 		        l.user_num,
@@ -388,17 +428,14 @@
 		        l.lecture_author,
 		        l.lecture_price,
 		        l.category_detail,
-		        l.readcount,
 		        l.lecture_img,
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY
-		        match_count DESC,
-		        l.readcount DESC
+		        match_count DESC
 		</select>
 
         
 
 		
 </mapper>
-  

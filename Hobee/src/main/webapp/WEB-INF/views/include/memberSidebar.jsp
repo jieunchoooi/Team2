@@ -42,11 +42,17 @@
 <%-- 					onclick="location.href='${pageContext.request.contextPath}/admin/adminClassAdd'"> --%>
 <!-- 					➕ <span>강의 등록</span> -->
 <!-- 	</div> -->
-	<c:if test="${user.user_role == 'instructor'}">
+<%-- 	<c:if test="${user.user_role == 'instructor' && userVO.user_role == 'instructor'}"> --%>
+<%-- 	    <div class="menu-item ${page eq 'teacherMP' ? 'active' : ''}" --%>
+<%-- 						onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage'"> --%>
+<!-- 						➕ <span>강의 관리</span> -->
+<!-- 		</div> -->
+<%-- 	</c:if> --%>
+	<c:if test="${sessionScope.userVO.user_role == 'instructor'}">
 	    <div class="menu-item ${page eq 'teacherMP' ? 'active' : ''}"
-						onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage'">
-						➕ <span>강의 관리</span>
-		</div>
+	         onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage'">
+	        ➕ <span>강의 관리</span>
+	    </div>
 	</c:if>
   </div>
 

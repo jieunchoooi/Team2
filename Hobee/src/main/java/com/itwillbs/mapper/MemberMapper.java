@@ -5,6 +5,7 @@ import java.util.List;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.UserVO;
 
 public interface MemberMapper {
@@ -42,6 +43,10 @@ public interface MemberMapper {
 	public int teacherMyPageDelete(String user_name);
 
 	public void deleteRequest(int lecture_num);
+
+	public NotApprovedVO classReason(int lecture_num);
+
+	public void deleteCencel(int lecture_num);
 
 
 
