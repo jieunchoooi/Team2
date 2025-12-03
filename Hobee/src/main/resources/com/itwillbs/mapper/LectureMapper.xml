@@ -378,7 +378,7 @@
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY
-		        match_count DESC,
+		        match_count DESC
 		</select>
 
         
