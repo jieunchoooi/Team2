@@ -68,7 +68,7 @@
                         <ul>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티">뷰티</a></li>
                             <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로사주">타로·사주</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임스포츠">게임·e스포츠</a></li>
+                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임">게임</a></li>
                         </ul>
                     </div>
                     

@@ -395,7 +395,7 @@ footer {
 			<div class="tag-container">
 				<button class="tag-btn" data-tag="뷰티" onclick="toggleTag(this)">뷰티</button>
 				<button class="tag-btn" data-tag="타로사주" onclick="toggleTag(this)">타로·사주</button>
-				<button class="tag-btn" data-tag="게임스포츠" onclick="toggleTag(this)">게임·e스포츠</button>
+				<button class="tag-btn" data-tag="게임" onclick="toggleTag(this)">게임</button>
 			</div>
 		</div>
 		
