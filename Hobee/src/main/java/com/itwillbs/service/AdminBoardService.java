@@ -115,5 +115,6 @@ public class AdminBoardService {
         param.put("value", value);
         adminBoardMapper.updateRequireApproval(param);
     }
+   
 
 }

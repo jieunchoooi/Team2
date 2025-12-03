@@ -90,15 +90,20 @@
 
        <!-- 🔥 처리 완료 폼 (대기 상태일 때만) -->
 <c:if test="${report.is_done == 0}">
-    <form action="${pageContext.request.contextPath}/admin/adminReportDone"
-          method="post"
-          onsubmit="return confirm('해당 신고를 처리하시겠습니까?');">
 
-        <input type="hidden" name="report_id" value="${report.report_id}">
+<div class="process-card"> 
 
-        <div class="info-row">
-            <strong>처리 사유</strong>
-            <select name="done_reason" class="reason-select">
+<form action="${pageContext.request.contextPath}/admin/adminReportProcess"
+      method="post"
+      onsubmit="return confirm('정말 처리하시겠습니까?');">
+
+    <input type="hidden" name="report_id" value="${report.report_id}">
+
+    <!-- 처리 사유 + 처리 버튼 -->
+    <div class="info-row action-row">
+        <strong>처리 사유</strong>
+        <div class="input-area">
+            <select name="done_reason">
                 <option value="경고">경고</option>
                 <option value="게시글 삭제">게시글 삭제</option>
                 <option value="댓글 삭제">댓글 삭제</option>
@@ -106,27 +111,28 @@
                 <option value="기타">기타</option>
             </select>
         </div>
+        <button type="submit" name="action" value="done" class="btn-red">
+            처리 완료
+        </button>
+    </div>
 
-        <button class="btn-red" style="margin-top:10px;">처리 완료</button>
-    </form>
-</c:if>
-
-
-               <c:if test="${report.is_done == 0}">
-    <form action="${pageContext.request.contextPath}/admin/adminReportReject"
-          method="post"
-          onsubmit="return confirm('해당 신고를 반려하시겠습니까?');">
-
-        <input type="hidden" name="report_id" value="${report.report_id}">
-
-        <div class="info-row">
-            <strong>반려 사유</strong>
-           <input type="text" name="reason" class="reason-input" placeholder="반려 사유를 입력하세요">
+    <!-- 반려 사유 + 반려 버튼 -->
+    <div class="info-row action-row">
+        <strong>반려 사유</strong>
+        <div class="input-area">
+            <input type="text" name="reject_reason" placeholder="반려 사유를 입력하세요">
         </div>
+        <button type="submit" name="action" value="reject" class="btn-red">
+            신고 반려
+        </button>
+    </div>
 
-        <button class="btn-red" style="margin-top:10px;">신고 반려</button>
-    </form>
+</form>
+
+</div>
+
 </c:if>
+
 
 
         <!-- 게시글 / 댓글 원문 -->

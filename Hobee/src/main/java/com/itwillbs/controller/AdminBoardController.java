@@ -1,7 +1,6 @@
 package com.itwillbs.controller;
 
 import java.util.List;
-
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
@@ -17,11 +16,12 @@ import com.itwillbs.domain.AdminBoardVO;
 import com.itwillbs.service.AdminBoardService;
 
 @Controller
-@RequestMapping("/admin/*")
+@RequestMapping("/admin")
 public class AdminBoardController {
 
     @Inject
     private AdminBoardService adminBoardService;
+
 
     // 📌 게시판 목록
     @GetMapping("/adminBoardList")
@@ -30,12 +30,14 @@ public class AdminBoardController {
         return "admin/community/adminBoard";
     }
 
+
     // 📌 게시판 추가
     @PostMapping("/adminBoardAdd")
     public String adminBoardAdd(AdminBoardVO vo) {
         adminBoardService.insertBoard(vo);
-        return "redirect:/admin/adminBoardList";
+        return "redirect:adminBoardList";
     }
+
 
     // 📌 게시판 수정 화면
     @GetMapping("/adminBoardEdit")
@@ -44,28 +46,30 @@ public class AdminBoardController {
         return "admin/community/adminBoardEdit";
     }
 
+
     // 📌 게시판 수정 처리
     @PostMapping("/adminBoardEditPro")
     public String adminBoardEditPro(AdminBoardVO vo) {
 
-        // 금지 단어 공백 처리
+        // 금지단어 공백일 경우 null 처리
         if (vo.getBanned_words() != null && vo.getBanned_words().trim().equals("")) {
             vo.setBanned_words(null);
         }
 
         adminBoardService.updateBoard(vo);
-        return "redirect:/admin/adminBoardList";
+
+        return "redirect:adminBoardList";
     }
+
 
     // 📌 게시판 숨김
     @PostMapping("/adminBoardDisable")
     public String adminBoardDisable(@RequestParam("board_id") int boardId,
                                     RedirectAttributes rttr) {
+
         adminBoardService.disableBoard(boardId);
         rttr.addFlashAttribute("msg", "게시판을 숨김 처리했습니다.");
 
-        // ❌ 기존: return "redirect:/admin/adminBoardList";
-        // ✅ 수정:
         return "redirect:adminBoardList";
     }
 
@@ -74,16 +78,15 @@ public class AdminBoardController {
     @PostMapping("/adminBoardEnable")
     public String adminBoardEnable(@RequestParam("board_id") int boardId,
                                    RedirectAttributes rttr) {
+
         adminBoardService.enableBoard(boardId);
         rttr.addFlashAttribute("msg", "게시판을 표시했습니다.");
 
-        // ❌ 기존: return "redirect:/admin/adminBoardList";
-        // ✅ 수정:
         return "redirect:adminBoardList";
     }
 
 
-    // 📌 게시판 순서 변경
+    // 📌 게시판 순서 변경 (AJAX)
     @PostMapping("/updateBoardOrder")
     @ResponseBody
     public String updateBoardOrder(@RequestParam("orderData") String orderData) {
@@ -103,19 +106,30 @@ public class AdminBoardController {
         return "success";
     }
 
-    // 📌 게시판 상세
+
+    // 📌 게시판 상세 보기
     @GetMapping("/adminBoardDetail")
     public String adminBoardDetail(@RequestParam("board_id") int boardId, Model model) {
 
         model.addAttribute("board", adminBoardService.getBoardDetail(boardId));
         model.addAttribute("recentPosts", adminBoardService.getRecentPosts(boardId));
-
         model.addAttribute("weeklyStats", adminBoardService.getWeeklyPostStats(boardId));
         model.addAttribute("topViews", adminBoardService.getTopViewPosts(boardId));
         model.addAttribute("topReports", adminBoardService.getTopReportPosts(boardId));
 
         return "admin/community/adminBoardDetail";
     }
+    
+    @PostMapping("/adminBoardDelete")
+    public String adminBoardDelete(@RequestParam("board_id") int boardId,
+                                   RedirectAttributes rttr) {
+
+        adminBoardService.deleteBoard(boardId);
+        rttr.addFlashAttribute("msg", "게시판이 삭제되었습니다.");
+
+        return "redirect:adminBoardList";
+    }
+
 
     // ============================
 // 📌 게시판 옵션(허용/금지) 빠른 변경 (AJAX)
@@ -150,7 +164,7 @@ public class AdminBoardController {
             e.printStackTrace();
             return "error";
         }
+        
     }
-
 
 }

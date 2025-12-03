@@ -1,7 +1,6 @@
 package com.itwillbs.controller;
 
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -29,27 +28,19 @@ public class AdminReportController {
             @RequestParam(required = false) String status,
             Model model) {
 
-        System.out.println("AdminReportController: reportList() 실행");
-
-        // 서비스에서 리스트 + 페이징정보 맵으로 받기
         Map<String, Object> result =
                 adminReportService.getReportListWithPaging(type, status, currentPage);
 
-        // 통계 추가
-        Map<String, Integer> stats = adminReportService.getReportStats();
-        model.addAttribute("stats", stats);
-
-        // 리스트
         model.addAttribute("reportList", result.get("list"));
-
-        // 페이징 관련 변수들
         model.addAttribute("currentPage", result.get("currentPage"));
         model.addAttribute("totalPage", result.get("totalPage"));
         model.addAttribute("totalCount", result.get("totalCount"));
 
-        // 필터 유지
         model.addAttribute("type", type);
         model.addAttribute("status", status);
+
+        // 🔥 통계 정보
+        model.addAttribute("stats", adminReportService.getReportStats());
 
         return "admin/community/adminReportList";
     }
@@ -58,46 +49,48 @@ public class AdminReportController {
     @GetMapping("/adminReportDetail")
     public String reportDetail(@RequestParam int report_id, Model model) {
 
-        System.out.println("AdminReportController: reportDetail() 실행");
-
         model.addAttribute("report", adminReportService.getReportDetail(report_id));
 
-        // 🔥 신고 처리 로그 가져오기
+        // 🔥 신고 처리 로그
         model.addAttribute("actionLogs", adminReportService.getActionLogs(report_id));
 
         return "admin/community/adminReportDetail";
     }
 
-    // ⭐ 신고 처리 완료
-    @PostMapping("/adminReportDone")
-    public String reportDone(@RequestParam int report_id,
-                             @RequestParam(required=false) String done_reason, HttpSession session) {
+    // ⭐ 신고 처리/반려 통합 엔드포인트
+    @PostMapping("/adminReportProcess")
+    public String processReport(
+            @RequestParam int report_id,
+            @RequestParam String action,  // "done" 또는 "reject"
+            @RequestParam(required = false) String done_reason,
+            @RequestParam(required = false) String reject_reason,
+            HttpSession session) {
 
         String adminId = (String) session.getAttribute("user_id");
 
-        // 신고 처리
-        adminReportService.updateReportDone(report_id, done_reason);
+        // ======================================
+        //      처리 완료
+        // ======================================
+        if ("done".equals(action)) {
+            adminReportService.updateReportDone(report_id, done_reason);
+            adminReportService.insertActionLog(report_id, adminId, "처리완료", done_reason);
 
-        // 🔥 신고 처리 로그 기록
-        adminReportService.insertActionLog(report_id, adminId, "처리완료", done_reason);
+            // 상세보기에 남아서 바로 확인 가능하게 유지
+            return "redirect:/admin/adminReportDetail?report_id=" + report_id;
+        }
 
-        return "redirect:/admin/adminReportList";
-    }
+        // ======================================
+        //      신고 반려
+        // ======================================
+        if ("reject".equals(action)) {
+            adminReportService.rejectReport(report_id, reject_reason);
+            adminReportService.insertActionLog(report_id, adminId, "반려", reject_reason);
 
-    @PostMapping("/adminReportReject")
-    public String rejectReport(@RequestParam int report_id,
-                               @RequestParam String reason,
-                               HttpSession session) {
+            return "redirect:/admin/adminReportDetail?report_id=" + report_id;
+        }
 
-        String adminId = (String) session.getAttribute("user_id");
-
-        adminReportService.rejectReport(report_id, reason);
-
-        // 🔥 반려 로그 자동 저장
-        adminReportService.insertActionLog(report_id, adminId, "반려", reason);
-
+        // action 값이 이상할 경우 fallback
         return "redirect:/admin/adminReportDetail?report_id=" + report_id;
     }
-
 
 }

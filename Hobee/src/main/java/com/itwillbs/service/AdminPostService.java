@@ -125,5 +125,16 @@ public class AdminPostService {
 	public List<String> getAutoComplete(String keyword) {
 		return adminPostMapper.getAutoComplete(keyword);
 	}
+	
+	
+	public List<Map<String, Object>> getWeeklyPostCount() {
+	    return adminPostMapper.getWeeklyPostCount();
+	}
+
+	
+	public List<Map<String, Object>> getPostsByCategory() {
+	    return adminPostMapper.getPostsByCategory();
+	}
+
 
 }

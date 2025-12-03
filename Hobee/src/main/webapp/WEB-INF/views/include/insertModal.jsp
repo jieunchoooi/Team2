@@ -8,10 +8,19 @@
 
         <span class="insert-close">×</span>
 
+        <!-- 회원구분 -->
+        <div class="signup-role-box">
+            <button type="button" class="signup-role-tab active" data-role="user">일반회원</button>
+            <button type="button" class="signup-role-tab" data-role="instructor">강사회원</button>
+        </div>
+
         <h2 class="insert-title">회원가입</h2>
 
         <form id="insertForm">
 
+            <!-- 🔥 반드시 폼 안으로 이동 -->
+            <input type="hidden" id="ins_role" name="user_role" value="user">
+            
             <!-- 🔵 회원가입 진행 단계 표시 -->
             <div id="signupProgressBox" class="signup-progress-box">
                 <div class="step-wrapper">
@@ -80,6 +89,13 @@
                   <button type="button" id="ins_checkEmailBtn" class="check-btn">중복확인</button>
              </div>
              <div id="ins_emailCheckMsg" class="msg"></div>
+             
+             <!-- 연락처 -->
+			 <label>연락처</label>
+				<input type="text" id="ins_user_phone" name="user_phone"
+       				   class="insert-input" placeholder="010-1234-5678" />
+			<div id="phoneMsg" class="msg"></div>
+             
 
             <!-- 주소 -->
             <label>주소</label>
@@ -235,6 +251,9 @@ function openDaumPostLayer() {
             // 값 채우기
             document.getElementById("ins_user_zipcode").value = data.zonecode;
             document.getElementById("ins_user_address1").value = data.roadAddress || data.jibunAddress;
+            
+            updateSignupProgress();
+            
             document.getElementById("ins_user_address2").focus();
 
             closeDaumPostLayer();
@@ -248,4 +267,19 @@ function openDaumPostLayer() {
 
 // 버튼 클릭 → 열기
 document.getElementById("btnFindAddress").onclick = openDaumPostLayer;
+
+/* ===============================
+회원구분 선택 (일반 / 강사)
+================================ */
+$(document).on("click", ".signup-role-tab", function () {
+
+ $(".signup-role-tab").removeClass("active");
+ $(this).addClass("active");
+
+ const role = $(this).data("role");
+ $("#ins_role").val(role);   // user_role 값 변경
+
+ console.log("선택된 회원타입:", role);
+});
+
 </script>

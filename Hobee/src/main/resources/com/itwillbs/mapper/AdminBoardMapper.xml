@@ -292,6 +292,11 @@
         SET require_approval = #{value}
         WHERE board_id = #{board_id}
     </update>
-
+    
+    <delete id="deleteBoard">
+   	    DELETE FROM board
+        WHERE board_id = #{boardId}
+	</delete>
+    
 
 </mapper>

@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminBoardEdit.css">
-
 </head>
 
 <body>
@@ -21,9 +20,12 @@
 
     <div class="page-title">게시판 수정</div>
 
-    <form action="/hobee/admin/adminBoardEditPro" method="post">
+    <!-- =======================================================
+         📌 저장하기 form (전체 설정 저장)
+    ======================================================== -->
+    <form id="editForm" action="${pageContext.request.contextPath}/admin/adminBoardEditPro" method="post">
 
-        <input type="hidden" name="board_id" value="${board.board_id}"/>
+        <input type="hidden" name="board_id" value="${board.board_id}">
 
         <div class="edit-wrapper">
 
@@ -67,7 +69,7 @@
             </div>
 
             <!-- ====================================== -->
-            <!-- ⚙ 옵션 설정 (3열 컴팩트형) -->
+            <!-- ⚙ 게시판 옵션 설정 -->
             <!-- ====================================== -->
             <div class="edit-card option-card">
 
@@ -82,8 +84,11 @@
                     <div class="form-item">
                         <label><i class="ri-message-3-line"></i> 댓글 허용</label>
                         <p class="desc">게시글에 댓글 등록을 허용합니다.</p>
+
+                        <input type="hidden" name="allow_comment" value="0">
                         <div class="toggle-switch">
-                            <input type="checkbox" id="opt_comment" name="allow_comment"
+                            <input type="checkbox" id="opt_comment"
+                                   name="allow_comment" value="1"
                                    ${board.allow_comment == 1 ? 'checked' : ''}>
                             <label for="opt_comment"></label>
                         </div>
@@ -92,9 +97,12 @@
                     <!-- 이미지 첨부 -->
                     <div class="form-item">
                         <label><i class="ri-image-line"></i> 이미지 첨부</label>
-                        <p class="desc">이미지 파일 첨부 가능 여부 설정.</p>
+                        <p class="desc">이미지 파일 첨부 가능 여부.</p>
+
+                        <input type="hidden" name="allow_image" value="0">
                         <div class="toggle-switch">
-                            <input type="checkbox" id="opt_image" name="allow_image"
+                            <input type="checkbox" id="opt_image"
+                                   name="allow_image" value="1"
                                    ${board.allow_image == 1 ? 'checked' : ''}>
                             <label for="opt_image"></label>
                         </div>
@@ -104,8 +112,11 @@
                     <div class="form-item">
                         <label><i class="ri-attachment-2"></i> 파일 첨부</label>
                         <p class="desc">문서/자료 파일 첨부 허용 여부.</p>
+
+                        <input type="hidden" name="allow_file" value="0">
                         <div class="toggle-switch">
-                            <input type="checkbox" id="opt_file" name="allow_file"
+                            <input type="checkbox" id="opt_file"
+                                   name="allow_file" value="1"
                                    ${board.allow_file == 1 ? 'checked' : ''}>
                             <label for="opt_file"></label>
                         </div>
@@ -115,8 +126,11 @@
                     <div class="form-item">
                         <label><i class="ri-shield-check-line"></i> 승인 필요</label>
                         <p class="desc">게시글 등록 시 관리자 승인 필요 여부.</p>
+
+                        <input type="hidden" name="require_approval" value="0">
                         <div class="toggle-switch">
-                            <input type="checkbox" id="opt_approve" name="require_approval"
+                            <input type="checkbox" id="opt_approve"
+                                   name="require_approval" value="1"
                                    ${board.require_approval == 1 ? 'checked' : ''}>
                             <label for="opt_approve"></label>
                         </div>
@@ -142,19 +156,51 @@
                 </div>
             </div>
 
-            <!-- ====================================== -->
-            <!-- 버튼 -->
-            <!-- ====================================== -->
+            <!-- ===========================
+                 📌 버튼 영역 (3개 모두 한 줄)
+            ============================ -->
             <div class="btn-area">
+                <!-- 저장 -->
                 <button type="submit" class="btn-blue">저장하기</button>
+
+                <!-- 삭제 -->
+                <button type="button" class="btn-red" onclick="deleteBoard();">
+                    삭제하기
+                </button>
+
+                <!-- 목록 -->
                 <button type="button" class="btn-gray"
-                        onclick="location.href='/hobee/admin/adminBoardList'">목록으로</button>
+                        onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'">
+                    목록으로
+                </button>
             </div>
 
-        </div>
+        </div><!-- wrapper end -->
+
     </form>
 
-</div>
+    <!-- ===========================
+         📌 삭제 전송 form (숨김)
+    ============================ -->
+    <form id="deleteForm"
+          action="${pageContext.request.contextPath}/admin/adminBoardDelete"
+          method="post">
+        <input type="hidden" name="board_id" value="${board.board_id}">
+    </form>
+
+</div><!-- main-content end -->
+
+
+<!-- ===========================
+     📌 삭제 JS
+=========================== -->
+<script>
+    function deleteBoard() {
+        if (confirm('정말 삭제하시겠습니까?')) {
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>
 
 </body>
 </html>

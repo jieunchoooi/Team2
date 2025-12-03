@@ -175,16 +175,23 @@ public class AdminPostController {
 	@GetMapping("/adminPostStats")
 	public String adminPostStats(Model model) {
 
-		model.addAttribute("page", "postStats");
+	    model.addAttribute("page", "postStats");
 
-		List<Map<String, Object>> viewStats = adminPostService.getTopViewPosts();
-		List<Map<String, Object>> commentStats = adminPostService.getTopCommentPosts();
+	    List<Map<String, Object>> viewStats = adminPostService.getTopViewPosts();
+	    List<Map<String, Object>> commentStats = adminPostService.getTopCommentPosts();
+	    List<Map<String, Object>> weeklyStats = adminPostService.getWeeklyPostCount();
+	    List<Map<String, Object>> categoryStats = adminPostService.getPostsByCategory();
 
-		model.addAttribute("viewStats", viewStats);
-		model.addAttribute("commentStats", commentStats);
+	    System.out.println("🔥 categoryStats 결과: " + categoryStats);
+	    
+	    model.addAttribute("viewStats", viewStats);
+	    model.addAttribute("commentStats", commentStats);
+	    model.addAttribute("weeklyStats", weeklyStats);
+	    model.addAttribute("categoryStats", categoryStats);
 
-		return "admin/community/adminPostStats";
+	    return "admin/community/adminPostStats";
 	}
+
 
 	// 검색 자동완성
 	// 검색 자동완성

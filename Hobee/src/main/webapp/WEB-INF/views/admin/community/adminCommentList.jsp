@@ -15,80 +15,6 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <!-- 선택모드용 체크박스 숨기기 -->
-    <style>
-        .rowCheck, #checkAll { display:none; }
-        .select-mode .rowCheck,
-        .select-mode #checkAll { display:inline-block; }
-
-        /* 상태 필터 버튼 */
-        .status-filter {
-            margin: 15px 0 10px 2px;
-            display: flex;
-            gap: 10px;
-        }
-        .filter-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: #e4e6eb;
-            color: #333;
-            font-size: 13px;
-            text-decoration: none;
-        }
-        .filter-btn.active {
-            background: #397dff;
-            color: #fff;
-        }
-
-        /* ⭐ 전체보기 모달 */
-        .modal {
-            position: fixed;
-            top:0; left:0;
-            width:100%; height:100%;
-            display:none;
-            justify-content:center;
-            align-items:center;
-            z-index:9999;
-        }
-        .modal-overlay {
-            position:absolute;
-            width:100%; height:100%;
-            background:rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            position:relative;
-            background:#fff;
-            width:500px;
-            padding:25px;
-            border-radius:12px;
-            z-index:10000;
-        }
-        .close-modal {
-            position:absolute;
-            right:15px; top:10px;
-            font-size:28px;
-            cursor:pointer;
-        }
-        .modal-body {
-            margin-top:15px;
-            max-height:350px;
-            overflow-y:auto;
-            white-space:pre-line;
-        }
-
-        /* 신고 색상 배지 */
-        .badge {
-            padding:6px 12px;
-            border-radius:20px;
-            font-size:12px;
-            font-weight:600;
-            color:#fff !important;
-        }
-        .badge.green { background:#4CAF50 !important; }
-        .badge.yellow { background:#FFB300 !important; }
-        .badge.red { background:#E53935 !important; }
-    </style>
 </head>
 
 <body>
@@ -129,7 +55,7 @@
                 초기화
             </button>
 
-            <!-- 선택 삭제 버튼 -->
+            <!-- ⭐ 선택 삭제 버튼 -->
             <button type="button" id="batchDeleteBtn" class="batch-red">선택 삭제</button>
         </form>
 
@@ -141,7 +67,7 @@
         </div>
 
         <!-- 리스트 테이블 -->
-        <table class="admin-table">
+        <table id="commentTable" class="admin-table">
             <thead>
             <tr>
                 <th><input type="checkbox" id="checkAll"></th>
@@ -164,13 +90,16 @@
             <c:forEach var="c" items="${commentList}">
                 <tr>
                     <td><input type="checkbox" class="rowCheck" value="${c.comment_id}"></td>
+
                     <td>${c.comment_id}</td>
+
                     <td>
                         <a class="title-link"
                            href="${pageContext.request.contextPath}/admin/adminPostDetail?post_id=${c.post_id}">
                             ${c.post_title}
                         </a>
                     </td>
+
                     <td>${c.user_id}</td>
 
                     <td>
@@ -182,7 +111,9 @@
                                     전체보기
                                 </button>
                             </c:when>
-                            <c:otherwise>${c.content}</c:otherwise>
+                            <c:otherwise>
+                                ${c.content}
+                            </c:otherwise>
                         </c:choose>
                     </td>
 
@@ -270,7 +201,7 @@
     </div>
 </div>
 
-<!-- 모달 JS -->
+<!-- 전체보기 모달 JS -->
 <script>
 $(".viewDetailBtn").on("click", function () {
     $("#modalText").text($(this).data("content"));
@@ -288,12 +219,14 @@ $("#batchDeleteBtn").on("click", function () {
     const table = $("#commentTable");
     const isSelectMode = table.hasClass("select-mode");
 
+    /* ① 선택모드 시작 : 체크박스 보이기 */
     if (!isSelectMode) {
         table.addClass("select-mode");
         $(this).text("삭제 실행");
         return;
     }
 
+    /* ② 선택된 체크박스 가져오기 */
     const ids = $(".rowCheck:checked").map(function () {
         return $(this).val();
     }).get();
@@ -305,6 +238,7 @@ $("#batchDeleteBtn").on("click", function () {
 
     if (!confirm("선택한 댓글을 삭제하시겠습니까?")) return;
 
+    /* ③ AJAX 삭제 요청 */
     $.ajax({
         type: "POST",
         url: "${pageContext.request.contextPath}/admin/adminCommentBatchDelete",

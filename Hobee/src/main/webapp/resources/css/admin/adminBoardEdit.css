@@ -5,7 +5,7 @@
 =================================== */
 .main-content {
     margin-left: 220px !important;
-    padding: 40px 50px !important;
+    padding: 40px 35px !important;
     background: linear-gradient(to bottom, #f6f8ff, #eef1ff);
     min-height: 100vh;
 }
@@ -19,7 +19,7 @@
 }
 
 .edit-wrapper {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -92,9 +92,10 @@
 /* 기본정보 전용 3열 */
 .form-grid-basic {
     display: grid;
-    grid-template-columns: 1.4fr 0.6fr;  /* 이름 넓게, 사용여부 좁게 */
-    gap: 26px 28px;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 20px 24px;
 }
+
 
 /* 전체 한 줄 쓰는 항목 */
 .form-item.full {
@@ -112,6 +113,9 @@
 .form-item.full {
     grid-column: 1 / -1;
 }
+
+
+
 
 /* ===================================
    🟦 form-item 공통
@@ -143,11 +147,15 @@
     background: rgba(255,255,255,0.85);
     font-size: 15px;
     transition: all 0.25s ease;
-    max-width: 480px;       /* 👉 카드 끝까지 안 붙도록 최대 폭 제한 */
+    max-width: 360px;       /* 👉 카드 끝까지 안 붙도록 최대 폭 제한 */
 }
 
 .form-item.full input {
-    max-width: 100%;        /* full일 때는 원래대로 */
+    max-width: 900px;
+}
+
+.form-item.full select {
+    max-width: 900px;
 }
 
 .form-item input:focus,
@@ -253,8 +261,8 @@
 
 /* ⚪ 목록 버튼 */
 .btn-gray {
-    background: linear-gradient(45deg, #e4e5eb, #f2f3f7) !important;
-    color: #333 !important;
+    background: linear-gradient(45deg, #d8d5ff, #ecebff) !important;
+    color: #4b4b4b !important;
 }
 
 /* Hover */
@@ -262,3 +270,22 @@
     transform: translateY(-3px);
     box-shadow: 0 12px 28px rgba(0,0,0,0.24);
 }
+
+.btn-red {
+    background: linear-gradient(45deg, #ff6969, #ff8585) !important;
+    color: #fff !important;
+    border-radius: 14px;
+    height: 48px;
+    padding: 0 26px;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(255,0,0,0.15);
+    cursor: pointer;
+}
+.btn-red:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(255,0,0,0.28);
+}
+
+
+
+

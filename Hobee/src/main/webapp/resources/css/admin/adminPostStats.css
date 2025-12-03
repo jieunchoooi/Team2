@@ -1,65 +1,112 @@
 @charset "UTF-8";
 
-/* 메인 레이아웃 보정 */
+/* 메인 영역 */
 .main-content {
     margin-left: 220px;
     padding: 40px;
-    background: #f6f7fb;
+    background: #eef1f6;
     min-height: 100vh;
 }
 
-/* 제목 */
+/* 페이지 제목 */
 .page-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #111;
-}
-
-/* 차트 2개를 좌우로 정렬 */
-.stats-wrapper {
-    display: flex;
-    gap: 40px;               /* 차트 간격 */
-    justify-content: center; /* 화면 중앙 배치 */
-    margin-top: 20px;
-}
-
-/* 박스 크기 조금 키운 버전 */
-.chart-box {
-    width: 380px;       /* 🔥 기존 350 → 380 */
-    height: 380px;      /* 🔥 기존 350 → 380 */
-    background: #fff;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.chart-box h3 {
-    margin-bottom: 12px;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-/* 캔버스 크기 약간 증가 */
-.chart-box canvas {
-    width: 320px !important;   /* 🔥 기존 280 → 320 */
-    height: 320px !important;  /* 🔥 기존 280 → 320 */
-}
-
-/* 차트 2개 배치 */
-.chart-row {
-    display: flex;
-    gap: 40px;
-}
-
-/* 타이틀 */
-.stats-title {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
     margin-bottom: 30px;
+    color: #222;
 }
+
+/* 🔥 2×2 그리드 레이아웃 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 40px;
+}
+
+/* 🔥 카드 박스 (가로형 구조) */
+.chart-box {
+    position: relative;   /* 제목 absolute 정상 출력용 */
+    width: 600px;
+    height: 350px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(6px);
+    border-radius: 18px;
+    padding: 30px;
+    height: auto; 
+
+    display: flex;
+    flex-direction: row;  /* 좌측 차트 / 우측 범례 */
+    align-items: center;
+    gap: 25px;
+
+    box-shadow: 0px 8px 18px rgba(0,0,0,0.08);
+    transition: all .25s ease;
+}
+
+/* Hover 효과 */
+.chart-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 14px 22px rgba(0,0,0,0.15);
+}
+
+/* 카드 제목 */
+.chart-title {
+    position: absolute;
+    top: 12px;
+    left: 25px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* 차트 영역 */
+.chart-area {
+    width: 65%;
+    height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-area canvas {
+    width: 260px !important;
+    height: 260px !important;
+}
+
+/* 🔥 범례 영역 (오른쪽 세로 배치) */
+.chart-legend {
+    width: 35%;
+    max-height: 260px;
+    overflow-y: auto;
+    padding-left: 10px;
+}
+
+.chart-legend ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chart-legend li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.chart-legend span {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+/* 최근 7일 그래프만 높이 확대 */
+.chart-box:nth-child(3) .chart-area {
+    height: 330px !important;  /* 기본 250px → 330px 정도 추천 */
+}
+
+
+

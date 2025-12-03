@@ -50,11 +50,10 @@ public interface AdminPostMapper {
             @Param("keyword") String keyword,
             @Param("sort") String sort);
 
-    void batchHide(@Param("ids") List<Integer> ids);
+    void batchHide(@Param("postIds") List<Integer> postIds);
+    void batchShow(@Param("postIds") List<Integer> postIds);
+    void batchDelete(@Param("postIds") List<Integer> postIds);
 
-    void batchShow(@Param("ids") List<Integer> ids);
-
-    void batchDelete(@Param("ids") List<Integer> ids);
 
     List<Map<String, Object>> getTopViewPosts();
 
@@ -63,5 +62,9 @@ public interface AdminPostMapper {
     List<AdminPostVO> getDeletedPostList();
 
     List<String> getAutoComplete(@Param("keyword") String keyword);
+
+	List<Map<String, Object>> getWeeklyPostCount();
+
+	List<Map<String, Object>> getPostsByCategory();
 
 }

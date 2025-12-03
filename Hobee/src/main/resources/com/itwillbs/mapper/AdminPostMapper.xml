@@ -157,39 +157,41 @@
           📌 8. 일괄 숨김
     ============================================================ -->
     <update id="batchHide">
-        UPDATE community_content
-        SET is_visible = 0
-        WHERE post_id IN
-        <foreach collection="ids" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-        AND is_deleted = 0
-    </update>
+    UPDATE community_content
+    SET is_visible = 0
+    WHERE post_id IN
+    <foreach collection="postIds" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+    AND is_deleted = 0
+	</update>
+
 
     <!-- ============================================================
           📌 9. 일괄 표시
     ============================================================ -->
     <update id="batchShow">
-        UPDATE community_content
-        SET is_visible = 1
-        WHERE post_id IN
-        <foreach collection="ids" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-        AND is_deleted = 0
-    </update>
+    UPDATE community_content
+    SET is_visible = 1
+    WHERE post_id IN
+    <foreach collection="postIds" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+    AND is_deleted = 0
+	</update>
 
     <!-- ============================================================
           📌 10. 일괄 Soft Delete
     ============================================================ -->
     <update id="batchDelete">
-        UPDATE community_content
-        SET is_deleted = 1
-        WHERE post_id IN
-        <foreach collection="ids" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </update>
+    UPDATE community_content
+    SET is_deleted = 1
+    WHERE post_id IN
+    <foreach collection="postIds" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+	</update>
+
 
     <!-- ============================================================
           📌 11. 삭제된 게시글 목록
@@ -248,5 +250,36 @@
         ORDER BY comment_count DESC
         LIMIT 10
     </select>
+    
+    <!-- ============================================================
+      📌 16. 최근 7일 게시글 수
+============================================================ -->
+<select id="getWeeklyPostCount" resultType="map">
+    SELECT 
+        DATE(created_at) AS date,
+        COUNT(*) AS count
+    FROM community_content
+    WHERE is_deleted = 0
+      AND created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+    GROUP BY DATE(created_at)
+    ORDER BY date;
+</select>
+
+<!-- ============================================================
+      📌 게시판별 게시글 비율 (board_name 기준)
+============================================================ -->
+<select id="getPostsByCategory" resultType="map">
+    SELECT 
+        c.category_id,
+        COALESCE(b.board_name, CONCAT('카테고리 ', c.category_id)) AS board_name,
+        COUNT(*) AS count
+    FROM community_content c
+    LEFT JOIN board_category b 
+        ON c.category_id = b.board_id
+    WHERE c.is_deleted = 0
+    GROUP BY c.category_id
+    ORDER BY count DESC;
+</select>
+
 
 </mapper>

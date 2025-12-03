@@ -527,3 +527,52 @@ label {
     color: #1e5eff;
 }
 
+/* 회원 탭 */
+.signup-role-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #dfe2e7;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.signup-role-tab {
+    flex: 1;
+    padding: 12px 0;
+    text-align: center;
+    background: #f1f3f7;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.signup-role-tab.active {
+    background: #4c7df5;
+    color: #fff;
+}
+
+.signup-role-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.signup-role-tab {
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background: #f1f1f1;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.signup-role-tab.active {
+    background: #4a74ff;
+    color: white;
+    border-color: #4a74ff;
+}
+
+
+
