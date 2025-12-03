@@ -30,7 +30,7 @@
       
 	  <!-- 태그 표시 -->
 	  <div class="course-meta">
-		  <span><i class="fa-solid fa-tag"></i>&nbsp;
+		  <span>
 		    <c:forEach var="tag" items="${fn:split(lectureVO.lecture_tag, ',')}" varStatus="status">
 		      <span class="tag-badge">#${tag}</span>
 		    </c:forEach>
@@ -39,8 +39,18 @@
 	  
       <div class="course-meta">
       	<span><i class="fa-solid fa-clipboard-user"></i> &nbsp;${lectureVO.lecture_author} &nbsp;강사</span>&nbsp;
-        <span><i class="fas fa-users"></i> &nbsp;수강생</span>
       </div>
+      
+      <!-- 평균 별점 및 리뷰 개수 추가 -->
+		<div class="course-meta">
+		    <span>
+		        <i class="fas fa-star" style="color: #ffc107;"></i> 
+		        (${lectureVO.avg_score})&nbsp; 
+		        <span style="color: #888;">리뷰 ${lectureVO.review_count}개</span>
+		    </span>
+		    <span><i class="fas fa-users"></i> &nbsp;수강생 ${lectureVO.student_count}명</span>
+		</div>
+      
       <p class="course-description collapsed" id="courseDescription">
         ${lectureVO.lecture_detail}
       </p>
@@ -292,12 +302,12 @@
             <span class="info-value">${lectureVO.category_detail}</span>
           </div>
           <div class="info-item">
-            <span class="info-label">강의 시간</span>
-            <span class="info-value">20시간 14분</span>
+            <span class="info-label">커리큘럼</span>
+            <span class="info-value">수업 ${lectureVO.curriculum_count}개</span>
           </div>
           <div class="info-item">
-            <span class="info-label">수강기한</span>
-            <span class="info-value">무제한</span>
+            <span class="info-label">강의시간</span>
+            <span class="info-value">${lectureVO.total_time}</span>
           </div>
         </div>
 

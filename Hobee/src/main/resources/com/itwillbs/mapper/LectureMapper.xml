@@ -152,11 +152,101 @@
 		        l.lecture_tag DESC
 		    LIMIT 10
 		</select>
-		
-		<select id="contentLecture" resultType="com.itwillbs.domain.LectureVO">
-  			select * from lecture
-  			where lecture_num = #{lecture_num}
-  		</select>
+
+<!-- 		<select id="contentLecture" resultType="com.itwillbs.domain.LectureVO"> -->
+<!-- 		    SELECT  -->
+<!-- 		        l.*, -->
+<!-- 		        IFNULL(e.student_count, 0) as student_count, -->
+<!-- 		        IFNULL(t.total_time, '0시간 0분') as total_time, -->
+<!-- 		        IFNULL(r.avg_score, 0) as avg_score, -->
+<!-- 		        IFNULL(r.review_count, 0) as review_count -->
+<!-- 		    FROM lecture l -->
+<!-- 		    LEFT JOIN ( -->
+<!-- 		        SELECT lecture_num, COUNT(DISTINCT user_num) as student_count -->
+<!-- 		        FROM enrollment -->
+<!-- 		        GROUP BY lecture_num -->
+<!-- 		    ) e ON l.lecture_num = e.lecture_num -->
+<!-- 		    LEFT JOIN ( -->
+<!-- 		        SELECT  -->
+<!-- 		            c.lecture_num, -->
+<!-- 		            CONCAT( -->
+<!-- 		                FLOOR(SUM( -->
+<!-- 		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', 1) AS UNSIGNED) * 60 +  -->
+<!-- 		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', -1) AS UNSIGNED) -->
+<!-- 		                ) / 60 / 60),         -->
+<!-- 		                '시간 ', -->
+<!-- 		                FLOOR(SUM( -->
+<!-- 		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', 1) AS UNSIGNED) * 60 +  -->
+<!-- 		                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', -1) AS UNSIGNED) -->
+<!-- 		                ) / 60) % 60,         -->
+<!-- 		                '분' -->
+<!-- 		            ) AS total_time -->
+<!-- 		        FROM chapter c -->
+<!-- 		        INNER JOIN chapter_detail cd ON c.chapter_num = cd.chapter_num -->
+<!-- 		        GROUP BY c.lecture_num -->
+<!-- 		    ) t ON l.lecture_num = t.lecture_num -->
+<!-- 		    LEFT JOIN ( -->
+<!-- 		        SELECT  -->
+<!-- 		            lecture_num, -->
+<!-- 		            ROUND(AVG(review_score), 1) as avg_score, -->
+<!-- 		            COUNT(*) as review_count -->
+<!-- 		        FROM review -->
+<!-- 		        GROUP BY lecture_num -->
+<!-- 		    ) r ON l.lecture_num = r.lecture_num -->
+<!-- 		    WHERE l.lecture_num = #{lecture_num} -->
+<!-- 		</select> -->
+  		
+  		<select id="contentLecture" resultType="com.itwillbs.domain.LectureVO"> 
+    SELECT  
+        l.*, 
+        IFNULL(e.student_count, 0) as student_count, 
+        IFNULL(t.total_time, '0시간 0분') as total_time, 
+        IFNULL(r.avg_score, 0) as avg_score, 
+        IFNULL(r.review_count, 0) as review_count,
+        IFNULL(cd.curriculum_count, 0) as curriculum_count
+    FROM lecture l 
+    LEFT JOIN ( 
+        SELECT lecture_num, COUNT(DISTINCT user_num) as student_count 
+        FROM enrollment 
+        GROUP BY lecture_num 
+    ) e ON l.lecture_num = e.lecture_num 
+    LEFT JOIN ( 
+        SELECT  
+            c.lecture_num, 
+            CONCAT( 
+                FLOOR(SUM( 
+                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', 1) AS UNSIGNED) * 60 +  
+                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', -1) AS UNSIGNED) 
+                ) / 60 / 60),         
+                '시간 ', 
+                FLOOR(SUM( 
+                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', 1) AS UNSIGNED) * 60 +  
+                    CAST(SUBSTRING_INDEX(cd.detail_time, ':', -1) AS UNSIGNED) 
+                ) / 60) % 60,         
+                '분' 
+            ) AS total_time 
+        FROM chapter c 
+        INNER JOIN chapter_detail cd ON c.chapter_num = cd.chapter_num 
+        GROUP BY c.lecture_num 
+    ) t ON l.lecture_num = t.lecture_num 
+    LEFT JOIN ( 
+        SELECT  
+            lecture_num, 
+            ROUND(AVG(review_score), 1) as avg_score, 
+            COUNT(*) as review_count 
+        FROM review 
+        GROUP BY lecture_num 
+    ) r ON l.lecture_num = r.lecture_num
+    LEFT JOIN (
+        SELECT 
+            c.lecture_num,
+            COUNT(cd.detail_num) as curriculum_count
+        FROM chapter c
+        INNER JOIN chapter_detail cd ON c.chapter_num = cd.chapter_num
+        GROUP BY c.lecture_num
+    ) cd ON l.lecture_num = cd.lecture_num
+    WHERE l.lecture_num = #{lecture_num} 
+</select>
   		
   		<select id="getUserImg" resultType="com.itwillbs.domain.UserVO">
   			select u.user_file, u.user_num
@@ -378,7 +468,7 @@
 		        l.lecture_detail,
 		        l.lecture_tag
 		    ORDER BY
-		        match_count DESC,
+		        match_count DESC
 		</select>
 
         
