@@ -29,6 +29,7 @@ public class LectureVO {
  	private double avg_score;         // 평균 별점
  	private int review_count;         // 리뷰 개수
  	private int student_count;        // 수강생 수
+ 	private String total_time;        // 총 강의 시간 (HH:mm 형식)
     
 }
 

@@ -39,7 +39,7 @@
 	  
       <div class="course-meta">
       	<span><i class="fa-solid fa-clipboard-user"></i> &nbsp;${lectureVO.lecture_author} &nbsp;강사</span>&nbsp;
-        <span><i class="fas fa-users"></i> &nbsp;수강생</span>
+        <span><i class="fas fa-users"></i> &nbsp;수강생 ${lectureVO.student_count}</span>
       </div>
       <p class="course-description collapsed" id="courseDescription">
         ${lectureVO.lecture_detail}
@@ -293,7 +293,7 @@
           </div>
           <div class="info-item">
             <span class="info-label">강의 시간</span>
-            <span class="info-value">20시간 14분</span>
+            <span class="info-value">${lectureVO.total_time}</span>
           </div>
           <div class="info-item">
             <span class="info-label">수강기한</span>
