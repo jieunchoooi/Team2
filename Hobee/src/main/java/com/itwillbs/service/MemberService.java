@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.MemberMapper;
 
@@ -105,6 +106,16 @@ public class MemberService {
 	public void deleteRequest(int lecture_num) {
 		System.out.println("MemberService deleteRequest()");
 		memberMapper.deleteRequest(lecture_num);
+	}
+
+	public NotApprovedVO classReason(int lecture_num) {
+		System.out.println("MemberService classReason()");
+		return memberMapper.classReason(lecture_num);
+	}
+
+	public void deleteCencel(int lecture_num) {
+		System.out.println("MemberService deleteCencel()");
+		memberMapper.deleteCencel(lecture_num);
 	}
 
 

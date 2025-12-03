@@ -7,6 +7,7 @@ import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 
@@ -127,6 +128,21 @@ public interface AdminMapper {
 	public int askClassCount(PageVO pageVO);
 
 	public int okClassCount(PageVO pageVO);
+
+	public List<LectureVO> deleteClass1(PageVO pageVO);
+
+	public int deleteClassCount(PageVO pageVO);
+
+	public void classApprovalUpdate(int lecture_num);
+
+	public void classNotApproval(NotApprovedVO notApprovedVO);
+
+	public void classReject(int lecture_num);
+
+	public void classApprovaldelete(int lecture_num);
+
+	public void cancelDelete(int lecture_num);
+
 
 
 	

@@ -27,9 +27,13 @@
 			method="post" enctype="multipart/form-data">
 			
 			<input type="hidden" name="lecture_num" value="${lectureVO.lecture_num}">
-			<input type="hidden" name="oldfile" value="${lectureVO.lecture_img}">
-			
-			<div class="profile-pic">
+		    <input type="hidden" name="oldfile" value="${lectureVO.lecture_img}">
+		    
+		    <!-- ✅ 미승인 사유 버튼 상단 우측으로 이동 -->
+		    <c:if test="${lectureVO.status == 'reject'}">
+		    	<button type="button" class="rejectBtn" data-num="${lectureVO.lecture_num}">미승인 사유</button>
+		    </c:if>
+		    <div class="profile-pic">
 				<c:choose>
 					<c:when test="${empty lectureVO.lecture_img}">
 						<span>📚</span>
@@ -151,6 +155,25 @@
 		</form>
 	</main>
 
+<div id="rejectModal" class="dialog">
+  <div class="tb">
+    <div class="inner" style="max-width:700px; width:90%;">  <!-- 800px → 700px -->
+      <div class="top">
+        <div class="title">미승인 사유</div>
+      </div>
+      <div class="ct">
+        <div class="reject-form">
+<!--           <label for="rejectReason">미승인 사유를 입력해주세요</label> -->
+          <textarea id="rejectReason" name="reason" rows="8" readonly>${notApprovedVO.reason}</textarea>
+          
+          <div class="modal-btn-group">
+            <button type="button" class="modal-btn cancel">취소</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
 
 let lecture_img = document.querySelector("#lecture_img");
@@ -226,7 +249,7 @@ classAddForm.onsubmit = function(e){
 	for(let i = 0; i < detailTimes.length; i++){
 		if(!timePattern.test(detailTimes[i].value)){
 			e.preventDefault();
-			alert("시간 형식이 올바르지 않습니다. MM:SS 또는 HH:MM:SS 형태로 입력해주세요.");
+			alert("시간 형식이 올바르지 않습니다. MM:SS 형태로 입력해주세요.");
 			detailTimes[i].focus();
 			return false;
 		}
@@ -247,19 +270,14 @@ classAddForm.onsubmit = function(e){
 function attachStrictTimeFormatter(input) {
 	input.addEventListener("input", function() {
 		let value = this.value.replace(/[^0-9]/g, '');
-		if (value.length > 6) value = value.slice(0, 6);
+		if (value.length > 4) value = value.slice(0, 4);
 		
 		let formatted = '';
 		if (value.length >= 1) {
 			formatted = value.slice(0, 2);
 		}
 		if (value.length >= 3) {
-			let mm = value.slice(2, 4);
-			if (parseInt(mm) > 59) mm = '59';
-			formatted += ':' + mm;
-		}
-		if (value.length >= 5) {
-			let ss = value.slice(4, 6);
+			let ss = value.slice(2, 4);
 			if (parseInt(ss) > 59) ss = '59';
 			formatted += ':' + ss;
 		}
@@ -498,6 +516,29 @@ function reindexChapters() {
 	console.log('=== 챕터 인덱스 재정렬 완료 ===');
 	return true;
 }
+
+let dialogModal = document.querySelector(".dialog");
+let close = document.querySelector(".cancel");
+let rejectBtn = document.querySelector(".rejectBtn");
+
+
+// 모달창 띄우기
+rejectBtn.onclick = function(){
+	dialogModal.style.display = "block";
+}
+
+// 모달창 닫기
+close.onclick = function() {
+	dialogModal.style.display = "none";
+}
+
+
+
+
+
+
+
+
 
 </script>
 

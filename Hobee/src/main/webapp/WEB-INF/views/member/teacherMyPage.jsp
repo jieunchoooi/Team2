@@ -39,7 +39,7 @@
 				<div class="stat-number">${teacherMyPageWaiting}</div>
 			</div>
 			<div class="stat-card red ${filter == 'reject' ? 'approval' : ''}" onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage?filter=reject'">
-				<h3>반려</h3>
+				<h3>미승인</h3>
 				<div class="stat-number">${teacherMyPageReject}</div>
 			</div>
 			<div class="stat-card gray ${filter == 'delete' ? 'approval' : ''}" onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage?filter=delete'">
@@ -102,19 +102,31 @@
 							<span class="badg badge-pending">승인대기</span>
 						</c:if>
 						<c:if test="${lectureVO.status eq 'reject'}">	
-							<span class="badg badge-rejected">반려</span>
+							<span class="badg badge-rejected">미승인</span>
 						</c:if>
 						<c:if test="${lectureVO.status eq 'deleteWaiting'}">	
 							<span class="badg badge-deleteWaiting">삭제요청</span>
 						</c:if>
+						<c:if test="${lectureVO.status eq 'delete'}">	
+							<span class="badg badge-delete">삭제</span>
+						</c:if>
+						<c:if test="${lectureVO.status eq 'cancelDelete'}">	
+							<span class="badg badge-cancelDelete">삭제취소요청</span>
+						</c:if>
 						</td>
 						<td>${lectureVO.created_at}</td>
 						<td>
-						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting'}">
+						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting' and lectureVO.status != 'reject' and lectureVO.status != 'cancelDelete'}">
 							<button type="button" class="btn btn-edit-small" data-num="${lectureVO.lecture_num}">수정</button>
 						</c:if>	
-						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting'}">
+						<c:if test="${lectureVO.status == 'reject'}">
+							<button type="button" class="btn btn-edit-small" data-num="${lectureVO.lecture_num}">상세보기</button>
+						</c:if>	
+						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting' and lectureVO.status != 'cancelDelete'}">
 							<button type="button" class="btn btn-delete-small" data-num="${lectureVO.lecture_num}">삭제</button>
+						</c:if>	
+						<c:if test="${lectureVO.status == 'delete'}">
+							<button type="button" class="btn btn-cencelDelete-small" data-num="${lectureVO.lecture_num}">삭제취소</button>
 						</c:if>	
 						</td>
 					</tr>
@@ -137,7 +149,6 @@
 	<!-- footer -->
 	<jsp:include page="../include/footer.jsp"></jsp:include>
 </body>
-
 <script type="text/javascript">
 // 강의 삭제
 let deleteButtons = document.querySelectorAll('.btn-delete-small');
@@ -148,6 +159,19 @@ deleteButtons.forEach(function(btn) {
         if(confirm("정말 이 강의를 삭제하시겠습니까?")) {
             alert("강의 삭제 요청 하였습니다.");
             location.href = "${pageContext.request.contextPath}/member/deleteLecture?lecture_num=" + lectureNum;
+        }
+    }
+});
+
+// 강의 삭제 취소
+let cencelDeleteBtn = document.querySelectorAll('.btn-cencelDelete-small');
+cencelDeleteBtn.forEach(function(btn) {
+    btn.onclick = function() {
+        let lectureNum = this.getAttribute('data-num');
+
+        if(confirm("삭제 취소 요청 하시겠습니까?")) {
+            alert("강의 삭제 취소 요청 하였습니다.");
+            location.href = "${pageContext.request.contextPath}/member/cenceldeleteLecture?lecture_num=" + lectureNum;
         }
     }
 });

@@ -123,8 +123,20 @@
 	    update lecture set status = 'deleteWaiting' where lecture_num = #{lecture_num}
 	</update>
 
-	
+	<!-- 미승인 사유 -->
+	<select id="classReason" parameterType="int" resultType="com.itwillbs.domain.NotApprovedVO">
+		select * from notApproved
+		where lecture_num = #{lecture_num}
+		order by reason_num desc
+    	limit 1
+	</select>
 
+<!-- 강의 삭제 취소 요청 -->
+	<update id="deleteCencel">
+    	UPDATE lecture
+    	SET status = 'cancelDelete'
+    	WHERE lecture_num = #{lecture_num}
+	</update>
 
 
 

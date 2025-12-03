@@ -37,11 +37,27 @@ body {
     background-color: #ffebee;
     color: #c62828;
 }
+
+.badge-deleteWaiting {
+    background-color: #c0c0c0;
+    color: #757575;
+}
+
+.badge-delete {
+    background-color: #424242;
+    color: #ffffff;
+}
+
+.badge-cancelDelete {
+    background-color: #c0c0c0;
+    color: #000000;
+}
+
 /* =========================== 통계 카드 =========================== */
 .stats-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);  /* 3개 → 4개로 변경 */
-    gap: 20px;
+ 	grid-template-columns: repeat(5, 1fr);     
+ 	gap: 20px;
     margin-bottom: 30px;
     max-width: 1400px;
     margin-left: auto;
@@ -87,6 +103,10 @@ body {
 
 .stat-card:nth-child(4) .stat-number {
     color: #ff4d4f;  /* 반려된 강의 - 빨간색 */
+}
+
+.stat-card:nth-child(5) .stat-number {
+    color: #757575; /* 반려된 강의 - 그레이 */
 }
 
 .stat-card .stat-label {
@@ -478,26 +498,6 @@ td:nth-child(5) {
     .stats-container {
         grid-template-columns: 1fr;  /* 모바일: 1개씩 */
     }
-}
-
-/* =========================== 추가 유틸리티 =========================== */
-/* 상태 뱃지 (필요시 사용) */
-.badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.badge-active {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-}
-
-.badge-inactive {
-    background-color: #ffebee;
-    color: #c62828;
 }
 
 /* 액션 아이콘 (필요시 사용) */
