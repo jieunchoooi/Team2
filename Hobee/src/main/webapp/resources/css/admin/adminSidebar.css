@@ -26,7 +26,6 @@
   font-size: 16px;
   font-weight: 700;
   color: #374151;
-
   background: transparent;
   border-left: none;
   transform: translateX(0);
@@ -111,12 +110,12 @@
 /*   color: #2563eb; */
 }
 
-.menu-item.active {
+/* .menu-item.active { */
 /*   background-color: #e8f0ff; */
 /*   color: #2563eb; */
-  font-weight: 600;
+
 /*   border-left: 4px solid #2563eb; */
-}
+/* } */
 
 .menu-item span {
   flex: 1;
