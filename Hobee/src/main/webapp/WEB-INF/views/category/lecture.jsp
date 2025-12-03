@@ -39,7 +39,7 @@
 	  
       <div class="course-meta">
       	<span><i class="fa-solid fa-clipboard-user"></i> &nbsp;${lectureVO.lecture_author} &nbsp;강사</span>&nbsp;
-        <span><i class="fas fa-users"></i> &nbsp;조회수 ${lectureVO.readcount}</span>
+        <span><i class="fas fa-users"></i> &nbsp;수강생</span>
       </div>
       <p class="course-description collapsed" id="courseDescription">
         ${lectureVO.lecture_detail}

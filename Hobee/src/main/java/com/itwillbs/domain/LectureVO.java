@@ -15,7 +15,6 @@ public class LectureVO {
     private String lecture_author;    //강사명 
     private int lecture_price;
     private String category_detail;
-    private int readcount;
     private String lecture_img;
     private String lecture_detail;
     private String lecture_tag;
