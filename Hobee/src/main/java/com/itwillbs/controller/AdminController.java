@@ -27,6 +27,7 @@ import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
+import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
@@ -188,12 +189,12 @@ public class AdminController {
       }
       
       int tCount = adminService.teacharCount(pageVO);
-//      List<LectureVO> lectureList = adminService.listLecture(pageVO);
       List<LectureVO> lectureList;
 
       int compClassCount = adminService.compClassCount(pageVO);
       int askClassCount = adminService.askClassCount(pageVO);
       int okClassCount = adminService.okClassCount(pageVO);
+      int deleteClassCount = adminService.deleteClassCount(pageVO);
       int classCount = adminService.classCount(pageVO);
       int count = adminService.countlectureList(pageVO);
       int pageBlock = 10;
@@ -210,6 +211,8 @@ public class AdminController {
     	  lectureList = adminService.askClass(pageVO);
       }else if("comp".equals(filter)) {
     	  lectureList = adminService.compClass(pageVO);
+      }else if("delete".equals(filter)){
+    	  lectureList = adminService.deleteClass1(pageVO);
       }else {
     	  lectureList = adminService.listLecture(pageVO);
       }
@@ -229,6 +232,7 @@ public class AdminController {
       model.addAttribute("compClassCount", compClassCount);
       model.addAttribute("askClassCount", askClassCount);
       model.addAttribute("okClassCount", okClassCount);
+      model.addAttribute("deleteClassCount", deleteClassCount);
 
       return "admin/adminClassList";
    }
@@ -634,6 +638,47 @@ public class AdminController {
            return "redirect:/admin/adminTeacherList";
        }
    }
+   
+   @GetMapping("/classApproval")
+   public String classApproval(@RequestParam("lecture_num") int lecture_num) {
+	   System.out.println("AdminController classApproval()");
+	   adminService.classApprovalUpdate(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   @GetMapping("/classNotApproval")
+   public String classNotApproval(@RequestParam("lecture_num") int lecture_num,
+		   						  @RequestParam("reason") String reason) {
+	   System.out.println("AdminController classNotApproval()");
+	   NotApprovedVO notApprovedVO = new NotApprovedVO();
+	   notApprovedVO.setLecture_num(lecture_num);
+	   notApprovedVO.setReason(reason);
+	   
+	   adminService.classNotApproval(notApprovedVO);
+	   adminService.classReject(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   @GetMapping("/deleteApproval")
+   public String deleteApproval(@RequestParam("lecture_num") int lecture_num) {
+	   System.out.println("AdminController classApproval()");
+	   adminService.classApprovaldelete(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   @GetMapping("/cancelDeleteApproval")
+   public String cancelDeleteApproval(@RequestParam("lecture_num") int lecture_num) {
+	   System.out.println("AdminController cancelDeleteApproval()");
+	   adminService.cancelDelete(lecture_num);
+	   
+	   return "redirect:/admin/adminClassList";
+   }
+   
+   
+   
    
 
 }

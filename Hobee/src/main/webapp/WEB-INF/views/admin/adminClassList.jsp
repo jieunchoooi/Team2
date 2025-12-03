@@ -32,12 +32,16 @@
 				<div class="stat-number">${okClassCount}</div>
 			</div>
 			<div class="stat-card ${filter == 'ask' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=ask'">
-				<h3>승인 요청 강의</h3>
+				<h3>승인(삭제) 요청 강의</h3>
 				<div class="stat-number">${askClassCount}</div>
 			</div>
 			<div class="stat-card ${filter == 'comp' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=comp'">
-				<h3>반려된 강의</h3>
+				<h3>미승인 강의</h3>
 				<div class="stat-number">${compClassCount}</div>
+			</div>
+			<div class="stat-card ${filter == 'delete' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=delete'">
+				<h3>삭제된 강의</h3>
+				<div class="stat-number">${deleteClassCount}</div>
 			</div>
 		</div>
 		
@@ -95,13 +99,22 @@
 			                        <span class="badge badge-pending">승인대기</span>
 			                    </c:if>
 			                    <c:if test="${lectureVO.status eq 'reject'}">	
-			                        <span class="badge badge-rejected">반려</span>
+			                        <span class="badge badge-rejected">미승인</span>
 			                    </c:if>
+			                    <c:if test="${lectureVO.status eq 'deleteWaiting'}">	
+			                        <span class="badge badge-deleteWaiting">삭제요청</span>
+			                    </c:if>
+			                    <c:if test="${lectureVO.status eq 'delete'}">	
+			                        <span class="badge badge-delete">삭제</span>
+			                    </c:if>
+			                    <c:if test="${lectureVO.status eq 'cancelDelete'}">	
+									<span class="badge badge-cancelDelete">삭제취소요청</span>
+								</c:if>
 			                </td>
 			                <td>${lectureVO.created_at}</td>
 							<td>
 								<button type="button" class="btn edit" data-num="${lectureVO.lecture_num}">상세보기</button>
-								<button class="btn btn-delete" data-num="${lectureVO.lecture_num}">삭제</button>
+<%-- 								<button class="btn btn-delete" data-num="${lectureVO.lecture_num}">삭제</button> --%>
 								
 							</td>
 						</tr>

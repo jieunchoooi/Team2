@@ -54,6 +54,7 @@ body {
 
 /* =========================== 폼 컨테이너 =========================== */
 .form-container {
+	position: relative;
     background-color: #fff;
     border-radius: 16px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05);
@@ -176,17 +177,69 @@ body {
 /*     margin: 0;    */
 }
 
-.btn:last-child {
-    background-color: #2573FF;
-}
-
 .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 12px rgba(37, 115, 255, 0.3);
+    background-color: #808080;
 }
 
-.btn:last-child:hover {
+/* 승인 버튼 - 파란색 */
+.btn-primary {
+    background-color: #2573ff;
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(37, 115, 255, 0.3);
     background-color: #1f65e0;
+}
+
+/* 반려 버튼 - 주황색 */
+.btn-companion {
+    background-color: #ff6b35;
+    color: white;
+}
+
+.btn-companion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(255, 107, 53, 0.3);
+    background-color: #e65100;
+}
+
+/* 삭제 버튼 - 빨간색 */
+.btn-delete1 {
+    background-color: #ff4d4f;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #ff8040;
+    color: white;
+}
+
+.btn-delete1:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(255, 77, 79, 0.3);
+    background-color: #e04344;
+}
+
+.btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(255, 77, 79, 0.3);
+    background-color: #FF6B35;
+}
+
+/* 삭제취소 버튼 - 초록색 */
+.btn-cancelDelete {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-cancelDelete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(76, 175, 80, 0.3);
+    background-color: #45a049;
 }
 
 .btn:active {
@@ -685,3 +738,301 @@ body {
     border-color: #007bff;
 }
 
+
+
+/* 모달 기본 스타일 */
+.dialog {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog.active {
+  display: flex;
+}
+
+.dialog .tb {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog .inner {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dialog .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f8f9ff;
+}
+
+.dialog .title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.dialog .p_close {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.dialog .p_close:hover {
+  background-color: #e5e7eb;
+  color: #333;
+}
+
+.dialog .ct {
+  padding: 30px;
+}
+
+/* 반려 폼 스타일 */
+.reject-form label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.reject-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #d3ddff;
+  border-radius: 10px;
+  outline: none;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.2s;
+  line-height: 1.6;
+}
+
+.reject-form textarea:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.reject-form textarea::placeholder {
+  color: #999;
+}
+
+/* 모달 기본 스타일 */
+.dialog {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog.active {
+  display: flex;
+}
+
+.dialog .tb {
+  width: 100%;
+  height: 100%;  /* 추가 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog .inner {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: modalFadeIn 0.3s ease;
+  max-height: 90vh;  /* 추가 */
+  overflow-y: auto;  /* 추가 */
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dialog .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f8f9ff;
+}
+
+.dialog .title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.dialog .p_close {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.dialog .p_close:hover {
+  background-color: #e5e7eb;
+  color: #333;
+}
+
+.dialog .ct {
+  padding: 30px;
+}
+
+/* 반려 폼 스타일 */
+.reject-form label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.reject-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #d3ddff;
+  border-radius: 10px;
+  outline: none;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.2s;
+  line-height: 1.6;
+}
+
+.reject-form textarea:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.reject-form textarea::placeholder {
+  color: #999;
+}
+
+.modal-btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-btn.cancel {
+  background-color: #e5e7eb;
+  color: #666;
+}
+
+.modal-btn.cancel:hover {
+  background-color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+.modal-btn.notApproved {
+  background-color: #ff6b35;
+  color: white;
+  box-shadow: 0 3px 8px rgba(255, 107, 53, 0.2);
+}
+
+.modal-btn.notApproved:hover {
+  background-color: #e65100;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(255, 107, 53, 0.3);
+}
+
+.modal-btn:active {
+  transform: translateY(0);
+}
+
+/* 미승인 사유 버튼 스타일 */
+.rejectBtn {
+    position: absolute;
+    top: 30px;
+    right: 50px;
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rejectBtn::before {
+    font-size: 1.1rem;
+}
+
+.rejectBtn:hover {
+    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+}
+
+.rejectBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(255, 107, 53, 0.3);
+}

@@ -225,7 +225,7 @@
 <!-- 승인요청된 강의 -->
 	<select id="askClass" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
-		where status = 'waiting'
+		where status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and lecture_title LIKE CONCAT('%', #{search}, '%')
@@ -542,7 +542,7 @@
 	<!-- 승인 요청된 강의 갯수 카운트 -->
 	<select id="askClassCount" resultType="java.lang.Integer">
 		select count(*) from lecture
-		where status = 'waiting'
+		where status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete'
 	</select>
 
 	<!-- 반려 된 강의 갯수 카운트 -->
@@ -655,7 +655,8 @@
         	lecture_price = #{lecture_price},
         	lecture_img = #{lecture_img},
         	lecture_tag = #{lecture_tag},
-        	user_num = #{user_num}
+        	user_num = #{user_num},
+        	status = 'waiting'
     	WHERE lecture_num = #{lecture_num}
 	</update>
 
@@ -712,7 +713,46 @@
     	AND user_role = 'instructor'
 	</select>
 	
-
+	<!-- 강의 승인 -->
+	<update id="classApprovalUpdate">
+    	UPDATE lecture
+    	SET status = 'approval'
+    	WHERE lecture_num = #{lecture_num}
+	</update>
+	
+	<!-- 강의 미승인 -->
+	<update id="classReject">
+    	UPDATE lecture
+    	SET status = 'reject'
+    	WHERE lecture_num = #{lecture_num}
+	</update>
+	
+	<!-- 강의 미승인 사유 -->
+	<insert id="classNotApproval" parameterType="com.itwillbs.domain.Category_mainVO">
+		INSERT INTO notApproved (lecture_num, reason)
+		value (#{lecture_num}, #{reason})
+	</insert>
+	
+	<!-- 강의 삭제 -->
+	<update id="classApprovaldelete">
+    	UPDATE lecture
+    	SET status = 'delete'
+    	WHERE lecture_num = #{lecture_num}
+	</update>
+	
+	<!-- 강의 삭제 취소 -->
+	<update id="cancelDelete">
+    	UPDATE lecture
+    	SET status = 'waiting'
+    	WHERE lecture_num = #{lecture_num}
+	</update>
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
