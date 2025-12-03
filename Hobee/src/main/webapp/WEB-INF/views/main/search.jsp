@@ -42,16 +42,37 @@ main {
 	list-style: none;
 }
 .sidebar li {
-	padding: 10px 0;
+	padding: 8px 0;
 	cursor: pointer;
 	color: #555;
 	font-size: 0.95rem;
 	transition: color 0.2s;
 }
+
+/* 대분류 스타일 */
+.sidebar li.category-main {
+   color: #222;
+   font-weight: 700;
+   font-size: 1rem;
+   cursor: default;
+}
+.sidebar li.category-main:first-child {
+   margin-top: 0;
+}
+/* 소분류 스타일 */
+.sidebar li.category-sub {
+   padding-left: 12px;
+   font-size: 0.9rem;
+}
 .sidebar li:hover,
 .sidebar li.active {
 	color: #2573ff;
 	font-weight: 600;
+}
+/* 대분류는 hover 효과 없음 */
+.sidebar li.category-main:hover {
+   color: #222;
+   font-weight: 700;
 }
 .content {
 	flex: 1;
@@ -175,20 +196,6 @@ main {
  	-webkit-line-clamp: 1; 
  	-webkit-box-orient: vertical; 
  } 
-
-/*강의제목 말줄임표 2줄로 제한 */
-/* .card-title { */
-/* 	font-size: 1rem; */
-/* 	font-weight: 600; */
-/* 	color: #222; */
-/* 	line-height: 1.4; */
-/* 	margin-bottom: 6px; */
-/* 	overflow: hidden; */
-/* 	text-overflow: ellipsis; */
-/* 	display: -webkit-box; */
-/* 	-webkit-line-clamp: 2; */
-/* 	-webkit-box-orient: vertical; */
-/* } */
 
 .card-instructor {
 	font-size: 0.85rem;
@@ -358,43 +365,78 @@ main {
 <jsp:include page="../include/header.jsp"></jsp:include>
 
 <main>
-	<!-- ✅ 사이드 메뉴 (category_detail 기준 active 처리 포함) -->
-	<aside class="sidebar">
-	  <ul>
-	    <li class="${param.category_detail == null || param.category_detail == '전체' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" style="text-decoration:none; color:inherit;">전체</a>
-	    </li>
-	    <li class="${param.category_detail == '디지털드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" style="text-decoration:none; color:inherit;">디지털드로잉</a>
-	    </li>
-	    <li class="${param.category_detail == '드로잉' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" style="text-decoration:none; color:inherit;">드로잉</a>
-	    </li>
-	    <li class="${param.category_detail == '공예' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" style="text-decoration:none; color:inherit;">공예</a>
-	    </li>
-	    <li class="${param.category_detail == 'AI 스킬업' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
-	    </li>
-	    <li class="${param.category_detail == '프로그래밍' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" style="text-decoration:none; color:inherit;">프로그래밍</a>
-	    </li>
-	    <li class="${param.category_detail == '데이터사이언스' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" style="text-decoration:none; color:inherit;">데이터사이언스</a>
-	    </li>
-	    <li class="${param.category_detail == '영어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" style="text-decoration:none; color:inherit;">영어</a>
-	    </li>
-	    <li class="${param.category_detail == '제2외국어' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" style="text-decoration:none; color:inherit;">제2외국어</a>
-	    </li>
-	    <li class="${param.category_detail == '외국어 시험' ? 'active' : ''}">
-	      <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험" style="text-decoration:none; color:inherit;">외국어 시험</a>
-	    </li>
-	  </ul>
-	</aside>
-
-
+	<!-- ✅ 사이드 메뉴 (대분류-소분류 구조) -->
+   <aside class="sidebar">
+     <ul>
+       <li class="category-main ${param.category_detail == null || param.category_detail == '전체' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체" style="text-decoration:none; color:inherit;">전체</a>
+       </li>
+       
+       <!-- ART -->
+       <li class="category-main">ART</li>
+       <li class="category-sub ${param.category_detail == '디지털드로잉' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉" style="text-decoration:none; color:inherit;">디지털드로잉</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '드로잉' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉" style="text-decoration:none; color:inherit;">드로잉</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '공예' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예" style="text-decoration:none; color:inherit;">공예</a>
+       </li>
+       
+       <!-- 요리 -->
+       <li class="category-main">요리</li>
+       <li class="category-sub ${param.category_detail == '한식' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=한식" style="text-decoration:none; color:inherit;">한식</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '중식·일식' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=중식·일식" style="text-decoration:none; color:inherit;">중식·일식</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '양식' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=양식" style="text-decoration:none; color:inherit;">양식</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '베이킹' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=베이킹" style="text-decoration:none; color:inherit;">베이킹</a>
+       </li>
+       
+       <!-- 라이프스타일 -->
+       <li class="category-main">라이프스타일</li>
+       <li class="category-sub ${param.category_detail == '뷰티' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티" style="text-decoration:none; color:inherit;">뷰티</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '타로·사주' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로·사주" style="text-decoration:none; color:inherit;">타로·사주</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '게임' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임" style="text-decoration:none; color:inherit;">게임</a>
+       </li>
+       
+       <!-- IT -->
+       <li class="category-main">IT</li>
+       <li class="category-sub ${param.category_detail == 'AI 스킬업' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업" style="text-decoration:none; color:inherit;">AI 스킬업</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '프로그래밍' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍" style="text-decoration:none; color:inherit;">프로그래밍</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '데이터사이언스' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스" style="text-decoration:none; color:inherit;">데이터사이언스</a>
+       </li>
+       
+       <!-- 외국어 -->
+       <li class="category-main">외국어</li>
+       <li class="category-sub ${param.category_detail == '영어' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어" style="text-decoration:none; color:inherit;">영어</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '제2외국어' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어" style="text-decoration:none; color:inherit;">제2외국어</a>
+       </li>
+       <li class="category-sub ${param.category_detail == '외국어 시험' ? 'active' : ''}">
+         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험" style="text-decoration:none; color:inherit;">외국어 시험</a>
+       </li>
+     </ul>
+   </aside>
+	
 
 	<!-- ✅ 메인 콘텐츠 -->
 	<section class="content">
