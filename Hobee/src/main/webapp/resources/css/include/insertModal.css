@@ -4,17 +4,30 @@
    모달 전체 영역
 =========================== */
 #insertModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* 🔥 중앙 밝음 + 주변 강한 어둠 */
+    background: radial-gradient(
+        circle at center,
+        rgba(0,0,0,0.25) 0%,
+        rgba(0,0,0,0.55) 40%,
+        rgba(0,0,0,0.80) 100%
+    );
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+
+    /* 배경 흐림 효과 강화 */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
+
 
 /* ===========================
    모달 컨텐츠
@@ -574,5 +587,115 @@ label {
     border-color: #4a74ff;
 }
 
+/* 회원구분 탭 전체 영역 */
+.signup-role-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
 
+/* 기본 탭 버튼 스타일 */
+.signup-role-tab {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 28px;
+
+    /* 기존보다 강한 라인 */
+    border: 2px solid #d6d6d6;
+
+    background: #fafafa;
+    font-size: 15px;
+    font-weight: 600;
+    color: #555;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* hover 효과 - 부드러운 강조 */
+.signup-role-tab:hover {
+    background: #eef3ff;
+    border-color: #8da9ff;
+    color: #4a74ff;
+    transform: translateY(-2px);
+}
+
+/* 선택(active) 스타일 */
+.signup-role-tab.active {
+    background: linear-gradient(135deg, #4a74ff, #6f8cff);
+    border-color: #4a74ff;
+    color: #fff;
+
+    /* 입체 그림자 효과 */
+    box-shadow: 0 4px 14px rgba(74, 116, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+/* 클릭(눌렀을 때) 효과 */
+.signup-role-tab:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(74, 116, 255, 0.25);
+}
+
+.insert-modal-content {
+    animation: modalPop 0.35s ease-out;
+}
+
+@keyframes modalPop {
+    0% { opacity: 0; transform: scale(0.92) translateY(-10px); }
+    60% { opacity: 1; transform: scale(1.02) translateY(0); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.insert-modal-content {
+    border: 1px solid rgba(255,255,255,0.45);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+
+.insert-input,
+.address-main,
+.address-detail,
+.address-zip {
+    transition: all 0.25s ease;
+}
+
+.insert-input:hover,
+.address-main:hover,
+.address-detail:hover,
+.address-zip:hover {
+    border-color: #6f8dff !important;
+}
+
+.insert-input:focus,
+.address-main:focus,
+.address-detail:focus,
+.address-zip:focus {
+    box-shadow: 0 0 8px rgba(74,116,255,0.35) !important;
+}
+
+.insert-submit-btn {
+    transition: all 0.25s ease;
+}
+
+.insert-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(74,116,255,0.35);
+}
+
+.insert-modal-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(90deg, #4a74ff, #6fa2ff);
+}
+
+.insert-modal-content {
+    border: 2px solid rgba(74,116,255,0.35) !important;
+    box-shadow: 0 0 8px rgba(74,116,255,0.20) !important;
+}
 

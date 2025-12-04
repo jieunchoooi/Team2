@@ -34,7 +34,7 @@
         #{user_address2},
         #{user_gender},
         #{user_file},
-        'user',
+        #{user_role},
         'active',
         1,
         0
