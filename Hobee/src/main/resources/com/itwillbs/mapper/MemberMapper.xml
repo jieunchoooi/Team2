@@ -34,66 +34,71 @@
 	</update>
 	
 	<!-- 강사 강의 승인 리스트 -->
-	<select id="approvalClass" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+	<select id="approvalClass" parameterType="map" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
 		where lecture_author = #{user_name}
-		and status = 'approval'		
+		and status = 'approval'
+		LIMIT #{pageVO.startRow}, #{pageVO.pageSize}		
 	</select>
 	
 	<!-- 강사 강의 대기 리스트 -->
-	<select id="waitingClass" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+	<select id="waitingClass" parameterType="map" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
 		where lecture_author = #{user_name}
 		and (status = 'waiting' or status = 'deleteWaiting')
+		LIMIT #{pageVO.startRow}, #{pageVO.pageSize}	
 	</select>
 	
 	<!-- 강사 강의 보류 리스트 -->
-	<select id="rejectClass" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+	<select id="rejectClass" parameterType="map" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
 		where lecture_author = #{user_name}
-		and status = 'reject'		
+		and status = 'reject'	
+		LIMIT #{pageVO.startRow}, #{pageVO.pageSize}		
 	</select>
 	
 	<!-- 강사 강의 삭제 리스트 -->
-	<select id="deleteClass" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+	<select id="deleteClass" parameterType="map" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
 		where lecture_author = #{user_name}
-		and status = 'delete'		
+		and status = 'delete'	
+		LIMIT #{pageVO.startRow}, #{pageVO.pageSize}	
 	</select>
 	
 <!-- 강사 강의 전체 리스트 -->
-	<select id="manageMyCourses" parameterType="string" resultType="com.itwillbs.domain.LectureVO">
+	<select id="manageMyCourses" parameterType="map" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
 		where lecture_author = #{user_name}
 		order by lecture_num desc
+		LIMIT #{pageVO.startRow}, #{pageVO.pageSize}	
 	</select>
 
 <!-- 강사당 총 강의수 -->
-	<select id="teacherMyPage" resultType="java.lang.Integer">
+	<select id="teacherMyPage" resultType="java.lang.Integer" parameterType="map">
 		select count(*) from lecture
 		where lecture_author = #{user_name}
 	</select>
 	
 <!-- 강사당 승인된 강의수 -->
-	<select id="teacherMyPageOk" parameterType="String"  resultType="java.lang.Integer">
+	<select id="teacherMyPageOk" parameterType="map"  resultType="java.lang.Integer">
 		select count(*) from lecture
 		where lecture_author = #{user_name} and status = 'approval'
 	</select>
 	
 <!-- 강사당 삭제된 강의수 -->
-	<select id="teacherMyPageDelete" parameterType="String"  resultType="java.lang.Integer">
+	<select id="teacherMyPageDelete" parameterType="map"  resultType="java.lang.Integer">
 		select count(*) from lecture
 		where lecture_author = #{user_name} and status = 'delete'
 	</select>
 
 <!-- 강사당 승인대기중인 강의수 -->
-	<select id="teacherMyPageWaiting" parameterType="String"  resultType="java.lang.Integer">
+	<select id="teacherMyPageWaiting" parameterType="map"  resultType="java.lang.Integer">
 		select count(*) from lecture
 		where lecture_author = #{user_name} and (status = 'waiting' or status = 'deleteWaiting')
 	</select>
 
 <!-- 강사당 반려 강의수 -->
-	<select id="teacherMyPageReject" parameterType="String"  resultType="java.lang.Integer">
+	<select id="teacherMyPageReject" parameterType="map"  resultType="java.lang.Integer">
 		select count(*) from lecture
 		where lecture_author = #{user_name} and status = 'reject'
 	</select>

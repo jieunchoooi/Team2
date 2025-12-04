@@ -2,7 +2,10 @@ package com.itwillbs.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.http.HttpRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -29,6 +32,7 @@ import com.itwillbs.domain.EnrollmentVO;
 import com.itwillbs.domain.EnrollmentViewVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.NotApprovedVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.PointHistoryVO;
 import com.itwillbs.domain.ScrapVO;
@@ -362,32 +366,69 @@ public class MemberController {
 	
 //	    강사 강의 관리 페이지
 	    @GetMapping("/teacherMyPage")
-	    public String teacherMyPage(HttpSession session, Model model,
+	    public String teacherMyPage(HttpSession session, Model model, HttpServletRequest request,
 	    						    @RequestParam(value = "filter", defaultValue = "all") String filter) {
 			System.out.println("MemberController teacherMyPage()");
 			
+			String pageNum = request.getParameter("pageNum");
+		    if (pageNum == null) {
+		       pageNum = "1";
+		    }
+		    int currentPage = Integer.parseInt(pageNum);
+		    int pageSize = 10;
+
+		    PageVO pageVO = new PageVO();
+		    pageVO.setPageNum(pageNum);
+		    pageVO.setCurrentPage(currentPage);
+		    pageVO.setPageSize(pageSize);
 			String user_id = (String) session.getAttribute("user_id");
 			String user_name = (String) session.getAttribute("user_name");
 			UserVO user = memberService.insertMember(user_id);
 
-			int teacherMyPage = memberService.teacherMyPage(user_name); // 총 강의수
-			int teacherMyPageOk = memberService.teacherMyPageOk(user_name); // 승인 완료
-			int teacherMyPageWaiting = memberService.teacherMyPageWaiting(user_name); // 승인 대기
-			int teacherMyPageReject = memberService.teacherMyPageReject(user_name); // 승인 반려
-			int teacherMyPageDelete = memberService.teacherMyPageDelete(user_name); // 삭제 강의
+			int count;
+			List<LectureVO> manageMyCourses;
+			// Map에 값 담기
+		    Map<String, Object> params = new HashMap<>();
+		    params.put("user_name", user_name);
+		    params.put("pageVO", pageVO);
+		    
+			if("approval".equals(filter)) {
+				manageMyCourses = memberService.approvalClass(params);
+				count = memberService.teacherMyPageOk(params);
+			}else if("waiting".equals(filter)) {
+				manageMyCourses = memberService.waitingClass(params);
+				count = memberService.teacherMyPageWaiting(params);
+			}else if("reject".equals(filter)) {
+				manageMyCourses = memberService.rejectClass(params);
+				count = memberService.teacherMyPageReject(params); 
+			}else if("delete".equals(filter)) {
+				manageMyCourses = memberService.deleteClass(params);
+				count = memberService.teacherMyPageDelete(params);
+			}else {
+				manageMyCourses = memberService.manageMyCourses(params);
+				count = memberService.teacherMyPage(params);
+			}
 			
-		    List<LectureVO> manageMyCourses;
-		    if("approval".equals(filter)) {
-		    	manageMyCourses = memberService.approvalClass(user_name);
-		    }else if("waiting".equals(filter)) {
-		    	manageMyCourses = memberService.waitingClass(user_name);
-		    }else if("reject".equals(filter)) {
-		    	manageMyCourses = memberService.rejectClass(user_name);
-		    }else if("delete".equals(filter)) {
-		    	manageMyCourses = memberService.deleteClass(user_name);
-		    }else {
-		    	manageMyCourses = memberService.manageMyCourses(user_name);
+			int teacherMyPage = memberService.teacherMyPage(params); // 총 강의수
+			int teacherMyPageOk = memberService.teacherMyPageOk(params); // 승인 완료
+			int teacherMyPageWaiting = memberService.teacherMyPageWaiting(params); // 승인 대기
+			int teacherMyPageReject = memberService.teacherMyPageReject(params); // 승인 반려
+			int teacherMyPageDelete = memberService.teacherMyPageDelete(params); // 삭제 강의
+			
+		    
+		    int pageBlock = 10;
+		    int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+		    int endPage = startPage + (pageBlock - 1);
+		    int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+		    if (endPage > pageCount) {
+		       endPage = pageCount;
 		    }
+		    
+		    pageVO.setCount(count);
+		    pageVO.setPageBlock(pageBlock);
+		    pageVO.setStartPage(startPage);
+		    pageVO.setEndPage(endPage);
+		    pageVO.setPageCount(pageCount);
 		    
 		    model.addAttribute("filter",filter); 
 		    model.addAttribute("user",user); 
@@ -397,7 +438,7 @@ public class MemberController {
 			model.addAttribute("teacherMyPageWaiting", teacherMyPageWaiting);
 			model.addAttribute("teacherMyPageReject", teacherMyPageReject);
 			model.addAttribute("teacherMyPageDelete", teacherMyPageDelete);
-	    	
+		    model.addAttribute("pageVO", pageVO);
 	    	
 	    	return "member/teacherMyPage";   
 	    }
