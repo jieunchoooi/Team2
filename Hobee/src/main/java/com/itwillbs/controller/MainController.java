@@ -60,10 +60,23 @@ public class MainController {
    }
    
    @RequestMapping(value="/search")
-   public String search(@RequestParam("search") String search, Model model) {
+   public String search(@RequestParam("search") String search, Model model, HttpSession session) {
       System.out.println("MainController search()");     
     
       List<LectureVO> lectureList = lectureService.getAllLectures(search);
+      
+      UserVO userVO = (UserVO) session.getAttribute("userVO");
+      if(userVO != null) {
+          List<Integer> scrapLectureNums = scrapService.getScrapList(userVO.getUser_num())
+                                                     .stream()
+                                                     .map(ScrapVO::getLecture_num)
+                                                     .collect(Collectors.toList());
+          
+          // 강의 목록에 bookmark 정보 세팅
+          for(LectureVO lecture : lectureList) {
+              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+          }
+      }
     
       model.addAttribute("lectureList", lectureList);
       
