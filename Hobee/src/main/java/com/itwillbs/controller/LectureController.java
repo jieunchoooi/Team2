@@ -112,6 +112,8 @@ public class LectureController {
 	          for(LectureVO lecture : similarLectures) {
 	              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
 	          }
+	          // lectureVO에도 bookmark 정보 세팅 추가
+	          lectureVO.setBookmark(scrapLectureNums.contains(lectureVO.getLecture_num()));
 	      }
 		
 		model.addAttribute("lectureVO", lectureVO);

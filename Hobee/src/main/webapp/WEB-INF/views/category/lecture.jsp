@@ -285,7 +285,6 @@
         <h3 class="course-main-title">${lectureVO.lecture_title}</h3>
 
         <div class="price-section">
-<!--           <div class="discount-rate">42% ₩50,000원</div> -->
           <div class="current-price">
 			  <fmt:formatNumber value="${lectureVO.lecture_price}" type="number" />원
 		  </div>
@@ -316,7 +315,11 @@
         <div class="action-icons">
           <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div>
           <div class="action-icon"><i class="far fa-share-square"></i><span>공유</span></div>
-          <div class="action-icon"><i class="far fa-bookmark"></i><span>46513</span></div>
+          <div class="action-icon ${lectureVO.bookmark ? 'active' : ''}" 
+               data-lecture-num="${lectureVO.lecture_num}"
+               onclick="toggleBookmark(${lectureVO.lecture_num}, this);">
+            <i class="far fa-bookmark"></i><span>1010</span>
+          </div>
         </div>
       </div>
     </aside>
@@ -364,6 +367,7 @@
 <div id="reviewModalContainer" style="display:none;"></div>
 
 <script>
+
   // 탭 클릭 시 스크롤 이동
   const tabs = document.querySelectorAll('.tab-item');
   const curriculumSection = document.querySelector('.curriculum-section');

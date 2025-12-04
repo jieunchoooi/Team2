@@ -355,6 +355,11 @@ main { flex: 1; display: flex; justify-content: center; padding: 40px 20px; gap:
 .action-icon span { font-size: 0.75rem; color: var(--gray); }
 .action-icon:hover i { color: var(--primary); }
 
+/* 북마크 활성화 상태 */
+.action-icon.active i {
+  font-weight: 900;
+}
+
 /* 강사의 다른 강의 / 비슷한 강의 추천 */
 .instructor-section, .similar-section { 
   background: #fff; 
