@@ -116,13 +116,14 @@
 						</td>
 						<td>${lectureVO.created_at}</td>
 						<td>
-						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting' and lectureVO.status != 'reject' and lectureVO.status != 'cancelDelete'}">
+						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting' 
+									and lectureVO.status != 'reject' and lectureVO.status != 'cancelDelete' and lectureVO.status != 'waiting'}">
 							<button type="button" class="btn btn-edit-small" data-num="${lectureVO.lecture_num}">수정</button>
 						</c:if>	
 						<c:if test="${lectureVO.status == 'reject'}">
 							<button type="button" class="btn btn-edit-small" data-num="${lectureVO.lecture_num}">상세보기</button>
 						</c:if>	
-						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting' and lectureVO.status != 'cancelDelete'}">
+						<c:if test="${lectureVO.status != 'delete' and lectureVO.status != 'deleteWaiting' and lectureVO.status != 'cancelDelete' and lectureVO.status != 'waiting'}">
 							<button type="button" class="btn btn-delete-small" data-num="${lectureVO.lecture_num}">삭제</button>
 						</c:if>	
 						<c:if test="${lectureVO.status == 'delete'}">

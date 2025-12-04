@@ -262,8 +262,15 @@ classAddForm.onsubmit = function(e){
 		document.getElementById("tag-input").focus();
 		return false;
 	}
-	
-	return reindexChapters();
+	// ✅ 마지막 확인
+    let result = confirm("승인 요청 하시겠습니까?");
+    if(result){
+        reindexChapters(); // 챕터 인덱스 재정렬
+        return true; // 폼 제출 진행
+    } else {
+        e.preventDefault(); // 폼 제출 취소
+        return false;
+    }
 }
 
 // 시간 자동 포맷 적용 함수
