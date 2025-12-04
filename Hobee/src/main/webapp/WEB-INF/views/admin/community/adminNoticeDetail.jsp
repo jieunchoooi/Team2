@@ -63,23 +63,26 @@
         </div>
         
         <div class="detail-row">
-    		<span class="detail-label">중요도</span>
-    		<span class="detail-value">
-        		<c:choose>
-            		<c:when test="${notice.priority == 4}">
-                	<span style="color:#ff3333; font-weight:700;">🔥 긴급</span>
-            	</c:when>
-            	<c:when test="${notice.priority == 3}">
-                	<span style="color:#ff6600; font-weight:700;">매우 중요</span>
-            	</c:when>
-            	<c:when test="${notice.priority == 2}">
-                	<span style="color:#2573ff; font-weight:600;">중요</span>
-            	</c:when>
-            	<c:otherwise>일반</c:otherwise>
-        		</c:choose>
-   		 	</span>
-		</div>
-        
+    <span class="detail-label">중요도</span>
+    <span class="detail-value">
+
+        <span class="priority-badge 
+            ${notice.priority == 4 ? 'p-4' : 
+              notice.priority == 3 ? 'p-3' :
+              notice.priority == 2 ? 'p-2' : 'p-1'}">
+
+            <c:choose>
+                <c:when test="${notice.priority == 4}">긴급</c:when>
+                <c:when test="${notice.priority == 3}">매우 중요</c:when>
+                <c:when test="${notice.priority == 2}">중요</c:when>
+                <c:otherwise>일반</c:otherwise>
+            </c:choose>
+
+        </span>
+
+    </span>
+</div>
+
         
         <!-- ⭐ 게시 시작일 -->
 		<div class="detail-row">

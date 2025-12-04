@@ -68,10 +68,16 @@
             <span class="detail-value">${faq.updated_at}</span>
         </div>
 
-        <div class="detail-row">
-            <span class="detail-label">답변</span>
-            <div class="detail-content-area">${faq.answer}</div>
-        </div>
+        <!-- 답변 -->
+<div class="detail-row answer-row">
+    <span class="detail-label">답변</span>
+    <div class="detail-content-area">
+        <div class="answer-title">ANSWER</div>
+        ${faq.answer}
+    </div>
+</div>
+
+
 
         <div class="btn-area">
             <button class="btn-blue"

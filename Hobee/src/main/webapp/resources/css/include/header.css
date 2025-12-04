@@ -171,4 +171,11 @@ nav a:hover {
     margin-left: 10px;
 }
 
+#openLoginLog {
+    position: relative;
+    z-index: 9999 !important;
+    cursor: pointer;
+}
+
+
 

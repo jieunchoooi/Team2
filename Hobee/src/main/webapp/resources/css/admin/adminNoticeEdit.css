@@ -349,6 +349,28 @@ button.delete-btn:hover {
     border-radius: 10px;
 }
 
+@keyframes pulseBorder {
+    0% { box-shadow: 0 0 0 0 rgba(140,91,255,0.4); }
+    100% { box-shadow: 0 0 0 6px rgba(140,91,255,0); }
+}
+
+input:focus, select:focus, textarea:focus {
+    animation: pulseBorder 0.6s ease-out;
+}
+
+.section-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.5s ease;
+}
+
+.section-fade.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
 
 
 

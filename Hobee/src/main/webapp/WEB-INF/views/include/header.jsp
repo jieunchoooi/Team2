@@ -816,54 +816,76 @@ $(document).ready(function () {
  });
 
 
-    /* =======================================================
-       ✅ 헤더에서 로그인 상세 정보 보기 (이름 클릭)
-    ======================================================= */
-    $(document).on("click", "#openLoginLog", function () {
+ /* =======================================================
+ ✅ 헤더에서 로그인 상세 정보 보기 (이름 클릭)
+======================================================= */
+ $(document).on("click", "#openLoginLog", function () {
 
-        $.ajax({
-            url: contextPath + "/user/loginInfo",
-            method: "GET",
-            success: function(res) {
+	    $.ajax({
+	        url: contextPath + "/user/loginInfo",
+	        method: "GET",
+	        dataType: "json",
 
-                let userName = res.user_name || "정보 없음";
-                let lastLogin = res.last_login_at || "첫 로그인";
-                let currentLocation = res.current_location || "정보 없음";
-                let lastLocation = res.last_location || "기록 없음";
+	        success: function (res) {
 
-                let deviceList = "";
-                if (res.recent_devices && res.recent_devices.length > 0) {
-                    res.recent_devices.forEach(d => {
-                        deviceList += `<li>${d}</li>`;
-                    });
-                } else {
-                    deviceList = "<li>기록 없음</li>";
-                }
+	            console.log("로그인 상세 응답:", res);
 
-                Swal.fire({
-                    title: "로그인 상세 정보 🔍",
-                    html: `
-                        <div style="text-align:left; font-size:15px; line-height:1.6;">
-                            <b>✔ 사용자:</b> ${userName}<br>
-                            <b>✔ 마지막 로그인:</b> ${lastLogin}<br>
-                            <b>✔ 현재 접속 지역:</b> ${currentLocation}<br>
-                            <b>✔ 이전 접속 지역:</b> ${lastLocation}<br>
-                            <b>✔ 최근 로그인 기기:</b>
-                            <ul style="padding-left:18px; margin-top:6px;">
-                                ${deviceList}
-                            </ul>
-                        </div>
-                    `,
-                    width: "450px",
-                    confirmButtonText: "닫기",
-                    confirmButtonColor: "#4a74ff"
-                });
-            }
-        });
-    });
+	            let userName = res.user_name || "정보 없음";
+	            let lastLogin = res.last_login_at || "첫 로그인";
+	            let currentLocation = res.current_location || "정보 없음";
+	            let lastLocation = res.last_location || "기록 없음";
+
+	            let deviceList = "";
+	            if (res.recent_devices && res.recent_devices.length > 0) {
+	                res.recent_devices.forEach(d => {
+	                    deviceList += `<li>${d}</li>`;
+	                });
+	            } else {
+	                deviceList = "<li>기록 없음</li>";
+	            }
+
+	            Swal.fire({
+	                title: "로그인 상세 정보 🔍",
+	                html: `
+	                    <div style="
+	                        text-align:left;
+	                        font-size:15px;
+	                        line-height:1.6;
+	                        color:#333 !important;
+	                    ">
+	                        <b style="color:#111 !important;">✔ 사용자:</b> \${userName}<br>
+	                        <b style="color:#111 !important;">✔ 마지막 로그인:</b> \${lastLogin}<br>
+	                        <b style="color:#111 !important;">✔ 현재 접속 지역:</b> \${currentLocation}<br>
+	                        <b style="color:#111 !important;">✔ 이전 접속 지역:</b> \${lastLocation}<br>
+	                        <b style="color:#111 !important;">✔ 최근 로그인 기기:</b>
+	                        <ul style="padding-left:18px; margin-top:6px; color:#333 !important;">
+	                            \${deviceList}
+	                        </ul>
+	                    </div>
+	                `,
+	                width: "450px",
+	                confirmButtonText: "닫기",
+	                confirmButtonColor: "#4a74ff",
+	                didOpen: () => {
+	                    const swalEl = document.querySelector('.swal2-html-container');
+	                    if (swalEl) {
+	                        swalEl.style.color = '#333';
+	                    }
+	                }
+	            });
+	        },
+
+	        error: function (xhr, status, err) {
+	            console.error("loginInfo 호출 실패:", status, err);
+	        }
+	    });
+
+	}); // 이름 클릭 이벤트 끝
+
 
 }); // document.ready 끝
 </script>
+
 
 </body>
 </html>

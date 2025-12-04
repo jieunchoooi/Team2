@@ -1,26 +1,64 @@
 @charset "UTF-8";
 
-/* ==========================================================
-   🔹 아이디 찾기 컨테이너
-========================================================== */
+/* ===========================
+   🔵 FIND-ID 메인 카드
+=========================== */
 .findid-container {
     width: 500px;
     margin: 70px auto;
     padding: 40px 40px;
-    background: #ffffff;
     border-radius: 18px;
-    box-shadow: 0 8px 35px rgba(0,0,0,0.1);
+
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.95);
+    outline: 1.5px solid rgba(180,180,180,0.32);
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.08),
+        0 18px 45px rgba(0,0,0,0.06);
+
+    animation: findidFadeCard 0.6s ease-out;
 }
 
-/* 제목 */
+@keyframes findidFadeCard {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   🔵 제목
+=========================== */
 .findid-container h2 {
     text-align: center;
     font-weight: 700;
     font-size: 26px;
-    margin-bottom: 12px;
+    margin-bottom: 18px;
+    position: relative;
+
+    animation: findidTitleUp 0.6s ease-out;
 }
 
-/* 설명 */
+@keyframes findidTitleUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 제목 하단 라인 */
+.findid-container h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #4779ff, #875bff);
+    border-radius: 3px;
+}
+
+/* ===========================
+   설명 텍스트
+=========================== */
 .findid-container .desc {
     text-align: center;
     font-size: 14px;
@@ -29,112 +67,153 @@
     margin-bottom: 30px;
 }
 
-/* 라벨 */
+/* ===========================
+   입력 라벨
+=========================== */
 .form-group {
-    margin-bottom: 18px;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
+
 .form-group label {
     display: block;
     margin-bottom: 6px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #4a6bfd, #8f56ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* 입력 필드 */
+/* ===========================
+   입력창
+=========================== */
 .findid-container input[type="text"],
 .findid-container input[type="email"] {
     width: 100%;
     height: 46px;
     padding: 10px 14px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: 1px solid #dcdcdc;
     font-size: 15px;
+    transition: 0.25s;
     box-sizing: border-box;
 }
 
-/* 아이디 찾기 버튼 */
+.findid-container input:focus {
+    border-color: #3b7af0;
+    box-shadow: 0 0 8px rgba(59,122,240,0.25);
+}
+
+/* ===========================
+   버튼
+=========================== */
 .findid-btn {
     width: 100%;
     height: 48px;
-    background: #3b7af0;
+    background: linear-gradient(90deg, #3b7af0, #1e5eff);
+    background-size: 200%;
+    transition: background-position .35s ease;
+
     border: none;
-    color: white;
+    color: #fff;
     font-size: 16px;
     font-weight: 600;
     border-radius: 10px;
     cursor: pointer;
     margin-top: 10px;
 }
+
 .findid-btn:hover {
-    background: #2f66d6;
+    background-position: right;
 }
 
-/* 하단 링크 */
+/* ===========================
+   하단 링크
+=========================== */
 .bottom-link {
     text-align: center;
     margin-top: 18px;
 }
+
 .bottom-link a {
-    color: #777;
-    font-size: 14px;
+    color: #3b7af0;
+    font-weight: 600;
+    font-size: 15px;
+    position: relative;
+    padding-left: 22px;
+    text-decoration: none;
+    transition: all 0.25s ease;
 }
 
-/* ==========================================================
-   🔥 팝업 (배경)
-========================================================== */
-/* 팝업 배경 */
+.bottom-link a::before {
+    content: "🔐";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.bottom-link a::after {
+    content: "→";
+    margin-left: 6px;
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.bottom-link a:hover {
+    color: #1e5eff;
+}
+
+.bottom-link a:hover::after {
+    transform: translateX(4px);
+}
+
+/* ===========================
+   배경
+=========================== */
+body {
+    background: #f2f4f7;
+}
+
+/* ===========================
+   아이디찾기 성공 팝업
+=========================== */
 #emailSuccessPopup {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: rgba(0,0,0,0.45);
     backdrop-filter: blur(3px);
     display: none;
-    z-index: 9999;
+    z-index: 15000;   /* 로그인 모달(8000대)보다 위, 다른 것과도 충돌 적음 */
 }
 
-
-/* 팝업 박스 크기 (여기 중요!) */
 #emailSuccessPopup .join-success-box {
-    position: fixed;            /* 화면 기준 */
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0.85);
-    /* scale 애니메이션 시작점을 함께 적용 */
+    position: fixed;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
 
-    background: #fff;
     width: 380px;
     padding: 35px 45px;
+    background: #fff;
     border-radius: 18px;
     text-align: center;
     box-shadow: 0 12px 40px rgba(0,0,0,0.25);
 
-    opacity: 0;
-    animation: popupEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: findidPopupBounce 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 
-
-
-@keyframes popupEnter {
-    0% {
-        transform: translate(-50%, -50%) scale(0.85);
-        opacity: 0;
-    }
-    60% {
-        transform: translate(-50%, -50%) scale(1.03);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
+@keyframes findidPopupBounce {
+    0%   { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+    70%  { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
 }
 
-
-/* 체크 원 */
-#emailSuccessPopup .checkmark-circle {
+/* 체크 아이콘 */
+.checkmark-circle {
     width: 75px;
     height: 75px;
     border-radius: 50%;
@@ -143,8 +222,7 @@
     position: relative;
 }
 
-/* 체크표 */
-#emailSuccessPopup .checkmark {
+.checkmark {
     width: 30px;
     height: 60px;
     border-right: 6px solid #2ecc71;
@@ -155,17 +233,9 @@
     left: 20px;
 }
 
-/* 찾은 아이디 */
-#foundUserId {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1e5eff;
-    margin: 12px 0;
-}
-
-/* 버튼 */
-#copyIdBtn,
-#popupOkBtn {
+/* 팝업 버튼 */
+.popup-ok-btn,
+#copyIdBtn {
     background: #1e5eff;
     color: white;
     padding: 8px 16px;

@@ -129,3 +129,114 @@
     opacity: 0.85;
 }
 
+/* ===========================================
+   카드 전체 윤곽 + Depth 강조
+=========================================== */
+.findpw-container {
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.95);  
+    outline: 1.3px solid rgba(180,180,180,0.28);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.08),
+        0 18px 45px rgba(0,0,0,0.06);
+}
+
+/* ===========================================
+   제목 포인트 강조 라인
+=========================================== */
+.findpw-container h2 {
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.findpw-container h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85px;
+    height: 3px;
+    background: linear-gradient(90deg, #4a6bfd, #875bff);
+    border-radius: 3px;
+    opacity: 0.95;
+}
+
+/* ===========================================
+   입력창 그룹 Depth 강조
+=========================================== */
+.findpw-container .form-group {
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ===========================================
+   입력창 Focus 강조
+=========================================== */
+.findpw-container input:focus {
+    border-color: #3b7af0;
+    box-shadow: 0 0 8px rgba(59,122,240,0.25);
+    transition: 0.25s;
+}
+
+/* ===========================================
+   버튼 Hover 슬라이드 효과
+=========================================== */
+.findpw-btn {
+    background: linear-gradient(90deg, #3b7af0, #1e5eff);
+    background-size: 200%;
+    transition: background-position 0.35s ease;
+}
+
+.findpw-btn:hover {
+    background-position: right;
+}
+
+/* ===========================================
+   하단 링크 아이콘 + 슬라이드 효과
+=========================================== */
+.bottom-link a {
+    color: #3b7af0;
+    font-weight: 600;
+    font-size: 15px;
+    position: relative;
+    padding-left: 22px;
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+/* 🔐 아이콘 */
+.bottom-link a::before {
+    content: "🔐";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+}
+
+/* → 슬라이드 화살표 */
+.bottom-link a::after {
+    content: "→";
+    margin-left: 6px;
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.bottom-link a:hover {
+    color: #1e5eff;
+}
+
+.bottom-link a:hover::after {
+    transform: translateX(4px);
+}
+
+
+
+
+

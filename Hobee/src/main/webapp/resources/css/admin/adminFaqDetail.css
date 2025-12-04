@@ -15,66 +15,96 @@
     font-size: 28px;
     font-weight: 700;
     color: #222;
-    margin-bottom: 40px !important;
+    margin-bottom: 32px !important;
 }
 
 /* ================================
-   상세 카드 박스
+   상세 카드 박스 (조금 더 컴팩트)
 ================================ */
 .detail-card {
-    background: #fcfcfe !important;              /* 부드러운 화이트 */
-    padding: 45px;
-    border-radius: 22px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    background: #ffffff;
+    padding: 36px 40px;
+    border-radius: 18px;
+
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+
     width: 100%;
-    max-width: 900px;
+    max-width: 820px;           /* 🔹 메인 박스 살짝 줄임 (900 → 820) */
     margin: 0 auto;
 }
 
 /* ================================
-   행 기본 구조
+   행 기본 구조 (grid 로 고정 폭 맞추기)
 ================================ */
 .detail-row {
-    display: flex;
-    padding: 14px 0;
-    border-bottom: 1px solid #e2e5ec !important;
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);   /* 왼쪽 라벨 150px, 오른쪽 내용 자동 */
+    column-gap: 28px;
+    padding: 16px 0;
+    border-bottom: 1px solid #eef0f5;
+    align-items: center;
 }
 
-/* 라벨 */
-.detail-label {
-    width: 160px;
-    font-weight: 700;
-    color: #333;
-    text-align: right;
-    padding-right: 20px;
-}
-
-/* 값 */
-.detail-value {
-    flex: 1;
-    color: #444;
-    line-height: 1.6;
+.detail-row:last-of-type {
+    border-bottom: none;
 }
 
 /* ================================
-   답변 박스
+   라벨 (번호 / 카테고리 / 질문 / …)
 ================================ */
+.detail-label {
+    font-weight: 700;
+    color: #111827;
+    font-size: 14px;
+
+    background: #f8f9fc;
+    border-radius: 999px;
+    padding: 8px 16px;
+
+    justify-self: center;   /* 가운데 정렬 */
+}
+
+/* 값 텍스트 */
+.detail-value {
+    font-size: 15px;
+    color: #374151;
+    line-height: 1.7;
+}
+
+/* ================================
+   답변 영역
+================================ */
+.answer-row {
+    align-items: flex-start;   /* 답변 박스 위쪽 정렬 */
+}
+
 .detail-content-area {
-    flex: 1;
-    background: #f4f7ff !important;           /* 연 파스텔 블루로 강조 */
-    border-left: 4px solid #3b82f6 !important;
+    background: #f7f9ff;
+    border: 1.5px solid #3b82f6;
     border-radius: 12px;
-    padding: 20px 25px !important;
-    line-height: 1.75;
-    color: #333;
+
+    padding: 16px 18px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #222;
+
     white-space: pre-line;
+}
+
+/* ANSWER 라벨 */
+.answer-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 6px;
 }
 
 /* ================================
    버튼 영역
 ================================ */
 .btn-area {
-    margin-top: 40px;
+    margin-top: 36px;
     display: flex;
     gap: 12px;
     justify-content: flex-end;
@@ -84,17 +114,20 @@
 .btn-blue,
 .btn-red,
 .btn-gray {
-    padding: 10px 20px;
+    min-width: 90px;
+    height: 40px;
+    padding: 0 20px;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
+    border: none;
+    font-size: 14px;
 }
 
 /* 수정 */
 .btn-blue {
     background: #2573ff;
     color: white;
-    border: none;
 }
 .btn-blue:hover {
     background: #1b5fd4;
@@ -104,7 +137,6 @@
 .btn-red {
     background: #ff4d4f;
     color: white;
-    border: none;
 }
 .btn-red:hover {
     background: #d9363e;
@@ -112,15 +144,13 @@
 
 /* 목록으로 */
 button.btn-gray {
-    background: #f1f2f4 !important;
-    color: #444 !important;
-    border: 1px solid #c5c7cc !important;
+    background: #f1f2f4;
+    color: #444;
+    border: 1px solid #c5c7cc;
 }
-
 button.btn-gray:hover {
-    background: #e3e5e8 !important;
+    background: #e3e5e8;
 }
-
 
 /* ================================
    공개/숨김 토글 버튼
@@ -131,6 +161,7 @@ button.btn-gray:hover {
     cursor: pointer;
     border: none;
     font-weight: 600;
+    font-size: 13px;
 }
 
 .btn-on {
@@ -143,13 +174,29 @@ button.btn-gray:hover {
     color: white;
 }
 
-main.main-content > .main-header > h1 {
-    margin-bottom: 55px !important;
-    display: block !important;   /* 일부 reset이 inline-block 처리한 경우 대비 */
+.detail-row:hover {
+    background: #f9fafc;
+    transition: background 0.2s ease;
 }
 
-.detail-label {
-    width: 140px !important;
-    text-align: center !important;
+.detail-content-area {
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
 }
+
+.main-header h1 {
+    position: relative;
+}
+
+.main-header h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 48px;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 3px;
+}
+
+
 

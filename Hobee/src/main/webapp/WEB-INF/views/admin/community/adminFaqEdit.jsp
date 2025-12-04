@@ -12,14 +12,16 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
 
+    <!-- 새로 만든 안정화 CSS -->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/css/admin/adminFaqEdit.css?v=15">
+          href="${pageContext.request.contextPath}/resources/css/admin/adminFaqEdit.css?v=999">
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
 
+<!-- 헤더 + 사이드바 -->
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
@@ -28,7 +30,6 @@
     <div class="main-header"><h1>FAQ 수정</h1></div>
 
     <div class="write-card">
-
         <form action="${pageContext.request.contextPath}/admin/adminFaqEditPro" method="post">
 
             <input type="hidden" name="faq_id" value="${faq.faq_id}">
@@ -56,7 +57,7 @@
             <div class="count-box">글자수: <span id="a-count">0</span> / 1000</div>
 
             <!-- 실시간 미리보기 -->
-            <div class="preview-title">미리보기</div>
+            <label class="preview-title">미리보기</label>
             <div id="answerPreview" class="preview-box"></div>
 
             <!-- 공개 여부 -->
@@ -77,84 +78,70 @@
             </div>
 
         </form>
-
-    </div>
-
-    <!-- 팝업 미리보기 모달 -->
-    <div id="faqPreviewModal" class="preview-modal" style="display:none;">
-        <div class="preview-content">
-            <h2>FAQ 미리보기</h2>
-
-            <div class="preview-box">
-                <h3 id="pvQuestion"></h3>
-                <div id="pvAnswer"></div>
-            </div>
-
-            <button class="btn-gray" onclick="closePreview()">닫기</button>
-        </div>
     </div>
 
 </main>
+
+<!-- ======================================================
+     팝업 모달 (✔ 반드시 main 밖, body 바로 아래 위치)
+====================================================== -->
+<div id="faqPreviewModal" class="preview-modal" style="display:none;">
+    <div class="preview-content">
+        <h2>FAQ 미리보기</h2>
+
+        <div class="popup-preview-box">
+            <h3 id="pvQuestion"></h3>
+            <div id="pvAnswer"></div>
+        </div>
+
+        <button class="btn-gray close-btn" onclick="closePreview()">닫기</button>
+    </div>
+</div>
+
 
 <!-- JS: 글자수 + 실시간 미리보기 -->
 <script>
 $(document).ready(function() {
 
-    // 초기 글자수
     $("#q-count").text($("#question").val().length);
     $("#a-count").text($("#answer").val().length);
 
-    // 초기 실시간 미리보기
     $("#answerPreview").html(
         $("#answer").val().replace(/\n/g, "<br>")
     );
 
-    // 질문 글자수
     $("#question").on("input", function() {
-        let len = $(this).val().length;
-        $("#q-count").text(len);
-        len > 100 ? $("#q-count").parent().addClass("red")
-                  : $("#q-count").parent().removeClass("red");
+        $("#q-count").text($(this).val().length);
     });
 
-    // 답변 글자수 + 실시간 미리보기
     $("#answer").on("input", function() {
-        let len = $(this).val().length;
-        $("#a-count").text(len);
-        len > 1000 ? $("#a-count").parent().addClass("red")
-                   : $("#a-count").parent().removeClass("red");
+        $("#a-count").text($(this).val().length);
 
         $("#answerPreview").html(
             $(this).val().replace(/\n/g, "<br>")
         );
+        
     });
-
 });
 </script>
 
-<!-- JS: 팝업 미리보기 -->
+<!-- JS: 팝업 -->
 <script>
 function previewFaq() {
-    let q = document.getElementById("question").value.trim();
-    let a = document.getElementById("answer").value.trim();
+    const q = $("#question").val().trim();
+    const a = $("#answer").val().trim();
 
-    if (q === "") {
-        alert("질문을 입력하세요.");
-        return;
-    }
-    if (a === "") {
-        alert("답변을 입력하세요.");
-        return;
-    }
+    if (!q) return alert("질문을 입력하세요.");
+    if (!a) return alert("답변을 입력하세요.");
 
-    document.getElementById("pvQuestion").innerText = q;
-    document.getElementById("pvAnswer").innerHTML = a.replace(/\n/g, "<br>");
+    $("#pvQuestion").text(q);
+    $("#pvAnswer").html(a.replace(/\n/g, "<br>"));
 
-    document.getElementById("faqPreviewModal").style.display = "flex";
+    $("#faqPreviewModal").css("display","flex");
 }
 
 function closePreview() {
-    document.getElementById("faqPreviewModal").style.display = "none";
+    $("#faqPreviewModal").hide();
 }
 </script>
 

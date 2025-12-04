@@ -236,6 +236,10 @@ jqFaq(function () {
         const id = jqFaq(this).data("id");
         const answerRow = jqFaq(".faq-answer-row[data-id='" + id + "']");
 
+        // 🔵 클릭된 행에 강조 효과 적용
+            jqFaq(".faq-row").removeClass("active-row");
+            jqFaq(".faq-row[data-id='" + id + "']").addClass("active-row");
+
         if (answerRow.is(":visible")) {
             answerRow.slideUp(200);
             return;
@@ -245,28 +249,33 @@ jqFaq(function () {
         answerRow.slideDown(200);
     });
 
-    /* -----------------------------------------
-       ⭐ 공개 / 숨김 토글
-    ----------------------------------------- */
-    jqFaq(".toggle-visible").click(function() {
+   /* -----------------------------------------
+      ⭐ 공개 / 숨김 토글 (정상 색 변경)
+   ----------------------------------------- */
+   jqFaq(".toggle-visible").click(function() {
 
-        const btn = jqFaq(this);
-        const id = btn.data("id");
-        const now = btn.data("visible");
-        const next = now === 1 ? 0 : 1;
+       const btn = jqFaq(this);
+       const id = btn.data("id");
+       const now = btn.data("visible");
+       const next = now === 1 ? 0 : 1;
 
-        jqFaq.ajax({
-            url: "${pageContext.request.contextPath}/admin/adminFaqVisibleAjax",
-            type: "POST",
-            data: { faq_id: id, is_visible: next },
-            success: function(){
-                btn.text(next === 1 ? "공개" : "숨김")
-                   .toggleClass("btn-blue", next === 1)
-                   .toggleClass("btn-gray", next === 0)
-                   .data("visible", next);
-            }
-        });
-    });
+       jqFaq.ajax({
+           url: "${pageContext.request.contextPath}/admin/adminFaqVisibleAjax",
+           type: "POST",
+           data: { faq_id: id, is_visible: next },
+           success: function() {
+
+               btn.text(next === 1 ? "공개" : "숨김")
+                  .data("visible", next)
+
+                  // 🔥 기존 색상 제거
+                  .removeClass("btn-green btn-gray btn-blue")
+
+                  // 🔥 공개=초록 / 숨김=회색 정상 적용
+                  .addClass(next === 1 ? "btn-green" : "btn-gray");
+           }
+       });
+   });
 
 });
 </script>

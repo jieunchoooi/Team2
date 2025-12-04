@@ -301,5 +301,92 @@ button {
     padding: 0 18px !important;
 }
 
+.admin-table tbody tr:hover {
+    background: #f5f9ff;
+    transition: 0.2s ease;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+.priority-badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #fff;
+    font-size: 13px;
+}
+
+.p-4 { background: #ff3333; } /* 긴급 */
+.p-3 { background: #ff6600; } /* 매우 중요 */
+.p-2 { background: #2563ff; } /* 중요 */
+.p-1 { background: #9ca3af; } /* 일반 */
+
+
+.title-link {
+    position: relative;
+    text-decoration: none;
+}
+
+.title-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0%;
+    height: 2px;
+    background: #3b82f6;
+    transition: 0.25s ease;
+}
+
+.title-link:hover::after {
+    width: 100%;
+}
+
+.btn-orange {
+    background: #f97316 !important;   /* 더 밝은 강조색 */
+}
+
+.btn-orange:hover {
+    background: #ea580c !important;
+}
+
+.admin-table th:nth-child(1),
+.admin-table td:nth-child(1) {
+    width: 40px;
+}
+
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2) {
+    min-width: 60px;
+}
+
+.admin-table th:nth-child(3),
+.admin-table td:nth-child(3) {
+    min-width: 200px;
+}
+
+.sort-btn {
+    transition: all 0.2s ease;
+}
+
+.sort-btn:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.sort-btn.active {
+    background: #3b82f6 !important;
+    color: #fff !important;
+    font-weight: 600;
+    border-color: #3b82f6 !important;
+}
+
+.sort-btn:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+
+
+
 
 
