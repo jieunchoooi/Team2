@@ -233,5 +233,95 @@
     z-index: 10000 !important;
 }
 
+/* 로그인 모달 상단 라이트바 */
+.login-modal-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    border-radius: 14px 14px 0 0;
+    background: linear-gradient(90deg, #4a74ff, #6fa2ff);
+}
+
+.login-modal-content {
+    animation: modalPop 0.35s ease-out;
+}
+
+@keyframes modalPop {
+    0% { opacity: 0; transform: scale(0.92) translateY(-10px); }
+    60% { opacity: 1; transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.login-input:hover {
+    border-color: #6f8dff;
+}
+
+.login-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(74,116,255,0.35);
+}
+
+.login-submit-btn:active {
+    transform: scale(0.97);
+}
+
+.login-links {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #555;
+}
+
+.login-link-item {
+    position: relative;
+    margin: 0 10px;
+    color: #555;
+    padding-bottom: 2px;
+    transition: 0.25s;
+}
+
+/* hover 시 underline 애니메이션 */
+.login-link-item::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    width: 0;
+    height: 2px;
+    background: #4a74ff;
+    transition: 0.3s;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.login-link-item:hover {
+    color: #4a74ff;
+    font-weight: 600;
+}
+
+.login-link-item:hover::after {
+    width: 100%;
+}
+
+/* 링크 사이의 구분선 개선 */
+.sep {
+    color: #ccc;
+    margin: 0 6px;
+    font-weight: 300;
+}
+
+.login-modal-content {
+    border: 1.8px solid rgba(74,116,255,0.35) !important;
+    box-shadow: 
+        0 12px 40px rgba(0,0,0,0.20), 
+        0 0 12px rgba(74,116,255,0.25); /* 파란 라이트 글로우 */
+}
+
+
+
 
 

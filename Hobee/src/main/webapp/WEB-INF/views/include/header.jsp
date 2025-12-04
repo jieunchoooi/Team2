@@ -103,7 +103,6 @@
             <c:choose>
                 <c:when test="${empty sessionScope.user_id}">
                     <a href="#" id="openLoginModal" class="auth-link">로그인</a>
-                    <a href="#" id="openTeacherLoginModal" class="auth-link">강사 로그인</a>
                     <a href="#" id="openInsertModal" class="auth-link">회원가입</a>
                 </c:when>
 
@@ -201,18 +200,6 @@ $(document).ready(function () {
     -------------------------------------------------- */
     $("#openLoginModal").click(function(e) {
         e.preventDefault();
-
-        $("#loginForm input[name='loginType']").remove();
-        $("#loginForm").append('<input type="hidden" name="loginType" value="user">');
-
-        openLoginModal();
-    });
-
-    $("#openTeacherLoginModal").click(function(e) {
-        e.preventDefault();
-
-        $("#loginForm input[name='loginType']").remove();
-        $("#loginForm").append('<input type="hidden" name="loginType" value="teacher">');
 
         openLoginModal();
     });

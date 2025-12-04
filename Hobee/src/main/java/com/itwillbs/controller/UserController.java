@@ -138,22 +138,11 @@ public class UserController {
 
         Map<String, Object> result = new HashMap<>();
 
-        /* 0) loginType (user / teacher) */
-        String loginType = request.getParameter("loginType");
-        System.out.println("로그인 타입: " + loginType);
-
         // 1) 아이디 조회
         UserVO dbUser = userService.loginUser(userVO);
         if (dbUser == null) {
             result.put("result", "fail");
             result.put("message", "존재하지 않는 아이디입니다.");
-            return result;
-        }
-
-        // 1-1) 강사 로그인 요청 → 강사계정인지 확인
-        if ("teacher".equals(loginType) && !"instructor".equals(dbUser.getUser_role())) {
-            result.put("result", "fail");
-            result.put("message", "강사 전용 로그인입니다.");
             return result;
         }
 
