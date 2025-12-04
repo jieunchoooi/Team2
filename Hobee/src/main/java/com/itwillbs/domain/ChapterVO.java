@@ -16,6 +16,7 @@ public class ChapterVO {
 	  private int chapter_order;    // 순서 --- 자동으로 숫자 올라가야함
 	  private String chapter_title; // 제목
 	  
+	  
 	  private List<ChapterDetailVO> detailList;
 
 }

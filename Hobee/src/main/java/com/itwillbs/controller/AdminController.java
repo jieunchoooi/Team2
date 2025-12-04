@@ -2,6 +2,7 @@ package com.itwillbs.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,8 +19,10 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.domain.CategoryVO;
@@ -31,6 +34,7 @@ import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
+import com.itwillbs.service.CategoryService;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.UserService;
 
@@ -40,6 +44,9 @@ public class AdminController {
 
    @Inject
    private AdminService adminService;
+   
+   @Inject
+   private CategoryService categoryService;
 
    @Resource(name = "uploadPath1")
    private String uploadPath1;
@@ -675,6 +682,62 @@ public class AdminController {
 	   adminService.cancelDelete(lecture_num);
 	   
 	   return "redirect:/admin/adminClassList";
+   }
+   
+   @PostMapping("/updateCategoryOrder")
+   @ResponseBody
+   public Map<String, Object> updateCategoryOrder(@RequestBody Map<String, Object> orderData) {
+       Map<String, Object> response = new HashMap<>();
+       
+       try {
+           // 1. 대분류 순서 업데이트
+           List<Map<String, Object>> mainCategories = 
+               (List<Map<String, Object>>) orderData.get("mainCategories");
+           
+           if (mainCategories != null && !mainCategories.isEmpty()) {
+               for (Map<String, Object> main : mainCategories) {
+                   int num = (Integer) main.get("category_main_num");
+                   int order = (Integer) main.get("category_main_order");
+                   
+                   System.out.println("대분류 번호: " + num + ", 순서: " + order);
+                   
+                   // 실제 DB 업데이트
+                   Map<String, Object> params = new HashMap<>();
+                   params.put("category_main_num", num);
+                   params.put("category_main_order", order);
+                   categoryService.updateMainCategoryOrder(params);
+               }
+           }
+           
+           // 2. 소분류 순서 업데이트
+           List<Map<String, Object>> subCategories = 
+               (List<Map<String, Object>>) orderData.get("subCategories");
+           
+           if (subCategories != null && !subCategories.isEmpty()) {
+               for (Map<String, Object> sub : subCategories) {
+                   int num = (Integer) sub.get("category_num");
+                   int order = (Integer) sub.get("category_order");
+                   
+                   System.out.println("소분류 번호: " + num + ", 순서: " + order);
+                   
+                   // 실제 DB 업데이트
+                   Map<String, Object> params = new HashMap<>();
+                   params.put("category_num", num);
+                   params.put("category_order", order);
+                   categoryService.updateSubCategoryOrder(params);
+               }
+           }
+           
+           response.put("success", true);
+           response.put("message", "저장 완료");
+           
+       } catch (Exception e) {
+           e.printStackTrace();
+           response.put("success", false);
+           response.put("message", "저장 실패: " + e.getMessage());
+       }
+       
+       return response;
    }
    
    
