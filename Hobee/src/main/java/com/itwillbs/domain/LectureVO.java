@@ -24,6 +24,7 @@ public class LectureVO {
     
     //북마크
     private boolean bookmark;
+    private int bookmark_count;
     
     // 추가 필드 (통계 정보)
  	private double avg_score;         // 평균 별점
