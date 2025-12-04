@@ -114,6 +114,32 @@ body {
     color: #999;
 }
 
+/* 선택된 카드 스타일 */
+.stat-card.ok {
+    border: 2px solid #2573ff;
+    box-shadow: 0 4px 12px rgba(37, 115, 255, 0.2);
+}
+
+.stat-card:nth-child(2).ok {
+    border: 2px solid #2e7d32;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+}
+
+.stat-card:nth-child(3).ok {
+    border: 2px solid #ff6b35;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+}
+
+.stat-card:nth-child(4).ok {
+    border: 2px solid #c62828;
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);
+}
+
+.stat-card:nth-child(5).ok {
+    border: 2px solid #757575;
+    box-shadow: 0 4px 12px rgba(117, 117, 117, 0.2);
+}
+
 /* =========================== 메인 콘텐츠 영역 =========================== */
 .main-content {
     margin-left: 240px; /* 사이드바 폭만큼 밀기 */
@@ -523,4 +549,49 @@ td:nth-child(5) {
 .icon-btn:hover {
     background-color: #e0e0e0;
     transform: scale(1.1);
+}
+
+/* 페이징 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 30px;
+    padding: 20px 0;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+/* 현재 페이지 강조 */
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    font-weight: bold;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* 처음/끝, 이전/다음 버튼 스타일 */
+.pagination a[href*="처음"],
+.pagination a[href*="끝"],
+.pagination a[href*="이전"],
+.pagination a[href*="다음"] {
+    background-color: #f8f9fa;
+    font-weight: 500;
 }

@@ -325,16 +325,24 @@ public class AdminService {
 
 	public List<LectureVO> okClass(PageVO pageVO) {
 		System.out.println("AdminService okClass()");
+		
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		
 		return adminMapper.okClass(pageVO);
 	}
 
 	public List<LectureVO> askClass(PageVO pageVO) {
 		System.out.println("AdminService askClass()");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
 		return adminMapper.askClass(pageVO);
 	}
 
 	public List<LectureVO> compClass(PageVO pageVO) {
 		System.out.println("AdminService compClass()");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
 		return adminMapper.compClass(pageVO);
 	}
 
@@ -355,6 +363,8 @@ public class AdminService {
 
 	public List<LectureVO> deleteClass1(PageVO pageVO) {
 		System.out.println("AdminService deleteClass()");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
 		return adminMapper.deleteClass1(pageVO);
 	}
 

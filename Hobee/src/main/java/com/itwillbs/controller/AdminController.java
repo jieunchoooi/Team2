@@ -164,83 +164,95 @@ public class AdminController {
       return "redirect:/admin/adminClassList";
    }
 
-   // 강의 목록
    @GetMapping("/adminClassList")
    public String adminClassList(Model model, HttpServletRequest request,
-	   							@RequestParam(value = "search", required = false) String search,
-	   						    @RequestParam(value = "searchList", required = false) String searchList) {
+                               @RequestParam(value = "search", required = false) String search,
+                               @RequestParam(value = "searchList", required = false) String searchList) {
       System.out.println("AdminController adminClassList()");
-
       String pageNum = request.getParameter("pageNum");
       String filter = request.getParameter("filter");
+      
       if(filter == null || filter.isEmpty()) {
-    	  filter = "all";
+         filter = "all";
       }
       if (pageNum == null) {
          pageNum = "1";
       }
+      
       int currentPage = Integer.parseInt(pageNum);
       int pageSize = 10;
-
+      
       PageVO pageVO = new PageVO();
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
-      if(search == null) {
-    	  search = "";
-    	  pageVO.setSearch(search);
-    	  pageVO.setSearchList(searchList);
-      }else {
-    	  pageVO.setSearch(search);
-    	  pageVO.setSearchList(searchList);
+      
+      if(search == null || search.trim().isEmpty()) {
+         search = null;
       }
       
-      int tCount = adminService.teacharCount(pageVO);
+      if(searchList == null || searchList.isEmpty()) {
+         searchList = "전체";
+      }
+      
+      pageVO.setSearch(search);
+      pageVO.setSearchList(searchList);
+      
+      // 필터에 따른 강의 목록과 카운트 조회
       List<LectureVO> lectureList;
-
-      int compClassCount = adminService.compClassCount(pageVO);
-      int askClassCount = adminService.askClassCount(pageVO);
-      int okClassCount = adminService.okClassCount(pageVO);
-      int deleteClassCount = adminService.deleteClassCount(pageVO);
-      int classCount = adminService.classCount(pageVO);
-      int count = adminService.countlectureList(pageVO);
+      int count;
+      
+      if("ok".equals(filter)) {
+         lectureList = adminService.okClass(pageVO);
+         count = adminService.okClassCount(pageVO);
+      } else if("ask".equals(filter)) {
+         lectureList = adminService.askClass(pageVO);
+         count = adminService.askClassCount(pageVO);
+      } else if("comp".equals(filter)) {
+         lectureList = adminService.compClass(pageVO);
+         count = adminService.compClassCount(pageVO);
+      } else if("delete".equals(filter)){
+         lectureList = adminService.deleteClass1(pageVO);
+         count = adminService.deleteClassCount(pageVO);
+      } else {
+         lectureList = adminService.listLecture(pageVO);
+         count = adminService.countlectureList(pageVO);
+      }
+      
+      // 전체 통계 (검색 없이)
+      PageVO statPageVO = new PageVO();
+      int classCount = adminService.classCount(statPageVO);
+      int okClassCount = adminService.okClassCount(statPageVO);
+      int askClassCount = adminService.askClassCount(statPageVO);
+      int compClassCount = adminService.compClassCount(statPageVO);
+      int deleteClassCount = adminService.deleteClassCount(statPageVO);
+      
+      // 페이징 처리
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
       int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+      
       if (endPage > pageCount) {
          endPage = pageCount;
       }
-
-      if("ok".equals(filter)) {
-    	  lectureList = adminService.okClass(pageVO);
-      }else if("ask".equals(filter)) {
-    	  lectureList = adminService.askClass(pageVO);
-      }else if("comp".equals(filter)) {
-    	  lectureList = adminService.compClass(pageVO);
-      }else if("delete".equals(filter)){
-    	  lectureList = adminService.deleteClass1(pageVO);
-      }else {
-    	  lectureList = adminService.listLecture(pageVO);
-      }
       
+      // pageVO 담기
       pageVO.setCount(count);
       pageVO.setPageBlock(pageBlock);
       pageVO.setStartPage(startPage);
       pageVO.setEndPage(endPage);
       pageVO.setPageCount(pageCount);
-      pageVO.setCount(count);
-
+      
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("lectureList", lectureList);
       model.addAttribute("classCount", classCount);
-      model.addAttribute("tCount", tCount);
       model.addAttribute("filter", filter);
       model.addAttribute("compClassCount", compClassCount);
       model.addAttribute("askClassCount", askClassCount);
       model.addAttribute("okClassCount", okClassCount);
       model.addAttribute("deleteClassCount", deleteClassCount);
-
+      
       return "admin/adminClassList";
    }
    
@@ -275,6 +287,14 @@ public class AdminController {
       int currentPage = Integer.parseInt(pageNum);
       int pageSize = 10;
 
+      if(search == null || search.trim().isEmpty()) {
+          search = null;
+       }
+       
+       if(searchList == null || searchList.isEmpty()) {
+          searchList = "전체";
+       }
+       
       PageVO pageVO = new PageVO();
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
@@ -296,10 +316,10 @@ public class AdminController {
     	  count = adminService.countMemberList(pageVO);
       }
       
-      
-      int dcount = adminService.inactiveMemberCount(pageVO);
-      int acount = adminService.memberCount(pageVO);
-      int totalcount = adminService.countMemberList(pageVO);
+      PageVO statPageVO = new PageVO();
+      int dcount = adminService.inactiveMemberCount(statPageVO);
+      int acount = adminService.memberCount(statPageVO);
+      int totalcount = adminService.countMemberList(statPageVO);
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
@@ -434,9 +454,10 @@ public class AdminController {
           count = adminService.countTeacherList(pageVO);
       }
       
-      int totalCount = adminService.countTeacherList(pageVO);
-      int tCount = adminService.teacharCount(pageVO);
-      int intCount = adminService.inactiveTeacharCount(pageVO);
+      PageVO statPageVO = new PageVO();
+      int totalCount = adminService.countTeacherList(statPageVO);
+      int tCount = adminService.teacharCount(statPageVO);
+      int intCount = adminService.inactiveTeacharCount(statPageVO);
       
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
@@ -503,9 +524,10 @@ public class AdminController {
     	  count = adminService.deleteAllMemberCount(pageVO);
       }
       
-      int totalCount = adminService.deleteAllMemberCount(pageVO);
-      int mdCount = adminService.deletecountMemberList(pageVO);
-      int intCount = adminService.instructorDeletecountList(pageVO);
+      PageVO statPageVO = new PageVO();
+      int totalCount = adminService.deleteAllMemberCount(statPageVO);
+      int mdCount = adminService.deletecountMemberList(statPageVO);
+      int intCount = adminService.instructorDeletecountList(statPageVO);
       
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
@@ -521,7 +543,7 @@ public class AdminController {
       pageVO.setStartPage(startPage);
       pageVO.setEndPage(endPage);
       pageVO.setPageCount(pageCount);
-      pageVO.setCount(count);
+//      pageVO.setCount(count);
 
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("memberList", memberList);

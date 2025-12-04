@@ -50,27 +50,107 @@
 	<select id="memberCount" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_status = 'active' and user_role = 'user'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 	<!-- 검색 조건이 반영된 탈퇴 회원 카운트 쿼리들 -->
 	<select id="instructorDeletecountList" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_status != 'active' and user_role = 'instructor'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				AND (user_name LIKE CONCAT('%', #{search}, '%')
+				OR user_id LIKE CONCAT('%', #{search}, '%')
+				OR user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				AND user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				AND user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				AND user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 	<select id="inactiveMemberCount" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_role = 'user' and user_status != 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 	<select id="deletecountMemberList" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_status != 'active' and user_role = 'user'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				AND (user_name LIKE CONCAT('%', #{search}, '%')
+				OR user_id LIKE CONCAT('%', #{search}, '%')
+				OR user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				AND user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				AND user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				AND user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 	<select id="deleteAllMemberCount" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_status != 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				AND (user_name LIKE CONCAT('%', #{search}, '%')
+				OR user_id LIKE CONCAT('%', #{search}, '%')
+				OR user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				AND user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				AND user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				AND user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 	<select id="countDrawMemberList" resultType="java.lang.Integer">
@@ -140,6 +220,22 @@
 	<select id="countTeacherList" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_role = 'instructor'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 <!-- 	<insert id="LectureUpdate" parameterType="com.itwillbs.domain.LectureVO"  -->
@@ -184,22 +280,22 @@
 	
 <!-- 승인된 강의 -->
 	<select id="okClass" resultType="com.itwillbs.domain.LectureVO">
-		select * from lecture
-		where status = 'approval'
-		<if test="search != null and search != ''">
-			<if test="searchList == '전체'">
-				and lecture_title LIKE CONCAT('%', #{search}, '%')
-				or lecture_author LIKE CONCAT('%', #{search}, '%')
-			</if>
-			<if test="searchList == '강사명'">
-				and lecture_author LIKE CONCAT('%', #{search}, '%')
-			</if>
-			<if test="searchList == '강의명'">
-				and lecture_title LIKE CONCAT('%', #{search}, '%')
-			</if>
-		</if>
-		order by lecture_num desc
-		LIMIT #{startRow}, #{pageSize}
+	    select * from lecture
+	    where status = 'approval'
+	    <if test="search != null and search != ''">
+	        <if test="searchList == '전체'">
+	            AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+	            OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+	        </if>
+	        <if test="searchList == '강사명'">
+	            AND lecture_author LIKE CONCAT('%', #{search}, '%')
+	        </if>
+	        <if test="searchList == '강의명'">
+	            AND lecture_title LIKE CONCAT('%', #{search}, '%')
+	        </if>
+	    </if>
+	    order by lecture_num desc
+	    LIMIT #{startRow}, #{pageSize}
 	</select>
 	
 <!-- 삭제된 강의 -->
@@ -208,8 +304,8 @@
 		where status = 'delete'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
-				and lecture_title LIKE CONCAT('%', #{search}, '%')
-				or lecture_author LIKE CONCAT('%', #{search}, '%')
+				and (lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%'))
 			</if>
 			<if test="searchList == '강사명'">
 				and lecture_author LIKE CONCAT('%', #{search}, '%')
@@ -228,8 +324,8 @@
 		where status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
-				and lecture_title LIKE CONCAT('%', #{search}, '%')
-				or lecture_author LIKE CONCAT('%', #{search}, '%')
+				and (lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%'))
 			</if>
 			<if test="searchList == '강사명'">
 				and lecture_author LIKE CONCAT('%', #{search}, '%')
@@ -248,8 +344,8 @@
 		where status = 'reject'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
-				and lecture_title LIKE CONCAT('%', #{search}, '%')
-				or lecture_author LIKE CONCAT('%', #{search}, '%')
+				and (lecture_title LIKE CONCAT('%', #{search}, '%')
+				or lecture_author LIKE CONCAT('%', #{search}, '%'))
 			</if>
 			<if test="searchList == '강사명'">
 				and lecture_author LIKE CONCAT('%', #{search}, '%')
@@ -263,7 +359,21 @@
 	</select>
 	
 	<select id="countlectureList" resultType="java.lang.Integer">
-		select count(*) from lecture
+	    select count(*) from lecture
+	    <where>
+	        <if test="search != null and search != ''">
+	            <if test="searchList == '전체'">
+	                (lecture_title LIKE CONCAT('%', #{search}, '%')
+	                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+	            </if>
+	            <if test="searchList == '강사명'">
+	                lecture_author LIKE CONCAT('%', #{search}, '%')
+	            </if>
+	            <if test="searchList == '강의명'">
+	                lecture_title LIKE CONCAT('%', #{search}, '%')
+	            </if>
+	        </if>
+	    </where>
 	</select>
 
 	<delete id="deleteClass">
@@ -451,11 +561,43 @@
 	<select id="teacharCount" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_role = 'instructor' and user_status = 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 	<select id="inactiveTeacharCount" resultType="java.lang.Integer">
 		select count(*) from user
 		WHERE user_role = 'instructor' and user_status != 'active'
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 
 	<!-- 검색 조건이 반영된 강사 카운트 쿼리들 -->
@@ -531,24 +673,74 @@
 	<select id="okClassCount" resultType="java.lang.Integer">
 		select count(*) from lecture
 		where status = 'approval'
+		<if test="search != null and search != ''">
+        <choose>
+            <when test="searchList == '전체'">
+                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+            </when>
+            <when test="searchList == '강사명'">
+                AND lecture_author LIKE CONCAT('%', #{search}, '%')
+            </when>
+            <when test="searchList == '강의명'">
+                AND lecture_title LIKE CONCAT('%', #{search}, '%')
+            </when>
+        </choose>
+    </if>
 	</select>
 	
 	<!-- 삭제된 강의 갯수 카운트 -->
 	<select id="deleteClassCount" resultType="java.lang.Integer">
-		select count(*) from lecture
-		where status = 'delete'
+	    select count(*) from lecture
+	    where status = 'delete'
+	    <choose>
+            <when test="searchList == '전체'">
+                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+            </when>
+            <when test="searchList == '강사명'">
+                AND lecture_author LIKE CONCAT('%', #{search}, '%')
+            </when>
+            <when test="searchList == '강의명'">
+                AND lecture_title LIKE CONCAT('%', #{search}, '%')
+            </when>
+        </choose>
 	</select>
 
 	<!-- 승인 요청된 강의 갯수 카운트 -->
 	<select id="askClassCount" resultType="java.lang.Integer">
 		select count(*) from lecture
 		where status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete'
+		<choose>
+            <when test="searchList == '전체'">
+                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+            </when>
+            <when test="searchList == '강사명'">
+                AND lecture_author LIKE CONCAT('%', #{search}, '%')
+            </when>
+            <when test="searchList == '강의명'">
+                AND lecture_title LIKE CONCAT('%', #{search}, '%')
+            </when>
+        </choose>
 	</select>
 
 	<!-- 반려 된 강의 갯수 카운트 -->
 	<select id="compClassCount" resultType="java.lang.Integer">
-		select count(*) from lecture
-		where status = 'reject'
+	    select count(*) from lecture
+	    where status = 'reject'
+	    <choose>
+            <when test="searchList == '전체'">
+                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+            </when>
+            <when test="searchList == '강사명'">
+                AND lecture_author LIKE CONCAT('%', #{search}, '%')
+            </when>
+            <when test="searchList == '강의명'">
+                AND lecture_title LIKE CONCAT('%', #{search}, '%')
+            </when>
+        </choose>
 	</select>
 
 	<update id="deleteMember" parameterType="int">
