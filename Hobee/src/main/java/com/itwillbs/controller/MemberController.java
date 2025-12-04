@@ -570,7 +570,7 @@ public class MemberController {
 	    	return "redirect:/member/teacherMyPage";
 	    }
 	    
-	    @GetMapping("/editLecture")
+	    @PostMapping("/editLecture")
 	    public String editLecture(@RequestParam("lecture_num") int lecture_num, Model model) {
 	    	System.out.println("MemberController editLecture()");
 	    	LectureVO lectureVO = adminService.classEdit(lecture_num);
@@ -581,11 +581,6 @@ public class MemberController {
 		    
 		    String tags = lectureVO.getLecture_tag(); // "드로잉,일러스트,취미"
 
-//		    if (instructorList != null) {
-//		        for (UserVO user : instructorList) {
-//		            System.out.println("강사: " + user.getUser_name() + " (" + user.getUser_id() + ")");
-//		        }
-//		    }
 		    // 쉼표 기준으로 배열화
 			String[] tagArr = tags.split(",");
 

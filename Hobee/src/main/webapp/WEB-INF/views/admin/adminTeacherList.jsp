@@ -173,7 +173,19 @@ search_btn.onclick = function(){
 detail.forEach(function(btn){
 	btn.onclick = function(){
 		let teacherNum = this.getAttribute("data-num");
-		location.href = "${ pageContext.request.contextPath }/admin/adminTeacherDetail?user_num=" + teacherNum; 
+		
+		let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '${pageContext.request.contextPath}/admin/adminTeacherDetail';
+        
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'user_num';
+        input.value = teacherNum;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
 	}
 });
 

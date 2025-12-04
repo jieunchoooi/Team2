@@ -138,7 +138,19 @@ let detail = document.querySelectorAll(".detail");
 detail.forEach(function(btn){
     btn.onclick = function(){
         let userNum = this.getAttribute("data-num");
-        location.href = "${pageContext.request.contextPath}/admin/MemberManagement?user_num=" + userNum;
+        
+    	let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '${pageContext.request.contextPath}/admin/MemberManagement';
+        
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'user_num';
+        input.value = userNum;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
     }
 });
 

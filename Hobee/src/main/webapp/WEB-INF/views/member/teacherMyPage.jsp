@@ -149,7 +149,7 @@
 			    <c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">
 			        <c:choose>
 			            <c:when test="${i == pageVO.currentPage}">
-			                <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${i}&filter=${param.filter}class="active">${i}</a>
+			                <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${i}&filter=${param.filter}" class="active">${i}</a>
 			            </c:when>
 			            <c:otherwise>
 			                <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${i}&filter=${param.filter}">${i}</a>
@@ -203,13 +203,34 @@ cencelDeleteBtn.forEach(function(btn) {
 });
 
 // 강의 수정
+// let editButtons = document.querySelectorAll('.btn-edit-small');
+// editButtons.forEach(function(btn) {
+//     btn.onclick = function() {
+//         let lectureNum = this.getAttribute('data-num');
+// //         alert("수정 페이지로 이동합니다.");
+//         location.href = "${pageContext.request.contextPath}/member/editLecture?lecture_num=" + lectureNum;
+//     }
+// });
+
 let editButtons = document.querySelectorAll('.btn-edit-small');
 editButtons.forEach(function(btn) {
     btn.onclick = function() {
-        let lectureNum = this.getAttribute('data-num');
-//         alert("수정 페이지로 이동합니다.");
-        location.href = "${pageContext.request.contextPath}/member/editLecture?lecture_num=" + lectureNum;
-    }
+    	 let lectureNum = this.getAttribute('data-num');
+         
+         // 동적으로 form 생성해서 POST 전송
+         let form = document.createElement('form');
+         form.method = 'POST';
+         form.action = '${pageContext.request.contextPath}/member/editLecture';
+         
+         let input = document.createElement('input');
+         input.type = 'hidden';
+         input.name = 'lecture_num';
+         input.value = lectureNum;
+         
+         form.appendChild(input);
+         document.body.appendChild(form);
+         form.submit();
+     }
 });
 
 

@@ -330,7 +330,7 @@ public class AdminController {
       return "admin/adminMemberList";
    }
 
-   @GetMapping("/MemberManagement")
+   @PostMapping("/MemberManagement")
    public String MemberManagement(Model model, @RequestParam("user_num") int user_num) {
       System.out.println("AdminController MemberManagement()");
       UserVO user = adminService.insertMember(user_num);
@@ -591,7 +591,7 @@ public class AdminController {
    }
    
 //   강의 수정
-   @GetMapping("/adminClassEditinfo")
+   @PostMapping("/adminClassEditinfo")
    public String adminClassEditinfo(@RequestParam("lecture_num") int lecture_num, Model model) {
 	    System.out.println("AdminController adminClassEditPro()");
 	    
@@ -620,7 +620,7 @@ public class AdminController {
 		return "admin/adminClassEditinfo";
    }
    
-   @GetMapping("/adminTeacherDetail")
+   @PostMapping("/adminTeacherDetail")
    public String adminTeacherDetail(@RequestParam("user_num") int user_num, Model model) {
        System.out.println("=== adminTeacherDetail 실행 ===");
        System.out.println("user_num: " + user_num);

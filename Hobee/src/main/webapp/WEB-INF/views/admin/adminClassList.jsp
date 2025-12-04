@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>클래스 목록 | Hobee Admin</title>
+<title>강의 목록 | Hobee Admin</title>
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
@@ -175,31 +175,19 @@ search.onclick = function(e){
 	search_form.submit();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 // 클래스 삭제	
-let deleteBtn = document.querySelectorAll('.btn-delete');
+// let deleteBtn = document.querySelectorAll('.btn-delete');
 
-deleteBtn.forEach(function(btn) {
-    btn.onclick = function() {
-        let lectureNum = this.getAttribute('data-num');
-        let result = confirm("강의를 삭제하시겠습니까?");
-        if(result) {
-            alert("강의가 삭제되었습니다.");
-            location.href = "${pageContext.request.contextPath}/admin/deleteClass?lecture_num=" + lectureNum;
-        }
-    }
-});
+// deleteBtn.forEach(function(btn) {
+//     btn.onclick = function() {
+//         let lectureNum = this.getAttribute('data-num');
+//         let result = confirm("강의를 삭제하시겠습니까?");
+//         if(result) {
+//             alert("강의가 삭제되었습니다.");
+//             location.href = "${pageContext.request.contextPath}/admin/deleteClass?lecture_num=" + lectureNum;
+//         }
+//     }
+// });
 
 
 // 클래스 수정
@@ -208,7 +196,19 @@ let edit = document.querySelectorAll(".edit");
 edit.forEach(function(btn){
     btn.onclick = function(){
         let lectureNum = this.getAttribute("data-num");
-        location.href = "${pageContext.request.contextPath}/admin/adminClassEditinfo?lecture_num=" + lectureNum;
+        
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '${pageContext.request.contextPath}/admin/adminClassEditinfo';
+        
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'lecture_num';
+        input.value = lectureNum;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
     }
 });
 

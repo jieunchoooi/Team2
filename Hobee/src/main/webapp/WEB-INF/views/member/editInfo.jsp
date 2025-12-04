@@ -205,6 +205,7 @@ document.getElementById('profilePic').addEventListener('change', function(e) {
     let user_email = document.querySelector('#user_email');
     let user_password = document.querySelector("#user_password");
     let user_address2 = document.querySelector("#user_address2");
+    let user_address1 = document.querySelector("#user_address1");
     let checkPassword = document.querySelector("#checkPassword");
     let checkPhone = document.querySelector("#checkPhone");
     let checkemail = document.querySelector("#checkemail");
@@ -272,9 +273,16 @@ updateForm.onsubmit = function(e){
         return false;
     }
     
+    if(user_address1.value.trim().length <= 0){
+        e.preventDefault();  
+        alert('주소를 입력해주세요.');
+        user_address2.focus();
+        return false;
+    }
+    
     if(user_address2.value.trim().length <= 0){
         e.preventDefault();  
-        alert('상세주소를 적어주세요.');
+        alert('상세주소를 입력해주세요.');
         user_address2.focus();
         return false;
     }

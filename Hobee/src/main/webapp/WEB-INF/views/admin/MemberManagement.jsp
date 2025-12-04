@@ -29,6 +29,16 @@
 		<div class="content-wrapper">
 			
 			<div class="form-container">
+			   <div class="profile-pic">
+					<c:choose>
+						<c:when test="${empty user.user_file}">
+							<span>🐵</span>
+						</c:when>
+						<c:otherwise>
+							<img src="${pageContext.request.contextPath}/resources/img/user_picture/${user.user_file}" alt="프로필 사진">
+						</c:otherwise>
+					</c:choose>
+				</div>
 				<div class="form-group">
 					<label for="user_num">번호</label> <span class="form-value">${user.user_num}</span>
 				</div>
