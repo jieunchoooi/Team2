@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -11,6 +12,7 @@ import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.NotApprovedVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.MemberMapper;
 
@@ -38,49 +40,71 @@ public class MemberService {
 		memberMapper.memberDelete(user_num);
 	}
 
-	public List<LectureVO> manageMyCourses(String user_name) {
+	public List<LectureVO> manageMyCourses(Map<String, Object> params) {
 		System.out.println("MemberService manageMyCourses()");
-		return memberMapper.manageMyCourses(user_name);
+		
+		PageVO pageVO = (PageVO) params.get("pageVO");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		params.put("pageVO", pageVO);
+		
+		return memberMapper.manageMyCourses(params);
 	}
 
-	public int teacherMyPage(String user_name) {
+	public int teacherMyPage(Map<String, Object> params) {
 		System.out.println("MemberService teacherMyPage()");
-		return memberMapper.teacherMyPage(user_name);
+		return memberMapper.teacherMyPage(params);
 	}
 
-	public int teacherMyPageOk(String user_name) {
+	public int teacherMyPageOk(Map<String, Object> params) {
 		System.out.println("MemberService teacherMyPageOk()");
-		return memberMapper.teacherMyPageOk(user_name);
+		return memberMapper.teacherMyPageOk(params);
 	}
 
-	public int teacherMyPageWaiting(String user_name) {
+	public int teacherMyPageWaiting(Map<String, Object> params) {
 		System.out.println("MemberService teacherMyPageWaiting()");
-		return memberMapper.teacherMyPageWaiting(user_name);
+		return memberMapper.teacherMyPageWaiting(params);
 	}
 
-	public int teacherMyPageReject(String user_name) {
+	public int teacherMyPageReject(Map<String, Object> params) {
 		System.out.println("MemberService teacherMyPageReject()");
-		return memberMapper.teacherMyPageReject(user_name);
+		return memberMapper.teacherMyPageReject(params);
 	}
 
-	public List<LectureVO> approvalClass(String user_name) {
+	public List<LectureVO> approvalClass(Map<String, Object> params) {
 		System.out.println("MemberService approvalClass()");
-		return memberMapper.approvalClass(user_name);
+		PageVO pageVO = (PageVO) params.get("pageVO");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		params.put("pageVO", pageVO);
+		return memberMapper.approvalClass(params);
 	}
-
-	public List<LectureVO> waitingClass(String user_name) {
+	
+	public List<LectureVO> waitingClass(Map<String, Object> params) {
 		System.out.println("MemberService waitingClass()");
-		return memberMapper.waitingClass(user_name);
+		PageVO pageVO = (PageVO) params.get("pageVO");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		params.put("pageVO", pageVO);
+		return memberMapper.waitingClass(params);
 	}
 
-	public List<LectureVO> rejectClass(String user_name) {
+	public List<LectureVO> rejectClass(Map<String, Object> params) {
 		System.out.println("MemberService rejectClass()");
-		return memberMapper.rejectClass(user_name);
+		PageVO pageVO = (PageVO) params.get("pageVO");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		params.put("pageVO", pageVO);
+		return memberMapper.rejectClass(params);
 	}
 
-	public List<LectureVO> deleteClass(String user_name) {
+	public List<LectureVO> deleteClass(Map<String, Object> params) {
 		System.out.println("MemberService deleteClass()");
-		return memberMapper.deleteClass(user_name);
+		PageVO pageVO = (PageVO) params.get("pageVO");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
+		params.put("pageVO", pageVO);
+		return memberMapper.deleteClass(params);
 	}
 	
 	public void LectureUpdate(LectureVO lectureVO) {
@@ -98,9 +122,9 @@ public class MemberService {
 		memberMapper.insertChapterDetail(chapterDetailVO);
 	}
 
-	public int teacherMyPageDelete(String user_name) {
+	public int teacherMyPageDelete(Map<String, Object> params) {
 		System.out.println("MemberService teacherMyPageDelete()");
-		return memberMapper.teacherMyPageDelete(user_name);
+		return memberMapper.teacherMyPageDelete(params);
 	}
 
 	public void deleteRequest(int lecture_num) {
@@ -117,6 +141,10 @@ public class MemberService {
 		System.out.println("MemberService deleteCencel()");
 		memberMapper.deleteCencel(lecture_num);
 	}
+
+
+
+	
 
 
 
