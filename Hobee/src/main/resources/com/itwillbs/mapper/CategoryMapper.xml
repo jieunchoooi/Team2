@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.CategoryMapper">
+
+    <!-- 기존 쿼리들... -->
+    
+    <!-- 대분류 순서 업데이트 추가 -->
+    <update id="updateMainCategoryOrder" parameterType="map">
+        UPDATE category_main
+        SET category_main_order = #{category_main_order}
+        WHERE category_main_num = #{category_main_num}
+    </update>
+    
+    <!-- 소분류 순서 업데이트 추가 -->
+    <update id="updateSubCategoryOrder" parameterType="map">
+        UPDATE category
+        SET category_order = #{category_order}
+        WHERE category_num = #{category_num}
+    </update>
+
+</mapper>

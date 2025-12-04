@@ -568,12 +568,13 @@
 <!-- 카테고리 리스트 -->
 	<select id="categoryList" resultType="com.itwillbs.domain.CategoryVO">
 		select * from category
-		order by category_main_name desc
+		order by category_order ASC
 	</select>
 	
 <!-- 카테고리 메인 리스트 -->
 	<select id="categoMainryList" resultType="com.itwillbs.domain.Category_mainVO">
-		select category_main_name from category_main
+		select * from category_main
+		ORDER BY category_main_order ASC
 	</select>
 	
 <!-- 카테고리 모달 리스트 -->
