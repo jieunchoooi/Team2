@@ -547,11 +547,25 @@ $(document).ready(function() {
         let categoryType = selectedItem.data('type');
         let categoryName = selectedItem.data('name');
         
-        if (!confirm(categoryName + '을(를) 삭제하시겠습니까?')) {
-            return;
-        }
-        
         if (categoryType === 'main') {
+            // 대분류 삭제 시 소분류 존재 여부 확인
+            let hasSubCategories = false;
+            $('.sub-category').each(function() {
+                if ($(this).data('main-name') === categoryName) {
+                    hasSubCategories = true;
+                    return false; // each 루프 중단
+                }
+            });
+            
+            if (hasSubCategories) {
+                alert('소분류가 존재하는 대분류는 삭제할 수 없습니다.\n먼저 하위 소분류를 모두 삭제해주세요.');
+                return;
+            }
+            
+            if (!confirm(categoryName + '을(를) 삭제하시겠습니까?')) {
+                return;
+            }
+            
             // 대분류 삭제
             $.ajax({
                 url: '${pageContext.request.contextPath}/admin/CategoryMainDelete',
@@ -566,6 +580,10 @@ $(document).ready(function() {
                 }
             });
         } else if (categoryType === 'sub') {
+            if (!confirm(categoryName + '을(를) 삭제하시겠습니까?')) {
+                return;
+            }
+            
             // 소분류 삭제
             let categoryId = selectedItem.data('category-id');
             $.ajax({
