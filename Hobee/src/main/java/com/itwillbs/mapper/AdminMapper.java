@@ -89,8 +89,6 @@ public interface AdminMapper {
 
 	public List<CategoryVO> categoryList();
 
-	public List<Category_mainVO> categoMainryList();
-
 	public void addCateMain(Category_mainVO category_mainVO);
 
 	public void CateMainDelete(Category_mainVO category_mainVO);
@@ -100,8 +98,6 @@ public interface AdminMapper {
 	public void deleteCategory(int category_num);
 
 	public Category_mainVO categoMainryList2(int category_num);
-
-	public CategoryVO selectCategoryByNum(int category_num);
 
 	public void updateCategory(CategoryVO categoryVO);
 
@@ -142,6 +138,8 @@ public interface AdminMapper {
 	public void classApprovaldelete(int lecture_num);
 
 	public void cancelDelete(int lecture_num);
+
+	public List<Category_mainVO> categoMainryList();
 
 
 

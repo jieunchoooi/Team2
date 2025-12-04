@@ -258,11 +258,6 @@ public class AdminService {
 		return adminMapper.categoryList();
 	}
 
-	public List<Category_mainVO> categoMainryList() {
-		System.out.println("AdminService categoMainryList()");
-		return adminMapper.categoMainryList();
-	}
-
 	public void addCateMain(Category_mainVO category_mainVO) {
 		System.out.println("AdminService addCateMain()");
 		adminMapper.addCateMain(category_mainVO);
@@ -281,11 +276,6 @@ public class AdminService {
 	public void deleteCategory(int category_num) {
 		System.out.println("AdminService deleteCategory()");
 		adminMapper.deleteCategory(category_num);
-	}
-
-	public CategoryVO selectCategoryByNum(int category_num) {
-		System.out.println("AdminService selectCategoryByNum()");
-		return adminMapper.selectCategoryByNum(category_num);
 	}
 
 	public void updateCategory(CategoryVO categoryVO) {
@@ -396,6 +386,11 @@ public class AdminService {
 	public void cancelDelete(int lecture_num) {
 		System.out.println("AdminService cancelDelete()");
 		adminMapper.cancelDelete(lecture_num);
+	}
+
+	public List<Category_mainVO> categoMainryList() {
+	    System.out.println("AdminService categoMainryList()");
+	    return adminMapper.categoMainryList();
 	}
 
 	

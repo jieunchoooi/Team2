@@ -69,7 +69,7 @@ public class AdminController {
    
    
    
-   
+   // 카테고리 편집
    @GetMapping("/adminCategory")
    public String adminCategory(Model model) {
       System.out.println("AdminController adminCategory()");
@@ -108,7 +108,7 @@ public class AdminController {
    		return "admin/adminCategory";
    }
    	
-//  카테고리 추가
+//  카테고리 소분류 추가
    @PostMapping("/addCategory")
    public String CategoryMainDelete(@RequestParam("category_main_name") String category_main_name,
    							  @RequestParam("category_detail") String category_detail) {
@@ -122,7 +122,7 @@ public class AdminController {
    		return "admin/adminCategory";
    }
    
-   // 카테고리 삭제
+   // 카테고리 소분류 삭제
    	@GetMapping("/deleteCategory")
    	public String deleteCategory(@RequestParam("category_num") int category_num) {
    		System.out.println("AdminController deleteCategory()");
@@ -131,27 +131,12 @@ public class AdminController {
    		
    		return "admin/adminCategory";
    	}
-   	
- // 모달에 카테고리 정보 보여주기
-   	@GetMapping("/categoryEditInfoModal")
-   	public String categoryEditInfoModal(@RequestParam("category_num") int category_num, Model model) {
-   		System.out.println("AdminController categoryEditInfoModal()");
-
-   	    // 1. 수정할 카테고리 정보 조회
-   	    CategoryVO category = adminService.selectCategoryByNum(category_num);
-   	    model.addAttribute("category", category);
-   	    
-   	    // 2. 대분류 목록도 함께 전달 (셀렉트박스에 옵션 표시용)
-   	    List<Category_mainVO> categoMainryList = adminService.categoMainryList();
-   	    model.addAttribute("categoMainryList", categoMainryList);
-   	    return "admin/CategoryEditinfoModal";
-   	}
     
-   	// 2. 카테고리 수정 처리
+   	// 카테고리 수정 처리
    	@PostMapping("/updateCategory")
    	public String updateCategory(CategoryVO categoryVO) {
    	    adminService.updateCategory(categoryVO);
-   	    return "redirect:/admin/adminCategory"; // 카테고리 관리 페이지로 리다이렉트
+   	    return "redirect:/admin/adminCategory"; 
    	}
    
    // 클래스 삭제
