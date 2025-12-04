@@ -454,7 +454,9 @@ main {
 		            <div class="card">
 		                <a href="${pageContext.request.contextPath}/category/lecture?no=${lec.lecture_num}" class="card-img-wrapper" style="text-decoration:none;color:inherit;">
 		                    <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lec.lecture_img}" alt="${lec.lecture_title}">
-		                    <button class="bookmark-btn" onclick="event.preventDefault(); toggleBookmark(${lec.lecture_num}, this);">
+		                    <button class="bookmark-btn ${lec.bookmark ? 'active' : ''}"
+		                    		data-lecture-num="${lec.lecture_num}" 
+		                    	    onclick="event.preventDefault(); toggleBookmark(${lec.lecture_num}, this);">
 		                        <i class="far fa-bookmark"></i>
 		                    </button>
 		                </a>
@@ -499,11 +501,38 @@ function searchLecture(){
 	window.location.href='${pageContext.request.contextPath}/main/search?search=' + encodeURIComponent(search);
 }
 
-// 북마크 토글
+//북마크 토글 로직
 function toggleBookmark(lectureNum, btn) {
-    // TODO: Ajax 요청으로 서버에 북마크 저장
-    btn.classList.toggle('active');
+   
+   const isLogin = "${not empty sessionScope.user_id}" === "true";
+     
+   if(!isLogin){
+        openLoginModal();
+        return;
+     }
+   
+     $.ajax({
+        url: '${pageContext.request.contextPath}/main/bookmark',
+        method: 'POST',
+        data: { lecture_num: lectureNum },
+        success: function(response) {
+            if(response.success) {
+               const allButtons = document.querySelectorAll('[data-lecture-num="' + lectureNum + '"]');
+               
+               if(response.bookmarked){
+                  allButtons.forEach(button => {
+                     button.classList.add('active'); //북마크 ON
+                  });
+               } else {
+                  allButtons.forEach(button =>{
+                     button.classList.remove('active'); //북마크 OFF
+                  });
+               }
+            }
+         }
+     });
 }
+
 
 // 초기화
 if (totalSlides > 0) {
