@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.CategoryVO;
+import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.AdminService;
 import com.itwillbs.service.LectureService;
 import com.itwillbs.service.ScrapService;
 
@@ -116,11 +119,5 @@ public class MainController {
    }
    
    
-   
-   
-   
-   
-   
-
 }
 
