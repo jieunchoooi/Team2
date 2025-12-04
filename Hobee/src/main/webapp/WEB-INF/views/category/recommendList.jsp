@@ -98,6 +98,7 @@ main {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
+	margin-bottom: 20px;
 }
 
 .tag-btn {
@@ -362,65 +363,22 @@ footer {
 			</button>
 		</div>
 		
-		<!-- 크리에이티브 카테고리 -->
+		<!-- 카테고리 -->
 		<div class="filter-category">
-			<div class="filter-category-title">
-				ART
-			</div>
-			<div class="tag-container">
-				<button class="tag-btn" data-tag="디지털드로잉" onclick="toggleTag(this)">디지털 드로잉</button>
-				<button class="tag-btn" data-tag="드로잉" onclick="toggleTag(this)">드로잉</button>
-				<button class="tag-btn" data-tag="공예" onclick="toggleTag(this)">공예</button>
-			</div>
-		</div>
-		
-		<!-- 요리 카테고리 -->
-		<div class="filter-category">
-			<div class="filter-category-title">
-				요리
-			</div>
-			<div class="tag-container">
-				<button class="tag-btn" data-tag="한식" onclick="toggleTag(this)">한식</button>
-				<button class="tag-btn" data-tag="중식·일식" onclick="toggleTag(this)">중식·일식</button>
-				<button class="tag-btn" data-tag="양식" onclick="toggleTag(this)">양식</button>
-				<button class="tag-btn" data-tag="베이킹" onclick="toggleTag(this)">베이킹</button>
-			</div>
-		</div>
-		
-		<!-- 라이프스타일 카테고리 -->
-		<div class="filter-category">
-			<div class="filter-category-title">
-				라이프스타일
-			</div>
-			<div class="tag-container">
-				<button class="tag-btn" data-tag="뷰티" onclick="toggleTag(this)">뷰티</button>
-				<button class="tag-btn" data-tag="타로·사주" onclick="toggleTag(this)">타로·사주</button>
-				<button class="tag-btn" data-tag="게임" onclick="toggleTag(this)">게임</button>
-			</div>
-		</div>
-		
-		<!-- 디지털 스킬 카테고리 -->
-		<div class="filter-category">
-			<div class="filter-category-title">
-				IT
-			</div>
-			<div class="tag-container">
-				<button class="tag-btn" data-tag="AI 스킬업" onclick="toggleTag(this)">AI 스킬업</button>
-				<button class="tag-btn" data-tag="프로그래밍" onclick="toggleTag(this)">프로그래밍</button>
-				<button class="tag-btn" data-tag="데이터사이언스" onclick="toggleTag(this)">데이터사이언스</button>
-			</div>
-		</div>
-		
-		<!-- 외국어 카테고리 -->
-		<div class="filter-category">
-			<div class="filter-category-title">
-				외국어
-			</div>
-			<div class="tag-container">
-				<button class="tag-btn" data-tag="영어" onclick="toggleTag(this)">영어</button>
-				<button class="tag-btn" data-tag="제2외국어" onclick="toggleTag(this)">제2외국어</button>
-				<button class="tag-btn" data-tag="외국어시험" onclick="toggleTag(this)">외국어 시험</button>
-			</div>
+			<c:forEach var="mainCategory" items="${categoMainryList}">
+				<div class="filter-category-title">
+					${mainCategory.category_main_name}
+				</div>
+				<div class="tag-container">
+					<c:forEach var="category" items="${categoryList}">
+						<c:if test="${category.category_main_name eq mainCategory.category_main_name}">			
+							<button class="tag-btn" data-tag="${category.category_detail}" onclick="toggleTag(this)">
+								${category.category_detail}
+							</button>
+						</c:if>
+					</c:forEach>
+				</div>
+			</c:forEach>
 		</div>
 	</aside>
 
