@@ -11,7 +11,14 @@
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9990;
+
+    /* 🔥 팝업보다 아래에 위치 */
+    z-index: 8000 !important;
+}
+
+/* Overlay가 있다면 로그인 모달보다 아래 */
+#loginModal .modal-overlay {
+    z-index: 7999 !important;
 }
 
 /* ================================
@@ -21,20 +28,23 @@
     width: 480px;
     background: #fff;
     padding: 45px 40px 50px;
-    border-radius: 14px;                  
-    border: 2px solid #9aa1b1;            /* 🔥 강조된 테두리 */
-    box-shadow: 0 18px 40px rgba(0,0,0,0.22);  /* 깊은 그림자 */
+    border-radius: 14px;
+    border: 2px solid #9aa1b1;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.22);
     position: relative;
-    animation: fadeDown 0.3s ease-in-out;
+    animation: modalPop 0.35s ease-out;
 }
 
-/* 모달 오픈 애니메이션 */
-@keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-12px); }
-    to   { opacity: 1; transform: translateY(0); }
+/* 모달 팝 애니메이션 */
+@keyframes modalPop {
+    0% { opacity: 0; transform: scale(0.92) translateY(-10px); }
+    60% { opacity: 1; transform: scale(1.02); }
+    100% { transform: scale(1); }
 }
 
-/* 닫기 버튼 */
+/* ================================
+   닫기 버튼
+================================ */
 .login-close {
     position: absolute;
     right: 26px;
@@ -43,7 +53,9 @@
     cursor: pointer;
 }
 
-/* 제목 */
+/* ================================
+   제목
+================================ */
 .login-title {
     text-align: center;
     margin-bottom: 32px;
@@ -58,7 +70,7 @@
     width: 100%;
     height: 52px;
     padding: 0 16px;
-    border: 2px solid #bfc7d6; 
+    border: 2px solid #bfc7d6;
     border-radius: 12px;
     font-size: 16px;
     margin-bottom: 16px;
@@ -71,7 +83,6 @@
     outline: none;
 }
 
-/* 입력 오류 표시 */
 .login-input.error {
     border-color: #e74c3c !important;
 }
@@ -121,6 +132,12 @@
 
 .login-submit-btn:hover {
     background: #2f66d6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(74,116,255,0.35);
+}
+
+.login-submit-btn:active {
+    transform: scale(0.97);
 }
 
 /* ================================
@@ -128,25 +145,47 @@
 ================================ */
 .login-links {
     text-align: center;
-    margin-top: 22px;
+    margin-top: 24px;
     font-size: 15px;
+    font-weight: 500;
+    color: #555;
 }
 
 .login-link-item {
+    position: relative;
+    margin: 0 10px;
     color: #555;
-    margin: 0 6px;
-    font-weight: 500;
+    padding-bottom: 2px;
     transition: 0.25s;
 }
 
+/* underline hover 효과 */
+.login-link-item::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    width: 0;
+    height: 2px;
+    background: #4a74ff;
+    transition: 0.3s;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
 .login-link-item:hover {
-    color: #3d6fff;
-    font-weight: 700;
+    color: #4a74ff;
+    font-weight: 600;
+}
+
+.login-link-item:hover::after {
+    width: 100%;
 }
 
 .sep {
+    color: #ccc;
     margin: 0 6px;
-    color: #aaa;
+    font-weight: 300;
 }
 
 /* ================================
@@ -181,59 +220,16 @@
   to { transform: rotate(360deg); }
 }
 
-#loginError {
-    margin-top: 14px;
-    padding: 14px 18px;
-    border-radius: 12px;
-    text-align: center;
-    line-height: 1.6;
-    display: none;
-    font-size: 15px;
-    white-space: normal;
-}
-
-/* 실패 메시지 전용 스타일 */
-#loginError.error {
-    background: #fff4f4;
-    border: 1px solid #ffb7b7;
-    color: #e74c3c;
-}
-
-/* 성공 메시지 전용 스타일 */
-#loginError.success {
-    background: #e8f9e8;
-    border: 1px solid #8cd88c;
-    color: #2e8b57;
-}
-
-#toast {
-    position: fixed;
-    top: 100px;
-    right: 40px;
-    background: #4a74ff;
-    color: white;
-    padding: 16px 22px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: none;
-    z-index: 99999;
-    animation: fadeInOut 3s ease forwards;
-}
-
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(-10px); }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-10px); }
-}
-
+/* ================================
+   SweetAlert container (최상위)
+================================ */
 .swal2-container {
-    z-index: 10000 !important;
+    z-index: 100000 !important;
 }
 
-/* 로그인 모달 상단 라이트바 */
+/* ================================
+   로그인 모달 상단 라이트바
+================================ */
 .login-modal-content::before {
     content: "";
     position: absolute;
@@ -245,83 +241,12 @@
     background: linear-gradient(90deg, #4a74ff, #6fa2ff);
 }
 
-.login-modal-content {
-    animation: modalPop 0.35s ease-out;
-}
-
-@keyframes modalPop {
-    0% { opacity: 0; transform: scale(0.92) translateY(-10px); }
-    60% { opacity: 1; transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-.login-input:hover {
-    border-color: #6f8dff;
-}
-
-.login-submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(74,116,255,0.35);
-}
-
-.login-submit-btn:active {
-    transform: scale(0.97);
-}
-
-.login-links {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 15px;
-    font-weight: 500;
-    color: #555;
-}
-
-.login-link-item {
-    position: relative;
-    margin: 0 10px;
-    color: #555;
-    padding-bottom: 2px;
-    transition: 0.25s;
-}
-
-/* hover 시 underline 애니메이션 */
-.login-link-item::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -1px;
-    width: 0;
-    height: 2px;
-    background: #4a74ff;
-    transition: 0.3s;
-    transform: translateX(-50%);
-    border-radius: 2px;
-}
-
-.login-link-item:hover {
-    color: #4a74ff;
-    font-weight: 600;
-}
-
-.login-link-item:hover::after {
-    width: 100%;
-}
-
-/* 링크 사이의 구분선 개선 */
-.sep {
-    color: #ccc;
-    margin: 0 6px;
-    font-weight: 300;
-}
-
+/* ================================
+   모달 추가 그림자 강화
+================================ */
 .login-modal-content {
     border: 1.8px solid rgba(74,116,255,0.35) !important;
-    box-shadow: 
-        0 12px 40px rgba(0,0,0,0.20), 
-        0 0 12px rgba(74,116,255,0.25); /* 파란 라이트 글로우 */
+    box-shadow:
+        0 12px 40px rgba(0,0,0,0.20),
+        0 0 12px rgba(74,116,255,0.25);
 }
-
-
-
-
-

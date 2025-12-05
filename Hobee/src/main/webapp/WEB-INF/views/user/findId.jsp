@@ -9,12 +9,11 @@
   <meta charset="UTF-8">
   <title>아이디 찾기</title>
 
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user/findId.css">
+  <!-- CSS 캐시 방지용 v=10 -->
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user/findId.css?v=10">
 
-  <!-- jQuery & confetti -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
 </head>
 
 <body>
@@ -50,7 +49,7 @@
 </div>
 
 
-<!-- ⭐ 성공 팝업 -->
+<!-- 성공 팝업 -->
 <div id="emailSuccessPopup" class="join-success-popup" style="display:none;">
     <div class="join-success-box">
 
@@ -61,23 +60,20 @@
         <h3 id="emailSuccessTitle">아이디 찾기 완료!</h3>
         <p id="emailSuccessMsg">회원님의 아이디는 아래와 같습니다.</p>
 
-        <!-- 찾은 아이디 -->
         <div id="foundUserId"
              style="font-size:20px; font-weight:700; color:#1e5eff; margin-top:10px;"></div>
 
-        <!-- 복사 버튼 -->
         <button id="copyIdBtn" class="popup-ok-btn">📋 아이디 복사</button>
 
-        <!-- 확인 버튼 -->
         <button id="popupOkBtn" class="popup-ok-btn">확인</button>
     </div>
 </div>
 
 
 <script>
-/* ==========================
-    아이디 찾기 AJAX
-========================== */
+/* ======================================
+      아이디 찾기 AJAX
+====================================== */
 $("#findIdForm").on("submit", function(e){
     e.preventDefault();
 
@@ -106,15 +102,17 @@ $("#findIdForm").on("submit", function(e){
                 $("#emailSuccessMsg").text("회원님의 아이디는 아래와 같습니다.");
                 $("#foundUserId").text(res.user_id);
 
-                // 팝업 열기
                 $("#emailSuccessPopup").fadeIn(200);
 
-                // confetti
-                confetti({
-                    particleCount: 120,
-                    spread: 80,
-                    origin: { y: 0.6 }
-                });
+                // Confetti 2단계
+                confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 80,
+                        spread: 100,
+                        origin: { y: 0.4 }
+                    });
+                }, 500);
 
             } else {
                 $("#findMsg").text(res.msg).css("color","red");
@@ -123,9 +121,10 @@ $("#findIdForm").on("submit", function(e){
     })
 });
 
-/* ==========================
-    아이디 복사 기능
-========================== */
+
+/* ======================================
+      아이디 복사
+====================================== */
 $(document).on("click", "#copyIdBtn", function () {
     const userId = $("#foundUserId").text();
 
@@ -140,9 +139,10 @@ $(document).on("click", "#copyIdBtn", function () {
         .css("color", "#27ae60");
 });
 
-/* ==========================
-    확인 버튼 → 로그인 모달 열기
-========================== */
+
+/* ======================================
+      확인 → 로그인 이동
+====================================== */
 $("#popupOkBtn").click(function(){
     $("#emailSuccessPopup").fadeOut(200);
     setTimeout(() => {

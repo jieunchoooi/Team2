@@ -17,12 +17,28 @@
     margin-bottom: 35px !important;
 }
 
+/* 포인트 라인 */
+.main-header h1 {
+    position: relative;
+    padding-bottom: 18px;
+}
+.main-header h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 4px;
+    background: #3b82f6;
+    border-radius: 4px;
+}
+
 /* ================================
    상세 카드
 ================================ */
 .detail-card {
     width: 100%;
-    max-width: 1100px;       /* 🔥 넓게 확장 */
+    max-width: 1100px;
     background: #fff;
     margin: 20px auto;
     padding: 45px 50px;
@@ -30,12 +46,17 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
-/* improved layout: grid */
+/* layout */
 .detail-row {
     display: grid;
     grid-template-columns: 120px 1fr;
     padding: 14px 0;
     border-bottom: 1px solid #e5e7eb;
+}
+
+.detail-row:hover {
+    background: #f9f9fc;
+    transition: 0.15s ease-in-out;
 }
 
 .detail-label {
@@ -67,7 +88,7 @@
 }
 
 /* ================================
-   내용 영역 확장
+   내용 영역
 ================================ */
 .detail-content-area {
     width: 100%;
@@ -80,28 +101,61 @@
     white-space: pre-wrap;
 }
 
+/* full width area */
+.detail-row.content-full {
+    display: block !important;
+}
+.detail-row.content-full .detail-label {
+    display: block !important;
+    margin-bottom: 10px;
+}
+.detail-row.content-full .detail-content-area {
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+/* ================================
+   중요도 배지
+================================ */
+.priority-badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    color: white;
+}
+.p-4 { background: #ff3333; }
+.p-3 { background: #ff6600; }
+.p-2 { background: #2563eb; }
+.p-1 { background: #9ca3af; }
+
 /* ================================
    버튼 영역
 ================================ */
 .btn-area {
     margin-top: 32px;
     display: flex;
-    gap: 12px;
+    gap: 16px !important;   /* ★ 버튼 사이 간격 확장 */
+}
+
+/* 버튼 크기 통일 */
+.btn-area button {
+    width: 120px;           /* ★ 크기 통일 */
+    height: 44px;           /* ★ 크기 통일 */
+    font-size: 15px;
 }
 
 /* 공통 버튼 */
 button {
-    padding: 10px 24px;
     border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
     border: none;
+    font-weight: 700;
     cursor: pointer;
+    color: white;
     transition: 0.2s;
-    color: #fff;
 }
 
-/* 🔵 공개/숨김 토글 */
+/* 공개/숨김 */
 .btn-blue {
     background: #2563eb;
 }
@@ -109,7 +163,6 @@ button {
     background: #1d4ed8;
 }
 
-/* ⚫ 숨김으로 변경(중립/차분) */
 .btn-gray {
     background: #6b7280;
 }
@@ -117,25 +170,23 @@ button {
     background: #4b5563;
 }
 
-/* 🟠 고정/해제 */
+/* PIN */
 .btn-orange {
     background: #f97316;
-    color: #fff !important;
 }
 .btn-orange:hover {
     background: #ea580c;
 }
 
-/* 🟣 수정 */
+/* 수정 */
 .btn-edit {
     background: #8b5cf6;
-    color: white;
 }
 .btn-edit:hover {
     background: #7c3aed;
 }
 
-/* 🔴 삭제 */
+/* 삭제 */
 .btn-red {
     background: #ef4444;
 }
@@ -143,27 +194,10 @@ button {
     background: #dc2626;
 }
 
-/* 목록 */
+/* ★ 목록 버튼 새로운 톤 (짙은 블루-그레이) */
 .btn-list {
-    background: #9ca3af;
-    color: white;
+    background: #374151 !important; 
 }
 .btn-list:hover {
-    background: #6b7280;
+    background: #1f2937 !important;
 }
-
-/* 내용 부분만 전체폭으로 확장 */
-.detail-row.content-full {
-    display: block !important;    /* flex / grid 제거하고 1열 구조로 변경 */
-}
-
-.detail-row.content-full .detail-label {
-    display: block !important;
-    margin-bottom: 10px;
-}
-
-.detail-row.content-full .detail-content-area {
-    width: 100% !important;        /* 카드 전체폭 사용 */
-    margin-left: 0 !important;      
-}
-

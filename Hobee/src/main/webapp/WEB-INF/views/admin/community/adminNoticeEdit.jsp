@@ -218,10 +218,56 @@
                 });
             });
         </script>
+        
+        <script>
+// ================================
+// 🔥 1) 입력창 focus 애니메이션
+// ================================
+document.querySelectorAll("input, textarea, select").forEach(el => {
+    el.addEventListener("focus", () => {
+        el.style.animation = "pulseBorder 0.6s ease-out";
+    });
+});
+</script>
 
-    </div>
+<script>
+// ================================
+// 🔥 2) 스크롤 시 fade-in 효과
+// ================================
+const sections = document.querySelectorAll(".section-fade");
+
+function reveal() {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 80) {
+            sec.classList.add("show");
+        }
+    });
+}
+
+window.addEventListener("scroll", reveal);
+reveal();
+</script>
+
+<script>
+// ================================
+// 🔥 3) 중요도 select 색상 자동 변경
+// ================================
+const prioritySelect = document.querySelector("select[name='notice_priority']");
+
+if (prioritySelect) {
+    prioritySelect.addEventListener("change", function(){
+        this.style.color =
+            this.value == 4 ? "#ff3333" :
+            this.value == 3 ? "#ff6600" :
+            this.value == 2 ? "#2563eb" :
+            "#333";
+    });
+}
+</script>
 
 </main>
-
 </body>
 </html>
+        
+
