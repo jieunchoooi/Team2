@@ -365,12 +365,12 @@ footer {
 		
 		<!-- 카테고리 -->
 		<div class="filter-category">
-			<c:forEach var="mainCategory" items="${categoMainryList}">
+			<c:forEach var="mainCategory" items="${cateMainList}">
 				<div class="filter-category-title">
 					${mainCategory.category_main_name}
 				</div>
 				<div class="tag-container">
-					<c:forEach var="category" items="${categoryList}">
+					<c:forEach var="category" items="${cateList}">
 						<c:if test="${category.category_main_name eq mainCategory.category_main_name}">			
 							<button class="tag-btn" data-tag="${category.category_detail}" onclick="toggleTag(this)">
 								${category.category_detail}

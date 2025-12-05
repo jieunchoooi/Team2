@@ -43,11 +43,11 @@
 		<div class="mega-dropdown">
         	<a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체">카테고리 ▾</a>
                 <div class="mega-content">
-                    <c:forEach var="mainCategory" items="${categoMainryList}">
+                    <c:forEach var="mainCategory" items="${cateMainList}">
                         <div class="mega-column">
                             <h3>${mainCategory.category_main_name}</h3>
                             <ul>
-                                <c:forEach var="category" items="${categoryList}">
+                                <c:forEach var="category" items="${cateList}">
                                     <c:if test="${category.category_main_name eq mainCategory.category_main_name}">
                                         <li>
                                             <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=${category.category_detail}">

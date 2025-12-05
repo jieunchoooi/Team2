@@ -396,9 +396,9 @@ footer {
        </li>
        
        <!-- 카테고리 -->
-       <c:forEach var="mainCategory" items="${categoMainryList}">
+       <c:forEach var="mainCategory" items="${cateMainList}">
 	       <li class="category-main">${mainCategory.category_main_name}</li>
-	       <c:forEach var="category" items="${categoryList}">
+	       <c:forEach var="category" items="${cateList}">
 	       	   <c:if test="${category.category_main_name eq mainCategory.category_main_name}">			
 			       <li class="category-sub ${param.category_detail == category.category_detail ? 'active' : ''}">
 			         <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=${category.category_detail}" 

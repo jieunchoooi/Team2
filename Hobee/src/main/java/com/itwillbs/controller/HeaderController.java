@@ -22,10 +22,10 @@ public class HeaderController {
 	public void addheaderCategories(Model model) {
 		System.out.println("HeaderController addheaderCategories");
 		
-		List<Category_mainVO> categoMainryList = adminService.categoMainryList();
+		List<Category_mainVO> categoMainList = adminService.categoMainryList();
 	    List<CategoryVO> categoryList = adminService.categoryList();
-	    model.addAttribute("categoryList", categoryList);
-	    model.addAttribute("categoMainryList", categoMainryList);
+	    model.addAttribute("cateList", categoryList);
+	    model.addAttribute("cateMainList", categoMainList);
 	}
 	
 	
