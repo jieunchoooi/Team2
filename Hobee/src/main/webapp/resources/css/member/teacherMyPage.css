@@ -18,7 +18,7 @@ body {
 .main-content {
     margin-left: 240px;
     margin-top: 0;
-    padding: 40px 30px 30px 30px;
+    padding: 40px 30px 90px 30px;
     width: calc(100% - 240px);
     background-color: #f9fafb;
     min-height: 100vh;

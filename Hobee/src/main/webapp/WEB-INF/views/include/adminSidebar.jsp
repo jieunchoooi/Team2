@@ -3,6 +3,15 @@
 <aside class="sidebar">
 	<h2>관리 메뉴</h2>
 	<div class="sidebar-content">
+		<div class="menu-section">
+			<h3>📊 대시보드</h3>
+			<div class="menu">
+				<div class="menu-item ${page eq 'dashboard' ? 'active' : ''}"
+					onclick="location.href='${pageContext.request.contextPath}/admin/dashboard'">
+					📊 <span>대시보드</span>
+				</div>
+			</div>
+		</div>	
 		<!-- 클래스 관리 -->
 		<div class="menu-section">
 			<h3>📚 강의 관리</h3>
@@ -11,10 +20,7 @@
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminCategory'">
 					📂 <span>카테고리 편집</span>
 				</div>
-<%-- 				<div class="menu-item ${page eq 'classAdd' ? 'active' : ''}" --%>
-<%-- 					onclick="location.href='${pageContext.request.contextPath}/admin/adminClassAdd'"> --%>
-<!-- 					➕ <span>강의 등록</span> -->
-<!-- 				</div> -->
+
 				<div class="menu-item ${page eq 'classList' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList'">
 					📋 <span>강의 목록</span>

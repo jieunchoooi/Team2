@@ -82,7 +82,7 @@
                     <a href="${pageContext.request.contextPath}/member/mypage" class="auth-link">마이페이지</a>
 
                     <c:if test="${sessionScope.user_role eq 'admin' or sessionScope.user_role eq 'super_admin'}">
-                        <a href="${pageContext.request.contextPath}/admin/adminCategory" class="auth-link">관리자페이지</a>
+                        <a href="${pageContext.request.contextPath}/admin/dashboard" class="auth-link">관리자페이지</a>
                     </c:if>
 
                     <a href="${pageContext.request.contextPath}/user/logout" class="auth-link">로그아웃</a>
