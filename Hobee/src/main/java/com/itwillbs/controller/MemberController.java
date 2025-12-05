@@ -35,10 +35,12 @@ import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.PointHistoryVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
 import com.itwillbs.service.EnrollmentService;
+import com.itwillbs.service.LectureService;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.PaymentService;
 import com.itwillbs.service.PointHistoryService;
@@ -62,6 +64,8 @@ public class MemberController {
     private ScrapService scrapService;
 	@Inject
     private PointHistoryService pointHistoryService;
+	@Inject
+	private LectureService lectureService;
 	// 업로드 경로
 	@Resource(name = "uploadPath")
 	private String uploadPath;
@@ -206,8 +210,14 @@ public class MemberController {
 
 	// 리뷰
 	@GetMapping("/review")
-	public String review() {
+	public String review(Model model, HttpSession session) {
 		System.out.println("MemberController review()");
+		
+		String userId = (String) session.getAttribute("user_id");
+		
+		List<ReviewVO> personalReview = lectureService.getPersonalReview(userId);
+		
+		model.addAttribute("personalReview", personalReview);
 		
 		return "member/review";  
 	}
