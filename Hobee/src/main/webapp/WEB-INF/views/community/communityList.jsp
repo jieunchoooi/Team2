@@ -55,7 +55,9 @@
 								<c:forEach var="ht" items="${hotTopicList}">
 									<div class="swiper-slide hot-slide"
 										onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
-
+										
+										
+										<div class="hot-top-wrap">
 										<div class="hot-avatar">
 											<img
 												src="<c:choose>
@@ -67,10 +69,17 @@
                                          </c:otherwise>
                                       </c:choose>" />
 										</div>
-
-										<div class="hot-content">
+										
+										<div class="hot-top">
 											<div class="hot-tag">${ht.category_name}·실시간인기</div>
 											<div class="hot-title">${ht.title}</div>
+										</div>
+										
+										</div>
+										
+										
+										<div class="hot-content">
+											
 											<div class="hot-summary">
 												<c:choose>
 													<c:when test="${not empty ht.summary}">
@@ -164,99 +173,97 @@
 				<%-- =====================================================
 	                 🔵 커뮤니티 메인 피드
 	            ====================================================== --%>
-<!-- ==========================
+				<!-- ==========================
      📌 커뮤니티 헤더
 =========================== -->
-<section class="community-top-card">
-   <!-- 🔵 헤더 -->
-    <div class="community-header-row">
-        <span class="ch-emoji">💬</span>
-        <span class="ch-title">커뮤니티</span>
-        <span class="ch-sub">🫧다양한 주제로 자유롭게 소통해보세요!🫧</span>
-    </div>
-<!-- ================================
+				<section class="community-top-card">
+					<!-- 🔵 헤더 -->
+					<div class="community-header-row">
+						<span class="ch-emoji">💬</span> <span class="ch-title">커뮤니티</span>
+						<span class="ch-sub"> 다양한 주제로 자유롭게 소통해보세요!</span>
+					</div>
+					<!-- ================================
      📌 필터 박스 전체
 ================================ -->
-<div class="filter-box">
-
-    <!-- 🔵 말머리 -->
-    <div class="chip-label">말머리</div>
-    <div class="chip-row no-wrap-row">
-
-		<c:forEach var="cl" items="${categoryList}">
-        <a href="${pageContext.request.contextPath}/community/list?category_id=${cl.category_id}&category_main_num=${cri.category_main_num}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
-           class="chip ${cri.category_id == cl.category_id ? 'active' : ''}">
-             ${cl.category_name}
-        </a>
-		</c:forEach>
-    </div>
+					<div class="filter-box">
 
 
-    <!-- 🔵 카테고리 -->
-    <div class="chip-label">카테고리</div>
-    <div class="chip-row wrap-row">
+						<!-- 🔵 카테고리 -->
+						<div class="chip-label">카테고리</div>
+						<div class="chip-row wrap-row">
 
-        <c:forEach var="cm" items="${categoryMainList}">
-            <a href="${pageContext.request.contextPath}/community/list?category_main_num=${cm.category_main_num}&category_id=${cri.category_id}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
-               class="chip ${cri.category_main_num == cm.category_main_num ? 'active' : ''}">
-                ${cm.category_main_name}
-            </a>
-        </c:forEach>
+							<c:forEach var="cm" items="${categoryMainList}">
+								<a
+									href="${pageContext.request.contextPath}/community/list?category_main_num=${cm.category_main_num}&category_id=${cri.category_id}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
+									class="chip ${cri.category_main_num == cm.category_main_num ? 'active' : ''}">
+									${cm.category_main_name} </a>
+							</c:forEach>
 
-    </div>
-
-</div>
-
-
-
-
-				<%-- 🔵 정렬 + 기간 + 검색타입 (왼쪽 그룹) / 검색창 + 글쓰기 (오른쪽 그룹) --%>
-				<div class="filter-bar">
-
-					<%-- 🔹 왼쪽 필터 그룹 --%>
-					<div class="filter-left">
-						<select id="sortFilter" onchange="applyFilters()">
-							<option value="latest"
-								${cri.sort == 'latest'   ? 'selected' : ''}>최신순</option>
-							<option value="views" ${cri.sort == 'views'    ? 'selected' : ''}>조회수</option>
-							<option value="likes" ${cri.sort == 'likes'    ? 'selected' : ''}>좋아요</option>
-							<option value="comments"
-								${cri.sort == 'comments' ? 'selected' : ''}>댓글 수</option>
-						</select> <select id="periodFilter" onchange="applyFilters()">
-							<option value="all" ${cri.period == 'all'   ? 'selected' : ''}>전체</option>
-							<option value="today" ${cri.period == 'today' ? 'selected' : ''}>오늘</option>
-							<option value="week" ${cri.period == 'week'  ? 'selected' : ''}>1주일</option>
-							<option value="month" ${cri.period == 'month' ? 'selected' : ''}>1개월</option>
-						</select> <select id="searchType">
-							<option value="title"
-								${cri.searchType == 'title'        ? 'selected' : ''}>제목</option>
-							<option value="titleContent"
-								${cri.searchType == 'titleContent' ? 'selected' : ''}>제목+내용</option>
-							<option value="writer"
-								${cri.searchType == 'writer'       ? 'selected' : ''}>작성자</option>
-							<option value="comment"
-								${cri.searchType == 'comment'      ? 'selected' : ''}>댓글</option>
-						</select>
-					</div>
-
-					<%-- 🔹 오른쪽 검색창 + 글쓰기 버튼 그룹 --%>
-					<div class="filter-right">
-
-						<div class="filter-search">
-							<input type="text" id="searchKeyword" value="${cri.keyword}"
-								placeholder="검색어 입력">
-
-							<button type="button" class="search-btn" onclick="applyFilters()">🔍</button>
 						</div>
 
-						<button type="button" class="write-btn"
-							onclick="openWriteModal();">✏️ 글쓰기</button>
+					</div>
+
+
+
+
+					<%-- 🔵 정렬 + 기간 + 검색타입 (왼쪽 그룹) / 검색창 + 글쓰기 (오른쪽 그룹) --%>
+					<div class="filter-bar">
+
+						<%-- 🔹 왼쪽 필터 그룹 --%>
+						<div class="filter-left">
+							<select id="categoryFilter" onchange="applyFilters()">
+								<option value="">전체</option>
+
+								<c:forEach var="cl" items="${categoryList}">
+									<option value="${cl.category_id}"
+										${cri.category_id == cl.category_id ? 'selected' : ''}>
+										${cl.category_name}</option>
+								</c:forEach>
+							</select> <select id="sortFilter" onchange="applyFilters()">
+								<option value="latest"
+									${cri.sort == 'latest'   ? 'selected' : ''}>최신순</option>
+								<option value="views"
+									${cri.sort == 'views'    ? 'selected' : ''}>조회수</option>
+								<option value="likes"
+									${cri.sort == 'likes'    ? 'selected' : ''}>좋아요</option>
+								<option value="comments"
+									${cri.sort == 'comments' ? 'selected' : ''}>댓글 수</option>
+							</select> <select id="periodFilter" onchange="applyFilters()">
+								<option value="all" ${cri.period == 'all'   ? 'selected' : ''}>전체</option>
+								<option value="today" ${cri.period == 'today' ? 'selected' : ''}>오늘</option>
+								<option value="week" ${cri.period == 'week'  ? 'selected' : ''}>1주일</option>
+								<option value="month" ${cri.period == 'month' ? 'selected' : ''}>1개월</option>
+							</select> <select id="searchType">
+								<option value="title"
+									${cri.searchType == 'title'        ? 'selected' : ''}>제목</option>
+								<option value="titleContent"
+									${cri.searchType == 'titleContent' ? 'selected' : ''}>제목+내용</option>
+								<option value="writer"
+									${cri.searchType == 'writer'       ? 'selected' : ''}>작성자</option>
+								<option value="comment"
+									${cri.searchType == 'comment'      ? 'selected' : ''}>댓글</option>
+							</select>
+						</div>
+
+						<%-- 🔹 오른쪽 검색창 + 글쓰기 버튼 그룹 --%>
+						<div class="filter-right">
+
+							<div class="filter-search">
+								<input type="text" id="searchKeyword" value="${cri.keyword}"
+									placeholder="검색어 입력">
+
+								<button type="button" class="search-btn"
+									onclick="applyFilters()">🔍</button>
+							</div>
+
+							<button type="button" class="write-btn"
+								onclick="openWriteModal();">✏️ 글쓰기</button>
+
+						</div>
 
 					</div>
 
-				</div>
-
-</section>
+				</section>
 
 
 				<%-- 🔵 게시글 카드 리스트 --%>
@@ -446,7 +453,7 @@
 
 	</main>
 
-<jsp:include page="../include/footer.jsp"></jsp:include>
+	<jsp:include page="../include/footer.jsp"></jsp:include>
 
 	<%-- ===========================================================
 	     🔥 SCRIPT (슬라이더 / 필터 / 페이징)
@@ -456,7 +463,7 @@
 	function applyFilters() {
 	    var url = '${pageContext.request.contextPath}/community/list?';
 	
-	    var categoryId  = "${cri.category_id}";
+	    var categoryId = document.getElementById('categoryFilter').value;
 	    var mainCat     = "${cri.category_main_num}";
 	    var sort        = document.getElementById('sortFilter').value;
 	    var period      = document.getElementById('periodFilter').value;
