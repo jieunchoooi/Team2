@@ -109,6 +109,11 @@ body {
     font-weight: 700;
 }
 
+.status-partial {
+    color: #2563eb;
+    font-weight: 700;
+}
+
 .status-etc {
     color: #999;
 }
