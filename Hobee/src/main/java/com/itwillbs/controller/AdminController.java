@@ -755,6 +755,10 @@ public class AdminController {
    public String dashboard(Model model) {
 	   System.out.println("AdminController dashboard()");
        
+	   // 전체 카테고리 목록
+	   List<Map<String, Object>> categoryList = adminService.getcategoryList();
+	   
+	   
 	   // 카테고리별 결제 통계(전월)
        List<Map<String, Object>> categoryStats = adminService.getCategoryDetailPaymentStats();
        
@@ -778,12 +782,15 @@ public class AdminController {
        // 월별 매출통계
        List<Map<String, Object>> monthlySales = adminService.monthlySales();
        
+       int classCount = adminService.okClassCount1();
+
        
        
-       
+       model.addAttribute("categoryList", categoryList);
        model.addAttribute("categoryStats", categoryStats);
        model.addAttribute("bestClassTop10", bestClassTop10);
        model.addAttribute("monthlySales", monthlySales);
+       model.addAttribute("classCount", classCount);
        
        return "admin/dashboard";
    }

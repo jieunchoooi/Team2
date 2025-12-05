@@ -148,6 +148,10 @@ public interface AdminMapper {
 
 	public List<Map<String, Object>> monthlySales();
 
+	public List<Map<String, Object>> getcategoryList();
+
+	public int okClassCount1();
+
 
 
 	

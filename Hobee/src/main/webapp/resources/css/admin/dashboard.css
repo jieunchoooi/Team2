@@ -248,6 +248,7 @@ a:hover {
 /* Background Colors */
 .bg-primary {
     background-color: #4e73df !important;
+    cursor: pointer;
 }
 
 .bg-secondary {
@@ -337,6 +338,10 @@ a:hover {
     width: 1.25em;
 }
 
+.text-white-50.small{
+	font-size: 2.5em;
+}
+
 /* Spacing Utilities - 실제 사용되는 것만 */
 .m-0 { margin: 0 !important; }
 .mb-0 { margin-bottom: 0 !important; }
@@ -352,7 +357,9 @@ a:hover {
 .pb-2 { padding-bottom: .5rem !important; }
 .my-auto { margin-top: auto !important; margin-bottom: auto !important; }
 
+#color{ height: 8.03em; }
 #mb{ margin-right: 0.75em; }
+#mb1{ margin-right: 0.75em; }
 
 /* Flex Utilities */
 .d-flex {

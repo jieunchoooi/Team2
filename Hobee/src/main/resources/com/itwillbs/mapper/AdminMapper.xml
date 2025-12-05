@@ -674,19 +674,19 @@
 		select count(*) from lecture
 		where status = 'approval'
 		<if test="search != null and search != ''">
-        <choose>
-            <when test="searchList == '전체'">
-                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
-                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
-            </when>
-            <when test="searchList == '강사명'">
-                AND lecture_author LIKE CONCAT('%', #{search}, '%')
-            </when>
-            <when test="searchList == '강의명'">
-                AND lecture_title LIKE CONCAT('%', #{search}, '%')
-            </when>
-        </choose>
-    </if>
+	        <choose>
+	            <when test="searchList == '전체'">
+	                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+	                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+	            </when>
+	            <when test="searchList == '강사명'">
+	                AND lecture_author LIKE CONCAT('%', #{search}, '%')
+	            </when>
+	            <when test="searchList == '강의명'">
+	                AND lecture_title LIKE CONCAT('%', #{search}, '%')
+	            </when>
+	        </choose>
+	    </if>
 	</select>
 	
 	<!-- 삭제된 강의 갯수 카운트 -->
@@ -969,8 +969,17 @@
 	    ORDER BY DATE_FORMAT(created_at, '%Y-%m')
 	</select>
 	
-	
-	
+	<select id="getcategoryList" resultType="map">
+	    SELECT 
+	        category_main_name as categoryName
+	    FROM category_main
+	    ORDER BY category_main_order
+	</select>
+		<!-- 승인된 강의 갯수 카운트(대시보드용) -->
+	<select id="okClassCount1" resultType="java.lang.Integer">
+		select count(*) from lecture
+		where status = 'approval'
+	</select>
 	
 	
 	

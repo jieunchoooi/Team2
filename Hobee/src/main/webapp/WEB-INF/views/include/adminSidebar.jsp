@@ -4,12 +4,9 @@
 	<h2>관리 메뉴</h2>
 	<div class="sidebar-content">
 		<div class="menu-section">
-			<h3>📊 대시보드</h3>
-			<div class="menu">
-				<div class="menu-item ${page eq 'dashboard' ? 'active' : ''}"
-					onclick="location.href='${pageContext.request.contextPath}/admin/dashboard'">
-					📊 <span>대시보드</span>
-				</div>
+			<div class="menu ${page eq 'dashboard' ? 'active' : ''}"
+				onclick="location.href='${pageContext.request.contextPath}/admin/dashboard'" style="cursor: pointer;">
+				<h3>📊 <span>대시보드</span></h3>
 			</div>
 		</div>	
 		<!-- 클래스 관리 -->
@@ -18,7 +15,7 @@
 			<div class="menu">
 				<div class="menu-item ${page eq 'category' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminCategory'">
-					📂 <span>카테고리 편집</span>
+					📂 <span>카테고리 관리</span>
 				</div>
 
 				<div class="menu-item ${page eq 'classList' ? 'active' : ''}"

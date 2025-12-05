@@ -37,7 +37,15 @@
              ======================= -->
 			<div class="detail-left">
 
-				<h2 class="hot-title-text">실시간 핫트렌드 🔥</h2>
+						<%-- =====================================================
+     🔥 HOT TOPIC (LIST PAGE VERSION - FIXED)
+====================================================== --%>
+
+				<h2 class="hot-title-text" style="font-size: 1.4rem;
+	font-weight: 700;
+	color: #1f2d5c;
+	margin-bottom: 16px;
+	padding-left: 4px;">🔥실시간 핫트렌드</h2>
 
 				<div class="swiper hotSwiper">
 					<div class="swiper-wrapper">
@@ -49,7 +57,9 @@
 								<c:forEach var="ht" items="${hotTopicList}">
 									<div class="swiper-slide hot-slide"
 										onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
-
+										
+										
+										<div class="hot-top-wrap">
 										<div class="hot-avatar">
 											<img
 												src="<c:choose>
@@ -61,10 +71,17 @@
                                          </c:otherwise>
                                       </c:choose>" />
 										</div>
-
-										<div class="hot-content">
+										
+										<div class="hot-top">
 											<div class="hot-tag">${ht.category_name}·실시간인기</div>
 											<div class="hot-title">${ht.title}</div>
+										</div>
+										
+										</div>
+										
+										
+										<div class="hot-content">
+											
 											<div class="hot-summary">
 												<c:choose>
 													<c:when test="${not empty ht.summary}">
@@ -150,6 +167,7 @@
 					<div class="swiper-pagination"></div>
 
 				</div>
+
 
 				<!-- ===========================================
                  🔥 POST DETAIL CARD
