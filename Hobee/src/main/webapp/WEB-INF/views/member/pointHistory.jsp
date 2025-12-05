@@ -151,6 +151,6 @@ function filterType(type) {
 
     </div>
 </main>
-
+<jsp:include page="../include/footer.jsp"></jsp:include>
 </body>
 </html>
