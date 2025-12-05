@@ -57,7 +57,8 @@
 					<%-- 강의 목록 출력 --%>
 					<c:otherwise>
 						<c:forEach var="enroll" items="${enrollList}">
-							<div class="class-card">
+							<div class="class-card" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${enroll.lecture_num}'"
+>
 
 								<%-- 썸네일 --%>
 								<div class="thumb-wrap">
