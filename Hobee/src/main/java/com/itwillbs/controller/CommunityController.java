@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.CommunityCategoryVO;
 import com.itwillbs.domain.CommunityCommentVO;
 import com.itwillbs.domain.CommunityContentVO;
 import com.itwillbs.domain.CommunityDetailDTO;
@@ -80,6 +81,9 @@ public class CommunityController {
 	
 	     // <%-- 카테고리 메인 목록(Chip 버튼용) --%>
 	     List<CommunityContentVO> categoryMainList = communityService.getCategoryMainList();
+	     // <%-- 카테고리 말머리 목록(Chip 버튼용) --%>
+
+	     List<CommunityCategoryVO> categoryList = communityService.getCategoryList();
 	
 	     // <%-- 인기글 목록 --%>
 	     List<CommunityContentVO> popularList = communityService.getPopularPosts();
@@ -96,11 +100,12 @@ public class CommunityController {
 	     // <%-- 모델 등록 --%>
 	     model.addAttribute("communityList", communityList);
 	     model.addAttribute("categoryMainList", categoryMainList);
-	     System.out.println("핫토픽 리스트 "+hotTopicList);
+	     model.addAttribute("categoryList", categoryList);
+	    
 	     model.addAttribute("hotTopicList", hotTopicList);
 	     model.addAttribute("popularList", popularList);
 	     model.addAttribute("pageMaker", pageMaker);
-	
+	     System.out.println("핫토픽 리스트 "+hotTopicList);
 	     // <%-- 검색/필터 상태유지 --%>
 	     model.addAttribute("cri", cri);
 	

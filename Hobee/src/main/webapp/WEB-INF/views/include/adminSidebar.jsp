@@ -74,7 +74,7 @@
                 </div>
                 
                 <div class="menu-item ${page eq 'deletedPostList' ? 'active' : ''}"
-            		onclick="location.href='${pageContext.request.contextPath}/admin/z'">
+            		onclick="location.href='${pageContext.request.contextPath}/admin/adminPostDeletedList'">
            			 🗑️ <span>삭제된 게시글(휴지통)</span>
         		</div>
                 

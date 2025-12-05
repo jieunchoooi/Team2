@@ -19,9 +19,9 @@
         c.is_visible,
         c.is_deleted,
         c.created_at,
-        b.board_name
+       b.category_id AS board_name
         FROM community_content c
-        LEFT JOIN board_category b ON c.category_id = b.board_id
+        LEFT JOIN community_category b ON c.category_id = b.category_id
         LEFT JOIN user u ON c.user_num = u.user_num
         WHERE c.post_id = #{post_id}
     </select>
@@ -67,11 +67,11 @@
         c.views,
         c.is_visible,
         c.created_at,
-        b.board_name,
+        cc.category_name AS board_name,
         (SELECT COUNT(*) FROM comment cm
         WHERE cm.post_id = c.post_id AND cm.is_deleted = 0) AS reply_count
         FROM community_content c
-        LEFT JOIN board_category b ON c.category_id = b.board_id
+        LEFT JOIN community_category cc ON c.category_id = cc.category_id
         LEFT JOIN user u ON c.user_num = u.user_num
         WHERE c.is_deleted = 0
 

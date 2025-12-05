@@ -24,5 +24,8 @@ public class CommunityCategoryVO {
 
     // 정렬 순서
     private int sort_order;
+    
+    
+    
 
 }

@@ -31,7 +31,7 @@ public class CommunityContentVO {
    
     // JOIN 필드
     private String user_name;
-    private String category_name;        // 말머리(community_category)
+    private String category_name;// 말머리(community_category)
     private String category_main_name;   // 메인 카테고리(category_main)
     private String lecture_title;
     

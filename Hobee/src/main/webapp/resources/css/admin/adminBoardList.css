@@ -219,3 +219,39 @@ td.btn-group {
     text-decoration: underline;  /* 관리자용 클릭 강조 */
 }
 
+.page-title {
+    position: relative;
+    display: inline-block;
+}
+
+.page-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 100%;
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #2d4eff, #7ab5ff);
+    opacity: 0;
+    transform: translateY(6px) scaleX(0);
+    transform-origin: left;
+    animation: titleUnderline 0.9s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes titleUnderline {
+    0% {
+        opacity: 0;
+        transform: translateY(6px) scaleX(0);
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(0) scaleX(0.4);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scaleX(1);
+    }
+}
+
+

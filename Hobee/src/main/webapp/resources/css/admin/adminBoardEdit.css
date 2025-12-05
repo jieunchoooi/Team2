@@ -286,6 +286,35 @@
     box-shadow: 0 12px 28px rgba(255,0,0,0.28);
 }
 
+.page-title {
+    display: inline-block;
+    position: relative;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 42px;
+    padding-left: 5px;
+    color: #111;
+}
+
+/* 제목 밑줄 */
+.page-title::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #2b59ff, #6ba7ff);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underlineGrow 0.7s ease forwards;
+}
+
+@keyframes underlineGrow {
+    to { transform: scaleX(1); }
+}
+
 
 
 
