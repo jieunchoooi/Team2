@@ -1,11 +1,13 @@
 package com.itwillbs.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.ChapterDetailVO;
 import com.itwillbs.domain.ChapterVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.NotApprovedVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.UserVO;
 
 public interface MemberMapper {
@@ -16,23 +18,21 @@ public interface MemberMapper {
 
 	public void memberDelete(int user_num);
 
-	public List<LectureVO> manageMyCourses(String user_name);
+	public List<LectureVO> manageMyCourses(Map<String, Object> params);
 
-	public int teacherMyPage(String user_name);
+	public int teacherMyPage(Map<String, Object> params);
 
-	public int teacherMyPageOk(String user_name);
+	public int teacherMyPageWaiting(Map<String, Object> params);
 
-	public int teacherMyPageWaiting(String user_name);
+	public int teacherMyPageReject(Map<String, Object> params);
 
-	public int teacherMyPageReject(String user_name);
+	public List<LectureVO> approvalClass(Map<String, Object> params); 
 
-	public List<LectureVO> approvalClass(String user_name); //
+	public List<LectureVO> waitingClass(Map<String, Object> params);
 
-	public List<LectureVO> waitingClass(String user_name);
+	public List<LectureVO> rejectClass(Map<String, Object> params);
 
-	public List<LectureVO> rejectClass(String user_name);
-
-	public List<LectureVO> deleteClass(String user_name);
+	public List<LectureVO> deleteClass(Map<String, Object> params);
 	
 	public void LectureUpdate(LectureVO lectureVO);
 
@@ -40,13 +40,15 @@ public interface MemberMapper {
 
 	public void insertChapterDetail(ChapterDetailVO chapterDetailVO);
 
-	public int teacherMyPageDelete(String user_name);
+	public int teacherMyPageDelete(Map<String, Object> params);
 
 	public void deleteRequest(int lecture_num);
 
 	public NotApprovedVO classReason(int lecture_num);
 
 	public void deleteCencel(int lecture_num);
+
+	public int teacherMyPageOk(Map<String, Object> params);
 
 
 

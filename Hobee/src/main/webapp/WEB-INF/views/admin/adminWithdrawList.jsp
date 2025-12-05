@@ -95,24 +95,39 @@
 				</tbody>
 			</table>
 			<div class="pagination">
-				<!-- 10 만큼 이전 -->
-				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
-					<a
-						href="${ pageContext.request.contextPath }/admin/adminWithdrawList?pageNum=${pageVO.startPage - pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[이전]</a>
-				</c:if>
-
-				<c:forEach var="i" begin="${pageVO.startPage}"
-					end="${pageVO.endPage}" step="1">
-					<a
-						href="${ pageContext.request.contextPath }/admin/adminWithdrawList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">${i}</a>
-				</c:forEach>
-
-				<!-- 10만큼 다음 -->
-				<c:if test="${pageVO.endPage < pageVO.pageCount }">
-					<a
-						href="${ pageContext.request.contextPath }/admin/adminWithdrawList?pageNum=${pageVO.startPage + pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[다음]</a>
-				</c:if>
+   			 <!-- 맨 처음으로 -->
+			    <c:if test="${pageVO.currentPage > 1}">
+			        <a href="${pageContext.request.contextPath}/admin/adminWithdrawList?pageNum=1&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[처음]</a>
+			    </c:if>
+			    
+			    <!-- 10 페이지 이전 -->
+			    <c:if test="${pageVO.startPage > pageVO.pageBlock}">
+			        <a href="${pageContext.request.contextPath}/admin/adminWithdrawList?pageNum=${pageVO.startPage - pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[이전]</a>
+			    </c:if>
+			    
+			    <!-- 페이지 번호 -->
+			    <c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">
+			        <c:choose>
+			            <c:when test="${i == pageVO.currentPage}">
+			                <a href="${pageContext.request.contextPath}/admin/adminWithdrawList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}" class="active">${i}</a>
+			            </c:when>
+			            <c:otherwise>
+			                <a href="${pageContext.request.contextPath}/admin/adminWithdrawList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">${i}</a>
+			            </c:otherwise>
+			        </c:choose>
+			    </c:forEach>
+			    
+			    <!-- 10 페이지 다음 -->
+			    <c:if test="${pageVO.endPage < pageVO.pageCount}">
+			        <a href="${pageContext.request.contextPath}/admin/adminWithdrawList?pageNum=${pageVO.startPage + pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[다음]</a>
+			    </c:if>
+			    
+			    <!-- 맨 끝으로 -->
+			    <c:if test="${pageVO.currentPage < pageVO.pageCount}">
+			        <a href="${pageContext.request.contextPath}/admin/adminWithdrawList?pageNum=${pageVO.pageCount}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[끝]</a>
+			    </c:if>
 			</div>
+			
 		</div>
 	</main>
 </body>
@@ -123,7 +138,19 @@ let detail = document.querySelectorAll(".detail");
 detail.forEach(function(btn){
     btn.onclick = function(){
         let userNum = this.getAttribute("data-num");
-        location.href = "${pageContext.request.contextPath}/admin/MemberManagement?user_num=" + userNum;
+        
+    	let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '${pageContext.request.contextPath}/admin/MemberManagement';
+        
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'user_num';
+        input.value = userNum;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
     }
 });
 

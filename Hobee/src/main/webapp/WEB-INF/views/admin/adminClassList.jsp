@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>클래스 목록 | Hobee Admin</title>
+<title>강의 목록 | Hobee Admin</title>
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet"
@@ -51,6 +51,7 @@
 			<!-- 검색 영역 -->
 			<div class="search-wrapper">
 				<form action="${ pageContext.request.contextPath }/admin/adminClassList" class="search-form" id="search_form">
+				<input type="hidden" name="filter" value="${param.filter}"> 
 				<select name="searchList" id="searchList">
 				<option value="전체"	${pageVO.searchList == '전체' ? 'selected' : ''}>전체 검색</option>
 				<option value="강의명" ${pageVO.searchList == '강의명' ? 'selected' : ''}>강의명 검색</option>
@@ -121,23 +122,40 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			
 			<div class="pagination">
-				<!-- 10 만큼 이전 -->
-				<c:if test="${pageVO.startPage > pageVO.pageBlock }">
-					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${pageVO.startPage - pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[이전]</a>
-				</c:if>
-
-				<c:forEach var="i" begin="${pageVO.startPage}"
-					end="${pageVO.endPage}" step="1">
-					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">${i}</a>
-				</c:forEach>
-
-				<!-- 10만큼 다음 -->
-				<c:if test="${pageVO.endPage < pageVO.pageCount }">
-					<a href="${ pageContext.request.contextPath }/admin/adminClassList?pageNum=${pageVO.startPage + pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[다음]</a>
-				</c:if>
+   			 <!-- 맨 처음으로 -->
+			    <c:if test="${pageVO.currentPage > 1}">
+			        <a href="${pageContext.request.contextPath}/admin/adminClassList?pageNum=1&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[처음]</a>
+			    </c:if>
+			    
+			    <!-- 10 페이지 이전 -->
+			    <c:if test="${pageVO.startPage > pageVO.pageBlock}">
+			        <a href="${pageContext.request.contextPath}/admin/adminClassList?pageNum=${pageVO.startPage - pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[이전]</a>
+			    </c:if>
+			    
+			    <!-- 페이지 번호 -->
+			    <c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">
+			        <c:choose>
+			            <c:when test="${i == pageVO.currentPage}">
+			                <a href="${pageContext.request.contextPath}/admin/adminClassList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}" class="active">${i}</a>
+			            </c:when>
+			            <c:otherwise>
+			                <a href="${pageContext.request.contextPath}/admin/adminClassList?pageNum=${i}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">${i}</a>
+			            </c:otherwise>
+			        </c:choose>
+			    </c:forEach>
+			    
+			    <!-- 10 페이지 다음 -->
+			    <c:if test="${pageVO.endPage < pageVO.pageCount}">
+			        <a href="${pageContext.request.contextPath}/admin/adminClassList?pageNum=${pageVO.startPage + pageVO.pageBlock}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[다음]</a>
+			    </c:if>
+			    
+			    <!-- 맨 끝으로 -->
+			    <c:if test="${pageVO.currentPage < pageVO.pageCount}">
+			        <a href="${pageContext.request.contextPath}/admin/adminClassList?pageNum=${pageVO.pageCount}&filter=${param.filter}&search=${pageVO.search}&searchList=${pageVO.searchList}">[끝]</a>
+			    </c:if>
 			</div>
+
 		</div>
 	</main>
 </body>
@@ -157,31 +175,19 @@ search.onclick = function(e){
 	search_form.submit();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 // 클래스 삭제	
-let deleteBtn = document.querySelectorAll('.btn-delete');
+// let deleteBtn = document.querySelectorAll('.btn-delete');
 
-deleteBtn.forEach(function(btn) {
-    btn.onclick = function() {
-        let lectureNum = this.getAttribute('data-num');
-        let result = confirm("강의를 삭제하시겠습니까?");
-        if(result) {
-            alert("강의가 삭제되었습니다.");
-            location.href = "${pageContext.request.contextPath}/admin/deleteClass?lecture_num=" + lectureNum;
-        }
-    }
-});
+// deleteBtn.forEach(function(btn) {
+//     btn.onclick = function() {
+//         let lectureNum = this.getAttribute('data-num');
+//         let result = confirm("강의를 삭제하시겠습니까?");
+//         if(result) {
+//             alert("강의가 삭제되었습니다.");
+//             location.href = "${pageContext.request.contextPath}/admin/deleteClass?lecture_num=" + lectureNum;
+//         }
+//     }
+// });
 
 
 // 클래스 수정
@@ -190,7 +196,19 @@ let edit = document.querySelectorAll(".edit");
 edit.forEach(function(btn){
     btn.onclick = function(){
         let lectureNum = this.getAttribute("data-num");
-        location.href = "${pageContext.request.contextPath}/admin/adminClassEditinfo?lecture_num=" + lectureNum;
+        
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '${pageContext.request.contextPath}/admin/adminClassEditinfo';
+        
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'lecture_num';
+        input.value = lectureNum;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
     }
 });
 

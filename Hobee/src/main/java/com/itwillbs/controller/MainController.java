@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.CategoryVO;
+import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.AdminService;
 import com.itwillbs.service.LectureService;
 import com.itwillbs.service.ScrapService;
 
@@ -60,10 +63,23 @@ public class MainController {
    }
    
    @RequestMapping(value="/search")
-   public String search(@RequestParam("search") String search, Model model) {
+   public String search(@RequestParam("search") String search, Model model, HttpSession session) {
       System.out.println("MainController search()");     
     
       List<LectureVO> lectureList = lectureService.getAllLectures(search);
+      
+      UserVO userVO = (UserVO) session.getAttribute("userVO");
+      if(userVO != null) {
+          List<Integer> scrapLectureNums = scrapService.getScrapList(userVO.getUser_num())
+                                                     .stream()
+                                                     .map(ScrapVO::getLecture_num)
+                                                     .collect(Collectors.toList());
+          
+          // 강의 목록에 bookmark 정보 세팅
+          for(LectureVO lecture : lectureList) {
+              lecture.setBookmark(scrapLectureNums.contains(lecture.getLecture_num()));
+          }
+      }
     
       model.addAttribute("lectureList", lectureList);
       
@@ -103,11 +119,5 @@ public class MainController {
    }
    
    
-   
-   
-   
-   
-   
-
 }
 

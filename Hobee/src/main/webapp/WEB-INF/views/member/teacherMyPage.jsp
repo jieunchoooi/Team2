@@ -134,15 +134,40 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			
-			<!-- 페이지네이션 -->
 			<div class="pagination">
-				<a href="#">[이전]</a>
-				<a href="#" class="active">1</a>
-				<a href="#">2</a>
-				<a href="#">3</a>
-				<a href="#">[다음]</a>
+   			 <!-- 맨 처음으로 -->
+			    <c:if test="${pageVO.currentPage > 1}">
+			        <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=1&filter=${param.filter}">[처음]</a>
+			    </c:if>
+			    
+			    <!-- 10 페이지 이전 -->
+			    <c:if test="${pageVO.startPage > pageVO.pageBlock}">
+			        <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${pageVO.startPage - pageVO.pageBlock}&filter=${param.filter}">[이전]</a>
+			    </c:if>
+			    
+			    <!-- 페이지 번호 -->
+			    <c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">
+			        <c:choose>
+			            <c:when test="${i == pageVO.currentPage}">
+			                <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${i}&filter=${param.filter}" class="active">${i}</a>
+			            </c:when>
+			            <c:otherwise>
+			                <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${i}&filter=${param.filter}">${i}</a>
+			            </c:otherwise>
+			        </c:choose>
+			    </c:forEach>
+			    
+			    <!-- 10 페이지 다음 -->
+			    <c:if test="${pageVO.endPage < pageVO.pageCount}">
+			        <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${pageVO.startPage + pageVO.pageBlock}&filter=${param.filter}">[다음]</a>
+			    </c:if>
+			    
+			    <!-- 맨 끝으로 -->
+			    <c:if test="${pageVO.currentPage < pageVO.pageCount}">
+			        <a href="${pageContext.request.contextPath}/member/teacherMyPage?pageNum=${pageVO.pageCount}&filter=${param.filter}">[끝]</a>
+			    </c:if>
 			</div>
+			
 		</div>
 	</div>	
 	</main>
@@ -178,13 +203,34 @@ cencelDeleteBtn.forEach(function(btn) {
 });
 
 // 강의 수정
+// let editButtons = document.querySelectorAll('.btn-edit-small');
+// editButtons.forEach(function(btn) {
+//     btn.onclick = function() {
+//         let lectureNum = this.getAttribute('data-num');
+// //         alert("수정 페이지로 이동합니다.");
+//         location.href = "${pageContext.request.contextPath}/member/editLecture?lecture_num=" + lectureNum;
+//     }
+// });
+
 let editButtons = document.querySelectorAll('.btn-edit-small');
 editButtons.forEach(function(btn) {
     btn.onclick = function() {
-        let lectureNum = this.getAttribute('data-num');
-//         alert("수정 페이지로 이동합니다.");
-        location.href = "${pageContext.request.contextPath}/member/editLecture?lecture_num=" + lectureNum;
-    }
+    	 let lectureNum = this.getAttribute('data-num');
+         
+         // 동적으로 form 생성해서 POST 전송
+         let form = document.createElement('form');
+         form.method = 'POST';
+         form.action = '${pageContext.request.contextPath}/member/editLecture';
+         
+         let input = document.createElement('input');
+         input.type = 'hidden';
+         input.name = 'lecture_num';
+         input.value = lectureNum;
+         
+         form.appendChild(input);
+         document.body.appendChild(form);
+         form.submit();
+     }
 });
 
 

@@ -39,57 +39,27 @@
     <nav>
         <div class="nav-left">
 
-            <!-- 카테고리 -->
-            <div class="mega-dropdown">
-                <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체">카테고리 ▾</a>
 
+		<!-- 카테고리 -->
+		<div class="mega-dropdown">
+        	<a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체">카테고리 ▾</a>
                 <div class="mega-content">
-
-                    <div class="mega-column">
-                        <h3>ART</h3>
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=디지털드로잉">디지털드로잉</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=드로잉">드로잉</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=공예">공예</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="mega-column">
-                        <h3>요리</h3>
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=한식">한식</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=중식·일식">중식·일식</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=양식">양식</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=베이킹">베이킹</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="mega-column">
-                        <h3>라이프스타일</h3>
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=뷰티">뷰티</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=타로·사주">타로·사주</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=게임">게임</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="mega-column">
-                        <h3>IT</h3>
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=AI 스킬업">AI 스킬업</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=프로그래밍">프로그래밍</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=데이터사이언스">데이터사이언스</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="mega-column">
-                        <h3>외국어</h3>
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=영어">영어</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=제2외국어">제2외국어</a></li>
-                            <li><a href="${pageContext.request.contextPath}/category/lectureList?category_detail=외국어 시험">외국어 시험</a></li>
-                        </ul>
-                    </div>
+                    <c:forEach var="mainCategory" items="${categoMainryList}">
+                        <div class="mega-column">
+                            <h3>${mainCategory.category_main_name}</h3>
+                            <ul>
+                                <c:forEach var="category" items="${categoryList}">
+                                    <c:if test="${category.category_main_name eq mainCategory.category_main_name}">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/category/lectureList?category_detail=${category.category_detail}">
+                                                ${category.category_detail}
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </c:forEach>
 
                 </div>
             </div>

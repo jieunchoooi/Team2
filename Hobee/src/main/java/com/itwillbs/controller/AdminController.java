@@ -69,7 +69,7 @@ public class AdminController {
    
    
    
-   
+   // 카테고리 편집
    @GetMapping("/adminCategory")
    public String adminCategory(Model model) {
       System.out.println("AdminController adminCategory()");
@@ -108,7 +108,7 @@ public class AdminController {
    		return "admin/adminCategory";
    }
    	
-//  카테고리 추가
+//  카테고리 소분류 추가
    @PostMapping("/addCategory")
    public String CategoryMainDelete(@RequestParam("category_main_name") String category_main_name,
    							  @RequestParam("category_detail") String category_detail) {
@@ -122,7 +122,7 @@ public class AdminController {
    		return "admin/adminCategory";
    }
    
-   // 카테고리 삭제
+   // 카테고리 소분류 삭제
    	@GetMapping("/deleteCategory")
    	public String deleteCategory(@RequestParam("category_num") int category_num) {
    		System.out.println("AdminController deleteCategory()");
@@ -131,27 +131,12 @@ public class AdminController {
    		
    		return "admin/adminCategory";
    	}
-   	
- // 모달에 카테고리 정보 보여주기
-   	@GetMapping("/categoryEditInfoModal")
-   	public String categoryEditInfoModal(@RequestParam("category_num") int category_num, Model model) {
-   		System.out.println("AdminController categoryEditInfoModal()");
-
-   	    // 1. 수정할 카테고리 정보 조회
-   	    CategoryVO category = adminService.selectCategoryByNum(category_num);
-   	    model.addAttribute("category", category);
-   	    
-   	    // 2. 대분류 목록도 함께 전달 (셀렉트박스에 옵션 표시용)
-   	    List<Category_mainVO> categoMainryList = adminService.categoMainryList();
-   	    model.addAttribute("categoMainryList", categoMainryList);
-   	    return "admin/CategoryEditinfoModal";
-   	}
     
-   	// 2. 카테고리 수정 처리
+   	// 카테고리 수정 처리
    	@PostMapping("/updateCategory")
    	public String updateCategory(CategoryVO categoryVO) {
    	    adminService.updateCategory(categoryVO);
-   	    return "redirect:/admin/adminCategory"; // 카테고리 관리 페이지로 리다이렉트
+   	    return "redirect:/admin/adminCategory"; 
    	}
    
    // 클래스 삭제
@@ -164,83 +149,95 @@ public class AdminController {
       return "redirect:/admin/adminClassList";
    }
 
-   // 강의 목록
    @GetMapping("/adminClassList")
    public String adminClassList(Model model, HttpServletRequest request,
-	   							@RequestParam(value = "search", required = false) String search,
-	   						    @RequestParam(value = "searchList", required = false) String searchList) {
+                               @RequestParam(value = "search", required = false) String search,
+                               @RequestParam(value = "searchList", required = false) String searchList) {
       System.out.println("AdminController adminClassList()");
-
       String pageNum = request.getParameter("pageNum");
       String filter = request.getParameter("filter");
+      
       if(filter == null || filter.isEmpty()) {
-    	  filter = "all";
+         filter = "all";
       }
       if (pageNum == null) {
          pageNum = "1";
       }
+      
       int currentPage = Integer.parseInt(pageNum);
       int pageSize = 10;
-
+      
       PageVO pageVO = new PageVO();
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
       pageVO.setPageSize(pageSize);
-      if(search == null) {
-    	  search = "";
-    	  pageVO.setSearch(search);
-    	  pageVO.setSearchList(searchList);
-      }else {
-    	  pageVO.setSearch(search);
-    	  pageVO.setSearchList(searchList);
+      
+      if(search == null || search.trim().isEmpty()) {
+         search = null;
       }
       
-      int tCount = adminService.teacharCount(pageVO);
+      if(searchList == null || searchList.isEmpty()) {
+         searchList = "전체";
+      }
+      
+      pageVO.setSearch(search);
+      pageVO.setSearchList(searchList);
+      
+      // 필터에 따른 강의 목록과 카운트 조회
       List<LectureVO> lectureList;
-
-      int compClassCount = adminService.compClassCount(pageVO);
-      int askClassCount = adminService.askClassCount(pageVO);
-      int okClassCount = adminService.okClassCount(pageVO);
-      int deleteClassCount = adminService.deleteClassCount(pageVO);
-      int classCount = adminService.classCount(pageVO);
-      int count = adminService.countlectureList(pageVO);
+      int count;
+      
+      if("ok".equals(filter)) {
+         lectureList = adminService.okClass(pageVO);
+         count = adminService.okClassCount(pageVO);
+      } else if("ask".equals(filter)) {
+         lectureList = adminService.askClass(pageVO);
+         count = adminService.askClassCount(pageVO);
+      } else if("comp".equals(filter)) {
+         lectureList = adminService.compClass(pageVO);
+         count = adminService.compClassCount(pageVO);
+      } else if("delete".equals(filter)){
+         lectureList = adminService.deleteClass1(pageVO);
+         count = adminService.deleteClassCount(pageVO);
+      } else {
+         lectureList = adminService.listLecture(pageVO);
+         count = adminService.countlectureList(pageVO);
+      }
+      
+      // 전체 통계 (검색 없이)
+      PageVO statPageVO = new PageVO();
+      int classCount = adminService.classCount(statPageVO);
+      int okClassCount = adminService.okClassCount(statPageVO);
+      int askClassCount = adminService.askClassCount(statPageVO);
+      int compClassCount = adminService.compClassCount(statPageVO);
+      int deleteClassCount = adminService.deleteClassCount(statPageVO);
+      
+      // 페이징 처리
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
       int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+      
       if (endPage > pageCount) {
          endPage = pageCount;
       }
-
-      if("ok".equals(filter)) {
-    	  lectureList = adminService.okClass(pageVO);
-      }else if("ask".equals(filter)) {
-    	  lectureList = adminService.askClass(pageVO);
-      }else if("comp".equals(filter)) {
-    	  lectureList = adminService.compClass(pageVO);
-      }else if("delete".equals(filter)){
-    	  lectureList = adminService.deleteClass1(pageVO);
-      }else {
-    	  lectureList = adminService.listLecture(pageVO);
-      }
       
+      // pageVO 담기
       pageVO.setCount(count);
       pageVO.setPageBlock(pageBlock);
       pageVO.setStartPage(startPage);
       pageVO.setEndPage(endPage);
       pageVO.setPageCount(pageCount);
-      pageVO.setCount(count);
-
+      
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("lectureList", lectureList);
       model.addAttribute("classCount", classCount);
-      model.addAttribute("tCount", tCount);
       model.addAttribute("filter", filter);
       model.addAttribute("compClassCount", compClassCount);
       model.addAttribute("askClassCount", askClassCount);
       model.addAttribute("okClassCount", okClassCount);
       model.addAttribute("deleteClassCount", deleteClassCount);
-
+      
       return "admin/adminClassList";
    }
    
@@ -275,6 +272,14 @@ public class AdminController {
       int currentPage = Integer.parseInt(pageNum);
       int pageSize = 10;
 
+      if(search == null || search.trim().isEmpty()) {
+          search = null;
+       }
+       
+       if(searchList == null || searchList.isEmpty()) {
+          searchList = "전체";
+       }
+       
       PageVO pageVO = new PageVO();
       pageVO.setPageNum(pageNum);
       pageVO.setCurrentPage(currentPage);
@@ -296,10 +301,10 @@ public class AdminController {
     	  count = adminService.countMemberList(pageVO);
       }
       
-      
-      int dcount = adminService.inactiveMemberCount(pageVO);
-      int acount = adminService.memberCount(pageVO);
-      int totalcount = adminService.countMemberList(pageVO);
+      PageVO statPageVO = new PageVO();
+      int dcount = adminService.inactiveMemberCount(statPageVO);
+      int acount = adminService.memberCount(statPageVO);
+      int totalcount = adminService.countMemberList(statPageVO);
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
       int endPage = startPage + (pageBlock - 1);
@@ -325,7 +330,7 @@ public class AdminController {
       return "admin/adminMemberList";
    }
 
-   @GetMapping("/MemberManagement")
+   @PostMapping("/MemberManagement")
    public String MemberManagement(Model model, @RequestParam("user_num") int user_num) {
       System.out.println("AdminController MemberManagement()");
       UserVO user = adminService.insertMember(user_num);
@@ -434,9 +439,10 @@ public class AdminController {
           count = adminService.countTeacherList(pageVO);
       }
       
-      int totalCount = adminService.countTeacherList(pageVO);
-      int tCount = adminService.teacharCount(pageVO);
-      int intCount = adminService.inactiveTeacharCount(pageVO);
+      PageVO statPageVO = new PageVO();
+      int totalCount = adminService.countTeacherList(statPageVO);
+      int tCount = adminService.teacharCount(statPageVO);
+      int intCount = adminService.inactiveTeacharCount(statPageVO);
       
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
@@ -503,9 +509,10 @@ public class AdminController {
     	  count = adminService.deleteAllMemberCount(pageVO);
       }
       
-      int totalCount = adminService.deleteAllMemberCount(pageVO);
-      int mdCount = adminService.deletecountMemberList(pageVO);
-      int intCount = adminService.instructorDeletecountList(pageVO);
+      PageVO statPageVO = new PageVO();
+      int totalCount = adminService.deleteAllMemberCount(statPageVO);
+      int mdCount = adminService.deletecountMemberList(statPageVO);
+      int intCount = adminService.instructorDeletecountList(statPageVO);
       
       int pageBlock = 10;
       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
@@ -521,7 +528,7 @@ public class AdminController {
       pageVO.setStartPage(startPage);
       pageVO.setEndPage(endPage);
       pageVO.setPageCount(pageCount);
-      pageVO.setCount(count);
+//      pageVO.setCount(count);
 
       model.addAttribute("pageVO", pageVO);
       model.addAttribute("memberList", memberList);
@@ -584,7 +591,7 @@ public class AdminController {
    }
    
 //   강의 수정
-   @GetMapping("/adminClassEditinfo")
+   @PostMapping("/adminClassEditinfo")
    public String adminClassEditinfo(@RequestParam("lecture_num") int lecture_num, Model model) {
 	    System.out.println("AdminController adminClassEditPro()");
 	    
@@ -613,7 +620,7 @@ public class AdminController {
 		return "admin/adminClassEditinfo";
    }
    
-   @GetMapping("/adminTeacherDetail")
+   @PostMapping("/adminTeacherDetail")
    public String adminTeacherDetail(@RequestParam("user_num") int user_num, Model model) {
        System.out.println("=== adminTeacherDetail 실행 ===");
        System.out.println("user_num: " + user_num);

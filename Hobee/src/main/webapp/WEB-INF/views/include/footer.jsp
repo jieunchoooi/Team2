@@ -5,25 +5,25 @@
     background: #f8f9fa;
     border-top: 1px solid #e9ecef;
     padding: 40px 0 30px;
-    margin-top: 60px;
+/*     margin-top: 60px; */
     font-size: 0.75rem;
     color: #666;
     
     /* ✅ 사이드바 위로 올리기 */
     position: relative;
     width: 100vw;
-    left: -5%;
+    left: 0%; 
     z-index: 90;
 }
 
 .footer-container {
     max-width: 1200px;
     padding: 0 20px;
-    /* ✅ 중앙 정렬 핵심 */
-    width: 1200px;
-    margin-left: calc(260px + (100vw - 1200px - 260px) / 2);
+    margin-left: 400px;  /* 사이드바 공간 확보 */
+    margin-right: auto;
+    /* width 고정 제거 */
+    /* width: 1200px; 제거 */
 }
-
 /* 상단 영역 */
 .footer-top {
     display: grid;

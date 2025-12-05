@@ -318,7 +318,8 @@
           <div class="action-icon ${lectureVO.bookmark ? 'active' : ''}" 
                data-lecture-num="${lectureVO.lecture_num}"
                onclick="toggleBookmark(${lectureVO.lecture_num}, this);">
-            <i class="far fa-bookmark"></i><span>1010</span>
+            <i class="far fa-bookmark"></i>
+            <span id="bookmarkCount">${lectureVO.bookmark_count}</span>
           </div>
         </div>
       </div>
@@ -457,15 +458,24 @@
 	        success: function(response) {
 	           if(response.success) {
 	        	   const allButtons = document.querySelectorAll('[data-lecture-num="' + lectureNum + '"]');
+	        	   const bookmarkCountSpan = document.getElementById('bookmarkCount');
 	        	   
 	        	   if(response.bookmarked){
 	        		   allButtons.forEach(button => {
 	        			   button.classList.add('active'); //북마크 ON
 	        		   });
+	        		   //북마크 카운트 +1
+	        		   if(bookmarkCountSpan){
+	        			   bookmarkCountSpan.textContent = parseInt(bookmarkCountSpan.textContent) + 1;
+	        		   }
 	        	   } else {
 	        		   allButtons.forEach(button =>{
 	        			   button.classList.remove('active'); //북마크 OFF
 	        		   });
+	        		   //북마크 카운트 -1
+	        		   if(bookmarkCountSpan){
+	        			   bookmarkCountSpan.textContent = parseInt(bookmarkCountSpan.textContent) - 1;
+	        		   }
 	        	   }
 	           }
 	        }

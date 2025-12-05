@@ -560,3 +560,48 @@ td:last-child {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* 페이징 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 30px;
+    padding: 20px 0;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+/* 현재 페이지 강조 */
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    font-weight: bold;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* 처음/끝, 이전/다음 버튼 스타일 */
+.pagination a[href*="처음"],
+.pagination a[href*="끝"],
+.pagination a[href*="이전"],
+.pagination a[href*="다음"] {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}

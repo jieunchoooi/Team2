@@ -24,7 +24,61 @@ body {
     min-height: 100vh;
     box-sizing: border-box;
 }
+/* ===============================
+   ✅ 프로필 박스 (mypage.css와 동일하게)
+   =============================== */
+.profile-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
+.profile-pic {
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #2573ff 0%, #1e40af 100%);
+  box-shadow: 0 4px 12px rgba(37, 115, 255, 0.3);
+}
+
+.profile-pic span {
+  font-size: 3.5rem;
+}
+
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-info p:first-child {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.profile-info p:nth-child(2) {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.profile-info p:nth-child(3) {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+}
+	
 /* =========================== 컨텐츠 래퍼 =========================== */
 .content-wrapper {
     max-width: 1200px;
