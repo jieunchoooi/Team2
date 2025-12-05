@@ -126,6 +126,10 @@ td:nth-child(3) {
   text-overflow: ellipsis;
   color: #555;
 }
+/* 관리 스타일 */
+td:nth-child(4) {
+  width: 170px;
+}
 
 /* ===============================
    ✅ 별점 스타일
