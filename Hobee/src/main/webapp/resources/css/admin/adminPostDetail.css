@@ -322,7 +322,7 @@
     height: 36px;         /* 🔥 버튼과 동일값 */
     padding: 0 14px;      /* 🔥 좌우 폭만 조금 여유 */
     border-radius: 18px;  /* 🔥 버튼과 동일한 둥근 모양 */
-    
+
     background: #ff6b6b;
     color: #fff;
     font-size: 14px;
@@ -347,7 +347,75 @@
     text-decoration: line-through;
 }
 
+.detail-info-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e8e8e8;
 
+    opacity: 0;
+    transform: translateY(-6px);
+    animation: fadeDown 0.4s ease forwards;
+}
 
+.detail-info-row:nth-child(1) { animation-delay: 0.05s; }
+.detail-info-row:nth-child(2) { animation-delay: 0.10s; }
+.detail-info-row:nth-child(3) { animation-delay: 0.15s; }
+.detail-info-row:nth-child(4) { animation-delay: 0.20s; }
+.detail-info-row:nth-child(5) { animation-delay: 0.25s; }
 
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 
+.detail-content-area {
+    background: #f9fafe;
+    border: 1px solid #e6e9f0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    transition: 0.3s;
+}
+
+.detail-content-area:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.comment-box {
+    transition: 0.25s;
+}
+
+.comment-box:hover {
+    background: #f8faff;
+    transform: translateX(6px);
+    border-radius: 10px;
+}
+
+.comment-box .report-badge {
+    background: linear-gradient(90deg, #ff6b6b, #ff8b8b);
+    box-shadow: 0 2px 6px rgba(255,0,0,0.25);
+}
+
+.action-btn {
+    transition: background-color 0.25s, transform 0.15s;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.page-title {
+    position: relative;
+}
+
+.page-title::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #2b59ff, #6ba7ff);
+}
