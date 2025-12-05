@@ -19,7 +19,7 @@
 .footer-container {
     max-width: 1200px;
     padding: 0 20px;
-    margin-left: 400px;  /* 사이드바 공간 확보 */
+    margin-left: auto;  /* 사이드바 공간 확보 */
     margin-right: auto;
     /* width 고정 제거 */
     /* width: 1200px; 제거 */
