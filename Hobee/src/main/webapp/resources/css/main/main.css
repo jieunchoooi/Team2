@@ -244,14 +244,6 @@ main p {
 .search-form input:focus {
 	border-color: #2573ff;
 }
-footer {
-	background: #fff;
-	text-align: center;
-	padding: 20px;
-	font-size: 0.9rem;
-	color: #777;
-/* 	box-shadow: 0 -2px 6px rgba(0,0,0,0.05); */
-}
 /* 메인페이지 카테고리 */
 .hobee-category {
 	width: 100%;
