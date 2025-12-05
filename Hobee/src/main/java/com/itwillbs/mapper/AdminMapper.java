@@ -1,6 +1,7 @@
 package com.itwillbs.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.Category_mainVO;
@@ -140,6 +141,12 @@ public interface AdminMapper {
 	public void cancelDelete(int lecture_num);
 
 	public List<Category_mainVO> categoMainryList();
+
+	public List<Map<String, Object>> getCategoryDetailPaymentStats();
+
+	public List<Map<String, Object>> bestClassTop10();
+
+	public List<Map<String, Object>> monthlySales();
 
 
 

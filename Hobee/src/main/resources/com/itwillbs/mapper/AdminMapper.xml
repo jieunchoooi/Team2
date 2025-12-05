@@ -928,10 +928,46 @@
     	WHERE lecture_num = #{lecture_num}
 	</update>
 	
+	<select id="getCategoryDetailPaymentStats" resultType="map">
+		<![CDATA[
+		    SELECT 
+		        c.category_main_name as categoryName,
+		        COUNT(*) as paymentCount,
+		        COALESCE(SUM(pd.sale_price), 0) as totalAmount
+		    FROM payment_detail pd
+		    INNER JOIN lecture l ON pd.lecture_num = l.lecture_num
+		    INNER JOIN category c ON l.category_detail = c.category_detail
+		    WHERE pd.created_at >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m-01')
+		      AND pd.created_at < DATE_FORMAT(NOW(), '%Y-%m-01')
+		    GROUP BY c.category_main_name
+		    ORDER BY paymentCount DESC
+		]]>
+	</select>
 	
+	<select id="bestClassTop10" resultType="map">
+	    SELECT 
+	        l.lecture_num as lecture_num,
+	        l.lecture_title as lecture_title,
+	        l.lecture_author as lecture_author,
+	        l.lecture_img as lecture_img,
+	        l.category_detail as category_detail,
+	        COUNT(s.scrap_id) as scrapCount
+	    FROM lecture l
+	    INNER JOIN scrap s ON l.lecture_num = s.lecture_num
+	    GROUP BY l.lecture_num, l.lecture_title, l.lecture_author, l.lecture_img, l.category_detail
+	    ORDER BY scrapCount DESC
+	    LIMIT 10
+	</select>
 	
-	
-	
+	<select id="monthlySales" resultType="map">
+	    SELECT 
+	        DATE_FORMAT(created_at, '%Y-%m') as yearMonth,
+	        SUM(sale_price) as totalSales
+	    FROM payment_detail
+	    WHERE YEAR(created_at) = YEAR(NOW())
+	    GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+	    ORDER BY DATE_FORMAT(created_at, '%Y-%m')
+	</select>
 	
 	
 	

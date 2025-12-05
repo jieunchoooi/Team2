@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -393,6 +394,23 @@ public class AdminService {
 	    return adminMapper.categoMainryList();
 	}
 
+	public List<Map<String, Object>> getCategoryDetailPaymentStats() {
+		System.out.println("AdminService getCategoryDetailPaymentStats()");
+	    return adminMapper.getCategoryDetailPaymentStats();
+	}
+
+	public List<Map<String, Object>> bestClassTop10() {
+		System.out.println("AdminService bestClassTop10()");
+	    return adminMapper.bestClassTop10();
+	}
+
+	public List<Map<String, Object>> monthlySales() {
+		System.out.println("AdminService monthlySales()");
+	    return adminMapper.monthlySales();
+	}
+	
+	
+	
 	
 
 
