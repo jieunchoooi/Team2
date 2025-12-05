@@ -88,12 +88,13 @@
 
                     <td>${post.post_id}</td>
 
-                    <td class="title-cell">
+                    <td class="title-cell" data-full-title="${post.title}">
                         <a href="${pageContext.request.contextPath}/admin/adminPostDetail?post_id=${post.post_id}"
                            class="post-link">
                             ${post.title}
                         </a>
                     </td>
+
 
                     <td>${post.author}</td>
                     <td>${post.board_name}</td>
@@ -108,21 +109,24 @@
 
                     <td class="btn-group">
 
+                        <!-- 숨기기 / 표시 버튼 -->
                         <form action="${pageContext.request.contextPath}/admin/adminPostToggle" method="post">
                             <input type="hidden" name="post_id" value="${post.post_id}">
-                            <button class="${post.is_visible == 1 ? 'btn-red' : 'btn-green'}">
+                            <button class="${post.is_visible == 1 ? 'btn-hide' : 'btn-show'}">
                                 ${post.is_visible == 1 ? '숨기기' : '표시'}
                             </button>
                         </form>
 
+                        <!-- 삭제 버튼 -->
                         <form action="${pageContext.request.contextPath}/admin/adminPostDelete"
                               method="post"
                               onsubmit="return confirm('정말 삭제하시겠습니까?');">
                             <input type="hidden" name="post_id" value="${post.post_id}">
-                            <button class="btn-red">삭제</button>
+                            <button class="btn-danger">삭제</button>
                         </form>
 
                     </td>
+
 
                 </tr>
             </c:forEach>

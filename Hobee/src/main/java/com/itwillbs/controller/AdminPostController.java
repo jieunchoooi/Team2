@@ -1,5 +1,7 @@
 package com.itwillbs.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +51,37 @@ public class AdminPostController {
 			total = adminPostService.getSearchTotalCount(type, keyword);
 			list = adminPostService.getSearchPostList(pageNum, amount, type, keyword, sort);
 		}
+
+		/* --------------------------------------------
+       ⭐ 등록일(created_at) 형식 자동 변환 추가
+       DB에서 "2025-12-02 09:21:38" 형태가 오면
+       JSP에서 한 줄 날짜+시간으로 완벽하게 출력됨
+    -------------------------------------------- */
+		DateTimeFormatter inputFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		DateTimeFormatter outputFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		for (AdminPostVO post : list) {
+
+			try {
+				// 1) 줄바꿈 문자 제거
+				String cleaned = post.getCreated_at()
+						.replace("\n", " ")
+						.replace("\r", " ")
+						.trim();
+
+				// 2) LocalDateTime 변환
+				LocalDateTime dt = LocalDateTime.parse(cleaned, inputFmt);
+
+				// 3) 다시 한 줄로 포맷
+				post.setCreated_at(dt.format(outputFmt));
+
+			} catch (Exception e) {
+				// 변환 실패 → 원본 유지
+				// (필요하면 콘솔 출력해서 확인 가능)
+				// System.out.println("PARSE FAIL:" + post.getCreated_at());
+			}
+		}
+
 
 		PageDTO pageDTO = new PageDTO(pageNum, amount, total, sort);
 
@@ -175,23 +208,16 @@ public class AdminPostController {
 	@GetMapping("/adminPostStats")
 	public String adminPostStats(Model model) {
 
-	    model.addAttribute("page", "postStats");
+		model.addAttribute("page", "postStats");
 
-	    List<Map<String, Object>> viewStats = adminPostService.getTopViewPosts();
-	    List<Map<String, Object>> commentStats = adminPostService.getTopCommentPosts();
-	    List<Map<String, Object>> weeklyStats = adminPostService.getWeeklyPostCount();
-	    List<Map<String, Object>> categoryStats = adminPostService.getPostsByCategory();
+		List<Map<String, Object>> viewStats = adminPostService.getTopViewPosts();
+		List<Map<String, Object>> commentStats = adminPostService.getTopCommentPosts();
 
-	    System.out.println("🔥 categoryStats 결과: " + categoryStats);
-	    
-	    model.addAttribute("viewStats", viewStats);
-	    model.addAttribute("commentStats", commentStats);
-	    model.addAttribute("weeklyStats", weeklyStats);
-	    model.addAttribute("categoryStats", categoryStats);
+		model.addAttribute("viewStats", viewStats);
+		model.addAttribute("commentStats", commentStats);
 
-	    return "admin/community/adminPostStats";
+		return "admin/community/adminPostStats";
 	}
-
 
 	// 검색 자동완성
 	// 검색 자동완성
