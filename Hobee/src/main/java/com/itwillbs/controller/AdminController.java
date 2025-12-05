@@ -56,6 +56,7 @@ public class AdminController {
 	public String setPageIdentifier(HttpServletRequest req) {
 	    String uri = req.getRequestURI();
 
+	    if (uri.contains("dashboard")) return "dashboard";
 	    if (uri.contains("adminCategory")) return "category";
 	    if (uri.contains("adminClassList")) return "classList";
 	    if (uri.contains("adminMemberList")) return "memberList";
@@ -694,6 +695,8 @@ public class AdminController {
    @PostMapping("/updateCategoryOrder")
    @ResponseBody
    public Map<String, Object> updateCategoryOrder(@RequestBody Map<String, Object> orderData) {
+	   System.out.println("AdminController updateCategoryOrder()");
+
        Map<String, Object> response = new HashMap<>();
        
        try {
@@ -746,6 +749,20 @@ public class AdminController {
        
        return response;
    }
+   
+   @GetMapping("/dashboard")
+   public String dashboard() {
+	   System.out.println("AdminController dashboard()");
+
+	   return "admin/dashboard";
+   }
+   
+   
+   
+   
+   
+   
+   
    
    
    

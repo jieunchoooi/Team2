@@ -22,7 +22,7 @@ body {
    =============================== */
 main {
   margin-left: 240px;
-  padding: 30px;
+  padding: 30px 30px 60px 30px;
 /*   padding-top: 100px; 헤더 아래부터 시작 */
   min-height: 100vh;
   background-color: #f8f9fa;
