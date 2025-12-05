@@ -21,4 +21,7 @@ public interface PaymentDetailMapper {
     PaymentDetailVO getDetailByPaymentAndLecture(
             @Param("payment_id") int paymentId,
             @Param("lecture_num") int lectureNum);
+    //부분환불용 디테일 카운팅
+    int countTotalDetails(@Param("paymentId") int paymentId);
+
 }

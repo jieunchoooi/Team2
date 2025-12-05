@@ -131,7 +131,7 @@ footer {background:#fff; text-align:center; padding:15px; font-size:0.8rem; colo
   </section>
 </main>
 
-<footer>© 2025 Hobee | 당신의 취미 파트너</footer>
+
 
 <script>
 const currentUser = "${sessionScope.loginUser}"; // 로그인 유저

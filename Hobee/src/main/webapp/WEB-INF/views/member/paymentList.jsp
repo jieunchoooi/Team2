@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -11,150 +11,158 @@
 <title>결제 내역 | Hobee</title>
 
 <link rel="stylesheet"
-    href="${pageContext.request.contextPath}/resources/css/member/memberSidebar.css">
+	href="${pageContext.request.contextPath}/resources/css/member/memberSidebar.css">
 <link rel="stylesheet"
-    href="${pageContext.request.contextPath}/resources/css/member/paymentList.css">
+	href="${pageContext.request.contextPath}/resources/css/member/paymentList.css">
 <link rel="stylesheet"
-    href="${pageContext.request.contextPath}/resources/css/include/profileCard.css">
+	href="${pageContext.request.contextPath}/resources/css/include/profileCard.css">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
 
-    <jsp:include page="../include/header.jsp" />
-    <jsp:include page="../include/memberSidebar.jsp" />
+	<jsp:include page="../include/header.jsp" />
+	<jsp:include page="../include/memberSidebar.jsp" />
 
-    <main class="main-content">
+	<main class="main-content">
 
-        <div class="content-wrapper">
+		<div class="content-wrapper">
 
-            <%-- ===========================
+			<%-- ===========================
                  🔥 프로필 카드
             ============================ --%>
-            <jsp:include page="../include/profileCard.jsp" />
+			<jsp:include page="../include/profileCard.jsp" />
 
-            <%-- ===========================
+			<%-- ===========================
                  🔥 결제 내역
             ============================ --%>
-            <div class="payment-list">
+			<div class="payment-list">
 
-                <c:choose>
+				<c:choose>
 
-                    <%-- 결제 내역 없음 --%>
-                    <c:when test="${empty paymentList}">
-                        <div class="payment-empty-wrap">
-                            <div class="payment-empty-card">
-                                <div class="empty-icon">🧸</div>
-                                <div class="empty-title">아직 결제 내역이 없어요</div>
-                            </div>
-                        </div>
-                    </c:when>
+					<%-- 결제 내역 없음 --%>
+					<c:when test="${empty paymentList}">
+						<div class="payment-empty-wrap">
+							<div class="payment-empty-card">
+								<div class="empty-icon">🧸</div>
+								<div class="empty-title">아직 결제 내역이 없어요</div>
+							</div>
+						</div>
+					</c:when>
 
-                    <%-- 결제 내역 있음 --%>
-                    <c:otherwise>
+					<%-- 결제 내역 있음 --%>
+					<c:otherwise>
 
-                        <c:forEach var="pay" items="${paymentList}">
+						<c:forEach var="pay" items="${paymentList}">
 
-                            <%-- 문자열 길이 체크용 --%>
-                            <c:set var="lectureTitleListString" value="${pay.lectureTitleList}" />
-                            <c:set var="lectureCount" value="${fn:length(lectureTitleListString)}" />
+							<%-- 문자열 길이 체크용 --%>
+							<c:set var="lectureTitleListString"
+								value="${pay.lectureTitleList}" />
+							<c:set var="lectureCount"
+								value="${fn:length(lectureTitleListString)}" />
 
-                            <div class="payment-card">
+							<div class="payment-card">
 
-                                <%-- 좌측 정보 영역 --%>
-                                <div class="card-left">
+								<%-- 좌측 정보 영역 --%>
+								<div class="card-left">
 
-                                    <%-- 🔹 주문번호 --%>
-                                    <p class="order-no">주문번호: ${pay.merchant_uid}</p>
+									<%-- 🔹 주문번호 --%>
+									<p class="order-no">주문번호: ${pay.merchant_uid}</p>
 
-                                    <%-- 🔥 🔥 🔥 여기 새로 추가: 결제 금액 표시 --%>
-                                    <p class="pay-amount">
-                                        결제 금액:
-                                        <strong>
-                                            <fmt:formatNumber value="${pay.amount}" pattern="#,###" />원
-                                        </strong>
-                                    </p>
+									<%-- 🔥 🔥 🔥 여기 새로 추가: 결제 금액 표시 --%>
+									<p class="pay-amount">
+										결제 금액: <strong> <fmt:formatNumber
+												value="${pay.amount}" pattern="#,###" />원
+										</strong>
+									</p>
 
-                                    <%-- 날짜 & 상태 --%>
-                                    <p class="date-status">
-                                        <fmt:formatDate value="${pay.created_at}" pattern="yyyy-MM-dd HH:mm" />
-                                        &nbsp;:&nbsp;
+									<%-- 날짜 & 상태 --%>
+									<p class="date-status">
+										<fmt:formatDate value="${pay.created_at}"
+											pattern="yyyy-MM-dd HH:mm" />
+										&nbsp;:&nbsp;
+										<c:choose>
+											<c:when test="${pay.status eq 'paid'}">
+												<span class="status-text status-paid">결제완료</span>
+											</c:when>
 
-                                        <c:choose>
-                                            <c:when test="${pay.status eq 'paid'}">
-                                                <span class="status-text status-paid">결제완료</span>
-                                            </c:when>
-                                            <c:when test="${pay.status eq 'refunded'}">
-                                                <span class="status-text status-cancelled">환불완료</span>
-                                            </c:when>
-                                        </c:choose>
-                                    </p>
+											<c:when test="${pay.status eq 'partial'}">
+												<span class="status-text status-partial">부분환불</span>
+											</c:when>
 
-                                    <%-- 강의명 --%>
-                                    <p class="lecture-title">
-                                        ${pay.lectureTitleList[0]}
-                                        <c:if test="${lectureCount > 1}">
+											<c:when test="${pay.status eq 'refunded'}">
+												<span class="status-text status-cancelled">환불완료</span>
+											</c:when>
+										</c:choose>
+
+									</p>
+
+									<%-- 강의명 --%>
+									<p class="lecture-title">
+										${pay.lectureTitleList[0]}
+										<c:if test="${lectureCount > 1}">
                                             &nbsp;외 ${lectureCount - 1}개
                                         </c:if>
-                                    </p>
+									</p>
 
-                                </div>
+								</div>
 
-                                <%-- 우측 버튼 영역 --%>
-                                <div class="card-right">
+								<%-- 우측 버튼 영역 --%>
+								<div class="card-right">
 
-                                    <c:if test="${pay.status eq 'paid'}">
+									<c:if test="${pay.status eq 'paid'}">
 
-                                        <c:choose>
+										<c:choose>
 
-                                            <%-- 환불 가능 --%>
-                                            <c:when test="${pay.refundable}">
-                                                <button type="button" class="action-btn refund-btn"
-                                                    onclick="requestFullRefund(${pay.payment_id})">전체 환불하기 ❯</button>
-                                            </c:when>
+											<%-- 환불 가능 --%>
+											<c:when test="${pay.refundable}">
+												<button type="button" class="action-btn refund-btn"
+													onclick="requestFullRefund(${pay.payment_id})">전체
+													환불하기 ❯</button>
+											</c:when>
 
-                                            <%-- 환불 불가 --%>
-                                            <c:otherwise>
-                                                <span class="action-btn disabled-btn">환불 기간 만료</span>
-                                            </c:otherwise>
+											<%-- 환불 불가 --%>
+											<c:otherwise>
+												<span class="action-btn disabled-btn">환불 기간 만료</span>
+											</c:otherwise>
 
-                                        </c:choose>
+										</c:choose>
 
-                                    </c:if>
+									</c:if>
 
-                                    <%-- 상세보기 버튼 --%>
-                                    <button class="action-btn detail-btn"
-                                        onclick="openPaymentModal(${pay.payment_id})">상세 보기 ❯</button>
+									<%-- 상세보기 버튼 --%>
+									<button class="action-btn detail-btn"
+										onclick="openPaymentModal(${pay.payment_id})">상세 보기 ❯</button>
 
-                                </div>
+								</div>
 
-                            </div>
+							</div>
 
-                        </c:forEach>
+						</c:forEach>
 
-                    </c:otherwise>
+					</c:otherwise>
 
-                </c:choose>
+				</c:choose>
 
-            </div>
+			</div>
 
-        </div>
-    </main>
+		</div>
+	</main>
 
-
-    <%-- ===========================
+	<jsp:include page="../include/footer.jsp"></jsp:include>
+	<%-- ===========================
          상세 모달
     ============================ --%>
-    <div id="paymentModal" class="modal-overlay">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closePaymentModal()">✕</button>
-            <iframe id="paymentFrame" class="modal-frame"></iframe>
-        </div>
-    </div>
+	<div id="paymentModal" class="modal-overlay">
+		<div class="modal-box">
+			<button class="modal-close" onclick="closePaymentModal()">✕</button>
+			<iframe id="paymentFrame" class="modal-frame"></iframe>
+		</div>
+	</div>
 
 
-    <script>
+	<script>
     /* ===========================
        상세 모달 열기
     =========================== */

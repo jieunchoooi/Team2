@@ -50,6 +50,13 @@ public class CommunityService {
         return communityMapper.getPopularPosts();
     }
 
+    // ============================================
+    // 📌 카테고리 메인 리스트 (Chip 버튼용)
+    // ============================================
+    public List<CommunityCategoryVO> getCategoryList() {
+        return communityMapper.getCategoryList();
+    }
+
 
 
 
@@ -222,10 +229,7 @@ public class CommunityService {
     }
     
     
-    //게시글 카테고리 가져오기
-    public List<CommunityCategoryVO> getCategoryList() {
-        return communityMapper.getCategoryList();
-    }
+    
     //강의카테고리 가져오기
     public List<Category_mainVO> getMainCategoryList() {
         return communityMapper.getMainCategoryList();

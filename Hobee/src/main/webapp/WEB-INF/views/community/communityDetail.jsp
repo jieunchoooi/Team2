@@ -218,6 +218,11 @@
 							<span class="like-count">${dto.post.like_count}</span> <span
 								class="like-icon">❤️</span>
 						</button>
+						
+						<div class="report">
+<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
+							
+						</div>
 					</div>
 
 				</section>
@@ -309,6 +314,11 @@
 
 											<button type="button" class="reply-btn"
 												data-comment="${cmt.comment_id}">↩ 대댓글</button>
+												
+													<div class="report-comment">
+<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
+							
+						</div>
 										</div>
 
 										<%-- 대댓글 입력창 (이 댓글에 대한 입력) --%>
@@ -360,13 +370,18 @@
 																data-liked="${rep.user_reaction == 1 ? 'true' : 'false'}">
 																👍 <span class="cmt-like-count">${rep.like_count}</span>
 															</button>
-
+															
 															<c:if
 																test="${not empty sessionScope.userVO
                                                     and sessionScope.userVO.user_num == rep.user_num}">
 																<button type="button" class="comment-delete-btn"
 																	data-id="${rep.comment_id}">삭제</button>
 															</c:if>
+																	
+															<div class="report-comment">
+<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
+							
+																	</div>	
 														</div>
 
 													</div>
@@ -543,7 +558,7 @@
 
 	</main>
 
-
+<jsp:include page="../include/footer.jsp"></jsp:include>
 
 	<!-- ================================
      ❤️ 댓글 / 좋아요 / 대댓글 JS

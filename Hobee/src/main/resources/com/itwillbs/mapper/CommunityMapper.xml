@@ -119,6 +119,22 @@ LIMIT 5
 
 
 	<!-- ====================================================== 
+	4. 상단 메인 말머리 리스트 
+	====================================================== -->
+	<select id="getCategoryList"
+		resultType="com.itwillbs.domain.CommunityContentVO">
+		 SELECT
+        category_id,
+        category_key,
+        category_name,
+        category_desc,
+        is_active,
+        sort_order
+    FROM community_category
+    ORDER BY sort_order ASC, category_id ASC
+	</select>
+
+	<!-- ====================================================== 
 	4. 상단 메인 카테고리 리스트 
 	====================================================== -->
 	<select id="getCategoryMainList"
@@ -130,8 +146,6 @@ LIMIT 5
 		category_main
 		ORDER BY category_main_num ASC
 	</select>
-
-
 
 	<!-- ====================================================== 5. 게시글 목록 (summary 
 		= 120자) ※ CDATA 적용 ====================================================== -->
@@ -660,16 +674,7 @@ WITH filtered AS (
 	</insert>
 
 
-	<!-- ====================================================== 📌 카테고리 목록 ====================================================== -->
-	<select id="getCategoryList"
-		resultType="com.itwillbs.domain.CommunityCategoryVO">
-		SELECT
-		category_id,
-		category_name
-		FROM community_category
-		ORDER BY category_id
-	</select>
-
+	
 
 	<!-- ====================================================== 📌 메인 카테고리 목록 
 		====================================================== -->

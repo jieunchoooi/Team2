@@ -313,8 +313,10 @@
         <button class="btn-purchase">구매하기</button>
         
         <div class="action-icons">
-          <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div>
-          <div class="action-icon"><i class="far fa-share-square"></i><span>공유</span></div>
+<!--           <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div> -->
+          <div class="action-icon" onclick="shareKakao()">
+          	<i class="far fa-share-square"></i><span>공유</span>
+          </div>
           <div class="action-icon ${lectureVO.bookmark ? 'active' : ''}" 
                data-lecture-num="${lectureVO.lecture_num}"
                onclick="toggleBookmark(${lectureVO.lecture_num}, this);">
@@ -367,7 +369,26 @@
 <!-- 전체리뷰리스트 모달 영역 -->
 <div id="reviewModalContainer" style="display:none;"></div>
 
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
+
+  //카카오톡 공유하기
+  Kakao.init('7f21ec1e9b0371f46cf7190c8d91f522');
+	
+  function shareKakao() {
+	 Kakao.Share.sendDefault({
+	    objectType: 'feed',
+	    content: {
+	      title: '강의 제목',
+	      description: '강의 설명',
+	      imageUrl: '이미지 URL',
+	      link: {
+	        mobileWebUrl: window.location.href,
+	        webUrl: window.location.href
+	     }
+	   }
+	});
+  }
 
   // 탭 클릭 시 스크롤 이동
   const tabs = document.querySelectorAll('.tab-item');

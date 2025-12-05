@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.AdminPostVO;
 import com.itwillbs.domain.AdminCommentVO;
@@ -92,6 +93,7 @@ public class AdminPostController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("sort", sort);
 		model.addAttribute("page", "postList");
+		System.out.println(list);
 
 		return "admin/community/adminPostList";
 	}
@@ -157,12 +159,16 @@ public class AdminPostController {
        📌 5-2. 🔥 휴지통에서 "복구" (Trash → Trash)
     ============================================================ */
 	@PostMapping("/adminPostRestoreFromTrash")
-	public String restorePostFromTrash(@RequestParam("post_id") int post_id) {
+	public String restorePostFromTrash(@RequestParam("post_id") int post_id,
+	                                   RedirectAttributes rttr) {
 
-		adminPostService.restorePost(post_id);
+	    adminPostService.restorePost(post_id);
 
-		// 휴지통 목록으로 이동
-		return "redirect:/admin/adminPostDeletedList";
+	    // ⭐ Toastify 조건 전달
+	    rttr.addFlashAttribute("restored", true);
+
+	    // 휴지통 목록으로 이동
+	    return "redirect:/admin/adminPostDeletedList";
 	}
 
 

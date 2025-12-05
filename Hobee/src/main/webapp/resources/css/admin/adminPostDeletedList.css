@@ -10,20 +10,15 @@
     min-height: 100vh;
 }
 
-/* ================================ */
 /* 제목 */
-/* ================================ */
 .page-title {
     font-size: 32px;
     font-weight: 800;
     margin-bottom: 28px;
     margin-left: 5px;
-    color: #111;
 }
 
-/* ================================ */
 /* 카드 박스 */
-/* ================================ */
 .card-box {
     width: 100%;
     max-width: 1200px;
@@ -31,12 +26,14 @@
     background: #ffffff;
     padding: 35px 40px;
     border-radius: 18px;
-    box-shadow: 0 3px 18px rgba(0,0,0,0.06);
+    box-shadow: 0 5px 22px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+.card-box:hover{
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
 }
 
-/* ================================ */
-/* 테이블 공통 */
-/* ================================ */
+/* 테이블 */
 .styled-table {
     width: 100%;
     border-collapse: collapse;
@@ -49,153 +46,208 @@
 
 .styled-table th,
 .styled-table td {
-    padding: 13px 12px;
+    padding: 14px 12px !important;
     font-size: 15px;
     border-bottom: 1px solid #f0f0f0;
-    text-align: left;            /* 기본 왼쪽 정렬 */
-    vertical-align: middle;      /* 행 높이 안정화 */
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
 }
 
-/* 칼럼별 정렬 */
-.col-no,
-.col-date,
-.col-views,
-.col-manage {
-    text-align: center !important;
-}
-
-/* 제목 / 작성자 / 게시판 왼쪽 정렬 유지 */
 .col-title,
 .col-writer,
 .col-board {
     text-align: left !important;
 }
 
-.no-data {
-    text-align: center;
-    padding: 30px;
-    color: #777;
-    font-size: 15px;
-}
-
-/* 제목 링크 */
 .title-cell a {
     color: #333;
     font-weight: 600;
     text-decoration: none;
 }
-
 .title-cell a:hover {
     text-decoration: underline;
 }
 
+/* 마우스 hover 효과 */
+.styled-table tbody tr:hover {
+    background: #f7faff;
+    transition: 0.2s;
+}
+
+/* no-data */
+.no-data {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+}
+
 /* ================================ */
-/* 🔥 관리 버튼 세로 정렬 */
+/* ⭐ 관리 버튼 가로 정렬 완성본 */
 /* ================================ */
 .col-manage {
-    width: 120px;
-    text-align: center !important;
+    width: 190px !important;
 }
 
 .col-manage .btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    justify-content: center;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important;
 }
 
-.col-manage form {
-    margin: 0;     /* 줄 깨짐 방지 */
-    padding: 0;
-}
-
-/* 버튼 크기 최적화 */
 .btn-green,
 .btn-red {
-    padding: 6px 14px;
-    font-size: 13px;
-    width: 70px;   /* 버튼 폭 고정 → 정렬 안정화 */
+    all: unset;
+    display: inline-block;
+    width: 80px;
+    padding: 7px 0;
     text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff !important;
 }
 
-/* ================================ */
-/* 목록 버튼 */
-/* ================================ */
+/* 색상 */
+.btn-green { background: #2ecf8f; }
+.btn-green:hover { background: #25b87d; transform: translateY(-2px); }
+
+.btn-red { background: #ff4d4f; }
+.btn-red:hover { background: #e04345; transform: translateY(-2px); }
+
+/* 목록으로 버튼 */
 .back-btn-area {
-    text-align: center;
     margin-top: 25px;
+    text-align: center;
 }
 
 .btn-gray {
     background: #606060;
     color: #fff;
+    border: none;
     padding: 10px 22px;
     border-radius: 8px;
-    border: none;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
 }
-
 .btn-gray:hover {
     background: #4a4a4a;
 }
 
-/* ================================ */
-/* 🚀 관리 버튼 스타일 강제 적용 */
-/* ================================ */
+/* ===========================================
+   ✅ 제목 / 작성자 / 게시판 헤더 + 내용 정렬 통일
+   - 헤더(th) / 내용(td) 모두 왼쪽 정렬 + 동일 패딩
+=========================================== */
 
-.btn-green, .btn-red {
-    all: unset;                 /* 기존 버튼 스타일 완전 제거 */
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: center;
-    width: 70px;
+/* 제목 */
+.styled-table th.col-title,
+.styled-table td.col-title {
+    text-align: left !important;
+    padding-left: 40px !important;   /* 헤더/내용 좌측 여백 동일 */
 }
 
-/* 초록색 버튼 */
-.btn-green {
-    background: #2ecf8f !important;
-    color: #fff !important;
-}
-.btn-green:hover {
-    background: #25b87d !important;
+/* 작성자 */
+.styled-table th.col-writer,
+.styled-table td.col-writer {
+    text-align: left !important;
+    padding-left: 20px !important;
 }
 
-/* 빨간색 버튼 */
-.btn-red {
-    background: #ff4d4f !important;
-    color: #fff !important;
-}
-.btn-red:hover {
-    background: #e04345 !important;
+/* 게시판 */
+.styled-table th.col-board,
+.styled-table td.col-board {
+    text-align: left !important;
+    padding-left: 20px !important;
 }
 
-/* ================================ */
-/* 🚀 세로 정렬 완전 강제 적용 */
-/* ================================ */
-.col-manage .btn-group {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 6px !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
-/* 관리 칼럼 폭 */
-.col-manage {
-    width: 120px !important;
+/* 숫자 계열은 중앙 정렬 고정 */
+.styled-table th.col-no,
+.styled-table td.col-no,
+.styled-table th.col-date,
+.styled-table td.col-date,
+.styled-table th.col-views,
+.styled-table td.col-views,
+.styled-table th.col-manage,
+.styled-table td.col-manage {
     text-align: center !important;
 }
 
-/* 행 높이 통일 */
-.styled-table td {
-    vertical-align: middle !important;
-    padding: 10px 12px !important;
+/* ===============================
+   ⭐ 제목 / 게시판 칼럼 가운데 정렬
+=============================== */
+.styled-table th.col-title,
+.styled-table td.col-title,
+.styled-table th.col-board,
+.styled-table td.col-board {
+    text-align: center !important;
 }
+
+.page-title {
+    display: inline-block;
+    position: relative;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 42px;
+    padding-left: 5px;
+    color: #111;
+}
+
+/* 제목 밑줄 */
+.page-title::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #2b59ff, #6ba7ff);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underlineGrow 0.7s ease forwards;
+}
+
+@keyframes underlineGrow {
+    to { transform: scaleX(1); }
+}
+
+/* ================================
+   ⭐ 행 Hover 시 강조 + 떠오름 효과
+================================*/
+.styled-table tbody tr {
+    transition: 0.2s ease;
+}
+
+.styled-table tbody tr:hover {
+    background: #f0f6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+/* 버튼 Hover 효과 강화 */
+.btn-green:hover,
+.btn-red:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    transition: 0.15s;
+}
+
+/* 카드 박스 글래스 + Glow */
+.card-box {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.8);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+.card-box:hover {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.10);
+}
+
+
 

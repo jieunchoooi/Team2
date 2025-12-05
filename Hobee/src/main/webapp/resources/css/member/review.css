@@ -19,12 +19,17 @@ body {
 /* ===============================
    ✅ 메인 컨텐츠 영역
    =============================== */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}   
 .main-content {
-  margin-left: 240px;
-  padding: 30px;
-  padding-top: 100px; /* 헤더 아래부터 시작 */
-  min-height: 100vh;
-  background-color: #f8f9fa;
+    margin-left: 240px;
+    margin-top: 0;
+    padding: 40px 30px 30px 30px;
+    width: calc(100% - 240px);
+    background-color: #f9fafb;
+    min-height: 100vh;
 }
 
 /* ===============================
@@ -82,7 +87,6 @@ td {
   color: #333;
   font-size: 0.95rem;
 }
-
 tbody tr {
   transition: background-color 0.2s;
 }
@@ -94,13 +98,22 @@ tbody tr:hover {
 tbody tr:last-child td {
   border-bottom: none;
 }
+/* 강의 제목 */
+td:nth-child(1) {
+  max-width:200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+}
 
 /* ===============================
    ✅ 평점 스타일
    =============================== */
 td:nth-child(2) {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #fbbf24;
+  width: 170px;
 }
 
 /* ===============================
@@ -112,6 +125,57 @@ td:nth-child(3) {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #555;
+}
+/* 관리 스타일 */
+td:nth-child(4) {
+  width: 170px;
+}
+
+/* ===============================
+   ✅ 별점 스타일
+   =============================== */
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stars {
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.stars .empty {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.stars .empty i {
+  color: #e0e0e0;
+}
+
+.stars .filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  gap: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: calc(var(--rating) * 20%);
+}
+
+.stars .filled i {
+  color: #ffc107;
+}
+
+.score-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
 }
 
 /* ===============================
@@ -128,6 +192,11 @@ td:nth-child(3) {
   transition: all 0.2s ease;
   font-weight: 600;
   margin-right: 8px;
+}
+
+#no-review{
+	text-align: center;
+	padding-top : 30px;
 }
 
 .btn:hover {

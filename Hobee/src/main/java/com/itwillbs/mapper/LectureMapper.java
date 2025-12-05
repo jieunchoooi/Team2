@@ -53,6 +53,8 @@ public interface LectureMapper {
 
 	List<LectureVO> getRecoLectures(UserVO userVO);
 
+	List<ReviewVO> getPersonalReview(String userId);
+
 
 	
 

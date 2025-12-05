@@ -126,6 +126,11 @@ public class LectureService {
 		return lectureMapper.getRecoLectures(userVO);
 	}
 
+	public List<ReviewVO> getPersonalReview(String userId) {
+		System.out.println("LectureService getPersonalReview(userId)");
+		return lectureMapper.getPersonalReview(userId);
+	}
+
 
 
 

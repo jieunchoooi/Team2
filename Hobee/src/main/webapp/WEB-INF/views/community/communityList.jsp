@@ -183,31 +183,12 @@
     <div class="chip-label">말머리</div>
     <div class="chip-row no-wrap-row">
 
-        <a href="${pageContext.request.contextPath}/community/list?category_id=&category_main_num=&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
-           class="chip ${(empty cri.category_id and empty cri.category_main_num) ? 'active' : ''}">
-            전체
+		<c:forEach var="cl" items="${categoryList}">
+        <a href="${pageContext.request.contextPath}/community/list?category_id=${cl.category_id}&category_main_num=${cri.category_main_num}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
+           class="chip ${cri.category_id == cl.category_id ? 'active' : ''}">
+             ${cl.category_name}
         </a>
-
-        <a href="${pageContext.request.contextPath}/community/list?category_id=1&category_main_num=${cri.category_main_num}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
-           class="chip ${cri.category_id == 1 ? 'active' : ''}">
-            공지
-        </a>
-
-        <a href="${pageContext.request.contextPath}/community/list?category_id=2&category_main_num=${cri.category_main_num}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
-           class="chip ${cri.category_id == 2 ? 'active' : ''}">
-            잡담
-        </a>
-
-        <a href="${pageContext.request.contextPath}/community/list?category_id=3&category_main_num=${cri.category_main_num}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
-           class="chip ${cri.category_id == 3 ? 'active' : ''}">
-            Q&A
-        </a>
-
-        <a href="${pageContext.request.contextPath}/community/list?category_id=4&category_main_num=${cri.category_main_num}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
-           class="chip ${cri.category_id == 4 ? 'active' : ''}">
-            후기
-        </a>
-
+		</c:forEach>
     </div>
 
 
@@ -465,7 +446,7 @@
 
 	</main>
 
-
+<jsp:include page="../include/footer.jsp"></jsp:include>
 
 	<%-- ===========================================================
 	     🔥 SCRIPT (슬라이더 / 필터 / 페이징)

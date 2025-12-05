@@ -156,7 +156,7 @@ if (grade == null) {
 		<%-- content-wrapper --%>
 
 	</main>
-
+<jsp:include page="../include/footer.jsp"></jsp:include>
 	<script>
 /* ======================================================
    IMP 초기화

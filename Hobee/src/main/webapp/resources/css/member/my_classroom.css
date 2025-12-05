@@ -198,7 +198,19 @@ body {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
 }
+.class-card {
+    cursor: pointer; /* 마우스 오버 시 손가락 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    background: #fff;
+}
 
+/* 🔥 마우스 오버 효과 */
+.class-card:hover {
+    transform: translateY(-5px); /* 살짝 위로 튀는 애니메이션 */
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15); /* 강조된 그림자 */
+}
 /* =========================================
    반응형
 ========================================= */

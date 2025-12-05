@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.AdminPaymentMapper">
+
+
+    <!-- ======================================================
+         📌 결제건별 매핑
+    ======================================================= -->
+    <resultMap id="PaymentListMap" type="com.itwillbs.domain.AdminPaymentDetailDTO">
+		<id property="rowKey" column="row_key"/>
+        <!-- 🔹 lectureCount -->
+        <result property="lectureCount" column="lecture_count"/>
+		   <!-- 🔹 UserVO -->
+        <association property="user" javaType="com.itwillbs.domain.UserVO">
+               <result property="user_num" column="user_num"/>
+            <result property="user_name" column="user_name"/>
+            <result property="user_email" column="user_email"/>
+            <result property="user_phone" column="user_phone"/>
+        </association>
+        <!-- 🔹 PaymentVO -->
+        <association property="payment" javaType="com.itwillbs.domain.PaymentVO">
+           <result property="payment_id" column="payment_id"/>
+            <result property="merchant_uid" column="merchant_uid"/>
+            <result property="amount" column="amount"/>
+            <result property="used_points" column="used_points"/>
+            <result property="saved_points" column="saved_points"/>
+            <result property="status" column="final_status"/> 
+            <result property="created_at" column="created_at"/>
+        </association>
+
+     
+
+    </resultMap>
+
+
+
+
+    <!-- ======================================================
+         📌 강의별 매핑
+    ======================================================= -->
+    <resultMap id="LecturePaymentListMap" type="com.itwillbs.domain.AdminPaymentDetailDTO">
+		
+        <!-- 🔹 PaymentDetailVO -->
+        <association property="detail" javaType="com.itwillbs.domain.PaymentDetailVO">
+            <id property="detail_id" column="detail_id"/>
+            <result property="payment_id" column="payment_id"/>
+            <result property="lecture_num" column="lecture_num"/>
+            <result property="original_price" column="original_price"/>
+            <result property="sale_price" column="sale_price"/>
+            <result property="used_points" column="used_points"/>
+            <result property="saved_points" column="saved_points"/>
+            <result property="status" column="detail_status"/>
+            <result property="created_at" column="created_at"/>
+        </association>
+
+        <!-- 🔹 LectureVO -->
+        <association property="lecture" javaType="com.itwillbs.domain.LectureVO">
+            <id property="lecture_num" column="lecture_num"/>
+            <result property="lecture_title" column="lecture_title"/>
+            <result property="lecture_author" column="lecture_author"/>
+            <result property="category_detail" column="category_detail"/>
+        </association>
+
+        <!-- 🔹 UserVO -->
+        <association property="user" javaType="com.itwillbs.domain.UserVO">
+            <id property="user_num" column="user_num"/>
+            <result property="user_name" column="user_name"/>
+            <result property="user_email" column="user_email"/>
+        </association>
+
+    </resultMap>
+
+
+
+
+    <!-- ======================================================
+         📌 1) 결제건별 리스트
+    ======================================================= -->
+    <select id="selectPaymentList" resultMap="PaymentListMap">
+
+        <![CDATA[
+SELECT
+   ROW_NUMBER() OVER() AS row_key,
+    p.payment_id,
+    p.merchant_uid,
+    p.amount,
+    p.used_points,
+    p.saved_points,
+    p.status,
+    p.created_at,
+    u.user_num,
+    u.user_name,
+    u.user_email,
+    u.user_phone,
+
+    (SELECT COUNT(*) FROM payment_detail pd WHERE pd.payment_id = p.payment_id) AS lecture_count,
+
+    CASE
+        WHEN EXISTS (SELECT 1 FROM payment_detail pd WHERE pd.payment_id = p.payment_id AND pd.status = 'refunded')
+         AND EXISTS (SELECT 1 FROM payment_detail pd WHERE pd.payment_id = p.payment_id AND pd.status = 'paid')
+        THEN 'partial'
+        ELSE p.status
+    END AS final_status
+
+FROM payment p
+JOIN user u ON p.user_num = u.user_num
+        ]]>
+
+        <where>
+
+            <if test="criteria.merchantUid != null and criteria.merchantUid.trim() != ''">
+                AND p.merchant_uid LIKE CONCAT('%', #{criteria.merchantUid}, '%')
+            </if>
+
+            <choose>
+                <when test="criteria.period == 'today'">AND DATE(p.created_at) = CURDATE()</when>
+                <when test="criteria.period == 'week'">AND p.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)</when>
+                <when test="criteria.period == 'month'">AND p.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)</when>
+                <when test="criteria.period == 'custom'">
+                    AND DATE(p.created_at) BETWEEN #{criteria.startDate} AND #{criteria.endDate}
+                </when>
+            </choose>
+
+            <if test="criteria.status != null and criteria.status.trim() != ''">
+                AND (
+                    CASE
+                        WHEN EXISTS (SELECT 1 FROM payment_detail pd WHERE pd.payment_id = p.payment_id AND pd.status='refunded')
+                         AND EXISTS (SELECT 1 FROM payment_detail pd WHERE pd.payment_id = p.payment_id AND pd.status='paid')
+                        THEN 'partial'
+                        ELSE p.status
+                    END
+                ) = #{criteria.status}
+            </if>
+
+            <if test="criteria.minAmount != null">
+                AND p.amount <![CDATA[ >= ]]> #{criteria.minAmount}
+            </if>
+
+            <if test="criteria.maxAmount != null">
+                AND p.amount <![CDATA[ <= ]]> #{criteria.maxAmount}
+            </if>
+
+            <if test="criteria.lectureCountOption == 'single'">
+                AND (SELECT COUNT(*) FROM payment_detail pd WHERE pd.payment_id = p.payment_id) = 1
+            </if>
+
+            <if test="criteria.lectureCountOption == 'multi'">
+                AND (SELECT COUNT(*) FROM payment_detail pd WHERE pd.payment_id = p.payment_id) >= 2
+            </if>
+
+            <if test="criteria.searchType == 'name' and criteria.keyword != null and criteria.keyword.trim() != ''">
+                AND u.user_name LIKE CONCAT('%', #{criteria.keyword}, '%')
+            </if>
+
+            <if test="criteria.searchType == 'email' and criteria.keyword != null and criteria.keyword.trim() != ''">
+                AND u.user_email LIKE CONCAT('%', #{criteria.keyword}, '%')
+            </if>
+
+        </where>
+
+        ORDER BY p.created_at DESC
+        LIMIT #{pageVO.startRow}, #{pageVO.pageSize}
+
+    </select>
+
+
+
+
+    <!-- ======================================================
+         📌 1) 결제건별 총 카운트
+    ======================================================= -->
+    <select id="selectPaymentCount" resultType="int">
+
+        <![CDATA[
+SELECT COUNT(*)
+FROM payment p
+JOIN user u ON p.user_num = u.user_num
+        ]]>
+
+        <where>
+
+            <if test="criteria.merchantUid != null and criteria.merchantUid.trim() != ''">
+                AND p.merchant_uid LIKE CONCAT('%', #{criteria.merchantUid}, '%')
+            </if>
+
+            <choose>
+                <when test="criteria.period == 'today'">AND DATE(p.created_at) = CURDATE()</when>
+                <when test="criteria.period == 'week'">AND p.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)</when>
+                <when test="criteria.period == 'month'">AND p.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)</when>
+                <when test="criteria.period == 'custom'">
+                    AND DATE(p.created_at) BETWEEN #{criteria.startDate} AND #{criteria.endDate}
+                </when>
+            </choose>
+
+            <if test="criteria.status != null and criteria.status.trim() != ''">
+                AND (
+                    CASE
+                        WHEN EXISTS (SELECT 1 FROM payment_detail pd WHERE pd.payment_id = p.payment_id AND pd.status='refunded')
+                         AND EXISTS (SELECT 1 FROM payment_detail pd WHERE pd.payment_id = p.payment_id AND pd.status='paid')
+                        THEN 'partial'
+                        ELSE p.status
+                    END
+                ) = #{criteria.status}
+            </if>
+
+            <if test="criteria.minAmount != null">
+                AND p.amount <![CDATA[ >= ]]> #{criteria.minAmount}
+            </if>
+
+            <if test="criteria.maxAmount != null">
+                AND p.amount <![CDATA[ <= ]]> #{criteria.maxAmount}
+            </if>
+
+            <if test="criteria.lectureCountOption == 'single'">
+                AND (SELECT COUNT(*) FROM payment_detail pd WHERE pd.payment_id = p.payment_id) = 1
+            </if>
+
+            <if test="criteria.lectureCountOption == 'multi'">
+                AND (SELECT COUNT(*) FROM payment_detail pd WHERE pd.payment_id = p.payment_id) >= 2
+            </if>
+
+            <if test="criteria.searchType == 'name' and criteria.keyword != null and criteria.keyword.trim() != ''">
+                AND u.user_name LIKE CONCAT('%', #{criteria.keyword}, '%')
+            </if>
+
+            <if test="criteria.searchType == 'email' and criteria.keyword != null and criteria.keyword.trim() != ''">
+                AND u.user_email LIKE CONCAT('%', #{criteria.keyword}, '%')
+            </if>
+
+        </where>
+
+    </select>
+
+
+
+
+    <!-- ======================================================
+         📌 2) 강의별 리스트
+    ======================================================= -->
+    <select id="selectLecturePaymentList" resultMap="LecturePaymentListMap">
+
+        <![CDATA[
+SELECT
+    pd.detail_id,
+    pd.payment_id,
+    pd.lecture_num,
+    pd.original_price,
+    pd.sale_price,
+    pd.used_points,
+    pd.saved_points,
+    pd.status AS detail_status,
+    pd.created_at,
+
+    p.merchant_uid,
+    p.status AS payment_status,
+
+    u.user_num,
+    u.user_name,
+    u.user_email,
+
+    l.lecture_title,
+    l.lecture_author,
+    l.category_detail
+
+FROM payment_detail pd
+JOIN payment p ON pd.payment_id = p.payment_id
+JOIN user u ON p.user_num = u.user_num
+JOIN lecture l ON pd.lecture_num = l.lecture_num
+        ]]>
+
+        <where>
+
+            <if test="criteria.merchantUid != null and criteria.merchantUid.trim() != ''">
+                AND p.merchant_uid LIKE CONCAT('%', #{criteria.merchantUid}, '%')
+            </if>
+
+            <choose>
+                <when test="criteria.period == 'today'">AND DATE(pd.created_at) = CURDATE()</when>
+                <when test="criteria.period == 'week'">AND pd.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)</when>
+                <when test="criteria.period == 'month'">AND pd.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)</when>
+                <when test="criteria.period == 'custom'">
+                    AND DATE(pd.created_at) BETWEEN #{criteria.startDate} AND #{criteria.endDate}
+                </when>
+            </choose>
+
+            <if test="criteria.lectureTitle != null and criteria.lectureTitle.trim() != ''">
+                AND l.lecture_title LIKE CONCAT('%', #{criteria.lectureTitle}, '%')
+            </if>
+
+            <if test="criteria.lectureAuthor != null and criteria.lectureAuthor.trim() != ''">
+                AND l.lecture_author LIKE CONCAT('%', #{criteria.lectureAuthor}, '%')
+            </if>
+
+            <if test="criteria.categoryDetail != null and criteria.categoryDetail.trim() != ''">
+                AND l.category_detail = #{criteria.categoryDetail}
+            </if>
+
+            <if test="criteria.detailStatus != null and criteria.detailStatus.trim() != ''">
+                AND pd.status = #{criteria.detailStatus}
+            </if>
+
+        </where>
+
+        ORDER BY pd.created_at DESC
+        LIMIT #{pageVO.startRow}, #{pageVO.pageSize}
+
+    </select>
+
+
+
+
+    <!-- ======================================================
+         📌 2) 강의별 총 카운트
+    ======================================================= -->
+    <select id="selectLecturePaymentCount" resultType="int">
+
+        <![CDATA[
+SELECT COUNT(*)
+FROM payment_detail pd
+JOIN payment p ON pd.payment_id = p.payment_id
+JOIN user u ON p.user_num = u.user_num
+JOIN lecture l ON pd.lecture_num = l.lecture_num
+        ]]>
+
+        <where>
+
+            <if test="criteria.merchantUid != null and criteria.merchantUid.trim() != ''">
+                AND p.merchant_uid LIKE CONCAT('%', #{criteria.merchantUid}, '%')
+            </if>
+
+            <choose>
+                <when test="criteria.period == 'today'">AND DATE(pd.created_at) = CURDATE()</when>
+                <when test="criteria.period == 'week'">AND pd.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)</when>
+                <when test="criteria.period == 'month'">AND pd.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)</when>
+                <when test="criteria.period == 'custom'">
+                    AND DATE(pd.created_at) BETWEEN #{criteria.startDate} AND #{criteria.endDate}
+                </when>
+            </choose>
+
+            <if test="criteria.lectureTitle != null and criteria.lectureTitle.trim() != ''">
+                AND l.lecture_title LIKE CONCAT('%', #{criteria.lectureTitle}, '%')
+            </if>
+
+            <if test="criteria.lectureAuthor != null and criteria.lectureAuthor.trim() != ''">
+                AND l.lecture_author LIKE CONCAT('%', #{criteria.lectureAuthor}, '%')
+            </if>
+
+            <if test="criteria.categoryDetail != null and criteria.categoryDetail.trim() != ''">
+                AND l.category_detail = #{criteria.categoryDetail}
+            </if>
+
+            <if test="criteria.detailStatus != null and criteria.detailStatus.trim() != ''">
+                AND pd.status = #{criteria.detailStatus}
+            </if>
+
+        </where>
+
+    </select>
+
+
+
+
+    <!-- ======================================================
+         📊 통계 (문제 없음)
+    ======================================================= -->
+
+    <select id="getTotalRevenue" resultType="int">
+        SELECT IFNULL(SUM(original_price), 0)
+        FROM payment_detail
+        WHERE status = 'paid'
+    </select>
+
+    <select id="getTotalRefund" resultType="int">
+        SELECT IFNULL(SUM(original_price), 0)
+        FROM payment_detail
+        WHERE status = 'refunded'
+    </select>
+
+    <select id="getTotalLectureSold" resultType="int">
+        SELECT COUNT(*)
+        FROM payment_detail
+        WHERE status = 'paid'
+    </select>
+
+    <select id="getTotalLectureRefunded" resultType="int">
+        SELECT COUNT(*)
+        FROM payment_detail
+        WHERE status = 'refunded'
+    </select>
+
+
+</mapper>
