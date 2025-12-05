@@ -131,6 +131,11 @@ public class LectureService {
 		return lectureMapper.getPersonalReview(userId);
 	}
 
+	public int deleteReview(int review_num) {
+		System.out.println("LectureService deleteReview(review_num)");
+		return lectureMapper.deleteReview(review_num);
+	}
+
 
 
 

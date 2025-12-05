@@ -222,6 +222,22 @@ public class MemberController {
 		return "member/review";  
 	}
 	
+	// 리뷰
+	@PostMapping("/deleteReview")
+	@ResponseBody
+	public Map<String, Object> deleteReview(int review_num) {
+		System.out.println("MemberController deleteReview(review_num)");
+		
+		int result = lectureService.deleteReview(review_num);
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", result > 0);
+		
+		
+		
+		return response;  
+	}
+	
 	// 스크랩	
 	@GetMapping("/scrap")
 	public String scrapList(HttpSession session, Model model) {

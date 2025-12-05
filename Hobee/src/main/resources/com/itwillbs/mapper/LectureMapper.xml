@@ -458,6 +458,11 @@
 		    WHERE r.user_id = #{user_id}
 		    ORDER BY r.review_num DESC
 		</select>
+		
+		<delete id="deleteReview">
+		    DELETE FROM review
+		    WHERE review_num = #{review_num}
+		</delete>
 
         
 

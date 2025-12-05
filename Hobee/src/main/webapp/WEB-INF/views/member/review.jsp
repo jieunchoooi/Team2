@@ -10,6 +10,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/memberSidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/review.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include/profileCard.css">
+
+<!-- jQuery 로드 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 </head>
 <body>
 
@@ -65,13 +69,13 @@
 			          <td>${rev.review_content}</td>
 			          <td>
 			            <button class="btn">수정</button>
-			            <button class="btn btn-delete">삭제</button>
+			            <button class="btn btn-delete" onclick="deleteReview(${rev.review_num})">삭제</button>
 			          </td>
 			        </tr>
 		        </c:forEach>
 		        <c:if test="${empty personalReview}">
 		        	<tr>
-			            <td id="no-review" colspan="5">작성된 리뷰가 없습니다.</td>
+			            <td id="no-review" colspan="4">작성된 리뷰가 없습니다.</td>
 			        </tr>
 		        </c:if>
 		      </tbody>
@@ -82,5 +86,45 @@
 
 <jsp:include page="../include/footer.jsp"></jsp:include>
 
+<script type="text/javascript">
+
+function deleteReview(review_num){
+	
+	$.ajax({
+		url: '${pageContext.request.contextPath}/member/deleteReview',
+		method: 'POST',
+		data: {review_num: review_num},
+		success: function(result){
+			if(result.success){
+				console.log("result.success ~ ");
+			} else {
+				console.log("result.fail ~ ");
+			}
+		}
+		
+	});
+	
+	
+	
+	
+}
+
+
+
+</script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

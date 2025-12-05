@@ -22,6 +22,7 @@ body {
 .content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
+    margin-bottom: 80px;
 }   
 .main-content {
     margin-left: 240px;

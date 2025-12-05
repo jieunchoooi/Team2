@@ -55,6 +55,8 @@ public interface LectureMapper {
 
 	List<ReviewVO> getPersonalReview(String userId);
 
+	int deleteReview(int review_num);
+
 
 	
 
