@@ -142,7 +142,7 @@
         </div>
     </main>
 
-
+<jsp:include page="../include/footer.jsp"></jsp:include>
     <%-- ===========================
          상세 모달
     ============================ --%>

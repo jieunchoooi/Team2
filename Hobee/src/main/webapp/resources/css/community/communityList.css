@@ -16,7 +16,9 @@ body {
 	display: flex;
 	flex-direction: column;
 }
-
+main{
+	padding-bottom:30px;
+}
 /* =========================================================
    MAIN CONTENT (Left sidebar space + Center layout)
 ========================================================= */

@@ -543,7 +543,7 @@
 
 	</main>
 
-
+<jsp:include page="../include/footer.jsp"></jsp:include>
 
 	<!-- ================================
      ❤️ 댓글 / 좋아요 / 대댓글 JS
