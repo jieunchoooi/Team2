@@ -61,5 +61,12 @@
           AND lecture_num = #{lecture_num}
         LIMIT 1
     </select>
-
+	<!-- ========================================================= -->
+<!-- 📌 결제건의 전체 상세 개수 조회  -->
+<!-- ========================================================= -->
+<select id="countTotalDetails" resultType="int">
+    SELECT COUNT(*)
+    FROM payment_detail
+    WHERE payment_id = #{paymentId}
+</select>
 </mapper>

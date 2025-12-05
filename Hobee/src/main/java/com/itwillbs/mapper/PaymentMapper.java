@@ -3,6 +3,7 @@ package com.itwillbs.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.domain.PaymentVO;
 
@@ -48,6 +49,8 @@ public interface PaymentMapper {
      * 🔹 (선택) 결제 테스트용
      * ---------------------------------------------- */
     void insertPaymentForTest();
-    
+    //부분환불상태로 바꾸는 쿼리
+    void updatePaymentStatusPartial(@Param("paymentId") int paymentId);
+
   
 }
