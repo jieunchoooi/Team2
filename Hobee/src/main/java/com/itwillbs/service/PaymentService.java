@@ -627,9 +627,18 @@ public class PaymentService {
 
 	    paymentDetailMapper.updateDetailStatusRefund(detailVO.getDetail_id());
 
+	    
+	    
+	    int totalDetails = paymentDetailMapper.countTotalDetails(paymentId);  
 	    int remain = paymentDetailMapper.countPaidDetails(paymentId);
+
+	    // 전체 환불
 	    if (remain == 0) {
-	        paymentMapper.updatePaymentStatusRefund(paymentId);
+	    	 paymentMapper.updatePaymentStatusRefund(paymentId);
+	    }
+	    // 부분 환불
+	    else if (remain < totalDetails) {
+	        paymentMapper.updatePaymentStatusPartial(paymentId);
 	    }
 
 	    int totalPayments = paymentMapper.getUserTotalPayment(userNum);

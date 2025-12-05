@@ -247,5 +247,15 @@
 		WHERE user_num = #{user_num}
 		AND status = 'paid';
 	</select>
+	
+	<!-- ========================================================= -->
+<!-- 📌 결제 상태를 부분 환불(partial)로 변경 -->
+<!-- ========================================================= -->
+<update id="updatePaymentStatusPartial">
+    UPDATE payment
+    SET status = 'partial'
+    WHERE payment_id = #{paymentId}
+</update>
+	
 
 </mapper>

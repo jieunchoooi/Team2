@@ -10,6 +10,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class AdminPaymentDetailDTO {
+	private Integer rowKey;
+
 	 // ────────────── 🔵 결제 기본 정보 (공통) ──────────────
     private PaymentVO payment;    // 결제 정보
     private UserVO user;          // 결제한 유저 정보
@@ -24,5 +26,7 @@ public class AdminPaymentDetailDTO {
     // ────────────── 🔵 상세 페이지 전용 (결제 상세 전체) ──────────────
     private List<PaymentDetailVO> detailList;   // 결제건 상세 리스트
     private List<LectureVO> lectureList;        // 상세에 대응하는 강의 정보 리스트
+    
+  
 
 }
