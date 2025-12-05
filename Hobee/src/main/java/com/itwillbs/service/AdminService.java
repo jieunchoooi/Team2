@@ -408,6 +408,16 @@ public class AdminService {
 		System.out.println("AdminService monthlySales()");
 	    return adminMapper.monthlySales();
 	}
+
+	public List<Map<String, Object>> getcategoryList() {
+		System.out.println("AdminService getcategoryList()");
+	    return adminMapper.getcategoryList();
+	}
+
+	public int okClassCount1() {
+		System.out.println("AdminService okClassCount1()");
+		return adminMapper.okClassCount1();
+	}
 	
 	
 	

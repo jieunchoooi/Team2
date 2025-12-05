@@ -5,7 +5,7 @@
 	<div class="sidebar-content">
 		<div class="menu-section">
 			<div class="menu ${page eq 'dashboard' ? 'active' : ''}"
-				onclick="location.href='${pageContext.request.contextPath}/admin/dashboard'">
+				onclick="location.href='${pageContext.request.contextPath}/admin/dashboard'" style="cursor: pointer;">
 				<h3>📊 <span>대시보드</span></h3>
 			</div>
 		</div>	
