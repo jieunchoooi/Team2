@@ -19,12 +19,17 @@ body {
 /* ===============================
    ✅ 메인 컨텐츠 영역
    =============================== */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}   
 .main-content {
-  margin-left: 240px;
-  padding: 30px;
-  padding-top: 100px; /* 헤더 아래부터 시작 */
-  min-height: 100vh;
-  background-color: #f8f9fa;
+    margin-left: 240px;
+    margin-top: 0;
+    padding: 40px 30px 30px 30px;
+    width: calc(100% - 240px);
+    background-color: #f9fafb;
+    min-height: 100vh;
 }
 
 /* ===============================
