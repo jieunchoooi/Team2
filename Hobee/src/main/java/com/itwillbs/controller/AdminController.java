@@ -750,13 +750,43 @@ public class AdminController {
        return response;
    }
    
-   @GetMapping("/dashboard")
-   public String dashboard() {
+   // 대시보드
+   @RequestMapping("/dashboard")
+   public String dashboard(Model model) {
 	   System.out.println("AdminController dashboard()");
-
-	   return "admin/dashboard";
+       
+	   // 카테고리별 결제 통계(전월)
+       List<Map<String, Object>> categoryStats = adminService.getCategoryDetailPaymentStats();
+       
+       if(categoryStats != null) {
+           for(Map<String, Object> stat : categoryStats) {
+               System.out.println(stat);
+           }
+       }
+       
+       // 인기 강의 TOP 10
+       List<Map<String, Object>> bestClassTop10 = adminService.bestClassTop10();
+       
+       if(bestClassTop10 != null && !bestClassTop10.isEmpty()) {
+           for(Map<String, Object> lecture : bestClassTop10) {
+               System.out.println("lecture data: " + lecture);
+           }
+       } else {
+           System.out.println("bestClassTop10 is empty or null!");
+       }
+       
+       // 월별 매출통계
+       List<Map<String, Object>> monthlySales = adminService.monthlySales();
+       
+       
+       
+       
+       model.addAttribute("categoryStats", categoryStats);
+       model.addAttribute("bestClassTop10", bestClassTop10);
+       model.addAttribute("monthlySales", monthlySales);
+       
+       return "admin/dashboard";
    }
-   
    
    
    
