@@ -39,7 +39,6 @@
     <nav>
         <div class="nav-left">
 
-
 		<!-- 카테고리 -->
 		<div class="mega-dropdown">
         	<a href="${pageContext.request.contextPath}/category/lectureList?category_detail=전체">카테고리 ▾</a>
