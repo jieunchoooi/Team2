@@ -80,12 +80,12 @@ main{
 	display: flex;
 	align-items: flex-start;
 	background: #fff;
-	padding: 28px 65px;
+	padding: 22px 45px;
 	border-radius: 18px;
 	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 	cursor: pointer;
 	transition: 0.25s;
-	height: 220px !important; /* 🔹 카드 높이 고정 */
+	height: 180px !important; /* 🔹 카드 높이 고정 */
 	box-sizing: border-box;
 }
 
@@ -93,9 +93,17 @@ main{
 	transform: translateY(-3px);
 	box-shadow: 0 9px 24px rgba(0, 0, 0, 0.10);
 }
-
+.hot-top-wrap{
+	display:flex;  align-items: center;
+    gap: 12px;
+}
+.hot-top{
+	display:flex;
+	 flex-direction: column;
+}
 /* 아바타 */
 .hot-avatar {
+	display:flex;
 	width: 58px;
 	height: 58px;
 	border-radius: 50%;
@@ -111,7 +119,14 @@ main{
 	height: 100%;
 	object-fit: cover;
 }
-
+.hot-title {
+		display: flex;
+		width:100%;
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: #1f2d5c;
+	margin-bottom: 6px;
+}
 /* 내용 영역 */
 .hot-content {
 	flex: 1;
@@ -121,7 +136,8 @@ main{
 
 /* 태그 / 텍스트 */
 .hot-tag {
-	display: inline-block;
+	display: flex;
+	width:100%;
 	padding: 3px 10px;
 	background: rgba(255, 255, 255, 0.85);
 	border-radius: 999px;
@@ -129,14 +145,10 @@ main{
 	font-weight: 600;
 	color: #325ad6;
 	margin-bottom: 6px;
+	
 }
 
-.hot-title {
-	font-size: 1.15rem;
-	font-weight: 700;
-	color: #1f2d5c;
-	margin-bottom: 6px;
-}
+
 
 /* summary 2줄 고정 */
 .hot-summary {
@@ -239,7 +251,7 @@ main{
 .community-top-card {
 	background: #ffffff;
 	border-radius: 18px;
-	padding-top: 40px; border : 1px solid #e7eaf3;
+	padding-top: 25px; border : 1px solid #e7eaf3;
 	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 	margin-bottom: 22px;
 	display: flex;
@@ -250,7 +262,7 @@ main{
 }
 
 .filter-box {
-	padding-left: 25px;
+	padding-left: 65px;
 }
 
 /* ========== 헤더 ========== */
@@ -316,17 +328,19 @@ main{
 	background: #eef2ff;
 	border: 1px solid #d3dcff;
 	border-radius: 22px;
-	min-width: 76px;
-	height: 36px;
+	min-width: 56px;
+	height: 30px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	color: #444;
-	font-size: 0.9rem;
+	font-size: 0.7rem;
 	font-weight: 600;
 	white-space: nowrap;
 	cursor: pointer;
 	transition: 0.2s;
+	  text-decoration: none;
+	
 }
 
 /* active */
@@ -621,6 +635,8 @@ main{
 	border-radius: 6px;
 	background: #fff;
 	border: 1px solid #ddd;
+	text-decoration: none;
+	
 }
 
 .pagination a.active {

@@ -70,142 +70,194 @@ main{
     margin-bottom: 14px;
 }
 
+/
 /* =========================================================
-   HOT TOPIC SLIDER
+   HOT TOPIC SLIDER (Swiper 적용)
 ========================================================= */
-.hot-title-text {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #1f2d5c;
-    margin-bottom: 16px;
-    padding-left: 4px;
+
+
+.hot-title-text{
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #1f2d5c;
+	margin-bottom: 16px;
+	padding-left: 4px;
 }
 
 .hotSwiper {
-    width: 100%;
-    padding: 0;
-    border-radius: 18px;
-    background: linear-gradient(135deg,#eaf0ff,#fff8ed);
-    overflow: hidden;
-    margin-bottom: 35px;
+	width: 100%;
+	padding: 0;
+	border-radius: 18px;
+	background: linear-gradient(135deg, #eaf0ff, #fff8ed);
+	overflow: hidden;
+	margin-bottom: 35px; /* 🔹 아래 커뮤니티와 간격 */
 }
 
+/* Swiper 기본 트랙 */
 .swiper-wrapper {
-    display: flex;
+	display: flex;
 }
 
+/* 슬라이드 하나 (카드) */
 .hot-slide {
-    width: 100%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-
-    background: #fff;
-    padding: 28px 65px;
-    border-radius: 18px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    cursor: pointer;
-    transition: 0.25s;
-
-    height: 220px !important;       /* 🔹 카드 높이 고정 */
-    box-sizing: border-box;
+	width: 100%;
+	flex-shrink: 0;
+	display: flex;
+	align-items: flex-start;
+	background: #fff;
+	padding: 22px 45px;
+	border-radius: 18px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+	transition: 0.25s;
+	height: 180px !important; /* 🔹 카드 높이 고정 */
+	box-sizing: border-box;
 }
 
 .hot-slide:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 9px 24px rgba(0,0,0,0.10);
+	transform: translateY(-3px);
+	box-shadow: 0 9px 24px rgba(0, 0, 0, 0.10);
 }
-
+.hot-top-wrap{
+	display:flex;  align-items: center;
+    gap: 12px;
+}
+.hot-top{
+	display:flex;
+	 flex-direction: column;
+}
+/* 아바타 */
 .hot-avatar {
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid rgba(255,255,255,0.8);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-    margin-right: 22px;
+	display:flex;
+	width: 58px;
+	height: 58px;
+	border-radius: 50%;
+	flex-shrink: 0;
+	overflow: hidden;
+	border: 3px solid rgba(255, 255, 255, 0.8);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+	margin-right: 22px; /* 🔹 내부 간격 – gap 대신 margin 사용 */
 }
 
 .hot-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
-
-.hot-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.hot-tag {
-    display: inline-block;
-    padding: 3px 10px;
-    background: rgba(255,255,255,0.85);
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #325ad6;
-    margin-bottom: 6px;
-}
-
 .hot-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #1f2d5c;
-    margin-bottom: 6px;
+		display: flex;
+		width:100%;
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: #1f2d5c;
+	margin-bottom: 6px;
+}
+/* 내용 영역 */
+.hot-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
 }
 
+/* 태그 / 텍스트 */
+.hot-tag {
+	display: flex;
+	width:100%;
+	padding: 3px 10px;
+	background: rgba(255, 255, 255, 0.85);
+	border-radius: 999px;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: #325ad6;
+	margin-bottom: 6px;
+	
+}
+
+
+
+/* summary 2줄 고정 */
 .hot-summary {
-    font-size: 0.88rem;
-    color: #555;
-    line-height: 1.4rem;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    max-height: calc(1.4rem * 2);
-    margin-bottom: 8px;
+	font-size: 0.88rem;
+	color: #555;
+	line-height: 1.4rem;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	max-height: calc(1.4rem * 2);
+	margin-bottom: 8px;
 }
 
+/* 메타 영역은 카드 아래쪽에 고정 느낌 */
 .hot-meta-row {
-    margin-top: auto;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.82rem;
-    color: #666;
+	margin-top: auto;
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.82rem;
+	color: #666;
 }
 
-/* Swiper arrows */
-.swiper-button-prev,
-.swiper-button-next {
-    width: 26px !important;
-    height: 26px !important;
+/* 스와이프 버튼 크기 조절 */
+/* 🔽 버튼 크기만 줄임 */
+.swiper-button-prev, .swiper-button-next {
+	width: 26px !important; /* 기존 32px → 26px */
+	height: 26px !important;
 }
 
-.swiper-button-prev::after,
-.swiper-button-next::after {
-    font-size: 0.9rem !important;
+/* 🔽 안의 화살표 아이콘 크기 축소 */
+.swiper-button-prev::after, .swiper-button-next::after {
+	font-size: 0.9rem !important; /* 화살표 아이콘 크기 줄임 */
 }
 
+/* 🔽 버튼 위치 조정 (왼쪽/오른쪽 여백 살짝 안쪽으로) */
 .swiper-button-prev {
-    left: 10px !important;
-}
-.swiper-button-next {
-    right: 10px !important;
+	left: 10px !important;
 }
 
-/* dots */
+.swiper-button-next {
+	right: 10px !important;
+}
+
+/* dots (Swiper pagination) */
 .swiper-pagination-bullet {
-    background: rgba(255,255,255,0.7);
-    opacity: 1;
+	background: rgba(255, 255, 255, 0.7);
+	opacity: 1;
 }
 
 .swiper-pagination-bullet-active {
-    background: #3a6df0;
-    width: 18px;
-    border-radius: 999px;
+	background: #3a6df0;
+	width: 18px;
+	border-radius: 999px;
+	transition: width 0.25s;
+}
+
+/* Dots (기존 hot-dots) */
+.hot-dots {
+	display: flex;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 10px;
+}
+
+.hot-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.7);
+	cursor: pointer;
+	transition: 0.2s;
+	margin-right: 6px; /* 🔹 gap 대신 margin 사용 */
+}
+
+.hot-dot:last-child {
+	margin-right: 0;
+}
+
+.hot-dot.active {
+	width: 18px;
+	background: #3a6df0;
+	border-radius: 999px;
 }
 
 /* =========================================================
