@@ -27,4 +27,10 @@ public class EnrollmentService {
     public List<EnrollmentViewVO> getEnrollmentsByUser(int userNum) {
         return enrollmentMapper.getEnrollmentsByUser(userNum);
     }
+    //강의 상세 페이지용 현재 회원이 강의 수강했는지 체크용
+   
+
+    public int countEnrollment(int userNum, int lectureNum) {
+        return enrollmentMapper.countEnrollment(userNum, lectureNum);
+    }
 }

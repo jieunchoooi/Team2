@@ -84,6 +84,13 @@ public class PaymentService {
 	    int currentPoints = oldUserVO.getPoints();
 	    System.out.println("   🔹 결제 전 보유 포인트 currentPoints = " + currentPoints);
 
+	    /* 🔴 [변경1] 등급 정보는 파라미터 gradeVO 말고, DB에서 다시 조회해서 사용 */
+	    GradeVO gradeFromDb = gradeMapper.getGradeById(oldUserVO.getGrade_id());
+	    if (gradeFromDb != null) {
+	        gradeVO = gradeFromDb;
+	    }
+	    System.out.println("   🔹 실제 적용 등급 gradeVO = " + gradeVO);
+
 	    /* ===========================================================
 	       2) 결제 저장 (payment)
 	       =========================================================== */
@@ -100,7 +107,7 @@ public class PaymentService {
 	       =========================================================== */
 
 	    double discountRate = gradeVO.getDiscount_rate() / 100.0;
-	    double rewardRate = gradeVO.getReward_rate() / 100.0;
+	    double rewardRate   = gradeVO.getReward_rate()   / 100.0;
 	    System.out.println("   [3] 할인율 discountRate = " + discountRate);
 	    System.out.println("       적립율 rewardRate  = " + rewardRate);
 
@@ -110,7 +117,10 @@ public class PaymentService {
 	    for (int lectureNum : lectureNums) {
 	        LectureVO lectureVO = lectureMapper.getLectureById(lectureNum);
 	        int lecturePrice = lectureVO.getLecture_price();
-	        int salePrice = (int) Math.round(lecturePrice * (1 - discountRate));
+
+	        // 🔴 [변경2] 할인 금액 소수점 처리 = 버림 (int 캐스팅)
+	        int salePrice = (int) (lecturePrice * (1 - discountRate));
+
 	        System.out.println("       - 강의번호 " + lectureNum + " 원가=" + lecturePrice + ", 할인후=" + salePrice);
 	        totalSaleAmount += salePrice;
 	    }
@@ -130,7 +140,9 @@ public class PaymentService {
 	        paymentDetailVO.setLecture_num(lectureNum);
 
 	        int originalPrice = lectureVO.getLecture_price();
-	        int salePrice = (int) Math.round(originalPrice * (1 - discountRate));
+
+	        // 🔴 [변경2와 동일 규칙] 여기서도 할인 금액 버림
+	        int salePrice = (int) (originalPrice * (1 - discountRate));
 
 	        paymentDetailVO.setOriginal_price(originalPrice);
 	        paymentDetailVO.setSale_price(salePrice);
@@ -143,17 +155,21 @@ public class PaymentService {
 	        int dividedUsedPoints = 0;
 
 	        if (paymentVO.getUsed_points() > 0) {
-	            double ratio = (double) salePrice / totalSaleAmount;
-	            dividedUsedPoints = (int) Math.round(paymentVO.getUsed_points() * ratio);
 
+	            // 🔴 [변경3] 앞 강의는 비율로 버림, 마지막 강의에서 오차 보정
 	            if (i == lectureNums.size() - 1) {
-	                dividedUsedPoints += paymentVO.getUsed_points() - (usedPointsAccumulated + dividedUsedPoints);
+	                // 마지막 강의: 지금까지 분배된 포인트 제외하고 전부 몰아주기
+	                dividedUsedPoints = paymentVO.getUsed_points() - usedPointsAccumulated;
+	            } else {
+	                double ratio = (double) salePrice / totalSaleAmount;
+	                dividedUsedPoints = (int) (paymentVO.getUsed_points() * ratio); // 버림
+
+	                usedPointsAccumulated += dividedUsedPoints;
+	                System.out.println("          사용포인트 분배 ratio=" + ratio
+	                        + ", dividedUsedPoints=" + dividedUsedPoints
+	                        + ", usedPointsAccumulated=" + usedPointsAccumulated);
 	            }
 
-	            usedPointsAccumulated += dividedUsedPoints;
-	            System.out.println("          사용포인트 분배 ratio=" + ratio
-	                    + ", dividedUsedPoints=" + dividedUsedPoints
-	                    + ", usedPointsAccumulated=" + usedPointsAccumulated);
 	        } else {
 	            System.out.println("          사용포인트 없음 (used_points = 0)");
 	        }
@@ -163,7 +179,9 @@ public class PaymentService {
 	        /* ----------------------
 	           적립 포인트 계산
 	           ---------------------- */
-	        int dividedSavedPoints = (int) Math.round(salePrice * rewardRate);
+
+	        // 🔴 [변경4] 적립 포인트도 버림 (반올림 X)
+	        int dividedSavedPoints = (int) (salePrice * rewardRate);
 	        paymentDetailVO.setSaved_points(dividedSavedPoints);
 
 	        paymentDetailVO.setStatus("paid");
@@ -229,7 +247,7 @@ public class PaymentService {
 
 	            pointHistoryMapper.insertPointHistory(pointHistorySaveVO);
 	        } else {
-                System.out.println("       적립 포인트 없음 → SAVE 기록 생략");
+	            System.out.println("       적립 포인트 없음 → SAVE 기록 생략");
 	        }
 	    }
 	    System.out.println("   🔹 totalUsedPoints  = " + totalUsedPoints);
@@ -323,6 +341,7 @@ public class PaymentService {
 
 	    return paymentResultVO;
 	}
+
 
 
 

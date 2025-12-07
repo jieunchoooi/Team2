@@ -26,7 +26,7 @@ main{
 
 
 .detail-layout {
-    max-width: 1100px;
+    width: 1100px;
     margin: 0 auto;
      display: flex;
     align-items: flex-start;

@@ -20,10 +20,5 @@ public class GradeVO {
     private Timestamp created_at;     // 생성일시
     private Timestamp updated_at;     // 수정일시
 
-    // ✅ 임시 기본 생성자 (등급 테이블 비어 있을 때 기본값 설정)
-    public GradeVO() {
-        this.grade_name = "기본등급";
-        this.discount_rate = 5.0;
-        this.reward_rate = 5.0;
-    }
+    
 }

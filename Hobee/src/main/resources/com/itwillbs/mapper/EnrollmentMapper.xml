@@ -120,5 +120,16 @@
           AND lecture_num = #{lecture_num}
         LIMIT 1;
     </delete>
+    
+     <!-- ===========================================
+         📌 유저 수강 여부 체크
+         해당 user_num + lecture_num 존재하면 1 이상 반환
+    ============================================ -->
+    <select id="countEnrollment" resultType="int">
+        SELECT COUNT(*)
+        FROM enrollment
+        WHERE user_num = #{user_num}
+          AND lecture_num = #{lecture_num}
+    </select>
 
 </mapper>

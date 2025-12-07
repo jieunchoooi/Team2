@@ -180,7 +180,6 @@ public class PaymentController {
     @ResponseBody
     public Map<String, Object> completePayment(
             @ModelAttribute PaymentVO paymentVO,
-            @ModelAttribute GradeVO gradeVO,
             @RequestParam("lectureNums") List<Integer> lectureNums,
             HttpSession session) {
 
@@ -195,9 +194,19 @@ public class PaymentController {
 
         paymentVO.setUser_num(userVO.getUser_num());
 
-        PaymentResultVO paymentResultVO = paymentService.processPayment(paymentVO, lectureNums, gradeVO);
+        // 🔥 등급은 항상 세션에서 가져오기
+        GradeVO gradeVO = (GradeVO) session.getAttribute("gradeVO");
 
-        // 🔥 최신 userVO 세션에 저장 (Controller는 DB 몰라도 됨)
+        if (gradeVO == null) {
+            res.put("status", "fail");
+            res.put("message", "등급 정보가 없습니다.");
+            return res;
+        }
+
+        PaymentResultVO paymentResultVO =
+                paymentService.processPayment(paymentVO, lectureNums, gradeVO);
+
+        // 업데이트된 userVO 세션에 저장
         session.setAttribute("userVO", paymentResultVO.getUpdatedUserVO());
 
         res.put("status", paymentResultVO.isSuccess() ? "success" : "fail");
@@ -213,6 +222,7 @@ public class PaymentController {
 
         return res;
     }
+
 
 
 

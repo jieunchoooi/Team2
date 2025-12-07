@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,7 +15,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/category/lecture.css">
-
+<!-- 포트원 js -->
+<script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 </head>
 <body>
 
@@ -310,7 +313,31 @@
           </div>
         </div>
 
-        <button class="btn-purchase">구매하기</button>
+<%-- ============================================
+     수강 여부에 따라 버튼 상태 변경
+     hasPurchased > 0  → 이미 수강 중
+     hasPurchased == 0 → 결제 가능
+============================================= --%>
+
+<c:choose>
+
+    <%-- 이미 수강 중인 경우: 비활성 상태로 표시 --%>
+    <c:when test="${hasPurchased > 0}">
+        <button class="btn-purchase purchased" disabled>
+            수강중
+        </button>
+    </c:when>
+
+    <%-- 아직 결제하지 않은 경우: 결제 모달 오픈 --%>
+    <c:otherwise>
+        <button class="btn-purchase"
+                onclick="openPaymentModal('${lectureVO.lecture_num}', '${lectureVO.lecture_price}')">
+            결제하기
+        </button>
+    </c:otherwise>
+
+</c:choose>
+
         
         <div class="action-icons">
 <!--           <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div> -->
@@ -368,6 +395,112 @@
 
 <!-- 전체리뷰리스트 모달 영역 -->
 <div id="reviewModalContainer" style="display:none;"></div>
+
+
+<%-- ============================================
+     📌 포인트 결제 모달 (강의 가격 + 할인 + 최종 금액 포함)
+=============================================== --%>
+
+
+<div id="paymentPointModal" style="display:none;">
+    <div class="payment-modal-box">
+
+        <h2 class="payment-modal-title">포인트 사용</h2>
+
+        <%-- 🔹 강의 금액 --%>
+        <div class="payment-modal-row">
+            <span class="payment-label">강의 금액</span>
+            <span class="payment-value">
+                <fmt:formatNumber value="${lectureVO.lecture_price}" /> 원
+            </span>
+        </div>
+
+        <%-- 🔹 JSTL로 할인 계산 --%>
+        <c:set var="discountRate"
+               value="${sessionScope.gradeVO.discount_rate != null ? sessionScope.gradeVO.discount_rate : 0}" />
+
+        <%-- 🔹 (★ 추가됨) 적립률 가져오기 --%>
+        <c:set var="rewardRate"
+               value="${sessionScope.gradeVO.reward_rate != null ? sessionScope.gradeVO.reward_rate : 0}" />
+
+        <c:set var="discountAmount"
+               value="${lectureVO.lecture_price * (discountRate / 100.0)}" />
+
+        <c:set var="discountedPrice"
+               value="${lectureVO.lecture_price - discountAmount}" />
+
+        <%-- 🔹 등급 할인 표시 --%>
+        <div class="payment-modal-row">
+            <span class="payment-label">등급 할인 (${discountRate}% )</span>
+            <span class="payment-value">
+                - <fmt:formatNumber value="${discountAmount}" /> 원
+            </span>
+        </div>
+
+        <%-- 🔹 할인 적용 금액 --%>
+        <div class="payment-modal-row">
+            <span class="payment-label">할인 적용 금액</span>
+            <span class="payment-value" id="discountedPriceValue">
+                <fmt:formatNumber value="${discountedPrice}" /> 원
+            </span>
+        </div>
+
+        <%-- 🔹 적립 예정 포인트 계산 (버림 처리) --%>
+        <c:set var="expectedSavePointsRaw"
+               value="${discountedPrice * (rewardRate / 100.0)}" />
+
+        <c:set var="expectedSavePoints"
+               value="${fn:substringBefore(expectedSavePointsRaw, '.')}" />
+
+        <div class="payment-modal-row">
+            <span class="payment-label">적립 예정 (${rewardRate}% )</span>
+            <span class="payment-value">
+                + <fmt:formatNumber value="${expectedSavePoints}" /> P
+            </span>
+        </div>
+
+        <input type="hidden" id="expectedSaveHidden" value="${expectedSavePoints}" />
+
+        <%-- 🔹 hidden 값 (JS 연결용) --%>
+        <input type="hidden" id="discountedPriceHidden" value="${discountedPrice}" />
+
+        <%-- 🔹 세션 userVO에서 포인트 가져오기 --%>
+        <div class="payment-modal-row">
+            <span class="payment-label">보유 포인트</span>
+            <span class="payment-value">
+                <fmt:formatNumber value="${sessionScope.userVO.points}" /> P
+            </span>
+        </div>
+
+        <%-- 🔹 사용할 포인트 입력 --%>
+        <div class="payment-modal-row payment-input-row">
+            <span class="payment-label">사용할 포인트</span>
+            <input type="number" id="modalUsedPoints" placeholder="0" />
+            <button class="payment-btn-use-all" onclick="detailUseAllPoints()">모두 사용</button>
+        </div>
+
+        <%-- 🔹 최종 결제 금액(포인트 적용 후) --%>
+        <div class="payment-modal-row payment-row-final">
+            <span class="payment-label">최종 결제 금액</span>
+            <span class="payment-value" id="finalAmountPreview">
+                <fmt:formatNumber value="${discountedPrice}" /> 원
+            </span>
+        </div>
+
+        <%-- 🔹 버튼 영역 --%>
+        <div class="payment-modal-buttons">
+            <button class="payment-btn-cancel" onclick="closePaymentModal()">취소</button>
+            <button class="payment-btn-confirm" onclick="confirmPayment()">결제하기</button>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
 
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
@@ -720,6 +853,229 @@
     // 윈도우 리사이즈 시 재체크
     window.addEventListener('resize', checkDescriptionHeight);
   });
+  
+//결제 쪽 js ---------------------------------------------------------------------------------------------  
+  
+  /* ======================================================
+  ⬛ PortOne 초기화
+====================================================== */
+const IMP = window.IMP;
+IMP.init("imp77215860");
+
+/* ======================================================
+  ⬛ 회원 등급 할인 / 적립률 (세션에서 가져오기)
+====================================================== */
+const discountRate = ${sessionScope.gradeVO != null ? sessionScope.gradeVO.discount_rate : 0};
+const rewardRate   = ${sessionScope.gradeVO != null ? sessionScope.gradeVO.reward_rate : 0};
+
+/* ======================================================
+⬛ 결제용 전역 변수 (중복 제거)
+====================================================== */
+let selectedLectureNum = null;
+let selectedLectureOriginalPrice = 0;    // 원가
+let selectedLectureDiscountedPrice = 0;  // 등급 할인 적용 가격
+
+
+/* ======================================================
+⬛ 결제 모달 열기
+====================================================== */
+function openPaymentModal(lectureNum, price) {
+
+    selectedLectureNum = Number(lectureNum);
+    selectedLectureOriginalPrice = Number(price);
+
+    // 🔥 할인 금액 계산
+    const discount = Math.floor(selectedLectureOriginalPrice * (discountRate / 100));
+    selectedLectureDiscountedPrice = selectedLectureOriginalPrice - discount;
+
+    // 입력창 초기화
+    document.getElementById("modalUsedPoints").value = 0;
+
+    // 최종 금액 첫 표시 = 할인 금액
+    document.getElementById("finalAmountPreview").innerText =
+        selectedLectureDiscountedPrice.toLocaleString() + "원";
+
+    // 모달 열기
+    document.body.classList.add("modal-open");
+    document.getElementById("paymentPointModal").style.display = "flex";
+}
+
+
+/* ======================================================
+⬛ 결제 모달 닫기
+====================================================== */
+function closePaymentModal() {
+    document.body.classList.remove("modal-open");
+    document.getElementById("paymentPointModal").style.display = "none";
+}
+
+
+/* ======================================================
+⬛ 포인트 입력 이벤트
+====================================================== */
+document.getElementById("modalUsedPoints").addEventListener("input", function () {
+
+    let used = parseInt(this.value) || 0;
+    const myPoints = ${sessionScope.userVO.points};
+
+    // 유효성 검사
+    if (used < 0) used = 0;
+    if (used > myPoints) used = myPoints;
+    if (used > selectedLectureDiscountedPrice)
+        used = selectedLectureDiscountedPrice;
+
+    this.value = used;
+
+    // 최종 금액 계산
+    const finalAmount = selectedLectureDiscountedPrice - used;
+
+    document.getElementById("finalAmountPreview").innerText =
+        finalAmount.toLocaleString() + "원";
+});
+
+
+/* ======================================================
+⬛ 모두 사용 버튼
+====================================================== */
+function detailUseAllPoints() {
+
+    const myPoints = ${sessionScope.userVO.points};
+    const use = Math.min(myPoints, selectedLectureDiscountedPrice);
+
+    document.getElementById("modalUsedPoints").value = use;
+
+    const finalAmount = selectedLectureDiscountedPrice - use;
+
+    document.getElementById("finalAmountPreview").innerText =
+        finalAmount.toLocaleString() + "원";
+}
+
+
+/* ======================================================
+⬛ 결제 진행 (confirmPayment)
+====================================================== */
+function confirmPayment() {
+
+    let usedPoints = parseInt(document.getElementById("modalUsedPoints").value) || 0;
+    const myPoints = ${sessionScope.userVO.points};
+
+    // 보정
+    if (usedPoints < 0) usedPoints = 0;
+    if (usedPoints > myPoints) usedPoints = myPoints;
+    if (usedPoints > selectedLectureDiscountedPrice)
+        usedPoints = selectedLectureDiscountedPrice;
+
+    closePaymentModal();
+
+    // 결제 함수 호출
+    requestPayment(selectedLectureNum, selectedLectureOriginalPrice, usedPoints);
+}
+
+
+/* ======================================================
+⬛ 최종 결제 실행
+====================================================== */
+function requestPayment(lectureNum, originalPrice, usedPoints) {
+
+    // 1) 할인 적용
+    const discount = Math.floor(originalPrice * (discountRate / 100));
+    const discountedPrice = originalPrice - discount;
+
+    // 2) 포인트 적용
+    let finalAmount = discountedPrice - usedPoints;
+    if (finalAmount < 0) finalAmount = 0;
+
+    // 3) 적립 포인트
+    const savedPoints = Math.floor(finalAmount * (rewardRate / 100));
+
+    // 4) 세션 사용자 정보
+    const userName  = "<c:out value='${sessionScope.userVO.user_name}'/>";
+    const userEmail = "<c:out value='${sessionScope.userVO.user_email}'/>";
+    const userPhone = "<c:out value='${sessionScope.userVO.user_phone}'/>";
+    const userNum   = "<c:out value='${sessionScope.userVO.user_num}'/>";
+
+    if (!userNum) {
+        alert("로그인이 필요한 서비스입니다.");
+        return;
+    }
+
+    // 5) 포트원 결제창
+    IMP.request_pay({
+        pg: "kakaopay.TC0ONETIME",
+        pay_method: "kakaopay",
+        merchant_uid: "M" + new Date().getTime(),
+        name: "Hobee 강의 결제",
+        amount: finalAmount,
+        buyer_email: userEmail,
+        buyer_name: userName,
+        buyer_tel: userPhone
+    }, function (rsp) {
+
+        if (!rsp.success) {
+            alert("❌ 결제 실패: " + rsp.error_msg);
+            return;
+        }
+
+        // 6) 검증
+        $.post(
+            "${pageContext.request.contextPath}/payment/verify",
+            { imp_uid: rsp.imp_uid },
+
+            function (verifyResult) {
+
+                if (verifyResult.verify_result !== "success") {
+                    alert("❌ 결제 검증 실패: " + verifyResult.message);
+                    return;
+                }
+
+                // 7) 결제 완료 요청
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/payment/complete",
+                    traditional: true,
+                    data: {
+                        user_num: userNum,
+                        imp_uid: rsp.imp_uid,
+                        merchant_uid: rsp.merchant_uid,
+                        amount: finalAmount,
+                        used_points: usedPoints,
+                        saved_points: savedPoints,
+                        lectureNums: [lectureNum],
+                        "grade.discount_rate": discountRate,
+                        "grade.reward_rate": rewardRate
+                    },
+
+                    success: function (completeResult) {
+
+                        if (completeResult.status === "success") {
+
+                            if (completeResult.gradeChanged && completeResult.gradeMessage) {
+                                alert("\n" + completeResult.gradeMessage);
+                            }
+
+                            location.href = "${pageContext.request.contextPath}/payment/success";
+                        }
+
+                        else if (completeResult.status === "duplicate") {
+                            alert("이미 처리된 결제입니다.\n" + completeResult.message);
+                            location.href = "${pageContext.request.contextPath}/payment/success";
+                        }
+
+                        else {
+                            alert("❌ 결제 저장 실패: " + completeResult.message);
+                        }
+                    },
+
+                    error: function () {
+                        alert("❌ 서버 통신 오류 (complete 단계)");
+                    }
+                });
+            }
+        );
+    });
+}
+
+
 </script>
 
 <jsp:include page="../include/footer.jsp"></jsp:include>

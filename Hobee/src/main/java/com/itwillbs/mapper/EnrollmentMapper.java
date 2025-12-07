@@ -47,5 +47,11 @@ public interface EnrollmentMapper {
             @Param("payment_id") int paymentId,
             @Param("lecture_num") int lectureNum);
     
+    // 🔥 유저가 해당 강의를 수강 중인지 체크
+    int countEnrollment(
+        @Param("user_num") int userNum,
+        @Param("lecture_num") int lectureNum
+    );
+    
     
 }

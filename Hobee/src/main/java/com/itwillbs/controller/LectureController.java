@@ -18,6 +18,7 @@ import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.EnrollmentService;
 import com.itwillbs.service.LectureService;
 import com.itwillbs.service.ScrapService;
 
@@ -29,6 +30,8 @@ public class LectureController {
 	private LectureService lectureService;
 	@Inject
 	private ScrapService scrapService;
+	@Inject
+	private EnrollmentService enrollmentService;
 	
 	@RequestMapping(value="/lectureList")
 	public String lectureList(@RequestParam(required = false, defaultValue = "전체") String category_detail,
@@ -115,7 +118,19 @@ public class LectureController {
 	          // lectureVO에도 bookmark 정보 세팅 추가
 	          lectureVO.setBookmark(scrapLectureNums.contains(lectureVO.getLecture_num()));
 	      }
-		
+	   // ================================
+	   // 📌 수강 여부 조회
+	   // ================================
+	   
+	   int hasPurchased = 0;   // 기본값: 구매하지 않음
+
+	   if (userVO != null) {
+	       hasPurchased = enrollmentService.countEnrollment(userVO.getUser_num(), lecture_num);
+	   }
+
+	   model.addAttribute("hasPurchased", hasPurchased);
+	      
+	      
 		model.addAttribute("lectureVO", lectureVO);
 		model.addAttribute("userVO", userImg);
 		model.addAttribute("authorLectures", authorLectures);
