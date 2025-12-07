@@ -51,6 +51,22 @@ main{
 /* =========================================================
    HOT TOPIC SLIDER (Swiper 적용)
 ========================================================= */
+/* 🔥 HOT 슬라이더 내부는 pill을 조금 더 작게 */
+.hot-slide .post-category-pill {
+    font-size: 0.78rem;
+    padding: 3px 8px;
+}
+
+.hot-slide .post-maincategory {
+    font-size: 0.8rem;
+}
+
+.hot-slide .post-writer {
+    font-size: 0.8rem;
+}
+
+
+
 .hot-title-text {
 	font-size: 1.4rem;
 	font-weight: 700;

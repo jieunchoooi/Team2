@@ -17,7 +17,7 @@ public class CommunityContentVO {
 
     private int user_num;
 
-    private int category_id;       // community_category FK
+    private Integer category_id;       // community_category FK
     private Integer category_main_num;  // category_main FK (nullable)
     private Integer lecture_num;
 

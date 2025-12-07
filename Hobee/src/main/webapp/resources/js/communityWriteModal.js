@@ -6,10 +6,5 @@ function closeWriteModal() {
     document.getElementById("writeModal").style.display = "none";
 }
 
-/* 오버레이 클릭 시 닫기 */
-document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("writeModal");
-    modal.addEventListener("click", function(e) {
-        if (e.target === modal) closeWriteModal();
-    });
-});
+// ❌ 바깥 클릭으로 닫기 기능 제거함
+// 아무 이벤트도 넣지 않음

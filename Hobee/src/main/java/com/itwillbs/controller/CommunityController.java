@@ -1,9 +1,12 @@
 package com.itwillbs.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.CommunityCategoryVO;
 import com.itwillbs.domain.CommunityCommentVO;
@@ -38,7 +42,7 @@ public class CommunityController {
 
     @Autowired
     private CommunityService communityService;
-
+    	
     /* ============================================================
     📌 커뮤니티 목록 (검색 + 필터 + 정렬 + 기간 + 페이징)
     - CommunitySearchCriteria 로 통합
@@ -119,11 +123,12 @@ public class CommunityController {
 	 public String communityDetail(
 	         @RequestParam("post_id") int postId,
 	         Model model,
-	         HttpSession session
-	 ) {
+	         HttpSession session,
+	         HttpServletResponse response
+	 ) throws Exception {
 
 	     // ------------------------------------------------------------
-	     // 1️⃣ 로그인 유저 정보 가져오기
+	     // 1️⃣ 로그인 유저 정보
 	     // ------------------------------------------------------------
 	     UserVO loginUserVO = (UserVO) session.getAttribute("userVO");
 	     Integer loginUserNum = (loginUserVO != null)
@@ -131,43 +136,54 @@ public class CommunityController {
 	             : null;
 
 	     // ------------------------------------------------------------
-	     // 2️⃣ 🔥 리스트에서 저장한 필터(CRI) 복원
+	     // 2️⃣ 리스트에서 저장한 필터(CRI) 복원
 	     // ------------------------------------------------------------
 	     CommunitySearchCriteria cri =
 	             (CommunitySearchCriteria) session.getAttribute("communityFilterVO");
 
-	     // 만약 세션이 비어 있으면 기본 cri 생성
 	     if (cri == null) {
 	         cri = new CommunitySearchCriteria();
 	     }
 
 	     // ------------------------------------------------------------
-	     // 3️⃣ 상세 페이지 DTO 조회
+	     // 3️⃣ 상세 DTO 조회
 	     // ------------------------------------------------------------
 	     CommunityDetailDTO communityDetailDTO =
 	             communityService.getPostDetailBundle(postId, cri, loginUserNum);
 
-	     if (communityDetailDTO == null) {
-	         model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
-	         return "community/errorPage";
+	     // ------------------------------------------------------------
+	     // 4️⃣ 존재하지 않거나 삭제된 게시물 접근 차단
+	     // ------------------------------------------------------------
+	     if (communityDetailDTO == null 
+	             || communityDetailDTO.getPost().getIs_deleted() == 1) {
+
+	         response.setContentType("text/html; charset=UTF-8");
+	         response.getWriter().println("<script>");
+	         response.getWriter().println("alert('존재하지 않거나 삭제된 게시글입니다.');");
+	         response.getWriter().println("location.href='" 
+	                 + session.getServletContext().getContextPath()
+	                 + "/community/list';");
+	         response.getWriter().println("</script>");
+	         response.getWriter().flush();
+	         return null; // JSP 이동 안 하고 바로 종료
 	     }
 
+	     // ------------------------------------------------------------
 	     // 인기글 + 핫토픽
+	     // ------------------------------------------------------------
 	     List<CommunityContentVO> popularList = communityService.getPopularPosts();
 	     List<CommunityContentVO> hotTopicList = communityService.getHotTopicList();
 
 	     // ------------------------------------------------------------
-	     // 4️⃣ 모델 등록
+	     // 5️⃣ 모델 등록
 	     // ------------------------------------------------------------
 	     model.addAttribute("dto", communityDetailDTO);
 	     model.addAttribute("hotTopicList", hotTopicList);
 	     model.addAttribute("popularList", popularList);
 
-	     // ------------------------------------------------------------
-	     // 5️⃣ 뷰 반환
-	     // ------------------------------------------------------------
 	     return "community/communityDetail";
 	 }
+
 
 
  // ==========================================================
@@ -229,23 +245,64 @@ public class CommunityController {
  
 
  @PostMapping("/writePro")
- public String writeSubmit(
+ public void writeSubmit(
          CommunityContentVO communityContentVO,
-         HttpSession session
- ) {
+         HttpSession session,
+         HttpServletResponse response
+ ) throws Exception {
+
      UserVO loginUserVO = (UserVO) session.getAttribute("userVO");
 
      if (loginUserVO == null) {
-         return "redirect:/member/login";
+         alertBack(response, "로그인이 필요합니다.");
+         return;
+     }
+
+     // 🔥 말머리 필수
+     if (communityContentVO.getCategory_id() == null ||
+         communityContentVO.getCategory_id() == 0) {
+
+         alertBack(response, "말머리를 선택해주세요.");
+         return;
+     }
+
+     // 🔥 제목 필수
+     if (communityContentVO.getTitle() == null ||
+         communityContentVO.getTitle().trim().isEmpty()) {
+
+         alertBack(response, "제목을 입력해주세요.");
+         return;
+     }
+
+     // 🔥 내용 필수
+     if (communityContentVO.getContent() == null ||
+         communityContentVO.getContent().trim().isEmpty()) {
+
+         alertBack(response, "내용을 입력해주세요.");
+         return;
+     }
+
+     // 🔥 카테고리 선택값이 placeholder면 null 처리
+     if (communityContentVO.getCategory_main_num() != null &&
+             communityContentVO.getCategory_main_num() == 0) {
+         communityContentVO.setCategory_main_num(null);
      }
 
      communityContentVO.setUser_num(loginUserVO.getUser_num());
 
-     // 서비스 호출
      int postId = communityService.writePost(communityContentVO);
 
-     return "redirect:/community/detail?post_id=" + postId;
+     // 성공 → detail 이동
+     response.sendRedirect(
+    		    response.encodeRedirectURL(
+    		        "/hobee/community/detail?post_id=" + postId
+    		    )
+    		);
+
+
  }
+
+
 
  //수정 페이지 데이터 가져오기
  @GetMapping("/edit")
@@ -397,6 +454,12 @@ public Map<String, Object> deleteComment(
  return result;
 }
 
+private void alertBack(HttpServletResponse response, String msg) throws Exception {
+    response.setContentType("text/html; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println("<script>alert('" + msg + "'); history.back();</script>");
+    out.flush();
+}
 
 
 }

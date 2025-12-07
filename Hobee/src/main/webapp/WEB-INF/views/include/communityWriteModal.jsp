@@ -15,7 +15,8 @@
 			<div class="write-top-row">
 
 				<select name="category_id" class="write-select small-select">
-					<option disabled selected>말머리</option>
+					<option value="0" selected="selected" style="display:none;">말머리</option>
+
 
 					<c:forEach var="c" items="${categoryList}">
 
@@ -35,7 +36,9 @@
 
 					</c:forEach>
 				</select> <select name="category_main_num" class="write-select small-select">
-					<option disabled selected>카테고리</option>
+					
+					<option value="0" selected="selected" style="display:none;">카테고리</option>
+
 					<c:forEach var="m" items="${mainList}">
 						<option value="${m.category_main_num}">${m.category_main_name}</option>
 					</c:forEach>

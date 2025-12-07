@@ -17,11 +17,9 @@ WHERE category_main_num = #{category_main_num}
 
 
 
-	<!-- ====================================================== 🔥 1. 핫토픽 (summary 
-		= 120자) ※ CDATA 적용 ====================================================== -->
-
-	<select id="getHotTopicList"
-		resultType="com.itwillbs.domain.CommunityContentVO">
+	<!-- ====================================================== 🔥 1. 핫토픽 (summary = 120자) ※ CDATA 적용 ====================================================== -->
+<select id="getHotTopicList"
+        resultType="com.itwillbs.domain.CommunityContentVO">
 <![CDATA[
 SELECT
     c.post_id,
@@ -44,7 +42,12 @@ SELECT
 
     u.user_name,
     u.user_file,
-    cm.category_main_name AS category_name,
+
+    -- 🟦 메인 카테고리
+    cm.category_main_name AS category_main_name,
+
+    -- 🟥 말머리(community_category)
+    cat.category_name AS category_name,
 
     (
         (COUNT(DISTINCT l.like_id) * 4)
@@ -56,18 +59,29 @@ SELECT
 
 FROM community_content c
 JOIN user u ON c.user_num = u.user_num
-LEFT JOIN category_main cm ON c.category_main_num = cm.category_main_num
-LEFT JOIN community_content_like l ON l.post_id = c.post_id
-LEFT JOIN community_comment cc ON cc.post_id = c.post_id
 
-WHERE c.is_deleted = 0        -- 🔥 삭제글 제외
+LEFT JOIN category_main cm 
+    ON c.category_main_num = cm.category_main_num
+
+LEFT JOIN community_category cat
+    ON c.category_id = cat.category_id
+
+LEFT JOIN community_content_like l 
+    ON l.post_id = c.post_id
+
+LEFT JOIN community_comment cc 
+    ON cc.post_id = c.post_id
+
+WHERE c.is_deleted = 0
   AND c.created_at >= NOW() - INTERVAL 24 HOUR
 
 GROUP BY c.post_id
 ORDER BY trendingScore DESC
 LIMIT 10
 ]]>
-	</select>
+</select>
+
+
 
 
 
@@ -104,7 +118,8 @@ SELECT
 
 FROM community_content c
 JOIN user u ON c.user_num = u.user_num
-JOIN category_main cm ON c.category_main_num = cm.category_main_num
+LEFT JOIN category_main cm ON c.category_main_num = cm.category_main_num  -- 🔥 수정
+
 
 WHERE c.is_deleted = 0   -- 🔥 삭제글 제외
 
@@ -195,9 +210,9 @@ LIMIT 5
          WHERE l1.post_id = c.post_id AND l1.is_like = 1) AS like_count
 
     FROM community_content c
-    JOIN user u ON c.user_num = u.user_num
-    JOIN category_main cm ON c.category_main_num = cm.category_main_num
-    LEFT JOIN community_category cc ON c.category_id = cc.category_id
+JOIN user u ON c.user_num = u.user_num
+LEFT JOIN category_main cm ON c.category_main_num = cm.category_main_num  -- 🔥 NULL 허용
+LEFT JOIN community_category cc ON c.category_id = cc.category_id
     ]]>
 
 		<where>

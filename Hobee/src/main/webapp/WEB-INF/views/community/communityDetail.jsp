@@ -54,57 +54,72 @@
 
 							<%-- 1) 데이터가 있을 때 --%>
 							<c:when test="${not empty hotTopicList}">
-								<c:forEach var="ht" items="${hotTopicList}">
-									<div class="swiper-slide hot-slide"
-										onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
-										
-										
-										<div class="hot-top-wrap">
-										<div class="hot-avatar">
-											<img
-												src="<c:choose>
-                                         <c:when test='${not empty ht.user_file}'>
-                                             ${pageContext.request.contextPath}/resources/img/user_picture/${ht.user_file}
-                                         </c:when>
-                                         <c:otherwise>
-                                             ${pageContext.request.contextPath}/resources/img/common/default-profile.png
-                                         </c:otherwise>
-                                      </c:choose>" />
-										</div>
-										
-										<div class="hot-top">
-											<div class="hot-tag">${ht.category_name}·실시간인기</div>
-											<div class="hot-title">${ht.title}</div>
-										</div>
-										
-										</div>
-										
-										
-										<div class="hot-content">
-											
-											<div class="hot-summary">
-												<c:choose>
-													<c:when test="${not empty ht.summary}">
-                                        ${ht.summary}
-                                    </c:when>
-													<c:otherwise>내용 미리보기 없음</c:otherwise>
-												</c:choose>
-											</div>
+    <c:forEach var="ht" items="${hotTopicList}">
+        <div class="swiper-slide hot-slide"
+             onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
 
-											<div class="hot-meta-row">
-												<div>
-													${ht.user_name} ·
-													<fmt:formatDate value="${ht.created_at}"
-														pattern="yyyy-MM-dd HH:mm" />
-												</div>
-												<div>❤️ ${ht.like_count} · 💬 ${ht.comment_count} · 👁
-													${ht.views}</div>
-											</div>
-										</div>
+            <div class="hot-top-wrap">
+                <div class="hot-avatar">
+                    <img
+                        src="<c:choose>
+                                 <c:when test='${not empty ht.user_file}'>
+                                     ${pageContext.request.contextPath}/resources/img/user_picture/${ht.user_file}
+                                 </c:when>
+                                 <c:otherwise>
+                                     ${pageContext.request.contextPath}/resources/img/common/default-profile.png
+                                 </c:otherwise>
+                             </c:choose>" />
+                </div>
 
-									</div>
-								</c:forEach>
-							</c:when>
+                <div class="hot-top">
+
+                    <%-- 🔹 말머리 / 카테고리 / 작성자 (카드리스트 헤더 스타일 재사용) --%>
+                    <div class="hot-tag">
+
+                        <%-- 말머리 (category_name) --%>
+                        <c:if test="${not empty ht.category_name}">
+                            <span class="post-category-pill">${ht.category_name}</span>
+                        </c:if>
+
+                        <%-- 메인 카테고리 (category_main_name) --%>
+                        <c:if test="${not empty ht.category_main_name}">
+                            <span class="post-maincategory">· ${ht.category_main_name}</span>
+                        </c:if>
+
+                        <%-- 작성자 --%>
+                        <span class="post-writer">·👤 ${ht.user_name}</span>
+                    </div>
+
+                    <div class="hot-title">${ht.title}</div>
+                </div>
+            </div>
+
+            <div class="hot-content">
+
+                <div class="hot-summary">
+                    <c:choose>
+                        <c:when test="${not empty ht.summary}">
+                            ${ht.summary}
+                        </c:when>
+                        <c:otherwise>내용 미리보기 없음</c:otherwise>
+                    </c:choose>
+                </div>
+
+                <div class="hot-meta-row">
+                    <div>
+                        <fmt:formatDate value="${ht.created_at}"
+                                        pattern="yyyy-MM-dd HH:mm" />
+                    </div>
+                    <div>
+                        ❤️ ${ht.like_count} · 💬 ${ht.comment_count} · 👁 ${ht.views}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </c:forEach>
+</c:when>
+
 
 
 							<%-- 2) 데이터가 없을 때 (fallback 슬라이더 3개 자동 생성) --%>
