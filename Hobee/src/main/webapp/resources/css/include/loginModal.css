@@ -102,7 +102,7 @@
 .pw-icon {
     position: absolute;
     right: 14px;
-    top: 50%;
+    top: 35%;
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 18px;
@@ -153,10 +153,11 @@
 
 .login-link-item {
     position: relative;
-    margin: 0 10px;
+/*     margin: 0 10px; */
     color: #555;
     padding-bottom: 2px;
     transition: 0.25s;
+    text-decoration: none;
 }
 
 /* underline hover 효과 */
@@ -238,7 +239,7 @@
     height: 6px;
     width: 100%;
     border-radius: 14px 14px 0 0;
-    background: linear-gradient(90deg, #4a74ff, #6fa2ff);
+/*     background: linear-gradient(90deg, #4a74ff, #6fa2ff); */
 }
 
 /* ================================
