@@ -214,16 +214,28 @@ public class AdminPostController {
 	@GetMapping("/adminPostStats")
 	public String adminPostStats(Model model) {
 
-		model.addAttribute("page", "postStats");
+	    model.addAttribute("page", "postStats");
 
-		List<Map<String, Object>> viewStats = adminPostService.getTopViewPosts();
-		List<Map<String, Object>> commentStats = adminPostService.getTopCommentPosts();
+	    // 조회수 TOP 10
+	    List<Map<String, Object>> viewStats = adminPostService.getTopViewPosts();
 
-		model.addAttribute("viewStats", viewStats);
-		model.addAttribute("commentStats", commentStats);
+	    // 댓글수 TOP 10
+	    List<Map<String, Object>> commentStats = adminPostService.getTopCommentPosts();
 
-		return "admin/community/adminPostStats";
+	    // 🔥 최근 7일 게시글 수 (정확한 서비스 메서드 사용)
+	    List<Map<String, Object>> weeklyStats = adminPostService.getWeeklyPostCount();
+
+	    // 🔥 게시판별 게시글 비율 (정확한 서비스 메서드 사용)
+	    List<Map<String, Object>> categoryStats = adminPostService.getPostsByCategory();
+
+	    model.addAttribute("viewStats", viewStats);
+	    model.addAttribute("commentStats", commentStats);
+	    model.addAttribute("weeklyStats", weeklyStats);
+	    model.addAttribute("categoryStats", categoryStats);
+
+	    return "admin/community/adminPostStats";
 	}
+
 
 	// 검색 자동완성
 	// 검색 자동완성

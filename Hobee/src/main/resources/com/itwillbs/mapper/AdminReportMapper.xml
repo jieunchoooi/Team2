@@ -1,53 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.AdminReportMapper">
 
     <!-- ========================================= -->
-    <!-- 📌 신고 목록 조회 (게시글 + 댓글)           -->
+    <!-- 📌 신고 목록 조회 (게시글 + 댓글)            -->
     <!-- ========================================= -->
     <select id="getReportList" resultType="com.itwillbs.domain.AdminReportVO">
         SELECT
-        r.report_id,
-        r.post_id,
-        r.comment_id,
-        r.reporter_id,
-        r.reason,
-        r.created_at,
-        r.is_done,
+            r.report_id,
+            r.post_id,
+            r.comment_id,
+            r.user_num,
+            r.reason,
+            r.created_at,
+            r.is_done,
+            r.action,
+            r.admin_reason,
+            r.done_at,
 
-        p.title AS post_title,
-        c.content AS comment_content
+            u.user_id,
+            u.user_name,
 
-        FROM community_report r
-        LEFT JOIN community_content p
-        ON r.post_id = p.post_id
-        LEFT JOIN community_comment c
-        ON r.comment_id = c.comment_id
+            p.title AS post_title,
+            c.content AS comment_content
 
+        FROM report r
+        LEFT JOIN user u ON r.user_num = u.user_num
+        LEFT JOIN community_content p ON r.post_id = p.post_id
+        LEFT JOIN comment c ON r.comment_id = c.comment_id
         WHERE 1 = 1
 
-        <!-- 유형 필터 -->
-        <if test="type != null and type != ''">
-            <if test="type == 'post'">
-                AND r.post_id IS NOT NULL
-            </if>
-            <if test="type == 'comment'">
-                AND r.comment_id IS NOT NULL
-            </if>
-        </if>
+        <!-- 🔎 유형 필터 -->
+        <if test="type == 'post'"> AND r.post_id IS NOT NULL </if>
+        <if test="type == 'comment'"> AND r.comment_id IS NOT NULL </if>
 
-        <!-- 처리 상태 필터 -->
-        <if test="status != null and status != ''">
-            <if test="status == 'wait'">
-                AND r.is_done = 0
-            </if>
-            <if test="status == 'done'">
-                AND r.is_done = 1
-            </if>
-        </if>
+        <!-- 🔎 상태 필터 -->
+        <if test="status == 'wait'"> AND r.is_done = 0 </if>
+        <if test="status == 'done'"> AND r.is_done = 1 </if>
 
         ORDER BY r.report_id DESC
         LIMIT #{pageSize} OFFSET #{offset}
@@ -55,117 +47,112 @@
 
 
     <!-- ========================================= -->
-    <!-- 📌 신고 상세 조회                           -->
+    <!-- 📌 신고 총 개수 (필터 동일 적용)            -->
+    <!-- ========================================= -->
+    <select id="getReportCount" resultType="int">
+        SELECT COUNT(*)
+        FROM report r
+        WHERE 1 = 1
+
+        <!-- 유형 필터 -->
+        <if test="type == 'post'"> AND r.post_id IS NOT NULL </if>
+        <if test="type == 'comment'"> AND r.comment_id IS NOT NULL </if>
+
+        <!-- 상태 필터 -->
+        <if test="status == 'wait'"> AND r.is_done = 0 </if>
+        <if test="status == 'done'"> AND r.is_done = 1 </if>
+    </select>
+
+
+    <!-- ========================================= -->
+    <!-- 📌 신고 상세 조회                          -->
     <!-- ========================================= -->
     <select id="getReportDetail" resultType="com.itwillbs.domain.AdminReportVO">
         SELECT
-        r.report_id,
-        r.post_id,
-        r.comment_id,
-        r.reporter_id,
-        r.reason,
-        r.created_at,
-        r.is_done,
-        r.done_at,
-        r.done_reason,
+            r.report_id,
+            r.post_id,
+            r.comment_id,
+            r.user_num,
+            r.reason,
+            r.created_at,
+            r.is_done,
+            r.action,
+            r.admin_reason,
+            r.done_at,
 
-        -- 게시글 JOIN
-        p.title AS post_title,
-        p.content AS post_content,
+            u.user_id,
+            u.user_name,
 
-        -- 댓글 JOIN
-        c.content AS comment_content
+            p.title AS post_title,
+            p.content AS post_content,
 
-        FROM community_report r
-        LEFT JOIN community_content p
-        ON r.post_id = p.post_id
-        LEFT JOIN community_comment c
-        ON r.comment_id = c.comment_id
+            c.content AS comment_content
 
+        FROM report r
+        LEFT JOIN user u ON r.user_num = u.user_num
+        LEFT JOIN community_content p ON r.post_id = p.post_id
+        LEFT JOIN comment c ON r.comment_id = c.comment_id
         WHERE r.report_id = #{report_id}
     </select>
 
 
     <!-- ========================================= -->
-    <!-- 📌 신고 처리 완료                           -->
+    <!-- 📌 신고 처리                              -->
     <!-- ========================================= -->
     <update id="updateReportDone">
-        UPDATE community_report
-        SET is_done = 1,
-        done_at = NOW(),
-        done_reason = #{done_reason}
+        UPDATE report
+        SET 
+            is_done = 1,
+            action = 'ACCEPT',
+            admin_reason = #{done_reason},
+            done_at = NOW()
         WHERE report_id = #{report_id}
     </update>
 
 
     <!-- ========================================= -->
-    <!-- 📌 신고 반려                                -->
+    <!-- 📌 신고 반려                              -->
     <!-- ========================================= -->
     <update id="rejectReport">
-        UPDATE community_report
-        SET is_done = 2,
-        done_at = NOW(),
-        done_reason = #{reason}
+        UPDATE report
+        SET 
+            is_done = 2,
+            action = 'REJECT',
+            admin_reason = #{reason},
+            done_at = NOW()
         WHERE report_id = #{report_id}
     </update>
 
 
     <!-- ========================================= -->
-    <!-- 📌 페이징용 총 개수 조회                   -->
+    <!-- 📌 상단 통계 — 필터 적용된 버전 4종        -->
     <!-- ========================================= -->
-    <select id="getReportCount" resultType="int">
-        SELECT COUNT(*)
-        FROM community_report r
-        WHERE 1 = 1
 
-        <if test="type != null and type != ''">
-            <if test="type == 'post'">
-                AND r.post_id IS NOT NULL
-            </if>
-            <if test="type == 'comment'">
-                AND r.comment_id IS NOT NULL
-            </if>
-        </if>
-
-        <if test="status != null and status != ''">
-            <if test="status == 'wait'">
-                AND r.is_done = 0
-            </if>
-            <if test="status == 'done'">
-                AND r.is_done = 1
-            </if>
-        </if>
+    <!-- 전체 신고 -->
+    <select id="getTotalCountFiltered" resultType="int">
+        SELECT COUNT(*) FROM report
     </select>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 통계                                     -->
-    <!-- ========================================= -->
-    <select id="getTotalCount" resultType="int">
-        SELECT COUNT(*) FROM community_report
+    <!-- 이번달 신고 -->
+    <select id="getMonthCountFiltered" resultType="int">
+        SELECT COUNT(*)
+        FROM report
+        WHERE DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
     </select>
 
-    <select id="getMonthCount" resultType="int">
-        SELECT COUNT(*)
-        FROM community_report
-        WHERE MONTH(created_at) = MONTH(NOW())
+    <!-- 게시글 신고 -->
+    <select id="getPostCountFiltered" resultType="int">
+        SELECT COUNT(*) FROM report WHERE post_id IS NOT NULL
     </select>
 
-    <select id="getPostCount" resultType="int">
-        SELECT COUNT(*)
-        FROM community_report
-        WHERE post_id IS NOT NULL
-    </select>
-
-    <select id="getCommentCount" resultType="int">
-        SELECT COUNT(*)
-        FROM community_report
-        WHERE comment_id IS NOT NULL
+    <!-- 댓글 신고 -->
+    <select id="getCommentCountFiltered" resultType="int">
+        SELECT COUNT(*) FROM report WHERE comment_id IS NOT NULL
     </select>
 
 
     <!-- ========================================= -->
-    <!-- 📌 신고 처리 로그 저장                     -->
+    <!-- 📌 신고 처리 로그 기록                     -->
     <!-- ========================================= -->
     <insert id="insertReportActionLog">
         INSERT INTO report_action_log (report_id, admin_id, action, reason)
@@ -176,15 +163,15 @@
     <!-- ========================================= -->
     <!-- 📌 신고 처리 로그 조회                     -->
     <!-- ========================================= -->
-    <select id="getReportActionLogs"
+    <select id="getReportActionLogs" 
             resultType="com.itwillbs.domain.ReportActionLogVO">
         SELECT
-        log_id,
-        report_id,
-        admin_id,
-        action,
-        reason,
-        created_at
+            log_id,
+            report_id,
+            admin_id,
+            action,
+            reason,
+            created_at
         FROM report_action_log
         WHERE report_id = #{report_id}
         ORDER BY log_id DESC

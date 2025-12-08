@@ -825,9 +825,9 @@ WITH filtered AS (
 
 	<insert id="insertReport" parameterType="com.itwillbs.domain.CommunityReportVO">
 		INSERT INTO community_report
-		(reporter_id, post_id, comment_id, reason, created_at, is_done)
+		(user_num, post_id, comment_id, reason, created_at, is_done)
 		VALUES
-		(#{reporter_id}, #{post_id}, #{comment_id}, #{reason}, NOW(), 0)
+		(#{user_num}, #{post_id}, #{comment_id}, #{reason}, NOW(), 0)
 	</insert>
 
 </mapper>

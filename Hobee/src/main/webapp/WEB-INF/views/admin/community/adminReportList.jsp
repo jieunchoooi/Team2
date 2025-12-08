@@ -25,18 +25,19 @@
 <!-- 공통 사이드바 -->
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
+
 <!-- ⭐ 메인 콘텐츠 영역 -->
 <main class="main-content">
 
-    <!-- 제목 고정 -->
     <div class="main-header">
         <h1>신고 관리</h1>
     </div>
 
-    <!-- 중앙 정렬 묶음 시작 -->
     <div class="center-wrapper">
 
-        <!-- 🔥 신고 통계 박스 -->
+        <!-- ============================
+             🔥 신고 통계 박스
+        ============================ -->
         <div class="stats-box">
 
             <div class="stat-card">
@@ -61,18 +62,18 @@
 
         </div>
 
-        <!-- 🔎 필터 박스 -->
+        <!-- ============================
+             🔍 필터 박스
+        ============================ -->
         <div class="filter-box">
             <form method="get" action="${pageContext.request.contextPath}/admin/adminReportList">
 
-                <!-- 유형 필터 -->
                 <select name="type" class="filter-select">
                     <option value="">전체 유형</option>
                     <option value="post" ${param.type == 'post' ? 'selected' : ''}>게시글</option>
                     <option value="comment" ${param.type == 'comment' ? 'selected' : ''}>댓글</option>
                 </select>
 
-                <!-- 상태 필터 -->
                 <select name="status" class="filter-select">
                     <option value="">전체 상태</option>
                     <option value="wait" ${param.status == 'wait' ? 'selected' : ''}>대기</option>
@@ -83,7 +84,9 @@
             </form>
         </div>
 
-        <!-- 신고 리스트 테이블 -->
+        <!-- ============================
+             🔵 신고 리스트 테이블
+        ============================ -->
         <div class="table-card">
 
             <table class="admin-table">
@@ -111,7 +114,8 @@
                 <c:forEach var="r" items="${reportList}">
                     <tr>
 
-                        <td>${r.reporter_id}</td>
+                        <!-- 신고자 -->
+                        <td>${r.user_id}</td>
 
                         <!-- 신고 대상 -->
                         <td>
@@ -127,7 +131,6 @@
                             <c:choose>
                                 <c:when test="${r.post_id ne null}">게시글</c:when>
                                 <c:when test="${r.comment_id ne null}">댓글</c:when>
-                                <c:otherwise>-</c:otherwise>
                             </c:choose>
                         </td>
 
@@ -136,24 +139,27 @@
                             ${r.reason}
                         </td>
 
+                        <!-- 신고일 -->
                         <td>${r.created_at}</td>
 
-                        <!-- 상태 -->
+                        <!-- ⭐ 상태 (ENUM 스타일로 안전 출력) -->
                         <td>
                             <c:choose>
+                                <c:when test="${r.is_done == 0}">
+                                    <span class="status-badge wait">대기</span>
+                                </c:when>
+
                                 <c:when test="${r.is_done == 1}">
                                     <span class="status-badge done">완료</span>
                                 </c:when>
+
                                 <c:when test="${r.is_done == 2}">
                                     <span class="status-badge reject">반려</span>
                                 </c:when>
-                                <c:otherwise>
-                                    <span class="status-badge wait">대기</span>
-                                </c:otherwise>
                             </c:choose>
                         </td>
 
-                        <!-- 상세 -->
+                        <!-- 상세 버튼 -->
                         <td>
                             <button class="btn-blue"
                                     onclick="location.href='${pageContext.request.contextPath}/admin/adminReportDetail?report_id=${r.report_id}'">
@@ -161,12 +167,13 @@
                             </button>
                         </td>
 
-                        <!-- 처리 -->
+                        <!-- 처리 버튼 -->
                         <td>
                             <c:choose>
-                                <c:when test="${r.is_done == 1}">
+                                <c:when test="${r.is_done != 0}">
                                     <button class="btn-gray" disabled>완료</button>
                                 </c:when>
+
                                 <c:otherwise>
                                     <form action="${pageContext.request.contextPath}/admin/adminReportDone"
                                           method="post"
@@ -184,7 +191,9 @@
                 </tbody>
             </table>
 
-            <!-- 페이지네이션 -->
+            <!-- ============================
+                 페이지네이션
+            ============================ -->
             <div class="pagination">
 
                 <c:if test="${currentPage > 1}">

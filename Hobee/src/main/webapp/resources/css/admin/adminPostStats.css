@@ -108,5 +108,15 @@
     height: 330px !important;  /* 기본 250px → 330px 정도 추천 */
 }
 
+.chart-area {
+    height: 360px; /* 원하는 만큼 변경 가능 */
+    position: relative;
+}
+.chart-area canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
 
 
