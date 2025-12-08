@@ -1,13 +1,12 @@
 package com.itwillbs.controller;
 
 import java.util.List;
+
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,158 +17,141 @@ import com.itwillbs.domain.AdminBoardVO;
 import com.itwillbs.service.AdminBoardService;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/*")
 public class AdminBoardController {
 
-	@Inject
-	private AdminBoardService adminBoardService;
+    @Inject
+    private AdminBoardService adminBoardService;
 
-	// ⭐ 모든 /admin/* 요청에 대해 현재 페이지 식별값을 자동으로 Model에 주입
-	@ModelAttribute("page")
-	public String setPageIdentifier(HttpServletRequest req) {
-		String uri = req.getRequestURI();
+    // 📌 게시판 목록
+    @GetMapping("/adminBoardList")
+    public String adminBoardList(Model model) {
+        model.addAttribute("boardList", adminBoardService.getBoardList());
+        return "admin/community/adminBoard";
+    }
 
-		if (uri.contains("adminBoardList"))
-			return "boardList";
-		if (uri.contains("adminPostDeletedList"))
-			return "deletedPostList";
-		if (uri.contains("adminCommentList"))
-			return "commentList";
-		if (uri.contains("adminPostStats"))
-			return "postStats";
-		return "";
-	}
+    // 📌 게시판 추가
+    @PostMapping("/adminBoardAdd")
+    public String adminBoardAdd(AdminBoardVO vo) {
+        adminBoardService.insertBoard(vo);
+        return "redirect:/admin/adminBoardList";
+    }
 
-	// 📌 게시판 목록
-	@GetMapping("/adminBoardList")
-	public String adminBoardList(Model model) {
-		model.addAttribute("boardList", adminBoardService.getBoardList());
-		return "admin/community/adminBoard";
-	}
+    // 📌 게시판 수정 화면
+    @GetMapping("/adminBoardEdit")
+    public String adminBoardEdit(@RequestParam("board_id") int boardId, Model model) {
+        model.addAttribute("board", adminBoardService.getBoard(boardId));
+        return "admin/community/adminBoardEdit";
+    }
 
-	// 📌 게시판 추가
-	@PostMapping("/adminBoardAdd")
-	public String adminBoardAdd(AdminBoardVO vo) {
-		adminBoardService.insertBoard(vo);
-		return "redirect:adminBoardList";
-	}
+    // 📌 게시판 수정 처리
+    @PostMapping("/adminBoardEditPro")
+    public String adminBoardEditPro(AdminBoardVO vo) {
 
-	// 📌 게시판 수정 화면
-	@GetMapping("/adminBoardEdit")
-	public String adminBoardEdit(@RequestParam("board_id") int boardId, Model model) {
-		model.addAttribute("board", adminBoardService.getBoard(boardId));
-		return "admin/community/adminBoardEdit";
-	}
+        // 금지 단어 공백 처리
+        if (vo.getBanned_words() != null && vo.getBanned_words().trim().equals("")) {
+            vo.setBanned_words(null);
+        }
 
-	// 📌 게시판 수정 처리
-	@PostMapping("/adminBoardEditPro")
-	public String adminBoardEditPro(AdminBoardVO vo) {
+        adminBoardService.updateBoard(vo);
+        return "redirect:/admin/adminBoardList";
+    }
 
-		// 금지단어 공백일 경우 null 처리
-		if (vo.getBanned_words() != null && vo.getBanned_words().trim().equals("")) {
-			vo.setBanned_words(null);
-		}
+    // 📌 게시판 숨김
+    @PostMapping("/adminBoardDisable")
+    public String adminBoardDisable(@RequestParam("board_id") int boardId,
+                                    RedirectAttributes rttr) {
+        adminBoardService.disableBoard(boardId);
+        rttr.addFlashAttribute("msg", "머리말을 숨김 처리했습니다.");
 
-		adminBoardService.updateBoard(vo);
+        // ❌ 기존: return "redirect:/admin/adminBoardList";
 
-		return "redirect:adminBoardList";
-	}
+        // ✅ 수정:
+        return "redirect:adminBoardList";
+    }
 
-	// 📌 게시판 숨김
-	@PostMapping("/adminBoardDisable")
-	public String adminBoardDisable(@RequestParam("board_id") int boardId, RedirectAttributes rttr) {
 
-		adminBoardService.disableBoard(boardId);
-		rttr.addFlashAttribute("msg", "게시판을 숨김 처리했습니다.");
+    // 📌 게시판 표시
+    @PostMapping("/adminBoardEnable")
+    public String adminBoardEnable(@RequestParam("board_id") int boardId,
+                                   RedirectAttributes rttr) {
+        adminBoardService.enableBoard(boardId);
+        rttr.addFlashAttribute("msg", "머리말을 표시했습니다.");
 
-		return "redirect:adminBoardList";
-	}
+        // ❌ 기존: return "redirect:/admin/adminBoardList";
+        // ✅ 수정:
+        return "redirect:adminBoardList";
+    }
 
-	// 📌 게시판 표시
-	@PostMapping("/adminBoardEnable")
-	public String adminBoardEnable(@RequestParam("board_id") int boardId, RedirectAttributes rttr) {
 
-		adminBoardService.enableBoard(boardId);
-		rttr.addFlashAttribute("msg", "게시판을 표시했습니다.");
+    // 📌 게시판 순서 변경
+    @PostMapping("/updateBoardOrder")
+    @ResponseBody
+    public String updateBoardOrder(@RequestParam("orderData") String orderData) {
 
-		return "redirect:adminBoardList";
-	}
+        String[] items = orderData.split(",");
 
-	// 📌 게시판 순서 변경 (AJAX)
-	@PostMapping("/updateBoardOrder")
-	@ResponseBody
-	public String updateBoardOrder(@RequestParam("orderData") String orderData) {
+        for (String item : items) {
+            String[] parts = item.split(":");
 
-		String[] items = orderData.split(",");
+            AdminBoardVO vo = new AdminBoardVO();
+            vo.setBoard_id(Integer.parseInt(parts[0]));
+            vo.setBoard_order(Integer.parseInt(parts[1]));
 
-		for (String item : items) {
-			String[] parts = item.split(":");
+            adminBoardService.updateBoardOrder(vo);
+        }
 
-			AdminBoardVO vo = new AdminBoardVO();
-			vo.setBoard_id(Integer.parseInt(parts[0]));
-			vo.setBoard_order(Integer.parseInt(parts[1]));
+        return "success";
+    }
 
-			adminBoardService.updateBoardOrder(vo);
-		}
+    // 📌 게시판 상세
+    @GetMapping("/adminBoardDetail")
+    public String adminBoardDetail(@RequestParam("board_id") int boardId, Model model) {
 
-		return "success";
-	}
+        model.addAttribute("board", adminBoardService.getBoardDetail(boardId));
+        model.addAttribute("recentPosts", adminBoardService.getRecentPosts(boardId));
 
-	// 📌 게시판 상세 보기
-	@GetMapping("/adminBoardDetail")
-	public String adminBoardDetail(@RequestParam("board_id") int boardId, Model model) {
+        model.addAttribute("weeklyStats", adminBoardService.getWeeklyPostStats(boardId));
+        model.addAttribute("topViews", adminBoardService.getTopViewPosts(boardId));
+        model.addAttribute("topReports", adminBoardService.getTopReportPosts(boardId));
 
-		model.addAttribute("board", adminBoardService.getBoardDetail(boardId));
-		model.addAttribute("recentPosts", adminBoardService.getRecentPosts(boardId));
-		model.addAttribute("weeklyStats", adminBoardService.getWeeklyPostStats(boardId));
-		model.addAttribute("topViews", adminBoardService.getTopViewPosts(boardId));
-		model.addAttribute("topReports", adminBoardService.getTopReportPosts(boardId));
+        return "admin/community/adminBoardDetail";
+    }
 
-		return "admin/community/adminBoardDetail";
-	}
-
-	@PostMapping("/adminBoardDelete")
-	public String adminBoardDelete(@RequestParam("board_id") int boardId, RedirectAttributes rttr) {
-
-		adminBoardService.deleteBoard(boardId);
-		rttr.addFlashAttribute("msg", "게시판이 삭제되었습니다.");
-
-		return "redirect:adminBoardList";
-	}
-
-	// ============================
+    // ============================
 // 📌 게시판 옵션(허용/금지) 빠른 변경 (AJAX)
 // ============================
-	@PostMapping("/adminBoardOptionUpdate")
-	@ResponseBody
-	public String adminBoardOptionUpdate(@RequestParam("board_id") int boardId, @RequestParam("option") String option,
-			@RequestParam("value") int value) {
+    @PostMapping("/adminBoardOptionUpdate")
+    @ResponseBody
+    public String adminBoardOptionUpdate(@RequestParam("board_id") int boardId,
+                                         @RequestParam("option") String option,
+                                         @RequestParam("value") int value) {
 
-		try {
-			switch (option) {
-			case "comment":
-				adminBoardService.updateAllowComment(boardId, value);
-				break;
-			case "image":
-				adminBoardService.updateAllowImage(boardId, value);
-				break;
-			case "file":
-				adminBoardService.updateAllowFile(boardId, value);
-				break;
-			case "approval":
-				adminBoardService.updateRequireApproval(boardId, value);
-				break;
-			default:
-				return "error";
-			}
+        try {
+            switch (option) {
+                case "comment":
+                    adminBoardService.updateAllowComment(boardId, value);
+                    break;
+                case "image":
+                    adminBoardService.updateAllowImage(boardId, value);
+                    break;
+                case "file":
+                    adminBoardService.updateAllowFile(boardId, value);
+                    break;
+                case "approval":
+                    adminBoardService.updateRequireApproval(boardId, value);
+                    break;
+                default:
+                    return "error";
+            }
 
-			return "success";
+            return "success";
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "error";
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
 
-	}
 
 }

@@ -808,9 +808,26 @@ WITH filtered AS (
       AND is_deleted = 0
 </update>
 
+	<select id="checkAlreadyReported" resultType="int">
+		SELECT COUNT(*)
+		FROM community_report
+		WHERE reporter_id = #{user_num}
+		AND post_id = #{post_id}
+	</select>
+
+	<select id="checkAlreadyReportedComment" resultType="int">
+		SELECT COUNT(*)
+		FROM community_report
+		WHERE reporter_id = #{user_num}
+		AND comment_id = #{comment_id}
+	</select>
 
 
-
-
+	<insert id="insertReport" parameterType="com.itwillbs.domain.CommunityReportVO">
+		INSERT INTO community_report
+		(reporter_id, post_id, comment_id, reason, created_at, is_done)
+		VALUES
+		(#{reporter_id}, #{post_id}, #{comment_id}, #{reason}, NOW(), 0)
+	</insert>
 
 </mapper>

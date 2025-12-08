@@ -14,6 +14,7 @@ import com.itwillbs.domain.CommunityCategoryVO;
 import com.itwillbs.domain.CommunityCommentVO;
 import com.itwillbs.domain.CommunityContentVO;
 import com.itwillbs.domain.CommunityDetailDTO;
+import com.itwillbs.domain.CommunityReportVO;
 import com.itwillbs.domain.CommunitySearchCriteria;
 import com.itwillbs.domain.ReactionCountVO;
 import com.itwillbs.mapper.CommunityMapper;
@@ -288,5 +289,21 @@ public class CommunityService {
     public boolean deleteComment(int commentId, int userNum) {
         return communityMapper.deleteComment(commentId, userNum) == 1;
     }
+    
+ // 📌 신고 여부 체크 (게시글)
+ 	public boolean alreadyReportedPost(int userNum, int postId) {
+ 		return communityMapper.checkAlreadyReported(userNum, postId) > 0;
+ 	}
+
+ 	// 📌 신고 여부 체크 (댓글)
+ 	public boolean alreadyReportedComment(int userNum, int commentId) {
+ 		return communityMapper.checkAlreadyReportedComment(userNum, commentId) > 0;
+ 	}
+
+ 	public boolean insertReport(CommunityReportVO vo) {
+ 		return communityMapper.insertReport(vo) == 1;
+ 	}
+
+
 
 }

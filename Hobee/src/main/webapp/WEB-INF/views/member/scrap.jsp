@@ -195,13 +195,28 @@ function updateSummary() {
     const remain = userPoints - usedPoints;
     $("#remainPoints").text(remain.toLocaleString() + " P");
 
-    const reward = Math.floor((priceAfterDiscount - usedPoints) * (rewardRate / 100));
-    $("#rewardPoints").text("+" + reward.toLocaleString() + " P");
+    let totalReward = 0;
+	//개별 강의 적립 및 할인 계산 
+    selected.forEach(cb => {
+        const lecturePrice = parseInt(cb.dataset.price);
+
+        // 강의별 할인 가격 (백엔드와 동일하게 버림 처리)
+        const salePrice = Math.floor(lecturePrice * (1 - discountRate / 100));
+
+        // 강의별 적립 포인트
+        const reward = Math.floor(salePrice * (rewardRate / 100));
+
+        totalReward += reward;
+    });
+
+    // 최종 표시
+    $("#rewardPoints").text("+" + totalReward.toLocaleString() + " P");
+
 
     const finalAmount = priceAfterDiscount - usedPoints;
     $("#finalPrice").text("₩" + finalAmount.toLocaleString());
 
-    /* 🔥 여기 추가!!! */
+  
     $("#totalPrice").text("₩" + totalPrice.toLocaleString());
     $("#discountPrice").text("-₩" + discount.toLocaleString());
 }

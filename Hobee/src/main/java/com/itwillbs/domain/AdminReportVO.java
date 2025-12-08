@@ -8,23 +8,24 @@ import lombok.ToString;
 @Setter
 @ToString
 public class AdminReportVO {
-	
-	private int report_id;      		// 신고 번호
-    private Integer post_id;   			// 신고된 게시글 ID (null 가능)
-    private Integer comment_id;			// 신고된 댓글 ID (null 가능)
-    private String reporter_id;			// 신고자
-    private String reason;     			// 신고 사유
-    private String created_at; 			// 신고 날짜
-    private int is_done;       			// 처리 여부
 
-    // JOIN용
-    private String post_title;     		// 게시글 제목
-    private String post_content;        // 댓글 제목
+    private int report_id;
 
-    private String comment_content;		// 댓글 내용
+    private Integer post_id;
+    private Integer comment_id;
 
-    private String done_at;   // 처리 일시 (nullable)
+    // reporter_id는 community_report 기준 → int
+    private Integer reporter_id;
 
-    private String done_reason;  // 사유
+    private String reason;
+    private String created_at;
+    private int is_done;
 
+    private String done_at;
+    private String done_reason;
+
+    // ===== JOIN 컬럼 =====
+    private String post_title;      // community_content.title
+    private String post_content;    // community_content.content
+    private String comment_content; // comment.content
 }

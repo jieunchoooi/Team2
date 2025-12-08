@@ -10,6 +10,7 @@ import com.itwillbs.domain.Category_mainVO;
 import com.itwillbs.domain.CommunityCategoryVO;
 import com.itwillbs.domain.CommunityCommentVO;
 import com.itwillbs.domain.CommunityContentVO;
+import com.itwillbs.domain.CommunityReportVO;
 import com.itwillbs.domain.CommunitySearchCriteria;
 import com.itwillbs.domain.ReactionCountVO;
 
@@ -147,6 +148,19 @@ int updateComment(@Param("comment_id") int commentId,
 
 int deleteComment(@Param("comment_id") int commentId,
                   @Param("user_num") int userNum);
+
+
+//📌 신고 여부 체크 (게시글)
+int checkAlreadyReported(@Param("user_num") int user_num,
+							 @Param("post_id") int post_id);
+
+
+// 📌 신고 여부 체크 (댓글)
+int checkAlreadyReportedComment(@Param("user_num") int user_num,
+									@Param("comment_id") int comment_id);
+
+
+int insertReport(CommunityReportVO vo);
 
 
 }

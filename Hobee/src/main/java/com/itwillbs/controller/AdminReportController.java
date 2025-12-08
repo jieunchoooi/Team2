@@ -23,14 +23,14 @@ public class AdminReportController {
     private AdminReportService adminReportService;
 
     @ModelAttribute("page")
-	public String setPageIdentifier(HttpServletRequest req) {
-	    String uri = req.getRequestURI();
-	    
-	    if (uri.contains("adminReportList")) return "reportList";
-	    return "";
-	}
-   
-    
+    public String setPageIdentifier(HttpServletRequest req) {
+        String uri = req.getRequestURI();
+
+        if (uri.contains("adminReportList")) return "reportList";
+        return "";
+    }
+
+
     // ⭐ 신고 목록 (필터 + 페이징)
     @GetMapping("/adminReportList")
     public String reportList(

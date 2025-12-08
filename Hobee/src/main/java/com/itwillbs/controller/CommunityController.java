@@ -23,11 +23,14 @@ import com.itwillbs.domain.CommunityCategoryVO;
 import com.itwillbs.domain.CommunityCommentVO;
 import com.itwillbs.domain.CommunityContentVO;
 import com.itwillbs.domain.CommunityDetailDTO;
+import com.itwillbs.domain.CommunityReportVO;
 import com.itwillbs.domain.CommunitySearchCriteria;
 import com.itwillbs.domain.PageDTO;
 import com.itwillbs.domain.ReactionCountVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.AdminBoardService;
 import com.itwillbs.service.CommunityService;
+import com.itwillbs.service.ReportService;
 
 /**
  * CommunityController
@@ -42,6 +45,16 @@ public class CommunityController {
 
     @Autowired
     private CommunityService communityService;
+    
+    // 추가
+ 	@Autowired
+ 	private ReportService reportService;
+
+ 	// 🔥 추가된 부분 (기존 코드 영향 없음)
+ 	@Autowired
+ 	private AdminBoardService adminBoardService;
+
+
     	
     /* ============================================================
     📌 커뮤니티 목록 (검색 + 필터 + 정렬 + 기간 + 페이징)
@@ -70,7 +83,7 @@ public class CommunityController {
 	  // offset 계산
 	     cri.setOffset((cri.getPage() - 1) * cri.getAmount());
 	     
-	     
+	    
 	     //글작성용 카테고리
 	     model.addAttribute("categoryList", communityService.getCategoryList());
 	     model.addAttribute("mainList", communityService.getMainCategoryList());
@@ -116,9 +129,6 @@ public class CommunityController {
 	     return "community/communityList";
 	 }
 
-
-    
-    
 	 @GetMapping("/detail")
 	 public String communityDetail(
 	         @RequestParam("post_id") int postId,
@@ -303,7 +313,6 @@ public class CommunityController {
  }
 
 
-
  //수정 페이지 데이터 가져오기
  @GetMapping("/edit")
  @ResponseBody
@@ -327,6 +336,7 @@ public class CommunityController {
      }
 
      result.put("post", post);
+     
      result.put("categoryList", communityService.getCategoryList());
      result.put("mainCategoryList", communityService.getMainCategoryList());
      System.out.println("수정화면 result : "+result);
@@ -460,6 +470,82 @@ private void alertBack(HttpServletResponse response, String msg) throws Exceptio
     out.println("<script>alert('" + msg + "'); history.back();</script>");
     out.flush();
 }
+
+// ==========================================================
+//📌 신고 여부 체크 (게시글 / 댓글 공용)
+//==========================================================
+	@PostMapping("/report/check")
+	@ResponseBody
+	public Map<String, Object> checkReport(
+			@RequestParam String targetType, // "post" 또는 "comment"
+			@RequestParam int targetId,      // post_id 또는 comment_id
+			HttpSession session) {
+
+		Map<String, Object> res = new HashMap<>();
+
+		// 🔹 로그인 여부 확인
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		if (userVO == null) {
+			res.put("loggedIn", false);
+			return res;
+		}
+
+		int userNum = userVO.getUser_num();
+		boolean already;
+
+		// 🔹 게시글 / 댓글 신고 여부 분기
+		if ("post".equals(targetType)) {
+			already = communityService.alreadyReportedPost(userNum, targetId);
+		} else {
+			already = communityService.alreadyReportedComment(userNum, targetId);
+		}
+
+		res.put("loggedIn", true);
+		res.put("already", already);  // true면 이미 신고함
+
+		return res;
+	}
+
+	// ==========================================================
+//📌 신고 저장 API (게시글 / 댓글 공용)
+//==========================================================
+	@PostMapping("/report")
+	@ResponseBody
+	public Map<String, Object> saveReport(
+			@RequestParam String targetType, // "post" 또는 "comment"
+			@RequestParam int targetId,      // post_id 또는 comment_id
+			@RequestParam String reason,     // 신고 사유
+			HttpSession session) {
+
+		Map<String, Object> res = new HashMap<>();
+
+		// 🔹 로그인 여부 확인
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		if (userVO == null) {
+			res.put("success", false);
+			res.put("needLogin", true);
+			return res;
+		}
+
+		int userNum = userVO.getUser_num();
+
+		// 🔹 신고 VO 구성
+		CommunityReportVO vo = new CommunityReportVO();
+		vo.setUser_num(userNum);
+		vo.setReason(reason);
+
+		if ("post".equals(targetType)) {
+			vo.setPost_id(targetId); // 게시글 신고
+		} else {
+			vo.setComment_id(targetId); // 댓글 신고
+		}
+
+		// 🔹 저장 실행
+		boolean ok = reportService.insertReport(vo);
+
+		res.put("success", ok);
+		return res;
+	}
 
 
 }
