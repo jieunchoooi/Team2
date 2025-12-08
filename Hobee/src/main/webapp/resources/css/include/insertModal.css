@@ -691,7 +691,7 @@ label {
     width: 100%;
     height: 6px;
     border-radius: 12px 12px 0 0;
-    background: linear-gradient(90deg, #4a74ff, #6fa2ff);
+/*     background: linear-gradient(90deg, #4a74ff, #6fa2ff); */
 }
 
 .insert-modal-content {
