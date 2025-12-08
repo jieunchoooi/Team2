@@ -287,3 +287,22 @@ main p {
 .category-item.active i {
 	color: #2672ff;
 }
+
+/* 구매한 강의 북마크 스타일 */
+.bookmark-btn.purchased {
+    opacity: 0.7;
+}
+
+.bookmark-btn.purchased i {
+    color: white !important;  
+    font-weight: 900;
+}
+
+.bookmark-btn.purchased:hover {
+    background-color: transparent;
+    transform: scale(1); 
+}
+
+.bookmark-btn.purchased:hover i {
+    color: white !important;  
+}

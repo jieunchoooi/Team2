@@ -52,5 +52,8 @@ public interface PaymentMapper {
     //부분환불상태로 바꾸는 쿼리
     void updatePaymentStatusPartial(@Param("paymentId") int paymentId);
 
+    // 강의 구매이력 세션에 저장
+	List<Integer> getPurchasedLectures(int user_num);
+
   
 }

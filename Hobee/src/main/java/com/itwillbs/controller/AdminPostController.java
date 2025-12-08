@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,13 @@ import com.itwillbs.service.AdminCommentService;
 @RequestMapping("/admin")
 public class AdminPostController {
 
+	@ModelAttribute("page")
+	public String setPageIdentifier(HttpServletRequest req) {
+	    String uri = req.getRequestURI();
+
+	    if (uri.contains("adminPostDeletedList")) return "deletedPostList";
+	    return "";
+	}
 	@Inject
 	private AdminPostService adminPostService;
 

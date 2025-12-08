@@ -249,13 +249,20 @@
 	</select>
 	
 	<!-- ========================================================= -->
-<!-- 📌 결제 상태를 부분 환불(partial)로 변경 -->
-<!-- ========================================================= -->
-<update id="updatePaymentStatusPartial">
-    UPDATE payment
-    SET status = 'partial'
-    WHERE payment_id = #{paymentId}
-</update>
+	<!-- 📌 결제 상태를 부분 환불(partial)로 변경 -->
+	<!-- ========================================================= -->
+	<update id="updatePaymentStatusPartial">
+	    UPDATE payment
+	    SET status = 'partial'
+	    WHERE payment_id = #{paymentId}
+	</update>
 	
+	<!-- 강의 구매이력 조회 -->
+	<select id="getPurchasedLectures" parameterType="int" resultType="int">
+	    SELECT DISTINCT lecture_num 
+	    FROM enrollment 
+	    WHERE user_num = #{userNum}
+	</select>
+		
 
 </mapper>

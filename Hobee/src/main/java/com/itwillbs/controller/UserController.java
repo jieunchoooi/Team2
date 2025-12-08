@@ -1,9 +1,11 @@
 package com.itwillbs.controller;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
@@ -13,11 +15,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.GradeVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.GradeService;
+import com.itwillbs.service.PaymentService;
 import com.itwillbs.service.UserService;
 
 @Controller
@@ -27,6 +35,7 @@ public class UserController {
     @Inject private UserService userService;
     @Inject private GradeService gradeService;
     @Inject private JavaMailSender mailSender;
+    @Inject private PaymentService paymentService; 
 
     /* ==========================================================
        1. insert.jsp 접근 차단 
@@ -166,6 +175,10 @@ public class UserController {
         session.setAttribute("user_id", dbUser.getUser_id());
         session.setAttribute("user_name", dbUser.getUser_name());
         session.setAttribute("user_role", dbUser.getUser_role());
+        
+        // ✅ 구매한 강의 목록 추가
+        List<Integer> purchasedLectures = paymentService.getPurchasedLectures(dbUser.getUser_num());
+        session.setAttribute("purchasedLectures", purchasedLectures);
 
         // 응답 데이터
         result.put("result", "success");

@@ -32,6 +32,7 @@ public class LectureVO {
  	private int student_count;        // 수강생 수
  	private String total_time;        // 총 강의 시간 (HH:mm 형식)
  	private int curriculum_count;     // 총 커리큘럼 개수
+ 	private boolean isPurchased;      // 결제여부
     
 }
 

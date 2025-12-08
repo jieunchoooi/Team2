@@ -703,4 +703,12 @@ public class PaymentService {
 	    return paymentDetailMapper.getDetailByPaymentAndLecture(paymentId, lectureNum);
 	}
 
+
+
+
+
+	public List<Integer> getPurchasedLectures(int user_num) {
+		return paymentMapper.getPurchasedLectures(user_num);
+	}
+
 }

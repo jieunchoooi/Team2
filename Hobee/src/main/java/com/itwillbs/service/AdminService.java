@@ -418,6 +418,46 @@ public class AdminService {
 		System.out.println("AdminService okClassCount1()");
 		return adminMapper.okClassCount1();
 	}
+
+	public int countMemberList1() {
+		System.out.println("AdminService countMemberList1()");
+		return adminMapper.countMemberList1();
+	}
+
+	public int inactiveMemberCount1() {
+		System.out.println("AdminService inactiveMemberCount1()");
+		return adminMapper.inactiveMemberCount1();
+	}
+
+	public int countTeacherList1() {
+		System.out.println("AdminService countTeacherList1()");
+		return adminMapper.countTeacherList1();
+	}
+
+	public int monthsSales() {
+		System.out.println("AdminService monthsSales()");
+		return adminMapper.monthsSales();
+	}
+
+	public int averageSales() {
+		System.out.println("AdminService averageSales()");
+		return adminMapper.averageSales();
+	}
+
+	public int lectureSold() {
+		System.out.println("AdminService lectureSold()");
+		return adminMapper.lectureSold();
+	}
+
+	public int lectureRefunded() {
+		System.out.println("AdminService lectureRefunded()");
+		return adminMapper.lectureRefunded();
+	}
+
+	public int declaration() {
+		System.out.println("AdminService declaration()");
+		return adminMapper.declaration();
+	}
 	
 	
 	
