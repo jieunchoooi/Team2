@@ -54,57 +54,72 @@
 
 							<%-- 1) 데이터가 있을 때 --%>
 							<c:when test="${not empty hotTopicList}">
-								<c:forEach var="ht" items="${hotTopicList}">
-									<div class="swiper-slide hot-slide"
-										onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
+    <c:forEach var="ht" items="${hotTopicList}">
+        <div class="swiper-slide hot-slide"
+             onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
 
+            <div class="hot-top-wrap">
+                <div class="hot-avatar">
+                    <img
+                        src="<c:choose>
+                                 <c:when test='${not empty ht.user_file}'>
+                                     ${pageContext.request.contextPath}/resources/img/user_picture/${ht.user_file}
+                                 </c:when>
+                                 <c:otherwise>
+                                     ${pageContext.request.contextPath}/resources/img/common/default-profile.png
+                                 </c:otherwise>
+                             </c:choose>" />
+                </div>
 
-										<div class="hot-top-wrap">
-										<div class="hot-avatar">
-											<img
-												src="<c:choose>
-                                         <c:when test='${not empty ht.user_file}'>
-                                             ${pageContext.request.contextPath}/resources/img/user_picture/${ht.user_file}
-                                         </c:when>
-                                         <c:otherwise>
-                                             ${pageContext.request.contextPath}/resources/img/common/default-profile.png
-                                         </c:otherwise>
-                                      </c:choose>" />
-										</div>
+                <div class="hot-top">
 
-										<div class="hot-top">
-											<div class="hot-tag">${ht.category_name}·실시간인기</div>
-											<div class="hot-title">${ht.title}</div>
-										</div>
+                    <%-- 🔹 말머리 / 카테고리 / 작성자 (카드리스트 헤더 스타일 재사용) --%>
+                    <div class="hot-tag">
 
-										</div>
+                        <%-- 말머리 (category_name) --%>
+                        <c:if test="${not empty ht.category_name}">
+                            <span class="post-category-pill">${ht.category_name}</span>
+                        </c:if>
 
+                        <%-- 메인 카테고리 (category_main_name) --%>
+                        <c:if test="${not empty ht.category_main_name}">
+                            <span class="post-maincategory">· ${ht.category_main_name}</span>
+                        </c:if>
 
-										<div class="hot-content">
+                        <%-- 작성자 --%>
+                        <span class="post-writer">·👤 ${ht.user_name}</span>
+                    </div>
 
-											<div class="hot-summary">
-												<c:choose>
-													<c:when test="${not empty ht.summary}">
-                                        ${ht.summary}
-                                    </c:when>
-													<c:otherwise>내용 미리보기 없음</c:otherwise>
-												</c:choose>
-											</div>
+                    <div class="hot-title">${ht.title}</div>
+                </div>
+            </div>
 
-											<div class="hot-meta-row">
-												<div>
-													${ht.user_name} ·
-													<fmt:formatDate value="${ht.created_at}"
-														pattern="yyyy-MM-dd HH:mm" />
-												</div>
-												<div>❤️ ${ht.like_count} · 💬 ${ht.comment_count} · 👁
-													${ht.views}</div>
-											</div>
-										</div>
+            <div class="hot-content">
 
-									</div>
-								</c:forEach>
-							</c:when>
+                <div class="hot-summary">
+                    <c:choose>
+                        <c:when test="${not empty ht.summary}">
+                            ${ht.summary}
+                        </c:when>
+                        <c:otherwise>내용 미리보기 없음</c:otherwise>
+                    </c:choose>
+                </div>
+
+                <div class="hot-meta-row">
+                    <div>
+                        <fmt:formatDate value="${ht.created_at}"
+                                        pattern="yyyy-MM-dd HH:mm" />
+                    </div>
+                    <div>
+                        ❤️ ${ht.like_count} · 💬 ${ht.comment_count} · 👁 ${ht.views}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </c:forEach>
+</c:when>
+
 
 
 							<%-- 2) 데이터가 없을 때 (fallback 슬라이더 3개 자동 생성) --%>
@@ -236,16 +251,10 @@
 							<span class="like-count">${dto.post.like_count}</span> <span
 								class="like-icon">❤️</span>
 						</button>
-
+						
 						<div class="report">
-                            <button type="button"
-                                    id="reportPostBtn"
-                                    data-post="${dto.post.post_id}">
-                                🚨 신고하기
-                            </button>
-                        </div>
-
-
+<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
+							
 						</div>
 					</div>
 
@@ -338,13 +347,11 @@
 
 											<button type="button" class="reply-btn"
 												data-comment="${cmt.comment_id}">↩ 대댓글</button>
-
+												
 													<div class="report-comment">
-                                                        <button class="comment-report-btn" data-comment="${cmt.comment_id}">
-                                                            🚨 신고
-                                                        </button>
-                                                    </div>
-
+<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
+							
+						</div>
 										</div>
 
 										<%-- 대댓글 입력창 (이 댓글에 대한 입력) --%>
@@ -396,18 +403,18 @@
 																data-liked="${rep.user_reaction == 1 ? 'true' : 'false'}">
 																👍 <span class="cmt-like-count">${rep.like_count}</span>
 															</button>
-
+															
 															<c:if
 																test="${not empty sessionScope.userVO
                                                     and sessionScope.userVO.user_num == rep.user_num}">
 																<button type="button" class="comment-delete-btn"
 																	data-id="${rep.comment_id}">삭제</button>
 															</c:if>
-
+																	
 															<div class="report-comment">
-
-
-																	</div>
+<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
+							
+																	</div>	
 														</div>
 
 													</div>
@@ -799,7 +806,7 @@ $(document).on("click", ".reply-submit", function() {
             clickable: true
         }
     });
-
+    
     function openEditModal(postId) {
 
         const ctx = "${pageContext.request.contextPath}";
@@ -899,115 +906,8 @@ $(document).on("click", ".reply-submit", function() {
      }
  });
 
- $(document).ready(function(){
 
-     // ================================================
-     // 🔍 1) 신고 여부 체크 (페이지 로딩 시 자동 실행)
-     // ================================================
-     const postId = $("#reportPostBtn").data("post");
+</script>
 
-     $.post("${pageContext.request.contextPath}/community/report/check", {
-         targetType: "post",
-         targetId: postId
-     }, function(res){
-
-         if (!res.loggedIn) return;
-
-         if (res.already) {
-             $("#reportPostBtn")
-                 .prop("disabled", true)
-                 .text("이미 신고했어요")
-                 .css({
-                     "background": "#d1d1d1",
-                     "cursor": "not-allowed"
-                 });
-         }
-     });
-
-
-     // ================================================
-     // 🚨 2) 신고 보내기 (버튼 클릭 시 실행)
-     // ================================================
-     $("#reportPostBtn").click(function(){
-
-         const postId = $(this).data("post");
-
-         $.post("${pageContext.request.contextPath}/community/report", {
-             targetType: "post",
-             targetId: postId,
-             reason: "부적절한 게시글"
-         }, function(res){
-
-             if (res.success) {
-                 $("#reportPostBtn")
-                     .prop("disabled", true)
-                     .text("신고완료")
-                     .css({
-                         "background": "#ccc",
-                         "cursor": "not-allowed"
-                     });
-
-             }
-
-         });
-
-     });
-
-     // 🚨 댓글 신고
-     $(document).on("click", ".comment-report-btn", function(){
-
-         const commentId = $(this).data("comment");
-
-         // 기본 사유 (나중에 모달 적용 가능)
-         const reason = "부적절한 댓글";
-
-         $.post("${pageContext.request.contextPath}/community/report", {
-             targetType: "comment",
-             targetId: commentId,
-             reason: reason
-         }, function(res){
-
-             if(res.success){
-                 alert("댓글이 신고되었습니다.");
-
-                 $(`.comment-report-btn[data-comment='${commentId}']`)
-                     .prop("disabled", true)
-                     .text("신고완료")
-                     .css({
-                         background: "#ccc",
-                         cursor: "not-allowed"
-                     });
-             }
-         });
-     });
-
-
-$(".comment-report-btn").each(function(){
-
-    const commentId = $(this).data("comment");
-    const btn = $(this);
-
-    $.post("${pageContext.request.contextPath}/community/report/check", {
-        targetType: "comment",
-        targetId: commentId
-    }, function(res){
-
-        if (res.already) {
-            btn.text("이미 신고함")
-               .prop("disabled", true)
-               .css({
-                   background: "#ccc",
-                   cursor: "not-allowed"
-               });
-        }
-    });
-});
-
-
- }); // $(document).ready 끝
-
-
- </script>
-
- </body>
- </html>
+</body>
+</html>

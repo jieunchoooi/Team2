@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -50,58 +51,75 @@
 						<c:choose>
 
 							<%-- 1) 데이터가 있을 때 --%>
-							<c:when test="${not empty hotTopicList}">
-								<c:forEach var="ht" items="${hotTopicList}">
-									<div class="swiper-slide hot-slide"
-										onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
+<c:when test="${not empty hotTopicList}">
+    <c:forEach var="ht" items="${hotTopicList}">
+        <div class="swiper-slide hot-slide"
+             onclick="location.href='${pageContext.request.contextPath}/community/detail?post_id=${ht.post_id}'">
+
+            <div class="hot-top-wrap">
+                <div class="hot-avatar">
+                    <img
+                        src="<c:choose>
+                                 <c:when test='${not empty ht.user_file}'>
+                                     ${pageContext.request.contextPath}/resources/img/user_picture/${ht.user_file}
+                                 </c:when>
+                                 <c:otherwise>
+                                     ${pageContext.request.contextPath}/resources/img/common/default-profile.png
+                                 </c:otherwise>
+                             </c:choose>" />
+                </div>
+
+                <div class="hot-top">
+
+                    <%-- 🔹 말머리 / 카테고리 / 작성자 (카드리스트 헤더 스타일 재사용) --%>
+                    <div class="hot-tag">
+
+                        <%-- 말머리 (category_name) --%>
+                        <c:if test="${not empty ht.category_name}">
+                            <span class="post-category-pill">${ht.category_name}</span>
+                        </c:if>
+
+                        <%-- 메인 카테고리 (category_main_name) --%>
+                        <c:if test="${not empty ht.category_main_name}">
+                            <span class="post-maincategory">· ${ht.category_main_name}</span>
+                        </c:if>
+
+                        <%-- 작성자 --%>
+                        <span class="post-writer">·👤 ${ht.user_name}</span>
+                    </div>
+
+                    <div class="hot-title">${ht.title}</div>
+                </div>
+            </div>
+
+            <div class="hot-content">
+
+                <div class="hot-summary">
+                    <c:choose>
+                        <c:when test="${not empty ht.summary}">
+                            ${ht.summary}
+                        </c:when>
+                        <c:otherwise>내용 미리보기 없음</c:otherwise>
+                    </c:choose>
+                </div>
+
+                <div class="hot-meta-row">
+                    <div>
+                        <fmt:formatDate value="${ht.created_at}"
+                                        pattern="yyyy-MM-dd HH:mm" />
+                    </div>
+                    <div>
+                        ❤️ ${ht.like_count} · 💬 ${ht.comment_count} · 👁 ${ht.views}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </c:forEach>
+</c:when>
 
 
-										<div class="hot-top-wrap">
-										<div class="hot-avatar">
-											<img
-												src="<c:choose>
-                                         <c:when test='${not empty ht.user_file}'>
-                                             ${pageContext.request.contextPath}/resources/img/user_picture/${ht.user_file}
-                                         </c:when>
-                                         <c:otherwise>
-                                             ${pageContext.request.contextPath}/resources/img/common/default-profile.png
-                                         </c:otherwise>
-                                      </c:choose>" />
-										</div>
 
-										<div class="hot-top">
-											<div class="hot-tag">${ht.category_name}·실시간인기</div>
-											<div class="hot-title">${ht.title}</div>
-										</div>
-
-										</div>
-
-
-										<div class="hot-content">
-
-											<div class="hot-summary">
-												<c:choose>
-													<c:when test="${not empty ht.summary}">
-                                        ${ht.summary}
-                                    </c:when>
-													<c:otherwise>내용 미리보기 없음</c:otherwise>
-												</c:choose>
-											</div>
-
-											<div class="hot-meta-row">
-												<div>
-													${ht.user_name} ·
-													<fmt:formatDate value="${ht.created_at}"
-														pattern="yyyy-MM-dd HH:mm" />
-												</div>
-												<div>❤️ ${ht.like_count} · 💬 ${ht.comment_count} · 👁
-													${ht.views}</div>
-											</div>
-										</div>
-
-									</div>
-								</c:forEach>
-							</c:when>
 
 
 							<%-- 2) 데이터가 없을 때 (fallback 슬라이더 3개 자동 생성) --%>
@@ -200,34 +218,9 @@
 
 						</div>
 
-						<div class="chip-label">머리말</div>
-                        <div class="chip-row wrap-row">
+					</div>
 
-                            <c:forEach var="b" items="${categoryListBoard}">
 
-                                <c:choose>
-
-                                    <%-- 공지 머리말이면 notice 페이지 이동 --%>
-                                    <c:when test="${b.board_id == noticeBoardId}">
-                                        <a href="${pageContext.request.contextPath}/notice/list"
-                                           class="chip ${cri.category_id == b.board_id ? 'active' : ''}">
-                                            ${b.board_name}
-                                        </a>
-                                    </c:when>
-
-                                    <%-- 일반 머리말은 커뮤니티 리스트 필터 적용 --%>
-                                    <c:otherwise>
-                                        <a href="${pageContext.request.contextPath}/community/list?category_id=${b.board_id}"
-                                           class="chip ${cri.category_id == b.board_id ? 'active' : ''}">
-                                            ${b.board_name}
-                                        </a>
-                                    </c:otherwise>
-
-                                </c:choose>
-
-                            </c:forEach>
-
-                        </div>
 
 
 					<%-- 🔵 정렬 + 기간 + 검색타입 (왼쪽 그룹) / 검색창 + 글쓰기 (오른쪽 그룹) --%>
@@ -280,8 +273,10 @@
 									onclick="applyFilters()">🔍</button>
 							</div>
 
-							<button type="button" class="write-btn"
-								onclick="openWriteModal();">✏️ 글쓰기</button>
+							<c:if test="${not empty sessionScope.userVO}">
+							    <button type="button" class="write-btn"
+							            onclick="openWriteModal();">✏️ 글쓰기</button>
+							</c:if>
 
 						</div>
 
@@ -477,6 +472,7 @@
 
 	</main>
 
+	
 	<jsp:include page="../include/footer.jsp"></jsp:include>
 
 	<%-- ===========================================================
@@ -486,79 +482,60 @@
 	/* 🔥 필터 적용 */
 	function applyFilters() {
 	    var url = '${pageContext.request.contextPath}/community/list?';
-
+	
 	    var categoryId = document.getElementById('categoryFilter').value;
 	    var mainCat     = "${cri.category_main_num}";
 	    var sort        = document.getElementById('sortFilter').value;
 	    var period      = document.getElementById('periodFilter').value;
 	    var searchType  = document.getElementById('searchType').value;
 	    var keyword     = document.getElementById('searchKeyword').value;
-
+	
 	    if (categoryId) url += 'category_id=' + categoryId + '&';
 	    if (mainCat)    url += 'category_main_num=' + mainCat + '&';
 	    if (sort)       url += 'sort=' + sort + '&';
 	    if (period)     url += 'period=' + period + '&';
 	    if (searchType) url += 'searchType=' + searchType + '&';
 	    if (keyword)    url += 'keyword=' + encodeURIComponent(keyword) + '&';
-
+	
 	    url += 'page=1';
 	    location.href = url;
 	}
-
+	
 	/* 🔥 페이징 이동 */
 	function movePage(page) {
 	    var url = '${pageContext.request.contextPath}/community/list?';
-
+	
 	    var categoryId  = "${cri.category_id}";
 	    var mainCat     = "${cri.category_main_num}";
 	    var sort        = "${cri.sort}";
 	    var period      = "${cri.period}";
 	    var searchType  = "${cri.searchType}";
 	    var keyword     = "${cri.keyword}";
-
+	
 	    if (categoryId) url += 'category_id=' + categoryId + '&';
 	    if (mainCat)    url += 'category_main_num=' + mainCat + '&';
 	    if (sort)       url += 'sort=' + sort + '&';
 	    if (period)     url += 'period=' + period + '&';
 	    if (searchType) url += 'searchType=' + searchType + '&';
 	    if (keyword)    url += 'keyword=' + encodeURIComponent(keyword) + '&';
-
+	
 	    url += 'page=' + page;
-
+	
 	    location.href = url;
 	    return false;
 	}
-
-
-
-
+	
+	
+	
+	
 	/* 🔥 Enter 검색 */
 	$('#searchKeyword').on('keypress', function(e){
 	    if (e.key === 'Enter') {
 	        applyFilters();
 	    }
 	});
-
-	/* 🔥 공지 머리말 선택 시 글쓰기 버튼 숨기기 */
-    $(document).ready(function () {
-
-        // 현재 선택된 머리말 ID
-        const selectedCategory = "${cri.category_id}";
-
-        // 공지 머리말 board_id (Controller에서 model로 전달)
-        const noticeBoardId = "${noticeBoardId}";
-
-        // 글쓰기 버튼 객체
-        const writeBtn = $("#writeBtn");
-
-        // 공지 선택 → 글쓰기 숨김
-        if (selectedCategory === noticeBoardId) {
-            writeBtn.hide();
-        } else {
-            writeBtn.show();
-        }
-    });
-
+	
+	
 	var hotSwiper = new Swiper('.hotSwiper', {
 		 autoHeight: false,  // 자동높이 제거
 	    loop: true,
@@ -577,7 +554,13 @@
 	        clickable: true,
 	    },
 	});
-
+	
+ 
+	
+	
+	
+	
+	
 	</script>
 
 </body>

@@ -19,22 +19,57 @@
 }
 
 /* ===========================
-   상세 카드
+   메인 카드 (큰 틀)
 =========================== */
+
 .detail-card {
-    background: #fff;
     width: 100%;
-    max-width: 900px;
+    max-width: 760px; /* 기존 900 → 컴팩트 */
+    padding: 22px;
     margin: 0 auto;
-    padding: 35px;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.75);
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(230,230,230,0.55);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
 }
+
+
+/* ===========================
+   Apple 스타일 정보 섹션
+=========================== */
+
+.detail-section {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(230,230,230,0.7);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-top: 28px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
+.detail-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #eef1f7;
+}
+
+/* ===========================
+   기본 정보 라인
+=========================== */
 
 .detail-row {
     display: flex;
-    padding: 12px 0;
+    padding: 10px 0;
     border-bottom: 1px solid #efefef;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
 }
 
 .detail-row .label {
@@ -46,7 +81,12 @@
 .detail-row .value {
     flex-grow: 1;
     color: #333;
+    font-size: 15px;
 }
+
+/* ===========================
+   링크 — 게시글 제목
+=========================== */
 
 .title-link {
     color: #397dff;
@@ -58,35 +98,45 @@
     text-decoration: underline;
 }
 
-/* 신고 횟수 배지 */
-.badge-red {
-    background: #e74a3b;
+/* ===========================
+   신고 횟수 배지
+=========================== */
+
+.badge {
     padding: 6px 12px;
-    border-radius: 6px;
+    border-radius: 12px;
     color: #fff;
+    font-weight: 600;
     font-size: 13px;
 }
 
-/* 내용 영역 */
-.detail-content {
-    margin-top: 30px;
-}
+.badge.green { background: #4CAF50; }
+.badge.yellow { background: #FFB300; }
+.badge.red { background: #E53935; }
 
-.detail-content h3 {
-    margin-bottom: 12px;
-    font-size: 18px;
-    font-weight: 700;
-}
+/* ===========================
+   내용 / 신고 / 로그 박스
+=========================== */
 
 .content-box {
-    background: #fafafa;
-    padding: 20px;
-    border-radius: 10px;
-    min-height: 150px;
-    border: 1px solid #ddd;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(220,220,220,0.6);
+    backdrop-filter: blur(8px);
+    padding: 14px 16px;
+    border-radius: 12px;
     line-height: 1.6;
-    color: #333;
-    white-space: pre-wrap;
+    white-space: pre-line;
+}
+
+/* 박스 내부 줄 */
+.content-box p {
+    margin: 0;
+    padding: 6px 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.content-box p:last-child {
+    border-bottom: none;
 }
 
 /* ===========================
@@ -99,40 +149,217 @@
     gap: 10px;
 }
 
-.btn-back {
+.btn-back,
+.btn-blue,
+.btn-delete,
+.btn-green {
     padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: 0.15s;
+}
+
+/* 목록 */
+.btn-back {
+    background: #555;
+    color: #fff;
+}
+.btn-back:hover { background: #3c3c3c; }
+
+/* 게시글 보기 */
+.btn-blue {
     background: #397dff;
     color: #fff;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
 }
+.btn-blue:hover { background: #2f67d4; }
 
-.btn-back:hover {
-    background: #2f67d4;
-}
-
+/* 삭제 */
 .btn-delete {
-    padding: 10px 20px;
     background: #e74a3b;
     color: #fff;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
+}
+.btn-delete:hover { background: #cf2f23; }
+
+/* 복구 */
+.btn-green {
+    background: #27ae60;
+    color: white;
+}
+.btn-green:hover { background: #1e8e4f; }
+
+
+/* ===========================
+   Apple Glass 강화 보정
+=========================== */
+
+/* 섹션 카드 더 Apple스럽게 */
+.detail-section {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(230, 230, 230, 0.45); /* 더 연한 라인 */
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-top: 32px !important;
+    backdrop-filter: blur(12px); /* Blur 강화 */
+    box-shadow: 0 4px 22px rgba(0,0,0,0.05); /* 더 고급 그림자 */
 }
 
-.btn-delete:hover {
-    background: #cf2f23;
+/* 내용/텍스트 박스 Glass 효과 정리 */
+.content-box {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(220,220,220,0.55) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
 }
 
-.report-item {
-    background: #f7f9ff;
-    border: 1px solid #dce3ff;
-    padding: 12px 15px;
-    border-radius: 8px;
-    margin-bottom: 12px;
+/* 상단 detail-card도 통일 */
+.detail-card {
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(230,230,230,0.45);
+    backdrop-filter: blur(14px); 
+    border-radius: 20px;
+    padding: 24px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
-.report-item p {
-    margin: 3px 0;
+
+/* 섹션 제목 더 선명하게 */
+.detail-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+
+    border-bottom: 2px solid rgba(230,230,230,0.7);
 }
+
+/* ===========================
+   FINAL — Apple Hybrid Style
+   (Glass + Depth 강화)
+=========================== */
+
+/* 섹션 카드 */
+.detail-section {
+    background: rgba(255, 255, 255, 0.82); /* 투명도 살짝 증가 */
+    border: 1px solid rgba(220,220,220,0.55); 
+    border-radius: 18px;
+    padding: 22px 24px;
+    margin-top: 34px !important;
+
+    backdrop-filter: blur(14px); /* Blur 강화 */
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow: 0 6px 22px rgba(0,0,0,0.06); /* 그림자 조금 더 깊게 */
+}
+
+/* 내용/신고내역 박스 */
+.content-box {
+    background: rgba(255,255,255,0.72) !important;
+    border: 1px solid rgba(210,210,210,0.5) !important;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-radius: 14px !important;
+    padding: 16px 18px !important;
+}
+
+/* 전체 큰 틀 카드 */
+.detail-card {
+    background: rgba(255,255,255,0.60);
+    border: 1px solid rgba(220,220,220,0.4);
+    border-radius: 22px;
+
+    padding: 26px !important;
+    box-shadow: 0 8px 26px rgba(0,0,0,0.04);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* ===========================
+   카드 인터랙션 (Apple + Naver Hybrid)
+=========================== */
+
+/* 기본 카드 스타일 강화 */
+.detail-section {
+    transition: all 0.25s ease;
+    cursor: pointer; /* 선택 가능 느낌 */
+}
+
+/* Hover 시 부드러운 강조 */
+.detail-section:hover {
+    border-color: rgba(120,170,255,0.75) !important; /* 부드러운 파란 테두리 */
+    box-shadow: 0 8px 28px rgba(130,160,255,0.18);    /* 파란빛 그림자 */
+    transform: translateY(-2px);                     /* 살짝 위로 */
+}
+
+/* 클릭(Active) 시 더욱 강조 */
+.detail-section:active {
+    border-color: rgba(70,120,255,1) !important;      /* 더 강한 파랑 */
+    box-shadow: 0 6px 20px rgba(90,140,255,0.30);
+    transform: translateY(0px) scale(0.99);           /* 눌리는 느낌 */
+}
+
+/* ======================================
+   PREMIUM GRADIENT BORDER CARD
+====================================== */
+
+/* 기본 카드 스타일 (Glass + Depth) */
+.detail-section {
+    background: rgba(255, 255, 255, 0.78);
+    padding: 22px 24px;
+    border-radius: 18px;
+    margin-top: 34px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 2px solid rgba(255,255,255,0.5);  /* 기본은 거의 안 보이는 흰색 */
+    transition: all 0.35s ease;
+}
+
+/* Hover 시: 그라데이션 테두리 + 파란빛 그림자 + 살짝 떠오름 */
+.detail-section:hover {
+    border-image: linear-gradient(
+            135deg,
+            #6ba8ff,
+            #8ea6ff,
+            #b6d0ff,
+            #d8e9ff
+        ) 1;
+
+    box-shadow: 0 10px 30px rgba(110,150,255,0.22);
+    transform: translateY(-3px);
+}
+
+/* 클릭 시: 진한 그라데이션 + Press 효과 */
+.detail-section:active {
+    border-image: linear-gradient(
+            135deg,
+            #4f8aff,
+            #6a9dff,
+            #9ec2ff
+        ) 1;
+
+    transform: translateY(-1px) scale(0.99);
+    box-shadow: 0 4px 18px rgba(110,150,255,0.30);
+}
+
+/* 내부 내용 박스도 살짝 고급스럽게 */
+.content-box {
+    background: rgba(255,255,255,0.78);
+    border-radius: 12px;
+    border: 1px solid rgba(220,220,220,0.55);
+    padding: 16px 18px;
+    backdrop-filter: blur(8px);
+    transition: 0.25s;
+}
+
+/* 내부 hover는 너무 튀지 않도록 아주 약하게 */
+.content-box:hover {
+    background: rgba(255,255,255,0.88);
+}
+
+
 

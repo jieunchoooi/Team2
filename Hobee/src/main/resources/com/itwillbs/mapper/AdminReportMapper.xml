@@ -5,10 +5,9 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminReportMapper">
 
-    <!-- ========================================= -->
-    <!-- 📌 신고 목록 조회 (게시글 + 댓글)           -->
-    <!-- ========================================= -->
+    <!-- 신고 목록 조회 (게시글/댓글 포함) -->
     <select id="getReportList" resultType="com.itwillbs.domain.AdminReportVO">
+
         SELECT
         r.report_id,
         r.post_id,
@@ -17,17 +16,12 @@
         r.reason,
         r.created_at,
         r.is_done,
-
         p.title AS post_title,
         c.content AS comment_content
-
-        FROM community_report r
-        LEFT JOIN community_content p
-        ON r.post_id = p.post_id
-        LEFT JOIN community_comment c
-        ON r.comment_id = c.comment_id
-
-        WHERE 1 = 1
+        FROM report r
+        LEFT JOIN community_content p ON r.post_id = p.post_id
+        LEFT JOIN comment c ON r.comment_id = c.comment_id
+        WHERE 1=1
 
         <!-- 유형 필터 -->
         <if test="type != null and type != ''">
@@ -39,7 +33,7 @@
             </if>
         </if>
 
-        <!-- 처리 상태 필터 -->
+        <!-- 상태 필터 -->
         <if test="status != null and status != ''">
             <if test="status == 'wait'">
                 AND r.is_done = 0
@@ -51,12 +45,11 @@
 
         ORDER BY r.report_id DESC
         LIMIT #{pageSize} OFFSET #{offset}
+
     </select>
 
 
-    <!-- ========================================= -->
-    <!-- 📌 신고 상세 조회                           -->
-    <!-- ========================================= -->
+    <!-- 신고 단건 상세 조회 -->
     <select id="getReportDetail" resultType="com.itwillbs.domain.AdminReportVO">
         SELECT
         r.report_id,
@@ -69,28 +62,24 @@
         r.done_at,
         r.done_reason,
 
-        -- 게시글 JOIN
+        -- 게시글 원문
         p.title AS post_title,
         p.content AS post_content,
 
-        -- 댓글 JOIN
+        -- 댓글 원문
         c.content AS comment_content
 
-        FROM community_report r
-        LEFT JOIN community_content p
-        ON r.post_id = p.post_id
-        LEFT JOIN community_comment c
-        ON r.comment_id = c.comment_id
+        FROM report r
+        LEFT JOIN community_content p ON r.post_id = p.post_id
+        LEFT JOIN comment c ON r.comment_id = c.comment_id
 
         WHERE r.report_id = #{report_id}
     </select>
 
 
-    <!-- ========================================= -->
-    <!-- 📌 신고 처리 완료                           -->
-    <!-- ========================================= -->
+    <!-- 신고 처리 완료 -->
     <update id="updateReportDone">
-        UPDATE community_report
+        UPDATE report
         SET is_done = 1,
         done_at = NOW(),
         done_reason = #{done_reason}
@@ -98,26 +87,13 @@
     </update>
 
 
-    <!-- ========================================= -->
-    <!-- 📌 신고 반려                                -->
-    <!-- ========================================= -->
-    <update id="rejectReport">
-        UPDATE community_report
-        SET is_done = 2,
-        done_at = NOW(),
-        done_reason = #{reason}
-        WHERE report_id = #{report_id}
-    </update>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 페이징용 총 개수 조회                   -->
-    <!-- ========================================= -->
     <select id="getReportCount" resultType="int">
         SELECT COUNT(*)
-        FROM community_report r
-        WHERE 1 = 1
+        FROM report r
+        WHERE 1=1
 
+        <!-- 유형 필터 -->
         <if test="type != null and type != ''">
             <if test="type == 'post'">
                 AND r.post_id IS NOT NULL
@@ -127,6 +103,7 @@
             </if>
         </if>
 
+        <!-- 상태 필터 -->
         <if test="status != null and status != ''">
             <if test="status == 'wait'">
                 AND r.is_done = 0
@@ -137,47 +114,40 @@
         </if>
     </select>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 통계                                     -->
-    <!-- ========================================= -->
+    <!-- 전체 신고 수 -->
     <select id="getTotalCount" resultType="int">
-        SELECT COUNT(*) FROM community_report
+        SELECT COUNT(*) FROM report
     </select>
 
+    <!-- 이번 달 신고 수 -->
     <select id="getMonthCount" resultType="int">
         SELECT COUNT(*)
-        FROM community_report
+        FROM report
         WHERE MONTH(created_at) = MONTH(NOW())
     </select>
 
+    <!-- 게시글 신고 수 -->
     <select id="getPostCount" resultType="int">
         SELECT COUNT(*)
-        FROM community_report
+        FROM report
         WHERE post_id IS NOT NULL
     </select>
 
+    <!-- 댓글 신고 수 -->
     <select id="getCommentCount" resultType="int">
         SELECT COUNT(*)
-        FROM community_report
+        FROM report
         WHERE comment_id IS NOT NULL
     </select>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 신고 처리 로그 저장                     -->
-    <!-- ========================================= -->
+    <!-- 신고 처리 로그 저장 -->
     <insert id="insertReportActionLog">
         INSERT INTO report_action_log (report_id, admin_id, action, reason)
         VALUES (#{report_id}, #{admin_id}, #{action}, #{reason})
     </insert>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 신고 처리 로그 조회                     -->
-    <!-- ========================================= -->
-    <select id="getReportActionLogs"
-            resultType="com.itwillbs.domain.ReportActionLogVO">
+    <!-- 신고 처리 로그 조회 -->
+    <select id="getReportActionLogs" resultType="com.itwillbs.domain.ReportActionLogVO">
         SELECT
         log_id,
         report_id,
@@ -189,5 +159,14 @@
         WHERE report_id = #{report_id}
         ORDER BY log_id DESC
     </select>
+
+    <!-- 신고 반려 -->
+    <update id="rejectReport">
+        UPDATE report
+        SET is_done = 2,
+        done_at = NOW(),
+        done_reason = #{reason}
+        WHERE report_id = #{report_id}
+    </update>
 
 </mapper>

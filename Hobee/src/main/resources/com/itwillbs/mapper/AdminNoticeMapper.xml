@@ -18,8 +18,8 @@
         is_pinned,
         view_count,
         start_date,
-        end_date,
-        priority,
+		end_date,
+		priority,
         created_at,
         updated_at
         FROM notice
@@ -84,10 +84,10 @@
     <insert id="insertNotice"
             useGeneratedKeys="true"
             keyProperty="notice_id">
-        INSERT INTO notice
-        (admin_id, title, content, is_visible, priority, start_date, end_date)
-        VALUES
-        (#{admin_id}, #{title}, #{content}, #{is_visible}, #{priority}, #{start_date}, #{end_date})
+        INSERT INTO notice 
+		(admin_id, title, content, is_visible, priority, start_date, end_date)
+		VALUES
+		(#{admin_id}, #{title}, #{content}, #{is_visible}, #{priority}, #{start_date}, #{end_date})
     </insert>
 
 
@@ -104,8 +104,8 @@
         is_pinned,
         view_count,
         start_date,
-        end_date,
-        priority,
+		end_date,
+		priority,
         created_at,
         updated_at
         FROM notice
@@ -127,14 +127,14 @@
          6) 공지 수정
          ================================ -->
     <update id="updateNotice">
-        UPDATE notice
-        SET
+    UPDATE notice
+    SET
         title = #{title},
         content = #{content},
         is_visible = #{is_visible},
 
         <!-- ⭐ start_date NULL 처리 -->
-        start_date =
+        start_date = 
         <choose>
             <when test="start_date != null and start_date != ''">
                 #{start_date}
@@ -145,7 +145,7 @@
         </choose>,
 
         <!-- ⭐ end_date NULL 처리 -->
-        end_date =
+        end_date = 
         <choose>
             <when test="end_date != null and end_date != ''">
                 #{end_date}
@@ -157,8 +157,8 @@
 
         priority = #{priority},
         updated_at = NOW()
-        WHERE notice_id = #{notice_id}
-    </update>
+    WHERE notice_id = #{notice_id}
+</update>
 
 
     <!-- ================================
@@ -228,26 +228,6 @@
         WHERE notice_id = #{notice_id}
         ORDER BY file_id ASC
     </select>
-
-    <select id="getNoticeListForUser" resultType="com.itwillbs.domain.AdminNoticeVO">
-        SELECT
-        notice_id,
-        admin_id,
-        title,
-        content,
-        is_visible,
-        is_pinned,
-        view_count,
-        start_date,
-        end_date,
-        priority,
-        created_at,
-        updated_at
-        FROM notice
-        WHERE is_visible = 1
-        ORDER BY is_pinned DESC, created_at DESC
-    </select>
-
 
 
     <!-- ================================

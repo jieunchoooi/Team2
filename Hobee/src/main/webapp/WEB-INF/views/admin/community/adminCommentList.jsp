@@ -15,80 +15,6 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <!-- 선택모드용 체크박스 숨기기 -->
-    <style>
-        .rowCheck, #checkAll { display:none; }
-        .select-mode .rowCheck,
-        .select-mode #checkAll { display:inline-block; }
-
-        /* 상태 필터 버튼 */
-        .status-filter {
-            margin: 15px 0 10px 2px;
-            display: flex;
-            gap: 10px;
-        }
-        .filter-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: #e4e6eb;
-            color: #333;
-            font-size: 13px;
-            text-decoration: none;
-        }
-        .filter-btn.active {
-            background: #397dff;
-            color: #fff;
-        }
-
-        /* ⭐ 전체보기 모달 */
-        .modal {
-            position: fixed;
-            top:0; left:0;
-            width:100%; height:100%;
-            display:none;
-            justify-content:center;
-            align-items:center;
-            z-index:9999;
-        }
-        .modal-overlay {
-            position:absolute;
-            width:100%; height:100%;
-            background:rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            position:relative;
-            background:#fff;
-            width:500px;
-            padding:25px;
-            border-radius:12px;
-            z-index:10000;
-        }
-        .close-modal {
-            position:absolute;
-            right:15px; top:10px;
-            font-size:28px;
-            cursor:pointer;
-        }
-        .modal-body {
-            margin-top:15px;
-            max-height:350px;
-            overflow-y:auto;
-            white-space:pre-line;
-        }
-
-        /* 신고 색상 배지 */
-        .badge {
-            padding:6px 12px;
-            border-radius:20px;
-            font-size:12px;
-            font-weight:600;
-            color:#fff !important;
-        }
-        .badge.green { background:#4CAF50 !important; }
-        .badge.yellow { background:#FFB300 !important; }
-        .badge.red { background:#E53935 !important; }
-    </style>
 </head>
 
 <body>
@@ -98,49 +24,50 @@
 
 <main class="main-content">
 
-    <div class="main-header">
-        <h1>댓글 관리</h1>
-    </div>
+    <!-- 왼쪽 상단 큰 제목 -->
+    <div class="page-title">댓글 관리</div>
 
-    <!-- 🔍 검색 + 정렬 + 선택모드 -->
-    <form action="${pageContext.request.contextPath}/admin/adminCommentList" method="get" class="search-box">
+    <!-- 카드 전체 영역 -->
+    <div class="table-card">
 
-        <select name="type" class="search-select">
-            <option value="title"  ${param.type == 'title' ? 'selected' : ''}>게시글 제목</option>
-            <option value="userid" ${param.type == 'userid' ? 'selected' : ''}>작성자</option>
-            <option value="content"${param.type == 'content' ? 'selected' : ''}>내용</option>
-        </select>
+        <!-- 🔍 검색 + 정렬 + 선택삭제 -->
+        <form action="${pageContext.request.contextPath}/admin/adminCommentList"
+              method="get" class="search-box">
 
-        <select name="sort" class="search-select">
-            <option value="recent" ${param.sort == 'recent' ? 'selected' : ''}>최신순</option>
-            <option value="report" ${param.sort == 'report' ? 'selected' : ''}>신고 많은 순</option>
-        </select>
+            <select name="type" class="search-select">
+                <option value="title"  ${param.type == 'title' ? 'selected' : ''}>게시글 제목</option>
+                <option value="userid" ${param.type == 'userid' ? 'selected' : ''}>작성자</option>
+                <option value="content"${param.type == 'content' ? 'selected' : ''}>내용</option>
+            </select>
 
-        <input type="text" name="keyword" class="search-input"
-               value="${param.keyword}" placeholder="검색어 입력">
+            <select name="sort" class="search-select">
+                <option value="recent" ${param.sort == 'recent' ? 'selected' : ''}>최신순</option>
+                <option value="report" ${param.sort == 'report' ? 'selected' : ''}>신고 많은 순</option>
+            </select>
 
-        <button type="submit" class="search-btn">검색</button>
+            <input type="text" name="keyword" class="search-input"
+                   value="${param.keyword}" placeholder="검색어 입력">
 
-        <button type="button" class="reset-btn"
-                onclick="location.href='${pageContext.request.contextPath}/admin/adminCommentList'">
-            초기화
-        </button>
+            <button type="submit" class="search-btn">검색</button>
 
-        <button type="button" id="batchDeleteBtn" class="batch-red">선택 삭제</button>
+            <button type="button" class="reset-btn"
+                    onclick="location.href='${pageContext.request.contextPath}/admin/adminCommentList'">
+                초기화
+            </button>
 
-    </form>
+            <!-- ⭐ 선택 삭제 버튼 -->
+            <button type="button" id="batchDeleteBtn" class="batch-red">선택 삭제</button>
+        </form>
 
-    <!-- ⭐ 댓글 상태 필터 -->
-    <div class="status-filter">
-        <a href="?status=normal" class="filter-btn ${status == 'normal' ? 'active' : ''}">정상 댓글</a>
-        <a href="?status=deleted" class="filter-btn ${status == 'deleted' ? 'active' : ''}">삭제된 댓글</a>
-        <a href="?status=all" class="filter-btn ${status == 'all' ? 'active' : ''}">전체 보기</a>
-    </div>
+        <!-- 상태 필터 -->
+        <div class="status-filter">
+            <a href="?status=normal" class="filter-btn ${status == 'normal' ? 'active' : ''}">정상 댓글</a>
+            <a href="?status=deleted" class="filter-btn ${status == 'deleted' ? 'active' : ''}">삭제된 댓글</a>
+            <a href="?status=all" class="filter-btn ${status == 'all' ? 'active' : ''}">전체 보기</a>
+        </div>
 
-    <!-- 댓글 테이블 -->
-    <div class="table-card" id="commentTable">
-
-        <table class="admin-table">
+        <!-- 리스트 테이블 -->
+        <table id="commentTable" class="admin-table">
             <thead>
             <tr>
                 <th><input type="checkbox" id="checkAll"></th>
@@ -156,15 +83,12 @@
             </thead>
 
             <tbody>
-
             <c:if test="${empty commentList}">
                 <tr><td colspan="9" class="empty-text">댓글이 없습니다.</td></tr>
             </c:if>
 
             <c:forEach var="c" items="${commentList}">
                 <tr>
-
-                    <!-- 체크박스 (선택모드에서만 보임) -->
                     <td><input type="checkbox" class="rowCheck" value="${c.comment_id}"></td>
 
                     <td>${c.comment_id}</td>
@@ -176,9 +100,8 @@
                         </a>
                     </td>
 
-                    <td>${c.user_name}</td>
+                    <td>${c.user_id}</td>
 
-                    <!-- 내용 요약 + 전체보기 -->
                     <td>
                         <c:choose>
                             <c:when test="${fn:length(c.content) > 20}">
@@ -196,19 +119,12 @@
 
                     <td>${c.created_at}</td>
 
-                    <!-- 신고 배지 -->
                     <td>
-                        <c:choose>
-                            <c:when test="${c.report_count == 0}">
-                                <span class="badge green">${c.report_count}</span>
-                            </c:when>
-                            <c:when test="${c.report_count <= 2}">
-                                <span class="badge yellow">${c.report_count}</span>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="badge red">${c.report_count}</span>
-                            </c:otherwise>
-                        </c:choose>
+                        <span class="badge 
+                            ${c.report_count == 0 ? 'green' : 
+                            (c.report_count <= 2 ? 'yellow' : 'red')}">
+                            ${c.report_count}
+                        </span>
                     </td>
 
                     <td>
@@ -218,20 +134,19 @@
                         </button>
                     </td>
 
-                    <!-- ⭐ 삭제/복구 버튼 -->
                     <td>
                         <c:if test="${c.is_deleted == 0}">
-                            <form action="${pageContext.request.contextPath}/admin/adminCommentDelete"
-                                  method="post"
-                                  onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                            <form method="post"
+                                  action="${pageContext.request.contextPath}/admin/adminCommentDelete"
+                                  onsubmit="return confirm('삭제하시겠습니까?');">
                                 <input type="hidden" name="comment_id" value="${c.comment_id}">
                                 <button class="btn-red">삭제</button>
                             </form>
                         </c:if>
 
                         <c:if test="${c.is_deleted == 1}">
-                            <form action="${pageContext.request.contextPath}/admin/adminCommentRestore"
-                                  method="post"
+                            <form method="post"
+                                  action="${pageContext.request.contextPath}/admin/adminCommentRestore"
                                   onsubmit="return confirm('복구하시겠습니까?');">
                                 <input type="hidden" name="comment_id" value="${c.comment_id}">
                                 <button class="btn-green">복구</button>
@@ -247,7 +162,6 @@
 
         <!-- 페이지네이션 -->
         <div class="pagination">
-
             <c:if test="${pageMaker.prev}">
                 <a class="page-btn"
                    href="?pageNum=${pageMaker.startPage - 1}&type=${param.type}&keyword=${param.keyword}&sort=${param.sort}&status=${status}">
@@ -268,12 +182,12 @@
                     다음
                 </a>
             </c:if>
-
         </div>
 
-    </div>
+    </div> <!-- table-card END -->
 
 </main>
+
 
 <!-- ⭐ 전체보기 모달 -->
 <div id="commentModal" class="modal">
@@ -287,7 +201,7 @@
     </div>
 </div>
 
-<!-- 모달 JS -->
+<!-- 전체보기 모달 JS -->
 <script>
 $(".viewDetailBtn").on("click", function () {
     $("#modalText").text($(this).data("content"));
@@ -305,12 +219,14 @@ $("#batchDeleteBtn").on("click", function () {
     const table = $("#commentTable");
     const isSelectMode = table.hasClass("select-mode");
 
+    /* ① 선택모드 시작 : 체크박스 보이기 */
     if (!isSelectMode) {
         table.addClass("select-mode");
         $(this).text("삭제 실행");
         return;
     }
 
+    /* ② 선택된 체크박스 가져오기 */
     const ids = $(".rowCheck:checked").map(function () {
         return $(this).val();
     }).get();
@@ -322,6 +238,7 @@ $("#batchDeleteBtn").on("click", function () {
 
     if (!confirm("선택한 댓글을 삭제하시겠습니까?")) return;
 
+    /* ③ AJAX 삭제 요청 */
     $.ajax({
         type: "POST",
         url: "${pageContext.request.contextPath}/admin/adminCommentBatchDelete",

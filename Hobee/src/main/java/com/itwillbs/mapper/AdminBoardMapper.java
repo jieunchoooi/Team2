@@ -41,14 +41,17 @@ public interface AdminBoardMapper {
     // 최근 게시글 5개 조회
     List<AdminPostVO> getRecentPosts(int board_id);
 
-    // 최근 7일 게시글 통계
+    // 최근 7일 게시글 수 통계 조회
     List<Map<String, Object>> getWeeklyPostStats(int board_id);
 
-    // 조회수 TOP5 조회
+    // 조회수 TOP5 게시글 조회
     List<AdminPostVO> getTopViewPosts(int board_id);
 
     // 신고 많은 게시글 TOP5 조회
     List<AdminPostVO> getTopReportPosts(int board_id);
+
+    // 하위 카테고리 조회 (사용 안 할 수도 있음)
+    List<AdminBoardVO> getChildCategories(int parent_id);
 
     // 댓글 허용 여부 변경
     void updateAllowComment(Map<String, Object> param);
@@ -62,6 +65,4 @@ public interface AdminBoardMapper {
     // 승인 필요 여부 변경
     void updateRequireApproval(Map<String, Object> param);
 
-    // ✔ 사용자에게 노출될 활성 머리말 목록
-    List<AdminBoardVO> getActiveBoardList();
 }

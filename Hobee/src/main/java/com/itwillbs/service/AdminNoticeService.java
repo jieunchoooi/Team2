@@ -125,10 +125,5 @@ public class AdminNoticeService {
         adminNoticeMapper.deleteNoticeFile(file_id);
     }
 
-    public List<AdminNoticeVO> getNoticeListForUser() {
-        return adminNoticeMapper.getNoticeListForUser();
-    }
-
-
 
 }
