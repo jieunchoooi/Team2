@@ -5,22 +5,31 @@
 
 <mapper namespace="com.itwillbs.mapper.AdminCommentMapper">
 
-    <!-- 댓글 목록 -->
+    <!-- ================================= -->
+    <!--   댓글 목록 (신고수 + 페이징)       -->
+    <!-- ================================= -->
     <select id="getPagingCommentList" resultType="com.itwillbs.domain.AdminCommentVO">
         SELECT
         c.comment_id,
         c.post_id,
-        c.user_id,
+        c.user_num,
         c.content,
         c.created_at,
-        c.report_count,
         c.is_deleted,
-        p.title AS post_title
-        FROM comment c
+        u.user_name,
+        p.title AS post_title,
+
+        /* 🔥 community_report 기준 실시간 신고수 */
+        (SELECT COUNT(*)
+        FROM community_report r
+        WHERE r.comment_id = c.comment_id) AS report_count
+
+        FROM community_comment c
+        JOIN user u ON c.user_num = u.user_num
         JOIN community_content p ON c.post_id = p.post_id
         WHERE 1 = 1
 
-        <!-- 🔥 상태 필터 -->
+        <!-- 상태 필터 -->
         <choose>
             <when test="status == 'deleted'">
                 AND c.is_deleted = 1
@@ -28,19 +37,16 @@
             <when test="status == 'normal'">
                 AND c.is_deleted = 0
             </when>
-            <otherwise>
-                AND 1 = 1
-            </otherwise>
         </choose>
 
-        <!-- 🔍 검색 -->
+        <!-- 검색 -->
         <if test="keyword != null and keyword != ''">
             <choose>
                 <when test="type == 'title'">
                     AND p.title LIKE CONCAT('%', #{keyword}, '%')
                 </when>
                 <when test="type == 'userid'">
-                    AND c.user_id LIKE CONCAT('%', #{keyword}, '%')
+                    AND u.user_name LIKE CONCAT('%', #{keyword}, '%')
                 </when>
                 <when test="type == 'content'">
                     AND c.content LIKE CONCAT('%', #{keyword}, '%')
@@ -48,10 +54,10 @@
             </choose>
         </if>
 
-        <!-- 🔥 정렬 -->
+        <!-- 정렬 -->
         <choose>
             <when test="sort == 'report'">
-                ORDER BY c.report_count DESC, c.comment_id DESC
+                ORDER BY report_count DESC, c.comment_id DESC
             </when>
             <otherwise>
                 ORDER BY c.comment_id DESC
@@ -61,10 +67,13 @@
         LIMIT #{cri.startRow}, #{cri.amount}
     </select>
 
-    <!-- 총 개수 -->
+
+    <!-- ================================= -->
+    <!--   총 댓글 개수                    -->
+    <!-- ================================= -->
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
-        FROM comment c
+        FROM community_comment c
         JOIN community_content p ON c.post_id = p.post_id
         WHERE 1 = 1
 
@@ -83,7 +92,7 @@
                     AND p.title LIKE CONCAT('%', #{keyword}, '%')
                 </when>
                 <when test="type == 'userid'">
-                    AND c.user_id LIKE CONCAT('%', #{keyword}, '%')
+                    AND u.user_name LIKE CONCAT('%', #{keyword}, '%')
                 </when>
                 <when test="type == 'content'">
                     AND c.content LIKE CONCAT('%', #{keyword}, '%')
@@ -92,32 +101,44 @@
         </if>
     </select>
 
-    <!-- 상세 -->
+
+    <!-- ================================= -->
+    <!--   댓글 상세 조회 (신고수 포함)      -->
+    <!-- ================================= -->
     <select id="getCommentDetail" resultType="com.itwillbs.domain.AdminCommentVO">
         SELECT
         c.comment_id,
         c.post_id,
-        c.user_id,
+        c.user_num,
         c.content,
         c.created_at,
-        c.report_count,
         c.is_deleted,
-        p.title AS post_title
-        FROM comment c
+        u.user_name,
+        p.title AS post_title,
+
+        /* 🔥 community_report 기준 신고수 */
+        (SELECT COUNT(*)
+        FROM community_report r
+        WHERE r.comment_id = c.comment_id) AS report_count
+
+        FROM community_comment c
+        JOIN user u ON c.user_num = u.user_num
         JOIN community_content p ON c.post_id = p.post_id
         WHERE c.comment_id = #{comment_id}
     </select>
 
-    <!-- 개별 삭제 -->
+
+    <!-- ================================= -->
+    <!--   삭제 / 복구                      -->
+    <!-- ================================= -->
     <update id="deleteComment">
-        UPDATE comment
+        UPDATE community_comment
         SET is_deleted = 1
         WHERE comment_id = #{comment_id}
     </update>
 
-    <!-- 일괄 삭제 -->
     <update id="batchDelete">
-        UPDATE comment
+        UPDATE community_comment
         SET is_deleted = 1
         WHERE comment_id IN
         <foreach collection="ids" item="id" open="(" separator="," close=")">
@@ -125,32 +146,41 @@
         </foreach>
     </update>
 
-    <!-- 복구 -->
     <update id="restoreComment">
-        UPDATE comment
+        UPDATE community_comment
         SET is_deleted = 0
         WHERE comment_id = #{comment_id}
     </update>
 
+
+    <!-- ================================= -->
+    <!--   댓글 신고 내역 조회              -->
+    <!-- ================================= -->
     <select id="getCommentReportList" resultType="com.itwillbs.domain.CommentReportVO">
         SELECT
         report_id,
+        post_id,
         comment_id,
         reporter_id,
         reason,
-        created_at
-        FROM comment_report
+        created_at,
+        is_done,
+        done_at,
+        done_reason
+        FROM community_report
         WHERE comment_id = #{comment_id}
         ORDER BY report_id DESC
     </select>
 
-    <!-- 로그 입력 -->
+
+    <!-- ================================= -->
+    <!--   관리자 액션 로그                 -->
+    <!-- ================================= -->
     <insert id="insertActionLog">
         INSERT INTO admin_action_log (comment_id, admin_id, action, reason)
         VALUES (#{comment_id}, #{admin_id}, #{action}, #{reason})
     </insert>
 
-    <!-- 댓글별 로그 조회 -->
     <select id="getCommentActionLogs" resultType="com.itwillbs.domain.AdminActionLogVO">
         SELECT
         log_id,
@@ -163,20 +193,28 @@
         WHERE comment_id = #{comment_id}
         ORDER BY log_id DESC
     </select>
-    
+
+
+    <!-- ================================= -->
+    <!--   게시글 상세 – 댓글 리스트        -->
+    <!-- ================================= -->
     <select id="getCommentsByPostId" resultType="com.itwillbs.domain.AdminCommentVO">
-    SELECT 
-        comment_id,
-        post_id,
-        user_id,
-        content,
-        created_at,
-        is_deleted,
-        report_count
-    FROM comment
-    WHERE post_id = #{post_id}
-    ORDER BY comment_id DESC
-</select>
-    
+        SELECT
+        c.comment_id,
+        c.post_id,
+        c.user_num,
+        c.content,
+        c.created_at,
+        c.is_deleted,
+
+        /* 🔥 community_report 기준 신고수 */
+        (SELECT COUNT(*)
+        FROM community_report r
+        WHERE r.comment_id = c.comment_id) AS report_count
+
+        FROM community_comment c
+        WHERE post_id = #{post_id}
+        ORDER BY c.comment_id DESC
+    </select>
 
 </mapper>

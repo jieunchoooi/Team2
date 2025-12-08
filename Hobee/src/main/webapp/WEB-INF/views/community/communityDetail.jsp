@@ -253,9 +253,13 @@
 						</button>
 						
 						<div class="report">
-<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
-							
-						</div>
+                            <button type="button"
+                                    id="reportPostBtn"
+                                    data-post="${dto.post.post_id}">
+                                🚨 신고하기
+                            </button>
+                        </div>
+
 					</div>
 
 				</section>
@@ -349,9 +353,11 @@
 												data-comment="${cmt.comment_id}">↩ 대댓글</button>
 												
 													<div class="report-comment">
-<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
-							
-						</div>
+                                                        <button class="comment-report-btn" data-comment="${cmt.comment_id}">
+                                                            🚨 신고
+                                                        </button>
+                                                    </div>
+
 										</div>
 
 										<%-- 대댓글 입력창 (이 댓글에 대한 입력) --%>
@@ -905,6 +911,113 @@ $(document).on("click", ".reply-submit", function() {
          closeEditModal();
      }
  });
+
+ $(document).ready(function(){
+
+     // ================================================
+     // 🔍 1) 신고 여부 체크 (페이지 로딩 시 자동 실행)
+     // ================================================
+     const postId = $("#reportPostBtn").data("post");
+
+     $.post("${pageContext.request.contextPath}/community/report/check", {
+         targetType: "post",
+         targetId: postId
+     }, function(res){
+
+         if (!res.loggedIn) return;
+
+         if (res.already) {
+             $("#reportPostBtn")
+                 .prop("disabled", true)
+                 .text("이미 신고했어요")
+                 .css({
+                     "background": "#d1d1d1",
+                     "cursor": "not-allowed"
+                 });
+         }
+     });
+
+
+     // ================================================
+     // 🚨 2) 신고 보내기 (버튼 클릭 시 실행)
+     // ================================================
+     $("#reportPostBtn").click(function(){
+
+         const postId = $(this).data("post");
+
+         $.post("${pageContext.request.contextPath}/community/report", {
+             targetType: "post",
+             targetId: postId,
+             reason: "부적절한 게시글"
+         }, function(res){
+
+             if (res.success) {
+                 $("#reportPostBtn")
+                     .prop("disabled", true)
+                     .text("신고완료")
+                     .css({
+                         "background": "#ccc",
+                         "cursor": "not-allowed"
+                     });
+
+             }
+
+         });
+
+     });
+
+     // 🚨 댓글 신고
+     $(document).on("click", ".comment-report-btn", function(){
+
+         const commentId = $(this).data("comment");
+
+         // 기본 사유 (나중에 모달 적용 가능)
+         const reason = "부적절한 댓글";
+
+         $.post("${pageContext.request.contextPath}/community/report", {
+             targetType: "comment",
+             targetId: commentId,
+             reason: reason
+         }, function(res){
+
+             if(res.success){
+                 alert("댓글이 신고되었습니다.");
+
+                 $(`.comment-report-btn[data-comment='${commentId}']`)
+                     .prop("disabled", true)
+                     .text("신고완료")
+                     .css({
+                         background: "#ccc",
+                         cursor: "not-allowed"
+                     });
+             }
+         });
+     });
+
+
+$(".comment-report-btn").each(function(){
+
+    const commentId = $(this).data("comment");
+    const btn = $(this);
+
+    $.post("${pageContext.request.contextPath}/community/report/check", {
+        targetType: "comment",
+        targetId: commentId
+    }, function(res){
+
+        if (res.already) {
+            btn.text("이미 신고함")
+               .prop("disabled", true)
+               .css({
+                   background: "#ccc",
+                   cursor: "not-allowed"
+               });
+        }
+    });
+});
+
+
+ }); // $(document).ready 끝
 
 
 </script>

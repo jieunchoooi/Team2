@@ -40,17 +40,17 @@
     <!-- ========================================================= -->
     <select id="getBoardList" resultType="com.itwillbs.domain.AdminBoardVO">
         SELECT
-            b.board_id,
-            b.board_name,
-            b.board_desc,
-            b.is_active,
-            b.created_at,
-            b.board_order,
+        b.board_id,
+        b.board_name,
+        b.board_desc,
+        b.is_active,
+        b.created_at,
+        b.board_order,
 
-            /* 게시판별 게시글 수 */
-            (SELECT COUNT(*)
-             FROM community_content c
-             WHERE c.category_id = b.board_id) AS post_count
+        /* 게시판별 게시글 수 */
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id) AS post_count
 
         FROM board_category b
         ORDER BY board_order ASC
@@ -63,20 +63,20 @@
     <!-- ========================================================= -->
     <select id="getBoard" resultType="com.itwillbs.domain.AdminBoardVO" parameterType="int">
         SELECT
-            board_id,
-            board_name,
-            board_desc,
-            is_active,
-            created_at,
-            board_order,
+        board_id,
+        board_name,
+        board_desc,
+        is_active,
+        created_at,
+        board_order,
 
-            /* 옵션 */
-            allow_comment,
-            allow_image,
-            allow_file,
-            write_role,
-            banned_words,
-            require_approval
+        /* 옵션 */
+        allow_comment,
+        allow_image,
+        allow_file,
+        write_role,
+        banned_words,
+        require_approval
 
         FROM board_category
         WHERE board_id = #{board_id}
@@ -90,42 +90,42 @@
     <select id="getBoardDetail" parameterType="int" resultType="com.itwillbs.domain.AdminBoardVO">
 
         SELECT
-            b.board_id,
-            b.board_name,
-            b.board_desc,
-            b.is_active,
-            b.created_at,
-            b.board_order,
+        b.board_id,
+        b.board_name,
+        b.board_desc,
+        b.is_active,
+        b.created_at,
+        b.board_order,
 
-            b.allow_comment,
-            b.allow_image,
-            b.allow_file,
-            b.write_role,
-            b.banned_words,
-            b.require_approval,
+        b.allow_comment,
+        b.allow_image,
+        b.allow_file,
+        b.write_role,
+        b.banned_words,
+        b.require_approval,
 
-            /* 전체 글 수 */
-            (SELECT COUNT(*)
-             FROM community_content c
-             WHERE c.category_id = b.board_id) AS post_count,
+        /* 전체 글 수 */
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id) AS post_count,
 
-            /* 이번달 글 수 */
-            (SELECT COUNT(*)
-             FROM community_content c
-             WHERE c.category_id = b.board_id
-             AND c.created_at >= DATE_FORMAT(NOW(), '%Y-%m-01')) AS post_count_month,
+        /* 이번달 글 수 */
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id
+        AND c.created_at >= DATE_FORMAT(NOW(), '%Y-%m-01')) AS post_count_month,
 
-            /* 삭제되지 않은 글 */
-            (SELECT COUNT(*)
-             FROM community_content c
-             WHERE c.category_id = b.board_id
-             AND c.is_deleted = 0) AS post_count_visible,
+        /* 삭제되지 않은 글 */
+        (SELECT COUNT(*)
+        FROM community_content c
+        WHERE c.category_id = b.board_id
+        AND c.is_deleted = 0) AS post_count_visible,
 
-            /* 신고된 글 수 */
-            (SELECT COUNT(*)
-             FROM report r
-             JOIN community_content c ON r.post_id = c.post_id
-             WHERE c.category_id = b.board_id) AS report_count
+        /* 신고된 글 수 */
+        (SELECT COUNT(*)
+        FROM report r
+        JOIN community_content c ON r.post_id = c.post_id
+        WHERE c.category_id = b.board_id) AS report_count
 
         FROM board_category b
         WHERE b.board_id = #{board_id}
@@ -138,11 +138,11 @@
     <!-- ========================================================= -->
     <select id="getRecentPosts" parameterType="int" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT
-            post_id,
-            title,
-            user_num,
-            created_at,
-            is_deleted
+        post_id,
+        title,
+        user_num,
+        created_at,
+        is_deleted
         FROM community_content
         WHERE category_id = #{board_id}
         ORDER BY created_at DESC
@@ -156,10 +156,10 @@
     <!-- ========================================================= -->
     <select id="getTopViewPosts" parameterType="int" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT
-            post_id,
-            title,
-            views,
-            0 AS report_count   /* 통일성을 위한 더미 값 */
+        post_id,
+        title,
+        views,
+        0 AS report_count   /* 통일성을 위한 더미 값 */
         FROM community_content
         WHERE category_id = #{board_id}
         ORDER BY views DESC
@@ -173,10 +173,10 @@
     <!-- ========================================================= -->
     <select id="getTopReportPosts" parameterType="int" resultType="com.itwillbs.domain.AdminPostVO">
         SELECT
-            c.post_id,
-            c.title,
-            c.views,
-            COUNT(*) AS report_count
+        c.post_id,
+        c.title,
+        c.views,
+        COUNT(*) AS report_count
         FROM report r
         JOIN community_content c ON r.post_id = c.post_id
         WHERE c.category_id = #{board_id}
@@ -192,13 +192,26 @@
     <!-- ========================================================= -->
     <select id="getWeeklyPostStats" parameterType="int" resultType="map">
         SELECT
-            DATE(created_at) AS day,
-            COUNT(*) AS count
+        DATE(created_at) AS day,
+        COUNT(*) AS count
         FROM community_content
         WHERE category_id = #{board_id}
         AND created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
         GROUP BY DATE(created_at)
         ORDER BY day ASC
+    </select>
+
+    <select id="getActiveBoardList" resultType="com.itwillbs.domain.AdminBoardVO">
+        SELECT
+        board_id,
+        board_name,
+        board_desc,
+        is_active,
+        board_order,
+        created_at
+        FROM board_category
+        WHERE is_active = 1
+        ORDER BY board_order ASC
     </select>
 
 
@@ -208,11 +221,11 @@
     <!-- ========================================================= -->
     <insert id="insertBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
         INSERT INTO board_category
-            (board_name, board_desc, is_active, created_at, board_order,
-             allow_comment, allow_image, allow_file, write_role, banned_words, require_approval)
+        (board_name, board_desc, is_active, created_at, board_order,
+        allow_comment, allow_image, allow_file, write_role, banned_words, require_approval)
         VALUES
-            (#{board_name}, #{board_desc}, #{is_active}, NOW(), 9999,
-             #{allow_comment}, #{allow_image}, #{allow_file}, #{write_role}, #{banned_words}, #{require_approval})
+        (#{board_name}, #{board_desc}, #{is_active}, NOW(), 9999,
+        #{allow_comment}, #{allow_image}, #{allow_file}, #{write_role}, #{banned_words}, #{require_approval})
     </insert>
 
 
@@ -223,15 +236,15 @@
     <update id="updateBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
         UPDATE board_category
         SET
-            board_name       = #{board_name},
-            board_desc       = #{board_desc},
-            is_active        = #{is_active},
-            allow_comment    = #{allow_comment},
-            allow_image      = #{allow_image},
-            allow_file       = #{allow_file},
-            write_role       = #{write_role},
-            banned_words     = #{banned_words},
-            require_approval = #{require_approval}
+        board_name       = #{board_name},
+        board_desc       = #{board_desc},
+        is_active        = #{is_active},
+        allow_comment    = #{allow_comment},
+        allow_image      = #{allow_image},
+        allow_file       = #{allow_file},
+        write_role       = #{write_role},
+        banned_words     = #{banned_words},
+        require_approval = #{require_approval}
         WHERE board_id = #{board_id}
     </update>
 
