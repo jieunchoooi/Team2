@@ -14,10 +14,21 @@
     box-sizing: border-box;
 }
 
+.main-content {
+    margin-left: 240px;
+    margin-top: 0;
+    padding: 15px 30px 30px 30px;
+    width: calc(100% - 240px);
+    background-color: #f9fafb;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
 .category-management {
-    max-width: 1160px;
-    margin: 40px auto;
-    padding: 30px;
+    max-width: 1400px;
+    padding: 25px 35px;
+    margin: 0 auto;
     background: #fff;
     border: 1px solid #ddd;
 }
