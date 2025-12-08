@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+.detail-wrap {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 40px 50px;
+    border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+}
+
+/* 제목 */
+.detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.detail-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* 중요도 배지 */
+.badge-priority {
+    padding: 4px 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+.priority-1 { background: #888; }
+.priority-2 { background: #ff8b00; }
+.priority-3 { background: #ff3b3b; }
+.priority-4 { background: linear-gradient(45deg, #ff0000, #ff8b00); }
+
+/* 작성일·조회수 */
+.detail-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+.detail-info span {
+    margin-right: 16px;
+}
+
+/* 라인 */
+.detail-line {
+    margin: 25px 0;
+    border: none;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+/* 내용 */
+.detail-content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    white-space: pre-line;
+    margin-bottom: 40px;
+}
+
+/* 목록 버튼 */
+.detail-back-btn {
+    padding: 10px 18px;
+    background: #4c7df5;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.detail-back-btn:hover {
+    background: #3a66d4;
+}

@@ -11,8 +11,8 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface AdminNoticeMapper {
-	
-	// 공지사항 전체 목록
+
+    // 공지사항 전체 목록
     List<AdminNoticeVO> getNoticeList(
             @Param("pageDTO") PageDTO pageDTO,
             @Param("type") String type,
@@ -53,6 +53,6 @@ public interface AdminNoticeMapper {
     NoticeFileVO getNoticeFile(int fileId);
 
     void deleteNoticeFile(int fileId);
+
+    List<AdminNoticeVO> getNoticeListForUser();
 }
-
-

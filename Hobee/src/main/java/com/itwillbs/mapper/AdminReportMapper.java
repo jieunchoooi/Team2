@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface AdminReportMapper {
-	
-	/* 신고된 모든 목록을 조회하는 메서드 : 게시글 신고 + 댓글 신고 모두 포함 */
+
+    /* 신고된 모든 목록을 조회하는 메서드 : 게시글 신고 + 댓글 신고 모두 포함 */
     List<AdminReportVO> getReportList(
             @Param("type") String type,
             @Param("status") String status,

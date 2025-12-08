@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.CommunityMapper">
 
 	<!-- ====================================================== 0. 단일 카운트 ====================================================== -->
 	<select id="getCommunityCount" resultType="int">
-<![CDATA[
+		<![CDATA[
 SELECT COUNT(*)
 FROM community_content
 WHERE category_main_num = #{category_main_num}
@@ -15,12 +15,12 @@ WHERE category_main_num = #{category_main_num}
 ]]>
 	</select>
 
+	<!-- ====================================================== 🔥 1. 핫토픽 (summary
+		= 120자) ※ CDATA 적용 ====================================================== -->
 
-
-	<!-- ====================================================== 🔥 1. 핫토픽 (summary = 120자) ※ CDATA 적용 ====================================================== -->
-<select id="getHotTopicList"
-        resultType="com.itwillbs.domain.CommunityContentVO">
-<![CDATA[
+	<select id="getHotTopicList"
+			resultType="com.itwillbs.domain.CommunityContentVO">
+		<![CDATA[
 SELECT
     c.post_id,
     c.title,
@@ -42,12 +42,7 @@ SELECT
 
     u.user_name,
     u.user_file,
-
-    -- 🟦 메인 카테고리
-    cm.category_main_name AS category_main_name,
-
-    -- 🟥 말머리(community_category)
-    cat.category_name AS category_name,
+    cm.category_main_name AS category_name,
 
     (
         (COUNT(DISTINCT l.like_id) * 4)
@@ -59,40 +54,29 @@ SELECT
 
 FROM community_content c
 JOIN user u ON c.user_num = u.user_num
+LEFT JOIN category_main cm ON c.category_main_num = cm.category_main_num
+LEFT JOIN community_content_like l ON l.post_id = c.post_id
+LEFT JOIN community_comment cc ON cc.post_id = c.post_id
 
-LEFT JOIN category_main cm 
-    ON c.category_main_num = cm.category_main_num
-
-LEFT JOIN community_category cat
-    ON c.category_id = cat.category_id
-
-LEFT JOIN community_content_like l 
-    ON l.post_id = c.post_id
-
-LEFT JOIN community_comment cc 
-    ON cc.post_id = c.post_id
-
-WHERE c.is_deleted = 0
+WHERE c.is_deleted = 0        -- 🔥 삭제글 제외
   AND c.created_at >= NOW() - INTERVAL 24 HOUR
 
 GROUP BY c.post_id
 ORDER BY trendingScore DESC
 LIMIT 10
 ]]>
-</select>
+	</select>
 
 
 
 
 
-
-
-	<!-- ====================================================== 
-			2. 인기글 (summary = 60자) ※ CDATA 적용 
+	<!-- ======================================================
+			2. 인기글 (summary = 60자) ※ CDATA 적용
 		====================================================== -->
 	<select id="getPopularPosts"
-		resultType="com.itwillbs.domain.CommunityContentVO">
-<![CDATA[
+			resultType="com.itwillbs.domain.CommunityContentVO">
+		<![CDATA[
 SELECT
     c.post_id,
     c.title,
@@ -118,8 +102,7 @@ SELECT
 
 FROM community_content c
 JOIN user u ON c.user_num = u.user_num
-LEFT JOIN category_main cm ON c.category_main_num = cm.category_main_num  -- 🔥 수정
-
+JOIN category_main cm ON c.category_main_num = cm.category_main_num
 
 WHERE c.is_deleted = 0   -- 🔥 삭제글 제외
 
@@ -133,27 +116,28 @@ LIMIT 5
 
 
 
-	<!-- ====================================================== 
-	4. 상단 메인 말머리 리스트 
+	<!-- ======================================================
+	4. 상단 메인 말머리 리스트
 	====================================================== -->
 	<select id="getCategoryList"
-		resultType="com.itwillbs.domain.CommunityContentVO">
-		 SELECT
-        category_id,
-        category_key,
-        category_name,
-        category_desc,
-        is_active,
-        sort_order
-    FROM community_category
-    ORDER BY sort_order ASC, category_id ASC
+			resultType="com.itwillbs.domain.BoardCategoryVO">
+		SELECT
+		board_id AS category_id,
+		board_name AS category_name,
+		board_desc AS category_desc,
+		is_active,
+		board_order AS sort_order
+		FROM board_category
+		WHERE is_active = 1       -- 🔥 사용자에게 표시할 머리말만
+		ORDER BY board_order ASC;
 	</select>
 
-	<!-- ====================================================== 
-	4. 상단 메인 카테고리 리스트 
+
+	<!-- ======================================================
+	4. 상단 메인 카테고리 리스트
 	====================================================== -->
 	<select id="getCategoryMainList"
-		resultType="com.itwillbs.domain.CommunityContentVO">
+			resultType="com.itwillbs.domain.CommunityContentVO">
 		SELECT
 		category_main_num,
 		category_main_name
@@ -162,12 +146,12 @@ LIMIT 5
 		ORDER BY category_main_num ASC
 	</select>
 
-	<!-- ====================================================== 5. 게시글 목록 (summary 
+	<!-- ====================================================== 5. 게시글 목록 (summary
 		= 120자) ※ CDATA 적용 ====================================================== -->
 	<select id="getCommunityList"
-		resultType="com.itwillbs.domain.CommunityContentVO">
+			resultType="com.itwillbs.domain.CommunityContentVO">
 
-    <![CDATA[
+		<![CDATA[
     SELECT
         c.post_id,
         c.title,
@@ -210,9 +194,9 @@ LIMIT 5
          WHERE l1.post_id = c.post_id AND l1.is_like = 1) AS like_count
 
     FROM community_content c
-JOIN user u ON c.user_num = u.user_num
-LEFT JOIN category_main cm ON c.category_main_num = cm.category_main_num  -- 🔥 NULL 허용
-LEFT JOIN community_category cc ON c.category_id = cc.category_id
+    JOIN user u ON c.user_num = u.user_num
+    JOIN category_main cm ON c.category_main_num = cm.category_main_num
+    LEFT JOIN community_category cc ON c.category_id = cc.category_id
     ]]>
 
 		<where>
@@ -293,11 +277,11 @@ LEFT JOIN community_category cc ON c.category_id = cc.category_id
 
 
 
-	<!-- ====================================================== 6. 총 개수 (이건 
+	<!-- ====================================================== 6. 총 개수 (이건
 		summary 없음) ====================================================== -->
 	<select id="getTotalCount" resultType="int">
 
-    <![CDATA[
+		<![CDATA[
     SELECT COUNT(DISTINCT c.post_id)
     FROM community_content c
     JOIN user u ON c.user_num = u.user_num
@@ -358,9 +342,9 @@ LEFT JOIN community_category cc ON c.category_id = cc.category_id
 
 	<!-- 게시글 상세 조회 -->
 	<select id="getPostDetailWithLike"
-		resultType="com.itwillbs.domain.CommunityContentVO">
+			resultType="com.itwillbs.domain.CommunityContentVO">
 
-<![CDATA[
+		<![CDATA[
 SELECT
     c.*,
     u.user_name,
@@ -398,11 +382,11 @@ WHERE c.post_id = #{post_id}
 
 
 
-	<!-- ============================================================ 📌 게시글 
-		댓글 전체 조회 (좋아요/싫어요 + 작성자 포함) - ONLY_FULL_GROUP_BY 환경에서도 100% 동작 - 댓글 좋아요/싫어요 
+	<!-- ============================================================ 📌 게시글
+		댓글 전체 조회 (좋아요/싫어요 + 작성자 포함) - ONLY_FULL_GROUP_BY 환경에서도 100% 동작 - 댓글 좋아요/싫어요
 		안전 합산 - 현재 유저의 좋아요 상태 분리 안정 ============================================================ -->
 	<select id="getCommentsByPostId"
-		resultType="com.itwillbs.domain.CommunityCommentVO">
+			resultType="com.itwillbs.domain.CommunityCommentVO">
 
 		SELECT
 		c.comment_id,
@@ -465,12 +449,12 @@ WHERE c.post_id = #{post_id}
 
 
 
-	<!-- ================================================================ 🔥 
+	<!-- ================================================================ 🔥
 		Prev/Next + 현재 글 포함 (위3 + 현재 + 아래3 → 총 7개) ================================================================ -->
 	<select id="getPrevNextPosts"
-		resultType="com.itwillbs.domain.CommunityContentVO">
+			resultType="com.itwillbs.domain.CommunityContentVO">
 
-<![CDATA[
+		<![CDATA[
 WITH filtered AS (
 
     -- 🔵 1) 필터 적용 + 현재 글 강제 포함
@@ -502,12 +486,12 @@ WITH filtered AS (
 		<choose>
 			<!-- 🔹 조회수 정렬 -->
 			<when test="cri.sort == 'views'">
-            <![CDATA[ c.views DESC ]]>
+				<![CDATA[ c.views DESC ]]>
 			</when>
 
 			<!-- 🔹 좋아요 정렬 -->
 			<when test="cri.sort == 'likes'">
-            <![CDATA[
+				<![CDATA[
                 (SELECT COUNT(*)
                  FROM community_content_like l2
                  WHERE l2.post_id = c.post_id AND l2.is_like = 1) DESC
@@ -516,7 +500,7 @@ WITH filtered AS (
 
 			<!-- 🔹 댓글수 정렬 -->
 			<when test="cri.sort == 'comments'">
-            <![CDATA[
+				<![CDATA[
                 (SELECT COUNT(*)
                  FROM community_comment cm2
                  WHERE cm2.post_id = c.post_id AND cm2.is_deleted = 0) DESC
@@ -525,10 +509,10 @@ WITH filtered AS (
 
 			<!-- 🔹 기본 = 최신순 -->
 			<otherwise>
-            <![CDATA[ c.created_at DESC ]]>
+				<![CDATA[ c.created_at DESC ]]>
 			</otherwise>
 		</choose>
-<![CDATA[
+		<![CDATA[
         ) AS rn
 
     FROM community_content c
@@ -603,7 +587,7 @@ WITH filtered AS (
 
 
 
-	<!-- ============================================================ 📌 게시글 
+	<!-- ============================================================ 📌 게시글
 		조회수 증가 ============================================================ -->
 	<update id="updateViewCount">
 		UPDATE community_content
@@ -656,11 +640,11 @@ WITH filtered AS (
 		AND user_num = #{user_num}
 	</delete>
 
-	<!-- ====================================================== 📌 게시글 작성 (INSERT) 
+	<!-- ====================================================== 📌 게시글 작성 (INSERT)
 		useGeneratedKeys → post_id 자동 매핑 ====================================================== -->
 	<insert id="insertPost"
-		parameterType="com.itwillbs.domain.CommunityContentVO"
-		useGeneratedKeys="true" keyProperty="post_id">
+			parameterType="com.itwillbs.domain.CommunityContentVO"
+			useGeneratedKeys="true" keyProperty="post_id">
 
 		INSERT INTO community_content
 		(
@@ -689,12 +673,12 @@ WITH filtered AS (
 	</insert>
 
 
-	
 
-	<!-- ====================================================== 📌 메인 카테고리 목록 
+
+	<!-- ====================================================== 📌 메인 카테고리 목록
 		====================================================== -->
 	<select id="getMainCategoryList"
-		resultType="com.itwillbs.domain.Category_mainVO">
+			resultType="com.itwillbs.domain.Category_mainVO">
 		SELECT
 		category_main_num,
 		category_main_name
@@ -703,10 +687,10 @@ WITH filtered AS (
 	</select>
 
 
-	<!-- ====================================================== 📌 단일 게시글 조회 
+	<!-- ====================================================== 📌 단일 게시글 조회
 		(수정/삭제 전 데이터 확인용) - user_num 비교해서 본인 글인지 판단하기 위해 사용 ======================================================= -->
 	<select id="getPostById" parameterType="int"
-		resultType="com.itwillbs.domain.CommunityContentVO">
+			resultType="com.itwillbs.domain.CommunityContentVO">
 		SELECT
 		post_id,
 		title,
@@ -727,7 +711,7 @@ WITH filtered AS (
 
 	<!-- ====================================================== 📌 게시글 수정 ======================================================= -->
 	<update id="updatePost"
-		parameterType="com.itwillbs.domain.CommunityContentVO">
+			parameterType="com.itwillbs.domain.CommunityContentVO">
 		UPDATE community_content
 		SET
 		title = #{title},
@@ -741,7 +725,7 @@ WITH filtered AS (
 
 
 
-	<!-- ====================================================== 📌 게시글 삭제 (Soft 
+	<!-- ====================================================== 📌 게시글 삭제 (Soft
 		Delete 방식) 실제 삭제가 아니라 is_deleted = 1 로 변경 ======================================================= -->
 	<update id="deletePost" parameterType="int">
 		UPDATE community_content
@@ -750,66 +734,85 @@ WITH filtered AS (
 	</update>
 
 
-<!-- ============================================================
-     💬 댓글 INSERT (댓글 / 대댓글 공용)
-     parent_id = NULL → 댓글
-     parent_id = 값    → 대댓글
-============================================================ -->
-<insert id="insertComment" parameterType="com.itwillbs.domain.CommunityCommentVO">
-    INSERT INTO community_comment
-    (
-        post_id,
-        user_num,
-        parent_id,
-        content,
-        created_at,
-        updated_at,
-        is_deleted,
-        report_count
-    )
-    VALUES
-    (
-        #{post_id},
-        #{user_num},
-        #{parent_id},
-        #{content},
-        NOW(),
-        NOW(),
-        0,
-        0
-    )
-</insert>
+	<!-- ============================================================
+         💬 댓글 INSERT (댓글 / 대댓글 공용)
+         parent_id = NULL → 댓글
+         parent_id = 값    → 대댓글
+    ============================================================ -->
+	<insert id="insertComment" parameterType="com.itwillbs.domain.CommunityCommentVO">
+		INSERT INTO community_comment
+		(
+		post_id,
+		user_num,
+		parent_id,
+		content,
+		created_at,
+		updated_at,
+		is_deleted,
+		report_count
+		)
+		VALUES
+		(
+		#{post_id},
+		#{user_num},
+		#{parent_id},
+		#{content},
+		NOW(),
+		NOW(),
+		0,
+		0
+		)
+	</insert>
 
 
 
-<!-- ============================================================
-     ✏ 댓글 UPDATE (본인 댓글만 수정)
-============================================================ -->
-<update id="updateComment">
-    UPDATE community_comment
-    SET
-        content = #{content},
-        updated_at = NOW()
-    WHERE comment_id = #{comment_id}
-      AND user_num = #{user_num}
-      AND is_deleted = 0
-</update>
+	<!-- ============================================================
+         ✏ 댓글 UPDATE (본인 댓글만 수정)
+    ============================================================ -->
+	<update id="updateComment">
+		UPDATE community_comment
+		SET
+		content = #{content},
+		updated_at = NOW()
+		WHERE comment_id = #{comment_id}
+		AND user_num = #{user_num}
+		AND is_deleted = 0
+	</update>
 
 
 
-<!-- ============================================================
-     ❌ 댓글 DELETE (Soft Delete 방식)
-============================================================ -->
-<update id="deleteComment">
-    UPDATE community_comment
-    SET is_deleted = 1
-    WHERE comment_id = #{comment_id}
-      AND user_num = #{user_num}
-      AND is_deleted = 0
-</update>
+	<!-- ============================================================
+         ❌ 댓글 DELETE (Soft Delete 방식)
+    ============================================================ -->
+	<update id="deleteComment">
+		UPDATE community_comment
+		SET is_deleted = 1
+		WHERE comment_id = #{comment_id}
+		AND user_num = #{user_num}
+		AND is_deleted = 0
+	</update>
+
+	<select id="checkAlreadyReported" resultType="int">
+		SELECT COUNT(*)
+		FROM community_report
+		WHERE reporter_id = #{user_num}
+		AND post_id = #{post_id}
+	</select>
+
+	<select id="checkAlreadyReportedComment" resultType="int">
+		SELECT COUNT(*)
+		FROM community_report
+		WHERE reporter_id = #{user_num}
+		AND comment_id = #{comment_id}
+	</select>
 
 
-
+	<insert id="insertReport" parameterType="com.itwillbs.domain.CommunityReportVO">
+		INSERT INTO community_report
+		(reporter_id, post_id, comment_id, reason, created_at, is_done)
+		VALUES
+		(#{reporter_id}, #{post_id}, #{comment_id}, #{reason}, NOW(), 0)
+	</insert>
 
 
 
