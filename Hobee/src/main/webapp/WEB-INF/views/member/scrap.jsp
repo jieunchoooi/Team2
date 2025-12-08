@@ -176,14 +176,18 @@ const rewardRate   = <%=grade.getReward_rate()%>;
 function updateSummary() {
     const selected = [...document.querySelectorAll("input[name='selectItem']:checked")];
 
+    // 1) 총 금액 계산
     const totalPrice = selected.reduce((sum, cb) =>
         sum + parseInt(cb.dataset.price), 0);
 
+    // 2) 멤버십 할인
     const discount = Math.floor(totalPrice * (discountRate / 100));
     const priceAfterDiscount = totalPrice - discount;
 
+    // 3) 사용자 보유 포인트
     const userPoints = parseInt("<c:out value='${sessionScope.userVO.points}'/>");
 
+    // 4) 사용 포인트
     let usedPoints = parseInt($("#usedPointsInput").val() || "0");
 
     if (usedPoints > userPoints) usedPoints = userPoints;
@@ -192,34 +196,50 @@ function updateSummary() {
 
     $("#usedPointsInput").val(usedPoints);
 
+    // 5) 남은 포인트
     const remain = userPoints - usedPoints;
     $("#remainPoints").text(remain.toLocaleString() + " P");
 
+    // -----------------------------------------------------
+    // ⭐ 6) 포인트 배분 공식 (정석)
+    // 각 강의가 priceAfterDiscount 중 차지하는 비율만큼
+    // 사용 포인트를 나누어 적용
+    // -----------------------------------------------------
     let totalReward = 0;
-	//개별 강의 적립 및 할인 계산 
+
     selected.forEach(cb => {
         const lecturePrice = parseInt(cb.dataset.price);
 
-        // 강의별 할인 가격 (백엔드와 동일하게 버림 처리)
+        // 멤버십 할인 후 가격
         const salePrice = Math.floor(lecturePrice * (1 - discountRate / 100));
 
-        // 강의별 적립 포인트
-        const reward = Math.floor(salePrice * (rewardRate / 100));
+        // 해당 강의가 할인 후 전체 금액에서 차지하는 비율
+        const ratio = salePrice / priceAfterDiscount;
+
+        // 이 강의에 적용될 포인트 (비례 배분)
+        const lectureUsed = Math.floor(usedPoints * ratio);
+
+        // 실제 결제되는 금액
+        const lectureFinalPay = salePrice - lectureUsed;
+
+        // **이 금액에 대해 적립**
+        const reward = Math.floor(lectureFinalPay * (rewardRate / 100));
 
         totalReward += reward;
     });
 
-    // 최종 표시
+    // 적립 표시
     $("#rewardPoints").text("+" + totalReward.toLocaleString() + " P");
 
-
+    // 7) 최종 결제 금액
     const finalAmount = priceAfterDiscount - usedPoints;
     $("#finalPrice").text("₩" + finalAmount.toLocaleString());
 
-  
+    // 8) 표시 업데이트
     $("#totalPrice").text("₩" + totalPrice.toLocaleString());
     $("#discountPrice").text("-₩" + discount.toLocaleString());
 }
+
 
 /* 모두 사용 버튼 */
 function useAllPoints() {
