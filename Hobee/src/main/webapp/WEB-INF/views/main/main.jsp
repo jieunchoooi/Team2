@@ -120,11 +120,6 @@
                         <a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}" class="course-thumb-wrapper">
                            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
                               class="course-thumb" alt="${lecture.lecture_title}">
-<%--                            <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}"  --%>
-<%--                            		   data-lecture-num="${lecture.lecture_num}" --%>
-<%--                            		   onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);"> --%>
-<!--                                 <i class="far fa-bookmark"></i> -->
-<!--                             </button> -->
 	                      	<button class="bookmark-btn ${purchasedLectures.contains(lecture.lecture_num) ? 'purchased' : (lecture.bookmark ? 'active' : '')}"
 							        data-purchased="${purchasedLectures.contains(lecture.lecture_num)}"
 							        data-lecture-num="${lecture.lecture_num}"
