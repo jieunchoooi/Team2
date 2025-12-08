@@ -45,6 +45,12 @@
 		select count(*) from user
 		WHERE user_role = 'user'
 	</select>
+	
+<!-- 	대시보드 전체 회원수 -->
+	<select id="countMemberList1" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_role = 'user'
+	</select>
 
 <!-- 활동 회원 -->
 	<select id="memberCount" resultType="java.lang.Integer">
@@ -980,6 +986,61 @@
 		select count(*) from lecture
 		where status = 'approval'
 	</select>
+	
+<!-- 	탈퇴회원 대시보드용 -->
+	<select id="inactiveMemberCount1" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_role = 'user' and user_status != 'active'
+	</select>
+	
+<!-- 	총 강사수 대시보드용 -->
+	<select id="countTeacherList1" resultType="java.lang.Integer">
+		select count(*) from user
+		WHERE user_role = 'instructor'
+	</select>
+	
+<!-- 	대시보드 이번달 매출 -->
+	<select id="monthsSales" resultType="java.lang.Integer">
+		SELECT SUM(sale_price) AS this_month_sales
+		FROM  payment_detail
+		WHERE YEAR(created_at) = YEAR(CURDATE())
+		      AND MONTH(created_at) = MONTH(CURDATE())
+	</select>
+	
+<!-- 전년도 월 평균 대비 이번달 매출 (%) -->
+	<select id="averageSales" resultType="java.lang.Integer">
+		SELECT ROUND(SUM(sale_price) / 12) AS last_year_month_avg
+		FROM payment_detail
+		WHERE YEAR(created_at) = YEAR(CURDATE()) - 1
+	</select>
+	
+<!-- 이번달 결제된 강의수 -->
+	<select id="lectureSold" resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM payment_detail
+		WHERE status = 'paid'
+		AND YEAR(created_at) = YEAR(CURDATE())
+		AND MONTH(created_at) = MONTH(CURDATE())
+	</select>
+	
+<!-- 이번달 환불된 강의수 -->
+	<select id="lectureRefunded" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+        FROM payment_detail
+        WHERE status = 'refunded'
+		AND YEAR(created_at) = YEAR(CURDATE())
+		AND MONTH(created_at) = MONTH(CURDATE())
+	</select>
+	
+<!-- 신고관리(미처리) -->
+	<select id="declaration" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+        FROM report_action_log
+        WHERE action = 'PENDING'
+	</select>
+	
+	
+	
 	
 	
 	

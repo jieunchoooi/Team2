@@ -31,106 +31,62 @@
     <div id="wrapper">
         <!-- Begin Page Content -->
         <div class="container-fluid">
+        <div class="box" >
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">대시보드</h1>
             </div>
 
-            <!-- Content Row -->
-            <div class="row">
-                <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Earnings (Monthly)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Earnings (Annual) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Earnings (Annual)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tasks Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="progress progress-sm mr-2">
-                                                <div class="progress-bar bg-info" role="progressbar"
-                                                    style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pending Requests Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        Pending Requests</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Content Row -->
+<!-- Content Row - 매출 & 신고 & 인기강의 -->
 			<div class="row">
-			    <!-- 월별 매출 그래프 (왼쪽 넓게) -->
-			    <div class="col-xl-8 col-lg-7">
-			        <div class="card shadow mb-4" id="mb">
+			    <!-- Earnings (Monthly) Card -->
+			    <div class="col-xl-3 col-md-6 mb-4">
+			        <div class="card border-left-primary shadow h-100 py-2">
+			            <div class="card-body">
+			                <div class="row no-gutters align-items-center">
+			                    <div class="col mr-2">
+			                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+			                            이번달 매출 (전년도 월 평균 대비)</div>
+			                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+			                        <fmt:formatNumber value="${monthsSales}" type="number" /></div>
+			                        <span class="red"> ${percentRounded} %</span>
+			                    </div>
+			                    <div class="col-auto">
+			                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			
+			    <!-- Pending Requests Card -->
+			    <div class="col-xl-3 col-md-6 mb-4">
+			        <div class="card border-left-warning shadow h-100 py-2">
+			            <div class="card-body">
+			                <div class="row no-gutters align-items-center">
+			                    <div class="col mr-2">
+			                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+			                            신고 관리(미처리)</div>
+			                        <div class="h5 mb-0 font-weight-bold text-gray-800 red">${pending}</div>
+			                    </div>
+			                    <div class="col-auto">
+			                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			
+			</div>
+			</div>
+			<!-- Content Row - 월별 매출 & 인기강의 & 카테고리별 결제 -->
+			<div class="row  contentRow">
+			    <!-- 월별 매출 그래프 -->
+			    <div class="col-xl-6 col-lg-6" style="padding-right: 0;">
+			        <div class="card shadow mb-4 h-100" id="mb">
 			            <div class="card-header py-3">
 			                <h6 class="m-0 font-weight-bold text-primary">월별 매출 통계
 			                <span style="font-size: 0.75rem; font-weight: normal; color: #858796;">&nbsp;(단위: 만원)</span></h6>
-			                
 			            </div>
 			            <div class="card-body">
 			                <div class="chart-area">
@@ -140,74 +96,71 @@
 			        </div>
 			    </div>
 			
-			    <!-- 카테고리별 결제 통계 (오른쪽 좁게) -->
-			    <div class="col-xl-4 col-lg-5">
-			        <div class="card shadow mb-4">
+			
+			
+			    <!-- 카테고리별 결제 통계 -->
+			    <div class="col-xl-3 col-lg-3">
+			        <div class="card shadow mb-4 h-100">
 			            <div class="card-header py-3">
 			                <h6 class="m-0 font-weight-bold text-primary">카테고리별 결제 통계 (전월)</h6>
 			            </div>
 			            <div class="card-body">
-			                <div class="chart-pie pt-4 pb-2">
+			                <div class="chart-pie pt-2 pb-2">
 			                    <canvas id="categoryPieChart"></canvas>
 			                </div>
-			                <div class="mt-4 text-center small">
-							    <c:forEach items="${categoryList}" var="category" varStatus="status">
-							        <span class="mr-2">
-							            <c:choose>
-							                <c:when test="${status.index == 0}">
-							                    <i class="fas fa-circle text-primary"></i>
-							                </c:when>
-							                <c:when test="${status.index == 1}">
-							                    <i class="fas fa-circle text-success"></i>
-							                </c:when>
-							                <c:when test="${status.index == 2}">
-							                    <i class="fas fa-circle text-info"></i>
-							                </c:when>
-							                <c:when test="${status.index == 3}">
-							                    <i class="fas fa-circle text-warning"></i>
-							                </c:when>
-							                <c:when test="${status.index == 4}">
-							                    <i class="fas fa-circle" style="color: #e74a3b;"></i>
-							                </c:when>
-							                <c:when test="${status.index == 5}">
-							                    <i class="fas fa-circle" style="color: #858796;"></i>
-							                </c:when>
-							                <c:otherwise>
-							                    <i class="fas fa-circle" style="color: #5a5c69;"></i>
-							                </c:otherwise>
-							            </c:choose>
-							            ${category.categoryName}
-							        </span>
-							    </c:forEach>
-							</div>
+			                <div class="mt-3 text-center small">
+			                    <c:forEach items="${categoryList}" var="category" varStatus="status">
+			                        <span class="mr-2">
+			                            <c:choose>
+			                                <c:when test="${status.index == 0}">
+			                                    <i class="fas fa-circle text-primary"></i>
+			                                </c:when>
+			                                <c:when test="${status.index == 1}">
+			                                    <i class="fas fa-circle text-success"></i>
+			                                </c:when>
+			                                <c:when test="${status.index == 2}">
+			                                    <i class="fas fa-circle text-info"></i>
+			                                </c:when>
+			                                <c:when test="${status.index == 3}"><br>
+			                                    <i class="fas fa-circle text-warning"></i>
+			                                </c:when>
+			                                <c:when test="${status.index == 4}">
+			                                    <i class="fas fa-circle" style="color: #e74a3b;"></i>
+			                                </c:when>
+			                                <c:when test="${status.index == 5}">
+			                                    <i class="fas fa-circle" style="color: #858796;"></i>
+			                                </c:when>
+			                                <c:otherwise>
+			                                    <i class="fas fa-circle" style="color: #5a5c69;"></i>
+			                                </c:otherwise>
+			                            </c:choose>
+			                            ${category.categoryName}
+			                        </span>
+			                    </c:forEach>
+			                </div>
 			            </div>
 			        </div>
 			    </div>
-			</div>
-
-            <!-- Content Row -->
-			<div class="row">
-			    <!-- 인기 강의 TOP 10 (왼쪽) -->
-			    <div class="col-xl-8 col-lg-7">
-			        <div class="card shadow mb-4" id="mb1">
+			        <!-- 인기 강의 TOP 10 -->
+			    <div class="col-xl-3 col-lg-3" style="margin-bottom: 0;">
+			        <div class="card shadow h-100">
 			            <div class="card-header py-3">
 			                <h6 class="m-0 font-weight-bold text-primary">인기 강의 TOP 10</h6>
 			            </div>
-			            <div class="card-body">
-			                <div class="popular-lectures">
+			            <div class="card-body" style="padding: 0.5rem;">
+			                <div class="popular-lectures-full">
 			                    <c:forEach items="${bestClassTop10}" var="lecture" varStatus="status">
-			                        <div class="lecture-item">
-			                            <div class="lecture-rank">${status.index + 1}</div>
-			                            <div class="lecture-thumbnail">
+			                        <div class="lecture-item-full">
+			                            <div class="lecture-rank-full">${status.index + 1}</div>
+			                            <div class="lecture-thumbnail-full">
 			                                <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
 			                                     alt="${lecture.lecture_title}">
 			                            </div>
-			                            <div class="lecture-info">
-			                                <div class="category_detail">${lecture.category_detail}</div>
-			                                <div class="lecture-title">${lecture.lecture_title}</div>
+			                            <div class="lecture-info-full">
+			                                <div class="category_detail-full">${lecture.category_detail}</div>
+			                                <div class="lecture-title-full">${lecture.lecture_title}</div>
 			                            </div>
-			                            <div class="lecture-instructor">${lecture.lecture_author}</div>
-			                            <div class="lecture-scrap">
+			                            <div class="lecture-scrap-full">
 			                                <i class="fas fa-bookmark"></i> ${lecture.scrapCount}
 			                            </div>
 			                        </div>
@@ -216,81 +169,64 @@
 			            </div>
 			        </div>
 			    </div>
+			</div>
 			
-			    <!-- Color System (오른쪽) -->
-			    <div class="col-xl-4 col-lg-5">
-			        <div class="row">
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-primary text-white shadow">
-			                    <div class="card-body color1" id="color">
-			                        총 강의 수
-			                        <div class="text-white-50 small">${classCount}</div>
-			                    </div>
-			                </div>
+			<!-- Content Row - 통계 카드들 -->
+			<div class="row">
+			    <div class="col-lg-2 col-md-6 mb-4">
+			        <div class="card bg-info text-white shadow">
+			            <div class="card-body color2" id="color">
+			                총 회원수
+			                <div class="text-white-50 small">${countMemberList1}</div>
 			            </div>
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-success text-white shadow">
-			                    <div class="card-body" id="color">
-			                        Success
-			                        <div class="text-white-50 small">#1cc88a</div>
-			                    </div>
-			                </div>
+			        </div>
+			    </div>
+			    <div class="col-lg-2 col-md-6 mb-4">
+			        <div class="card bg-secondary text-white shadow">
+			            <div class="card-body color3" id="color">
+			                탈퇴 회원수
+			                <div class="text-white-50 small">${dcount1}</div>
 			            </div>
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-info text-white shadow">
-			                    <div class="card-body" id="color">
-			                        Info
-			                        <div class="text-white-50 small">#36b9cc</div>
-			                    </div>
-			                </div>
+			        </div>
+			    </div>
+			    <div class="col-lg-2 col-md-6 mb-4">
+			        <div class="card bg-warning text-white shadow">
+			            <div class="card-body color4" id="color">
+			                총 강사수
+			                <div class="text-white-50 small">${totalcount1}</div>
 			            </div>
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-warning text-white shadow">
-			                    <div class="card-body" id="color">
-			                        Warning
-			                        <div class="text-white-50 small">#f6c23e</div>
-			                    </div>
-			                </div>
+			        </div>
+			    </div>
+			    <div class="col-lg-2 col-md-6 mb-4">
+			        <div class="card bg-primary text-white shadow">
+			            <div class="card-body color1" id="color">
+			                총 강의 수
+			                <div class="text-white-50 small">${classCount}</div>
 			            </div>
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-danger text-white shadow">
-			                    <div class="card-body" id="color">
-			                        Danger
-			                        <div class="text-white-50 small">#e74a3b</div>
-			                    </div>
-			                </div>
+			        </div>
+			    </div>
+			    <div class="col-lg-2 col-md-6 mb-4">
+			        <div class="card bg-success text-white shadow">
+			            <div class="card-body color5" id="color">
+			                결제된 강의수(이번달)
+			                <div class="text-white-50 small">${lectureSold}</div>
 			            </div>
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-secondary text-white shadow">
-			                    <div class="card-body" id="color">
-			                        Secondary
-			                        <div class="text-white-50 small">#858796</div>
-			                    </div>
-			                </div>
-			            </div>
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-light text-black shadow">
-			                    <div class="card-body" id="color">
-			                        Light
-			                        <div class="text-black-50 small">#f8f9fc</div>
-			                    </div>
-			                </div>
-			            </div>
-			            <div class="col-lg-12 col-md-6 mb-4">
-			                <div class="card bg-dark text-white shadow">
-			                    <div class="card-body" id="color">
-			                        Dark
-			                        <div class="text-white-50 small">#5a5c69</div>
-			                    </div>
-			                </div>
+			        </div>
+			    </div>
+			    <div class="col-lg-2 col-md-6 mb-4">
+			        <div class="card bg-danger text-white shadow">
+			            <div class="card-body color6" id="color">
+			                환불된 강의수(이번달)
+			                <div class="text-white-50 small">${lectureRefunded}</div>
 			            </div>
 			        </div>
 			    </div>
 			</div>
-
+           
+	</div>
     </div>
     <!-- End of Main Content -->
-
+	
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -319,13 +255,38 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
 <script>
 let color1 = document.querySelector(".color1");
+let color2 = document.querySelector(".color2");
+let color3 = document.querySelector(".color3");
+let color4 = document.querySelector(".color4");
+let color5 = document.querySelector(".color5");
+let color6 = document.querySelector(".color6");
 
+// 총 강의수 
 color1.onclick = function(){
 	location.href = "${pageContext.request.contextPath}/admin/adminClassList";
 }
+// 총 회원수
+color2.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminMemberList";
+}
+// 탈퇴 회원수
+color3.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminWithdrawList";
+}
+// 총 강사수
+color4.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminTeacherList";
+}
+// 결제된 강의수
+color5.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminPaymentList?viewType=payment&merchantUid=&period=&startDate=&endDate=&status=paid";
+}
+// 환불 강의수
+color6.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminPaymentList?viewType=payment&merchantUid=&period=&startDate=&endDate=&status=refunded";
+}
 
 
-//  onclick="${pageContext.request.contextPath}/admin/adminClassList"
 
 // Number format function
 function number_format(number, decimals, dec_point, thousands_sep) {
