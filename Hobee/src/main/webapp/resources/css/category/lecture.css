@@ -739,6 +739,25 @@ body.modal-open {
 	filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
 }
 
+/* 구매한 강의 북마크 스타일 */
+.bookmark-btn.purchased {
+    opacity: 0.7;
+}
+
+.bookmark-btn.purchased i {
+    color: white !important;  
+    font-weight: 900;
+}
+
+.bookmark-btn.purchased:hover {
+    background-color: transparent;
+    transform: scale(1); 
+}
+
+.bookmark-btn.purchased:hover i {
+    color: white !important;  
+}
+
 /* ======================================================
    🎯 Hobee 결제 모달 – 단일 강조 버전 (최종금액만 파랑)
 ====================================================== */

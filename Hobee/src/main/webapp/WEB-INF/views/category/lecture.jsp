@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!-- 강의 구매이력 세션에서 조회 -->
+<c:set var="purchasedLectures" value="${sessionScope.purchasedLectures}" />
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -179,11 +181,13 @@
 	            <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
 	              <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
 	                   alt="${lecture.lecture_title}">
-	              <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}" 
-	              		  data-lecture-num="${lecture.lecture_num}"
-	              		  onclick="event.stopPropagation(); toggleBookmark(${lecture.lecture_num}, this);">
-	                <i class="far fa-bookmark"></i>
-	              </button>
+	              <button class="bookmark-btn ${purchasedLectures.contains(lecture.lecture_num) ? 'purchased' : (lecture.bookmark ? 'active' : '')}"
+						  data-purchased="${purchasedLectures.contains(lecture.lecture_num)}"
+					      data-lecture-num="${lecture.lecture_num}"
+					      onclick="event.stopPropagation(); toggleBookmark(${lecture.lecture_num}, this);"
+					      ${purchasedLectures.contains(lecture.lecture_num) ? 'title="이미 구매한 강의입니다"' : ''}>
+						<i class="${purchasedLectures.contains(lecture.lecture_num) ? 'fas fa-check-circle' : 'far fa-bookmark'}"></i>
+				 </button>
 	            </div>
 	            <div class="lecture-info" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
 	              <div class="lecture-title">${lecture.lecture_title}</div>
@@ -226,11 +230,13 @@
 	          <div class="lecture-img-wrapper" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
 	            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${slecture.lecture_img}"
 	                 alt="${slecture.lecture_title}">
-	            <button class="bookmark-btn ${slecture.bookmark ? 'active' : ''}" 
-	            		data-lecture-num="${slecture.lecture_num}"
-	            	    onclick="event.stopPropagation(); toggleBookmark(${slecture.lecture_num}, this);">
-	              <i class="far fa-bookmark"></i>
-	            </button>
+	            <button class="bookmark-btn ${purchasedLectures.contains(slecture.lecture_num) ? 'purchased' : (slecture.bookmark ? 'active' : '')}"
+						  data-purchased="${purchasedLectures.contains(slecture.lecture_num)}"
+					      data-lecture-num="${slecture.lecture_num}"
+					      onclick="event.stopPropagation(); toggleBookmark(${slecture.lecture_num}, this);"
+					      ${purchasedLectures.contains(slecture.lecture_num) ? 'title="이미 구매한 강의입니다"' : ''}>
+						<i class="${purchasedLectures.contains(slecture.lecture_num) ? 'fas fa-check-circle' : 'far fa-bookmark'}"></i>
+				 </button>
 	          </div>
 	          <div class="lecture-info" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${slecture.lecture_num}'">
 	            <div class="lecture-title">${slecture.lecture_title}</div>
@@ -313,43 +319,53 @@
           </div>
         </div>
 
-<%-- ============================================
-     수강 여부에 따라 버튼 상태 변경
-     hasPurchased > 0  → 이미 수강 중
-     hasPurchased == 0 → 결제 가능
-============================================= --%>
-
-<c:choose>
-
-    <%-- 이미 수강 중인 경우: 비활성 상태로 표시 --%>
-    <c:when test="${hasPurchased > 0}">
-        <button class="btn-purchase purchased" disabled>
-            수강중
-        </button>
-    </c:when>
-
-    <%-- 아직 결제하지 않은 경우: 결제 모달 오픈 --%>
-    <c:otherwise>
-        <button class="btn-purchase"
-                onclick="openPaymentModal('${lectureVO.lecture_num}', '${lectureVO.lecture_price}')">
-            결제하기
-        </button>
-    </c:otherwise>
-
-</c:choose>
-
+		<%-- ============================================
+		     수강 여부에 따라 버튼 상태 변경
+		     hasPurchased > 0  → 이미 수강 중
+		     hasPurchased == 0 → 결제 가능
+		============================================= --%>
+		
+		<c:choose>
+		    <%-- 이미 수강 중인 경우: 비활성 상태로 표시 --%>
+		    <c:when test="${hasPurchased > 0}">
+		        <button class="btn-purchase purchased" disabled>
+		            수강중
+		        </button>
+		    </c:when>
+		
+		    <%-- 아직 결제하지 않은 경우: 결제 모달 오픈 --%>
+		    <c:otherwise>
+		        <button class="btn-purchase"
+		                onclick="openPaymentModal('${lectureVO.lecture_num}', '${lectureVO.lecture_price}')">
+		            결제하기
+		        </button>
+		    </c:otherwise>
+		</c:choose>
         
         <div class="action-icons">
-<!--           <div class="action-icon"><i class="far fa-heart"></i><span>좋아요</span></div> -->
           <div class="action-icon" onclick="shareKakao()">
           	<i class="far fa-share-square"></i><span>공유</span>
           </div>
-          <div class="action-icon ${lectureVO.bookmark ? 'active' : ''}" 
-               data-lecture-num="${lectureVO.lecture_num}"
-               onclick="toggleBookmark(${lectureVO.lecture_num}, this);">
-            <i class="far fa-bookmark"></i>
-            <span id="bookmarkCount">${lectureVO.bookmark_count}</span>
-          </div>
+			<c:choose>
+			    <%-- 구매한 강의는 북마크 비활성화 --%>
+			    <c:when test="${hasPurchased > 0}">
+			        <div class="action-icon purchased" 
+			             title="이미 구매한 강의입니다">
+			            <i class="fas fa-check-circle" style="color: gray;" onclick="alertBookmark()"></i>
+			            <span id="bookmarkCount">${lectureVO.bookmark_count}</span>
+			        </div>
+			    </c:when>
+			    
+			    <%-- 미구매 강의는 북마크 가능 --%>
+			    <c:otherwise>
+			        <div class="action-icon ${lectureVO.bookmark ? 'active' : ''}" 
+			             data-lecture-num="${lectureVO.lecture_num}"
+			             onclick="toggleBookmark(${lectureVO.lecture_num}, this);">
+			            <i class="far fa-bookmark"></i>
+			            <span id="bookmarkCount">${lectureVO.bookmark_count}</span>
+			        </div>
+			    </c:otherwise>
+			</c:choose>
         </div>
       </div>
     </aside>
@@ -496,14 +512,12 @@
     </div>
 </div>
 
-
-
-
-
-
-
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
+
+  function alertBookmark(){
+	  alert("이미 구매한 강의입니다. 내 강의실에서 확인하세요.");
+  }
 
   //카카오톡 공유하기
   Kakao.init('7f21ec1e9b0371f46cf7190c8d91f522');
@@ -598,6 +612,13 @@
   
   //북마크 토글 함수
   function toggleBookmark(lectureNum, btn) {
+	  
+		// 결제한 강의인지 확인
+	    if(btn.dataset.purchased === 'true') {
+	        alert('이미 구매한 강의입니다. 내 강의실에서 확인하세요.');
+	        return;
+	    }
+		
 		const isLogin = "${not empty sessionScope.user_id}" === "true";
 	     
 		if(!isLogin){
