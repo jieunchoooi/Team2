@@ -58,8 +58,9 @@ body {
     border-radius: 16px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     padding: 40px 50px;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
+    margin-bottom: 60px;
 }
 
 /* =========================== 폼 그룹 =========================== */

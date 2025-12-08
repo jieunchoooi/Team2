@@ -78,7 +78,7 @@
 			    </div>
 			
 			</div>
-			</div>
+			
 			<!-- Content Row - 월별 매출 & 인기강의 & 카테고리별 결제 -->
 			<div class="row  contentRow">
 			    <!-- 월별 매출 그래프 -->
@@ -222,7 +222,7 @@
 			        </div>
 			    </div>
 			</div>
-           
+         </div>  
 	</div>
     </div>
     <!-- End of Main Content -->

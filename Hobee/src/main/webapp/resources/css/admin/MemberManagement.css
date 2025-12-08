@@ -81,7 +81,8 @@ body {
 	
 /* =========================== 컨텐츠 래퍼 =========================== */
 .content-wrapper {
-    max-width: 1200px;
+    max-width: 1400px;
+    min-width: 1400px;
     margin: 0 auto;
 }
 
