@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.domain.AdminBoardVO;
+import com.itwillbs.domain.BoardCategoryVO;
 import com.itwillbs.domain.CommunityCategoryVO;
 import com.itwillbs.domain.CommunityCommentVO;
 import com.itwillbs.domain.CommunityContentVO;
@@ -98,10 +100,12 @@ public class CommunityController {
 	
 	     // <%-- 카테고리 메인 목록(Chip 버튼용) --%>
 	     List<CommunityContentVO> categoryMainList = communityService.getCategoryMainList();
+	     
+	     
 	     // <%-- 카테고리 말머리 목록(Chip 버튼용) --%>
-
-	     List<CommunityCategoryVO> categoryList = communityService.getCategoryList();
-	
+	     //이름이 엉켰지만 일단 사용
+	     List<AdminBoardVO> categoryList = adminBoardService.getActiveBoardList();
+	     
 	     // <%-- 인기글 목록 --%>
 	     List<CommunityContentVO> popularList = communityService.getPopularPosts();
 	
@@ -269,8 +273,8 @@ public class CommunityController {
      }
 
      // 🔥 말머리 필수
-     if (communityContentVO.getCategory_id() == null ||
-         communityContentVO.getCategory_id() == 0) {
+     if (communityContentVO.getBoard_id() == null ||
+         communityContentVO.getBoard_id() == 0) {
 
          alertBack(response, "말머리를 선택해주세요.");
          return;

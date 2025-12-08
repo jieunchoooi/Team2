@@ -73,9 +73,9 @@
                     <%-- 🔹 말머리 / 카테고리 / 작성자 (카드리스트 헤더 스타일 재사용) --%>
                     <div class="hot-tag">
 
-                        <%-- 말머리 (category_name) --%>
-                        <c:if test="${not empty ht.category_name}">
-                            <span class="post-category-pill">${ht.category_name}</span>
+                        <%-- 말머리 (board_name) --%>
+                        <c:if test="${not empty ht.board_name}">
+                            <span class="post-category-pill">${ht.board_name}</span>
                         </c:if>
 
                         <%-- 메인 카테고리 (category_main_name) --%>
@@ -199,8 +199,8 @@
 						<span class="ch-sub"> 다양한 주제로 자유롭게 소통해보세요!</span>
 					</div>
 					<!-- ================================
-     📌 필터 박스 전체
-================================ -->
+     							📌 필터 박스 전체
+				================================ -->
 					<div class="filter-box">
 
 
@@ -210,7 +210,7 @@
 
 							<c:forEach var="cm" items="${categoryMainList}">
 								<a
-									href="${pageContext.request.contextPath}/community/list?category_main_num=${cm.category_main_num}&category_id=${cri.category_id}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
+									href="${pageContext.request.contextPath}/community/list?category_main_num=${cm.category_main_num}&board_id=${cri.board_id}&sort=${cri.sort}&period=${cri.period}&searchType=${cri.searchType}&keyword=${cri.keyword}"
 									class="chip ${cri.category_main_num == cm.category_main_num ? 'active' : ''}">
 									${cm.category_main_name} </a>
 							</c:forEach>
@@ -228,12 +228,12 @@
 						<%-- 🔹 왼쪽 필터 그룹 --%>
 						<div class="filter-left">
 							<select id="categoryFilter" onchange="applyFilters()">
-								<option value="">전체</option>
+								<option value="">말머리</option>
 
 								<c:forEach var="cl" items="${categoryList}">
-									<option value="${cl.category_id}"
-										${cri.category_id == cl.category_id ? 'selected' : ''}>
-										${cl.category_name}</option>
+									<option value="${cl.board_id}"
+										${cri.board_id == cl.board_id ? 'selected' : ''}>
+										${cl.board_name}</option>
 								</c:forEach>
 							</select> <select id="sortFilter" onchange="applyFilters()">
 								<option value="latest"
@@ -314,8 +314,8 @@
 									<div class="post-header-top">
 
 										<%-- 말머리(pill) --%>
-										<c:if test="${not empty post.category_name}">
-											<span class="post-category-pill">${post.category_name}</span>
+										<c:if test="${not empty post.board_name}">
+											<span class="post-category-pill">${post.board_name}</span>
 										</c:if>
 
 										<%-- 메인 카테고리 (가운데 점으로 구분) --%>
@@ -480,38 +480,42 @@
 	<script>
 	/* 🔥 필터 적용 */
 	function applyFilters() {
-	    var url = '${pageContext.request.contextPath}/community/list?';
-	
-	    var categoryId = document.getElementById('categoryFilter').value;
-	    var mainCat     = "${cri.category_main_num}";
-	    var sort        = document.getElementById('sortFilter').value;
-	    var period      = document.getElementById('periodFilter').value;
-	    var searchType  = document.getElementById('searchType').value;
-	    var keyword     = document.getElementById('searchKeyword').value;
-	
-	    if (categoryId) url += 'category_id=' + categoryId + '&';
-	    if (mainCat)    url += 'category_main_num=' + mainCat + '&';
-	    if (sort)       url += 'sort=' + sort + '&';
-	    if (period)     url += 'period=' + period + '&';
-	    if (searchType) url += 'searchType=' + searchType + '&';
-	    if (keyword)    url += 'keyword=' + encodeURIComponent(keyword) + '&';
-	
-	    url += 'page=1';
-	    location.href = url;
-	}
+    var url = '${pageContext.request.contextPath}/community/list?';
+
+    // 기존 board_id → board_id로 변경된 값 가져오기
+    var boardId = document.getElementById('categoryFilter').value;
+
+    var mainCat     = "${cri.category_main_num}";
+    var sort        = document.getElementById('sortFilter').value;
+    var period      = document.getElementById('periodFilter').value;
+    var searchType  = document.getElementById('searchType').value;
+    var keyword     = document.getElementById('searchKeyword').value;
+
+    // 컨트롤러에서 받는 파라미터는 여전히 board_id일 가능성이 높음 → 그대로 유지
+    if (boardId) url += 'board_id=' + boardId + '&';
+    if (mainCat) url += 'category_main_num=' + mainCat + '&';
+    if (sort)    url += 'sort=' + sort + '&';
+    if (period)  url += 'period=' + period + '&';
+    if (searchType) url += 'searchType=' + searchType + '&';
+    if (keyword) url += 'keyword=' + encodeURIComponent(keyword) + '&';
+
+    url += 'page=1';
+    location.href = url;
+}
+
 	
 	/* 🔥 페이징 이동 */
 	function movePage(page) {
 	    var url = '${pageContext.request.contextPath}/community/list?';
 	
-	    var categoryId  = "${cri.category_id}";
+	    var categoryId  = "${cri.board_id}";
 	    var mainCat     = "${cri.category_main_num}";
 	    var sort        = "${cri.sort}";
 	    var period      = "${cri.period}";
 	    var searchType  = "${cri.searchType}";
 	    var keyword     = "${cri.keyword}";
 	
-	    if (categoryId) url += 'category_id=' + categoryId + '&';
+	    if (categoryId) url += 'board_id=' + categoryId + '&';
 	    if (mainCat)    url += 'category_main_num=' + mainCat + '&';
 	    if (sort)       url += 'sort=' + sort + '&';
 	    if (period)     url += 'period=' + period + '&';

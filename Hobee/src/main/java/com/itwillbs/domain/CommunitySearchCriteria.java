@@ -15,7 +15,7 @@ public class CommunitySearchCriteria {
     private int offset;   // LIMIT 시작점
 
     // 🔸 필터
-    private Integer category_id;         // 말머리 FK (community_category)
+    private Integer board_id;         // 말머리 FK (community_category)
     private Integer category_main_num;   // 메인 카테고리 FK (category_main)
 
     // 🔸 검색

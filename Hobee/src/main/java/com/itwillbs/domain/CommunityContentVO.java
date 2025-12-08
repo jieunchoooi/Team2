@@ -17,7 +17,7 @@ public class CommunityContentVO {
 
     private int user_num;
 
-    private Integer category_id;       // community_category FK
+    private Integer board_id;       // community_category FK
     private Integer category_main_num;  // category_main FK (nullable)
     private Integer lecture_num;
 
@@ -31,7 +31,8 @@ public class CommunityContentVO {
    
     // JOIN 필드
     private String user_name;
-    private String category_name;// 말머리(community_category)
+    private String board_name;// 말머리()
+    private String board_desc; // 게시판 말머리 설명
     private String category_main_name;   // 메인 카테고리(category_main)
     private String lecture_title;
     

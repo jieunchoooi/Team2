@@ -76,9 +76,9 @@
                     <%-- 🔹 말머리 / 카테고리 / 작성자 (카드리스트 헤더 스타일 재사용) --%>
                     <div class="hot-tag">
 
-                        <%-- 말머리 (category_name) --%>
-                        <c:if test="${not empty ht.category_name}">
-                            <span class="post-category-pill">${ht.category_name}</span>
+                        <%-- 말머리 (board_name) --%>
+                        <c:if test="${not empty ht.board_name}">
+                            <span class="post-category-pill">${ht.board_name}</span>
                         </c:if>
 
                         <%-- 메인 카테고리 (category_main_name) --%>
@@ -837,18 +837,18 @@ $(document).on("click", ".reply-submit", function() {
 
                 $.each(res.categoryList, function (i, c) {
 
-                    // 🔥 공지(category_id = 1)는 관리자만 허용
-                    if (c.category_id == 1) {
+                    // 🔥 공지(board_id = 1)는 관리자만 허용
+                    if (c.board_id == 1) {
                         if (!(userRole === "admin" || userRole === "super_admin")) {
                             return; // 일반 user / instructor는 공지 옵션 제외
                         }
                     }
 
                     let $opt = $("<option>")
-                        .val(c.category_id)
-                        .text(c.category_name);
+                        .val(c.board_id)
+                        .text(c.board_name);
 
-                    if (String(c.category_id) === String(res.post.category_id)) {
+                    if (String(c.board_id) === String(res.post.board_id)) {
                         $opt.prop("selected", true);
                     }
 
