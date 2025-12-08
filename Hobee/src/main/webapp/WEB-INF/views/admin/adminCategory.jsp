@@ -15,8 +15,8 @@
 }
 
 .category-management {
-    max-width: 1160px;
-    margin: 40px auto;
+    max-width: 1400px;
+    margin: 40px 50px 40px 370px;
     padding: 30px;
     background: #fff;
     border: 1px solid #ddd;
