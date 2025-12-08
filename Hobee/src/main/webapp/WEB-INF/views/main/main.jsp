@@ -2,6 +2,10 @@
    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<!-- 강의 구매이력 세션에서 조회 -->
+<c:set var="purchasedLectures" value="${sessionScope.purchasedLectures}" />
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -116,11 +120,18 @@
                         <a href="${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}" class="course-thumb-wrapper">
                            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
                               class="course-thumb" alt="${lecture.lecture_title}">
-                           <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}" 
-                           		   data-lecture-num="${lecture.lecture_num}"
-                           		   onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
-                                <i class="far fa-bookmark"></i>
-                            </button>
+<%--                            <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}"  --%>
+<%--                            		   data-lecture-num="${lecture.lecture_num}" --%>
+<%--                            		   onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);"> --%>
+<!--                                 <i class="far fa-bookmark"></i> -->
+<!--                             </button> -->
+	                      	<button class="bookmark-btn ${purchasedLectures.contains(lecture.lecture_num) ? 'purchased' : (lecture.bookmark ? 'active' : '')}"
+							        data-purchased="${purchasedLectures.contains(lecture.lecture_num)}"
+							        data-lecture-num="${lecture.lecture_num}"
+							        onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);"
+							        ${purchasedLectures.contains(lecture.lecture_num) ? 'title="이미 구매한 강의입니다"' : ''}>
+							    <i class="${purchasedLectures.contains(lecture.lecture_num) ? 'fas fa-check-circle' : 'far fa-bookmark'}"></i>
+							</button>
                         </a>
                         <div class="course-info">
                            <div class="course-title">${lecture.lecture_title}</div>
@@ -162,11 +173,13 @@
                   class="course-thumb-wrapper"> <img
                   src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
                   class="course-thumb" alt="${lecture.lecture_title}">
-                  <button class="bookmark-btn ${lecture.bookmark ? 'active' : ''}"
-                  		  data-lecture-num="${lecture.lecture_num}"
-                     	  onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);">
-                     <i class="far fa-bookmark"></i>
-                  </button>
+	                 <button class="bookmark-btn ${purchasedLectures.contains(lecture.lecture_num) ? 'purchased' : (lecture.bookmark ? 'active' : '')}"
+					        data-purchased="${purchasedLectures.contains(lecture.lecture_num)}"
+					        data-lecture-num="${lecture.lecture_num}"
+					        onclick="event.preventDefault(); toggleBookmark(${lecture.lecture_num}, this);"
+					        ${purchasedLectures.contains(lecture.lecture_num) ? 'title="이미 구매한 강의입니다"' : ''}>
+					    <i class="${purchasedLectures.contains(lecture.lecture_num) ? 'fas fa-check-circle' : 'far fa-bookmark'}"></i>
+					</button>
                </a>
                <div class="course-info">
                   <div class="course-title">${lecture.lecture_title}</div>
@@ -207,6 +220,12 @@ function searchLecture(event) {
    
 // 북마크 토글 로직
 function toggleBookmark(lectureNum, btn) {
+	
+	// 결제한 강의인지 확인
+    if(btn.dataset.purchased === 'true') {
+        alert('이미 구매한 강의입니다. 내 강의실에서 확인하세요.');
+        return;
+    }
 	
 	const isLogin = "${not empty sessionScope.user_id}" === "true";
      
