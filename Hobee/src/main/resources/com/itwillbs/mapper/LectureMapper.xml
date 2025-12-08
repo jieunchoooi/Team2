@@ -463,8 +463,13 @@
 		    DELETE FROM review
 		    WHERE review_num = #{review_num}
 		</delete>
-
-        
-
+		
+		<update id="updateReview">
+		    UPDATE review
+		    SET 
+		        review_score = #{review_score},
+		        review_content = #{review_content}
+		    WHERE review_num = #{review_num}
+		</update>
 		
 </mapper>

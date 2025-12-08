@@ -16,6 +16,75 @@ body {
   background-color: #f8f9fa;
 }
 
+/* 리뷰모달창 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background: white;
+  width: 400px;
+  padding: 20px;
+  margin: 120px auto;
+  border-radius: 10px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-edit-confirm {
+  background: #4CAF50;
+  color: white;
+}
+
+#editContent {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  resize: none;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  outline: none;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+#editContent:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* 모달 안 별점 선택 */
+.edit-stars {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.edit-star {
+  color: #ddd;
+  transition: 0.2s;
+}
+
+.edit-star.selected,
+.edit-star.hover {
+  color: #ffc107;
+}
+
+
+
 /* ===============================
    ✅ 메인 컨텐츠 영역
    =============================== */

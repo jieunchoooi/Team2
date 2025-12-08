@@ -222,7 +222,36 @@ public class MemberController {
 		return "member/review";  
 	}
 	
-	// 리뷰
+	// 리뷰 수정
+	@PostMapping("/updateReview")
+	@ResponseBody
+	public Map<String, Object> updateReview(
+	        @RequestParam("review_num") int review_num,
+	        @RequestParam("review_content") String review_content,
+	        @RequestParam("review_score") String review_score // String으로 받기!
+	) {
+
+	    Map<String, Object> response = new HashMap<>();
+
+	    try {
+	        // "5.0" 같은 문자열 → double 변환
+	        double score = Double.parseDouble(review_score);
+
+	        int result = lectureService.updateReview(review_num, review_content, score);
+
+	        response.put("success", result > 0);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.put("success", false);
+	    }
+
+	    return response;
+	}
+
+
+
+	
+	// 리뷰 삭제
 	@PostMapping("/deleteReview")
 	@ResponseBody
 	public Map<String, Object> deleteReview(int review_num) {
@@ -232,8 +261,6 @@ public class MemberController {
 		
 		Map<String, Object> response = new HashMap<>();
 		response.put("success", result > 0);
-		
-		
 		
 		return response;  
 	}

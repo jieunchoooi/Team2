@@ -136,6 +136,12 @@ public class LectureService {
 		return lectureMapper.deleteReview(review_num);
 	}
 
+	public int updateReview(int review_num, String review_content, double review_score) {
+	    System.out.println("LectureService updateReview()");
+	    return lectureMapper.updateReview(review_num, review_content, review_score);
+	}
+
+
 
 
 

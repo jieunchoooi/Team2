@@ -419,7 +419,6 @@ main {
 			<i class="fa-solid fa-magnifying-glass"></i>
 			<input type="text" id="searchInput" placeholder="강의를 검색해보세요" onkeydown="if(event.key === 'Enter'){searchLecture();}">
 		</div>
-	
 		
 		<!-- 🔹 전체 강의 -->
 		<div class="section">
