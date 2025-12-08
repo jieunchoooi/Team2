@@ -64,7 +64,7 @@
                 <th>No</th>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>게시판</th>
+                <th>머리말</th>
                 <th>등록일</th>
                 <th>조회수</th>
                 <th>노출</th>

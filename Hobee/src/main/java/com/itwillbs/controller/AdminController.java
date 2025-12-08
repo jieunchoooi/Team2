@@ -758,7 +758,6 @@ public class AdminController {
 	   // 전체 카테고리 목록
 	   List<Map<String, Object>> categoryList = adminService.getcategoryList();
 	   
-	   
 	   // 카테고리별 결제 통계(전월)
        List<Map<String, Object>> categoryStats = adminService.getCategoryDetailPaymentStats();
        
@@ -782,15 +781,43 @@ public class AdminController {
        // 월별 매출통계
        List<Map<String, Object>> monthlySales = adminService.monthlySales();
        
+       // 이번달 매출
+       int monthsSales = adminService.monthsSales();
+       // 전년도 월 평균 대비 이번달 매출 (%)
+       int averageSales = adminService.averageSales();
+       // 소수점 1자리까지 백분율 계산
+       double percent = ((double)(monthsSales - averageSales) / averageSales) * 100;
+       // 소수점 1자리로 반올림
+       double percentRounded = Math.round(percent * 10) / 10.0;
+       // 총강의수
        int classCount = adminService.okClassCount1();
+       // 총회원수
+       int countMemberList1 = adminService.countMemberList1();
+       // 탈퇴회원수
+       int dcount1 = adminService.inactiveMemberCount1();
+       // 총강사수
+       int totalcount1 = adminService.countTeacherList1();
+       // 결제된 강의수(이번달)
+       int lectureSold = adminService.lectureSold(); 
+       // 환불된 강의수(이번달)
+       int lectureRefunded = adminService.lectureRefunded();
+       // 신고관리(미처리)
+       int pending = adminService.declaration();
 
-       
        
        model.addAttribute("categoryList", categoryList);
        model.addAttribute("categoryStats", categoryStats);
        model.addAttribute("bestClassTop10", bestClassTop10);
        model.addAttribute("monthlySales", monthlySales);
+       model.addAttribute("monthsSales", monthsSales);
+       model.addAttribute("lectureSold", lectureSold);
+       model.addAttribute("percentRounded", percentRounded);
        model.addAttribute("classCount", classCount);
+       model.addAttribute("countMemberList1", countMemberList1);
+       model.addAttribute("dcount1", dcount1);
+       model.addAttribute("totalcount1", totalcount1);
+       model.addAttribute("lectureRefunded", lectureRefunded);
+       model.addAttribute("pending", pending);
        
        return "admin/dashboard";
    }

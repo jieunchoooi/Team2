@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>강의 등록 | Hobee Admin</title>
+<title>강의 수정 | Hobee Admin</title>
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/member/memberSidebar.css">
 <link rel="stylesheet"

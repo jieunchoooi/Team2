@@ -5,22 +5,83 @@
 
 <mapper namespace="com.itwillbs.mapper.LoginHistoryMapper">
 
-    <!-- 1) 로그인 기록 저장 -->
+
+    <!-- ==========================================================
+         1) 기본 로그인 기록 저장 (중복 검사 없이 무조건 저장)
+    ========================================================== -->
     <insert id="insertLoginHistory">
-        INSERT INTO login_history (user_id, device_info, location)
-        VALUES (#{user_id}, #{device_info}, #{location})
+        INSERT INTO login_history (
+            user_id,
+            login_time,
+            device_info,
+            location
+        )
+        VALUES (
+            #{user_id},
+            NOW(),
+            #{device_info},
+            #{location}
+        )
     </insert>
 
-    <!-- 2) 최근 로그인 기기 3개 조회 -->
-    <select id="getRecentLoginDevices" resultType="string">
-        SELECT CONCAT(device_info, ' (', DATE_FORMAT(login_time, '%Y-%m-%d %H:%i'), ')')
+
+    <!-- ==========================================================
+         2) 중복 기기 저장 방지용 ( 같은 user_id + device_info 있으면 insert 안함 )
+    ========================================================== -->
+    <insert id="insertLoginHistoryIfNotDuplicate">
+        INSERT INTO login_history (
+            user_id,
+            login_time,
+            device_info,
+            location
+        )
+        SELECT
+            #{user_id},
+            NOW(),
+            #{device_info},
+            #{location}
+        FROM DUAL
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM login_history
+            WHERE user_id = #{user_id}
+              AND device_info = #{device_info}
+        )
+    </insert>
+
+
+    <!-- ==========================================================
+         3) 최근 로그인 기기 1개 (중복 허용)
+    ========================================================== -->
+    <select id="getLastDevice" resultType="string">
+        SELECT device_info
         FROM login_history
         WHERE user_id = #{user_id}
         ORDER BY login_time DESC
-        LIMIT 3
+        LIMIT 1
     </select>
 
-    <!-- 3) 최근 로그인 지역 1개 조회 -->
+
+    <!-- ==========================================================
+         4) 최근 로그인 기기 목록 5개 (중복 제거)
+    ========================================================== -->
+    <!-- 최근 로그인 기기 5개 (중복 제거 + 최신순 정렬 유지) -->
+<select id="getRecentLoginDevices" resultType="string">
+    SELECT DISTINCT device_info
+    FROM (
+        SELECT device_info
+        FROM login_history
+        WHERE user_id = #{user_id}
+        ORDER BY login_time DESC
+        LIMIT 30
+    ) AS t
+    LIMIT 5
+</select>
+
+
+    <!-- ==========================================================
+         5) 최근 로그인 지역 1개
+    ========================================================== -->
     <select id="getLastLocation" resultType="string">
         SELECT location
         FROM login_history
@@ -28,5 +89,6 @@
         ORDER BY login_time DESC
         LIMIT 1
     </select>
+
 
 </mapper>

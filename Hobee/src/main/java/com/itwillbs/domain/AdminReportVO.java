@@ -28,4 +28,6 @@ public class AdminReportVO {
     private String post_title;      // community_content.title
     private String post_content;    // community_content.content
     private String comment_content; // comment.content
+    private String user_id;
+    private String user_name;
 }

@@ -152,6 +152,22 @@ public interface AdminMapper {
 
 	public int okClassCount1();
 
+	public int countMemberList1();
+
+	public int inactiveMemberCount1();
+
+	public int countTeacherList1();
+
+	public int monthsSales();
+
+	public int averageSales();
+
+	public int lectureSold();
+
+	public int lectureRefunded();
+
+	public int declaration();
+
 
 
 	

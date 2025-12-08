@@ -62,7 +62,7 @@
 				 <!-- 기존: 게시판 목록 -->
 				<div class="menu-item ${page eq 'boardList' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'">
-					📋 <span>게시판 목록</span>
+					📋 <span>머리말 편집</span>
 				</div>
 				<!-- ⭐ 필수: 게시글 관리 -->
                 <div class="menu-item ${page eq 'postList' ? 'active' : ''}"

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwillbs.domain.AdminPaymentCriteria;
@@ -22,7 +23,13 @@ public class AdminPaymentController {
     @Inject
     private AdminPaymentService adminPaymentService;
 
-    
+	@ModelAttribute("page")
+	public String setPageIdentifier(HttpServletRequest req) {
+	    String uri = req.getRequestURI();
+
+	    if (uri.contains("adminPaymentList")) return "paymentList";
+	    return "";
+	}
 
     @GetMapping("/adminPaymentList")
     public String list(HttpServletRequest request, Model model,

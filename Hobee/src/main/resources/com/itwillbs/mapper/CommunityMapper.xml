@@ -570,6 +570,7 @@
 
 
 
+
     <!-- ======================================================
          12. 댓글 좋아요
     ====================================================== -->
@@ -715,12 +716,13 @@
     <!-- ======================================================
          21. 신고 INSERT
     ====================================================== -->
-    <insert id="insertReport"
-            parameterType="com.itwillbs.domain.CommunityReportVO">
-        INSERT INTO community_report
-        (reporter_id, post_id, comment_id, reason, created_at, is_done)
-        VALUES
-        (#{reporter_id}, #{post_id}, #{comment_id}, #{reason}, NOW(), 0)
-    </insert>
+
+	<insert id="insertReport" parameterType="com.itwillbs.domain.CommunityReportVO">
+		INSERT INTO community_report
+		(user_num, post_id, comment_id, reason, created_at, is_done)
+		VALUES
+		(#{user_num}, #{post_id}, #{comment_id}, #{reason}, NOW(), 0)
+	</insert>
+
 
 </mapper>

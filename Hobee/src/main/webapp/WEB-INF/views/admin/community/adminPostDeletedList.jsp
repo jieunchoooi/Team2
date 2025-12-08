@@ -34,7 +34,7 @@
                     <th class="col-no">No</th>
                     <th class="col-title">제목</th>
                     <th class="col-writer">작성자</th>
-                    <th class="col-board">게시판</th>
+                    <th class="col-board">머리말</th>
                     <th class="col-date">등록일</th>
                     <th class="col-views">조회수</th>
                     <th class="col-manage">관리</th>
