@@ -1039,8 +1039,19 @@
         WHERE action = 'PENDING'
 	</select>
 	
+	<!-- 승인 요청된 강의 갯수 대시보드 -->
+	<select id="askClassCount1" resultType="java.lang.Integer">
+		select count(*) from lecture
+		where status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete'
+	</select>
 	
-	
+	<!-- 이번달 가입자(대시보드) -->
+	<select id="newPerson" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM user
+		WHERE MONTH(created_at) = MONTH(CURRENT_DATE())
+		  AND YEAR(created_at) = YEAR(CURRENT_DATE());
+	</select>
 	
 	
 	

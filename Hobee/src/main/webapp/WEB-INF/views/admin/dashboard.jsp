@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/admin/adminSidebar.css">
     <!-- Custom styles for this template-->
     <link href="${ pageContext.request.contextPath }/resources/css/admin/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
 </head>
 
 <body id="page-top">
@@ -32,10 +34,6 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <div class="box" >
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">대시보드</h1>
-            </div>
 
 <!-- Content Row - 매출 & 신고 & 인기강의 -->
 			<div class="row">
@@ -46,7 +44,7 @@
 			                <div class="row no-gutters align-items-center">
 			                    <div class="col mr-2">
 			                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-			                            이번달 매출 (전년도 월 평균 대비)</div>
+			                            월간 매출 (전년도 월 평균 대비)</div>
 			                        <div class="h5 mb-0 font-weight-bold text-gray-800">
 			                        <fmt:formatNumber value="${monthsSales}" type="number" /></div>
 			                        <span class="red"> ${percentRounded} %</span>
@@ -71,6 +69,41 @@
 			                    </div>
 			                    <div class="col-auto">
 			                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <!-- Pending Requests Card -->
+			    <div class="col-xl-3 col-md-6 mb-4">
+			        <div class="card border-left-warning shadow h-100 py-2 class1">
+			            <div class="card-body">
+			                <div class="row no-gutters align-items-center">
+			                    <div class="col mr-2">
+			                        <div class="text-xs font-weight-bold text-class text-uppercase mb-1">
+			                            요청된 강의 수</div>
+			                        <div class="h5 mb-0 font-weight-bold text-gray-800 yellow">${askClassCount1}</div>
+			                    </div>
+			                    <div class="col-auto">
+			                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <div class="col-xl-3 col-md-6 mb-4">
+			        <div class="card border-left-warning shadow h-100 py-2">
+			            <div class="card-body">
+			                <div class="row no-gutters align-items-center">
+			                    <div class="col mr-2">
+			                        <div class="text-xs font-weight-bold text-person text-uppercase mb-1">
+			                           	신규 가입자(이번달)</div>
+			                        <div class="h5 mb-0 font-weight-bold text-gray-800 green">${newPerson}</div>
+			                    </div>
+			                    <div class="col-auto">
+			                         <i class="fa-solid fa-user-plus fa-2x text-gray-300"></i>
 			                    </div>
 			                </div>
 			            </div>
@@ -108,36 +141,36 @@
 			                <div class="chart-pie pt-2 pb-2">
 			                    <canvas id="categoryPieChart"></canvas>
 			                </div>
-			                <div class="mt-3 text-center small">
-			                    <c:forEach items="${categoryList}" var="category" varStatus="status">
-			                        <span class="mr-2">
-			                            <c:choose>
-			                                <c:when test="${status.index == 0}">
-			                                    <i class="fas fa-circle text-primary"></i>
-			                                </c:when>
-			                                <c:when test="${status.index == 1}">
-			                                    <i class="fas fa-circle text-success"></i>
-			                                </c:when>
-			                                <c:when test="${status.index == 2}">
-			                                    <i class="fas fa-circle text-info"></i>
-			                                </c:when>
-			                                <c:when test="${status.index == 3}"><br>
-			                                    <i class="fas fa-circle text-warning"></i>
-			                                </c:when>
-			                                <c:when test="${status.index == 4}">
-			                                    <i class="fas fa-circle" style="color: #e74a3b;"></i>
-			                                </c:when>
-			                                <c:when test="${status.index == 5}">
-			                                    <i class="fas fa-circle" style="color: #858796;"></i>
-			                                </c:when>
-			                                <c:otherwise>
-			                                    <i class="fas fa-circle" style="color: #5a5c69;"></i>
-			                                </c:otherwise>
-			                            </c:choose>
-			                            ${category.categoryName}
-			                        </span>
-			                    </c:forEach>
-			                </div>
+			               <div class="mt-3 text-center small">
+							    <c:forEach items="${categoryList}" var="category" varStatus="status">
+							        <span class="mr-2">
+							            <c:choose>
+							                <c:when test="${status.index == 0}">
+							                    <i class="fas fa-circle" style="color: #4e73df;"></i>
+							                </c:when>
+							                <c:when test="${status.index == 1}">
+							                    <i class="fas fa-circle" style="color: #1cc88a;"></i>
+							                </c:when>
+							                <c:when test="${status.index == 2}">
+							                    <i class="fas fa-circle" style="color: #36b9cc;"></i>
+							                </c:when>
+							                <c:when test="${status.index == 3}"><br>
+							                    <i class="fas fa-circle" style="color: #f6c23e;"></i>
+							                </c:when>
+							                <c:when test="${status.index == 4}">
+							                    <i class="fas fa-circle" style="color: #e74a3b;"></i>
+							                </c:when>
+							                <c:when test="${status.index == 5}">
+							                    <i class="fas fa-circle" style="color: #858796;"></i>
+							                </c:when>
+							                <c:otherwise>
+							                    <i class="fas fa-circle" style="color: #5a5c69;"></i>
+							                </c:otherwise>
+							            </c:choose>
+							            ${category.categoryName}
+							        </span>
+							    </c:forEach>
+							</div>
 			            </div>
 			        </div>
 			    </div>
@@ -208,7 +241,7 @@
 			    <div class="col-lg-2 col-md-6 mb-4">
 			        <div class="card bg-success text-white shadow">
 			            <div class="card-body color5" id="color">
-			                결제된 강의수(이번달)
+			                결제된 강의수(월간)
 			                <div class="text-white-50 small">${lectureSold}</div>
 			            </div>
 			        </div>
@@ -216,7 +249,7 @@
 			    <div class="col-lg-2 col-md-6 mb-4">
 			        <div class="card bg-danger text-white shadow">
 			            <div class="card-body color6" id="color">
-			                환불된 강의수(이번달)
+			                환불된 강의수(월간)
 			                <div class="text-white-50 small">${lectureRefunded}</div>
 			            </div>
 			        </div>
@@ -260,6 +293,7 @@ let color3 = document.querySelector(".color3");
 let color4 = document.querySelector(".color4");
 let color5 = document.querySelector(".color5");
 let color6 = document.querySelector(".color6");
+let class1 = document.querySelector(".class1");
 
 // 총 강의수 
 color1.onclick = function(){
@@ -284,6 +318,10 @@ color5.onclick = function(){
 // 환불 강의수
 color6.onclick = function(){
 	location.href = "${pageContext.request.contextPath}/admin/adminPaymentList?viewType=payment&merchantUid=&period=&startDate=&endDate=&status=refunded";
+}
+// 요청된 강의수
+class1.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminClassList?filter=ask";
 }
 
 
@@ -311,18 +349,59 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
-// 카테고리 데이터 준비
+//전체 카테고리와 색상 매핑
+var allCategories = [];
+var categoryColorMap = {};
+
+<c:forEach items="${categoryList}" var="category" varStatus="status">
+    var categoryName = "${category.categoryName}";
+    allCategories.push(categoryName);
+    
+    <c:choose>
+        <c:when test="${status.index == 0}">
+            categoryColorMap[categoryName] = '#4e73df';
+        </c:when>
+        <c:when test="${status.index == 1}">
+            categoryColorMap[categoryName] = '#1cc88a';
+        </c:when>
+        <c:when test="${status.index == 2}">
+            categoryColorMap[categoryName] = '#36b9cc';
+        </c:when>
+        <c:when test="${status.index == 3}">
+            categoryColorMap[categoryName] = '#f6c23e';
+        </c:when>
+        <c:when test="${status.index == 4}">
+            categoryColorMap[categoryName] = '#e74a3b';
+        </c:when>
+        <c:when test="${status.index == 5}">
+            categoryColorMap[categoryName] = '#858796';
+        </c:when>
+        <c:otherwise>
+            categoryColorMap[categoryName] = '#5a5c69';
+        </c:otherwise>
+    </c:choose>
+</c:forEach>
+
+// DB에서 가져온 실제 데이터를 맵으로 저장
+var statsMap = {};
+<c:forEach items="${categoryStats}" var="stat">
+    statsMap["${stat.categoryName}"] = ${stat.paymentCount};
+</c:forEach>
+
+// 모든 카테고리에 대해 데이터 생성 (없으면 0)
 var categoryLabels = [];
 var categoryData = [];
-var categoryColors = ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796', '#5a5c69'];
+var categoryColors = [];
 
-<c:forEach items="${categoryStats}" var="stat">
-    categoryLabels.push("${stat.categoryName}");
-    categoryData.push(${stat.paymentCount});
-</c:forEach>
+allCategories.forEach(function(categoryName) {
+    categoryLabels.push(categoryName);
+    categoryData.push(statsMap[categoryName] || 0); // ⭐ 데이터 없으면 0
+    categoryColors.push(categoryColorMap[categoryName]);
+});
 
 console.log("categoryLabels:", categoryLabels);
 console.log("categoryData:", categoryData);
+console.log("categoryColors:", categoryColors);
 
 // Pie Chart 생성
 var ctx = document.getElementById("categoryPieChart");
@@ -332,8 +411,8 @@ var categoryPieChart = new Chart(ctx, {
         labels: categoryLabels,
         datasets: [{
             data: categoryData,
-            backgroundColor: categoryColors.slice(0, categoryData.length),
-            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#f4b619', '#d12e1f', '#6c6e7e', '#484a54'],
+            backgroundColor: categoryColors,
+            hoverBackgroundColor: categoryColors,
             hoverBorderColor: "rgba(234, 236, 244, 1)",
         }],
     },
@@ -360,8 +439,6 @@ var categoryPieChart = new Chart(ctx, {
         cutoutPercentage: 80,
     },
 });
-
-// 월별 매출 라인 차트
 // 월별 매출 데이터 준비
 var monthlyLabels = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
 var monthlyData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // 초기값 0

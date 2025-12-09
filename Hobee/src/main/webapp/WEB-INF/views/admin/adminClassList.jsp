@@ -18,10 +18,10 @@
 	<jsp:include page="../include/header.jsp"></jsp:include>
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
-		<div class="main-header">
-			<h1>강의 목록</h1>
-		</div>
-		
+<!-- 		<div class="main-header"> -->
+<!-- 			<h1>강의 목록</h1> -->
+<!-- 		</div> -->
+			
 		<div class="stats-container">
 			<div class="stat-card ${filter == 'all' ? 'ok' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminClassList?filter=all'">
 				<h3>총 강의 수</h3>
@@ -77,6 +77,14 @@
 					</tr>
 				</thead>
 				<tbody>
+				    <!-- 강의 목록이 비어 있을 때 -->
+				    <c:if test="${empty lectureList}">
+				        <tr>
+				            <td colspan="8" style="text-align:center; padding: 20px; color:#777;">
+				                강의가 없습니다.
+				            </td>
+				        </tr>
+				    </c:if>
 					<c:forEach var="lectureVO" items="${lectureList}">
 						<tr>
 							<td>${lectureVO.lecture_num}</td>
@@ -115,7 +123,6 @@
 			                <td>${lectureVO.created_at}</td>
 							<td>
 								<button type="button" class="btn edit" data-num="${lectureVO.lecture_num}">상세보기</button>
-<%-- 								<button class="btn btn-delete" data-num="${lectureVO.lecture_num}">삭제</button> --%>
 								
 							</td>
 						</tr>

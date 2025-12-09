@@ -803,7 +803,10 @@ public class AdminController {
        int lectureRefunded = adminService.lectureRefunded();
        // 신고관리(미처리)
        int pending = adminService.declaration();
-
+       // 승인 요청 강의
+       int askClassCount1 = adminService.askClassCount1();
+       // 신규가입자 (이번달)
+       int newPerson = adminService.newPerson();
        
        model.addAttribute("categoryList", categoryList);
        model.addAttribute("categoryStats", categoryStats);
@@ -818,6 +821,8 @@ public class AdminController {
        model.addAttribute("totalcount1", totalcount1);
        model.addAttribute("lectureRefunded", lectureRefunded);
        model.addAttribute("pending", pending);
+       model.addAttribute("askClassCount1", askClassCount1);
+       model.addAttribute("newPerson", newPerson);
        
        return "admin/dashboard";
    }

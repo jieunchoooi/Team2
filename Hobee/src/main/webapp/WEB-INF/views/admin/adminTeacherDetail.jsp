@@ -21,7 +21,7 @@
 	<main class="main-content">
 		<!-- 헤더 -->
 		<div class="main-header">
-			<h1>강사 상세 정보</h1>
+			<h1></h1>
 			<button class="btn-back" onclick="history.back()">← 목록으로</button>
 		</div>
 

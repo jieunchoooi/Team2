@@ -168,6 +168,10 @@ public interface AdminMapper {
 
 	public int declaration();
 
+	public int askClassCount1();
+
+	public int newPerson();
+
 
 
 	
