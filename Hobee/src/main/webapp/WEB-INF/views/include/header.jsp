@@ -92,7 +92,7 @@
         </div>
     </nav>
 
-	<button type="button" class="modal1">모달</button>
+<!-- 	<button type="button" class="modal1">모달</button> -->
 </header>
 
 <!-- 로그인 모달 include -->
@@ -102,73 +102,73 @@
 <jsp:include page="/WEB-INF/views/include/insertModal.jsp"/>
 
 <!-- 태그 선택 모달 include -->
-<jsp:include page="/WEB-INF/views/include/tagSelectionModal.jsp"/>
+<%-- <jsp:include page="/WEB-INF/views/include/tagSelectionModal.jsp"/> --%>
 
 <!-- ===========================
      🔵 회원가입 Progress 전역 함수
 =========================== -->
 <script>
-//스크립트 마지막 부분 (document.ready 안쪽)에 추가
+/*스크립트 마지막 부분 (document.ready 안쪽)에 추가
 
 /* ===============================
    테스트용 모달 버튼
 ================================ */
-$(".modal1").click(function() {
-    $("#tagSelectionModal").fadeIn().css("display", "flex");
-});
+// $(".modal1").click(function() {
+//     $("#tagSelectionModal").fadeIn().css("display", "flex");
+// });
 
 
 
-function updateSignupProgress() {
-    let progress = 0;
+// function updateSignupProgress() {
+//     let progress = 0;
 
-    const id = $("#ins_user_id").val().trim();
-    const idValid = /^[a-z][a-z0-9]{5,7}$/.test(id);
-    if (idValid) {
-        $("#stepId").removeClass().addClass("step-item complete");
-        progress += 20;
-    } else {
-        $("#stepId").removeClass().addClass("step-item active");
-    }
+//     const id = $("#ins_user_id").val().trim();
+//     const idValid = /^[a-z][a-z0-9]{5,7}$/.test(id);
+//     if (idValid) {
+//         $("#stepId").removeClass().addClass("step-item complete");
+//         progress += 20;
+//     } else {
+//         $("#stepId").removeClass().addClass("step-item active");
+//     }
 
-    const pw = $("#ins_user_password").val();
-    const pwValid = pw.length >= 8;
-    if (pwValid) {
-        $("#stepPw").removeClass().addClass("step-item complete");
-        progress += 20;
-    } else {
-        $("#stepPw").removeClass().addClass("step-item active");
-    }
+//     const pw = $("#ins_user_password").val();
+//     const pwValid = pw.length >= 8;
+//     if (pwValid) {
+//         $("#stepPw").removeClass().addClass("step-item complete");
+//         progress += 20;
+//     } else {
+//         $("#stepPw").removeClass().addClass("step-item active");
+//     }
 
-    const phone = $("#ins_user_phone").val();
-    const phoneValid = /^010-\d{4}-\d{4}$/.test(phone);
-    if (phoneValid) {
-        $("#stepPhone").removeClass().addClass("step-item complete");
-        progress += 20;
-    } else {
-        $("#stepPhone").removeClass().addClass("step-item active");
-    }
+//     const phone = $("#ins_user_phone").val();
+//     const phoneValid = /^010-\d{4}-\d{4}$/.test(phone);
+//     if (phoneValid) {
+//         $("#stepPhone").removeClass().addClass("step-item complete");
+//         progress += 20;
+//     } else {
+//         $("#stepPhone").removeClass().addClass("step-item active");
+//     }
 
-    const addr = $("#ins_user_address1").val();
-    const addrValid = addr.trim() !== "";
-    if (addrValid) {
-        $("#stepAddress").removeClass().addClass("step-item complete");
-        progress += 20;
-    } else {
-        $("#stepAddress").removeClass().addClass("step-item active");
-    }
+//     const addr = $("#ins_user_address1").val();
+//     const addrValid = addr.trim() !== "";
+//     if (addrValid) {
+//         $("#stepAddress").removeClass().addClass("step-item complete");
+//         progress += 20;
+//     } else {
+//         $("#stepAddress").removeClass().addClass("step-item active");
+//     }
 
-    const agreeValid = $(".ins-agree-item:checked").length === $(".ins-agree-item").length;
-    if (agreeValid) {
-        $("#stepAgree").removeClass().addClass("step-item complete");
-        progress += 20;
-    } else {
-        $("#stepAgree").removeClass().addClass("step-item active");
-    }
+//     const agreeValid = $(".ins-agree-item:checked").length === $(".ins-agree-item").length;
+//     if (agreeValid) {
+//         $("#stepAgree").removeClass().addClass("step-item complete");
+//         progress += 20;
+//     } else {
+//         $("#stepAgree").removeClass().addClass("step-item active");
+//     }
 
-    $("#progressFill").css("width", progress + "%");
-    $("#progressPercent").text(progress + "%");
-}
+//     $("#progressFill").css("width", progress + "%");
+//     $("#progressPercent").text(progress + "%");
+// }
 </script>
 
 <!-- ===========================================
@@ -184,12 +184,13 @@ $(document).ready(function () {
     -------------------------------------------------- */
     $("#openLoginModal").click(function(e) {
         e.preventDefault();
-
+		console.log("클릭테스트")
         openLoginModal();
     });
 
     // 로그인 모달 열기
     window.openLoginModal = function() {
+    	console.log("로그인 모달 오픈 테스트")
         $("#loginModal").fadeIn().css("display", "flex");
         $("#loginForm input[name='user_id']").focus();
     }
@@ -339,10 +340,10 @@ $(document).ready(function () {
             }
             
             
-            // 테스트 모달
-            $(".modal1").click(function() {
-                $("#tagSelectionModal").fadeIn().css("display", "flex");
-            });
+//             // 테스트 모달
+//             $(".modal1").click(function() {
+//                 $("#tagSelectionModal").fadeIn().css("display", "flex");
+//             });
         });
     }
 
