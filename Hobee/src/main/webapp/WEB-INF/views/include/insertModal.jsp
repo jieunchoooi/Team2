@@ -9,6 +9,8 @@
         <span class="insert-close">×</span>
 
         <h2 class="insert-title">회원가입</h2>
+<!--         	<button type="button" class="modal1">모달</button> -->
+        
         <!-- 회원구분 -->
         <div class="signup-role-box">
             <button type="button" class="signup-role-tab active" data-role="user">일반회원</button>
@@ -212,6 +214,15 @@
 // ============================
 // Daum 주소검색 (레이어 방식)
 // ============================
+//스크립트 마지막 부분 (document.ready 안쪽)에 추가
+
+/* ===============================
+   테스트용 모달 버튼
+================================ */
+// $(".modal1").click(function() {
+//     $("#tagSelectionModal").fadeIn().css("display", "flex");
+// });
+
 
 // 레이어 닫기
 function closeDaumPostLayer() {
