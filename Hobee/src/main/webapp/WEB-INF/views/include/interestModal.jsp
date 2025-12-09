@@ -12,7 +12,7 @@
         <h2 class="tag-title">관심 분야 선택</h2>
         <p class="tag-subtitle">관심있는 분야를 선택해주세요 (최대 5개)</p>
 
-        <form id="tagForm" action="${pageContext.request.contextPath}/user/saveTags">
+        <form id="tagForm" action="${pageContext.request.contextPath}/gpt/interest">
             <input type="hidden" id="tag_user_id" name="user_id">
             
             <!-- 🔥 동적으로 로드될 영역 -->
@@ -189,25 +189,32 @@ const contextPath = "${pageContext.request.contextPath}";
 
 // 🔥 태그 모달을 여는 전역 함수
 window.openTagModal = function(userId) {
+    // user_id 설정
     $("#tag_user_id").val(userId);
+
+    // 모달 열기
     $("#tagSelectionModal").fadeIn().css("display", "flex");
+
+    // 관심사 데이터 로드
     loadInterests();
 };
 
-// Interest 데이터 로드 함수
+// 🔥 관심사 데이터 로드 함수
 function loadInterests() {
     $.ajax({
-        url: contextPath + "/user/getInterests",
-        type: "GET",
+        url: contextPath + "/user/getInterests", // 관심사 리스트 API
+        type: "GET", // GET으로 변경
         dataType: "json",
         success: function(interests) {
             const grid = $("#interestTagGrid");
             grid.empty();
+
             if (!interests || interests.length === 0) {
                 grid.html('<div class="loading-spinner">등록된 관심 분야가 없습니다.</div>');
                 return;
             }
-            // 동적 태그 생성 (String 기준)
+
+            // 동적 태그 생성 (String 배열 기준)
             interests.forEach(function(interestName) {
                 const tagHtml = 
                     '<label class="tag-item">' +
@@ -227,7 +234,7 @@ function loadInterests() {
 }
 
 $(document).ready(function() {
-    // 최대 5개 선택 제한
+    // 🔹 최대 5개 선택 제한
     $(document).on("change", "input[name='tags']", function() {
         const checkedCount = $("input[name='tags']:checked").length;
         if (checkedCount > 5) {
@@ -239,22 +246,37 @@ $(document).ready(function() {
         }
     });
 
-    // 태그 모달 닫기
-    $(".tag-close, #skipTagBtn").click(() => { $("#tagSelectionModal").fadeOut(); });
+    // 🔹 모달 닫기
+    $(".tag-close, #skipTagBtn").click(() => {
+        $("#tagSelectionModal").fadeOut();
+    });
 
-    // 태그 저장
+    // 🔹 관심사 저장
     $("#saveTagBtn").click(function() {
         const userId = $("#tag_user_id").val();
-        if (!userId) { $("#tagError").text("사용자 정보가 없습니다."); return; }
+        if (!userId) {
+            $("#tagError").text("사용자 정보가 없습니다.");
+            return;
+        }
 
-        const selectedTags = $("input[name='tags']:checked").map(function() { return $(this).val(); }).get();
-        if (selectedTags.length === 0) { $("#tagError").text("최소 1개 이상 선택해주세요."); return; }
+        // 선택된 태그 배열
+        const selectedTags = $("input[name='tags']:checked").map(function() {
+            return $(this).val();
+        }).get();
+
+        if (selectedTags.length === 0) {
+            $("#tagError").text("최소 1개 이상 선택해주세요.");
+            return;
+        }
 
         $.ajax({
-            url: contextPath + "/user/saveTags",
+            url: contextPath + "/gpt/interest", // 관심사 저장 컨트롤러
             type: "POST",
-            data: { user_id: userId, tags: selectedTags },
-            traditional: true,
+            data: { 
+                user_id: userId, 
+                tags: selectedTags 
+            },
+            traditional: true, // 배열 전송
             success: function(response) {
                 $("#tagSelectionModal").fadeOut();
                 if (typeof Swal !== 'undefined') {
@@ -277,3 +299,4 @@ $(document).ready(function() {
     });
 });
 </script>
+
