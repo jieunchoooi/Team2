@@ -18,7 +18,7 @@
             <input type="text" name="user_id" class="login-input" placeholder="아이디">
          <div class="pw-row">
    			<input type="password" name="user_password" id="login_pw" class="login-input" placeholder="비밀번호">
-    		<span id="togglePw" class="pw-icon">👁</span>
+<!--     		<span id="togglePw" class="pw-icon">👁</span> -->
 		</div>
 
 

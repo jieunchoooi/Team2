@@ -57,24 +57,14 @@ public class UserController {
     @PostMapping("/insertAjax")
     @ResponseBody
     public Map<String, Object> insertAjax(@ModelAttribute UserVO userVO) {
-    	System.out.println("1");
         Map<String, Object> result = new HashMap<>();
-//
-//        // 아이디 체크
-//        if (userService.selectUserById(userVO.getUser_id()) != null) {
-//        	System.out.println("2");
-//        	System.out.println(userVO.getUser_id());
+
+//        // 이메일 체크
+//        if (userService.checkEmail(userVO.getUser_email()) > 0) {
 //            result.put("result", "fail");
-//            result.put("message", "이미 존재하는 아이디입니다.");
+//            result.put("message", "이미 등록된 이메일입니다.");
 //            return result;
 //        }
-
-        // 이메일 체크
-        if (userService.checkEmail(userVO.getUser_email()) > 0) {
-            result.put("result", "fail");
-            result.put("message", "이미 등록된 이메일입니다.");
-            return result;
-        }
 
         // 비밀번호 정규식 검사
         String pwPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^*])[A-Za-z\\d!@#$%^*]{8,12}$";
@@ -102,15 +92,30 @@ public class UserController {
         userService.insertUser(userVO);
 
         result.put("result", "success");
+        result.put("user_id", userVO.getUser_id());  //관심사 저장에 필요
+        result.put("next_step", "tag_selection");     //다음 단계 표시
         return result;
     }
 
+    // 아이디 체크
     @PostMapping("/checkId")
     @ResponseBody
     public String checkId(@RequestParam("user_id") String user_id) {
         System.out.println("UserController checkId(): " + user_id);
         
         if (userService.selectUserById(user_id) != null) {
+            return "unavailable";  // 사용 불가
+        }
+        return "available";  // 사용 가능
+    }
+    
+// 이메일 체크
+    @GetMapping("/checkEmail")
+    @ResponseBody
+    public String checkEmail(@RequestParam("user_email") String user_email) {
+        System.out.println("UserController checkEmail(): " + user_email);
+        
+        if (userService.checkEmail(user_email) > 0) {
             return "unavailable";  // 사용 불가
         }
         return "available";  // 사용 가능

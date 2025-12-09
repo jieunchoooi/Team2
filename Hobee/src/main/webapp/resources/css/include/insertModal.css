@@ -113,12 +113,10 @@ label {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
 }
 
 .input-row .insert-input {
   flex: 1;
-  margin-bottom: 14px;
 }
 
 .check-btn {
@@ -441,9 +439,7 @@ label {
 }
 
 #phoneMsg {
-    margin-top: 5px;
     font-size: 13px;
-    font-weight: 600;
 }
 
 
