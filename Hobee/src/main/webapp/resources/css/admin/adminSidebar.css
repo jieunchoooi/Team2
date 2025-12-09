@@ -73,11 +73,14 @@
   font-size: 15px;
   font-weight: 600;
   color: #111827;
+  margin-top: 0px;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
 }
+
+
 
 /* ===============================
    ✅ 메뉴 컨테이너
@@ -186,9 +189,9 @@
     margin-bottom: 24px;
   }
   
-  .menu-section h3 {
-    font-size: 14px;
-  }
+/*   .menu-section h3 { */
+/*     font-size: 14px; */
+/*   } */
   
   .menu {
     gap: 5px;
@@ -216,9 +219,9 @@
     margin-bottom: 20px;
   }
   
-  .menu-section h3 {
-    font-size: 13px;
-  }
+/*   .menu-section h3 { */
+/*     font-size: 13px; */
+/*   } */
   
   .menu {
     gap: 4px;
