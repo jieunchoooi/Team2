@@ -65,18 +65,20 @@
 /* ===============================
    ✅ 메뉴 섹션
    =============================== */
-.menu-section {
-  margin-bottom: 28px;
-}
 
 .menu-section h3 {
   font-size: 15px;
   font-weight: 600;
   color: #111827;
-  margin-bottom: 12px;
+  margin-top: 0px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.menu-section {
+	margin-bottom: 16px;
 }
 
 /* ===============================
@@ -182,14 +184,6 @@
     margin-bottom: 20px;
   }
   
-  .menu-section {
-    margin-bottom: 24px;
-  }
-  
-  .menu-section h3 {
-    font-size: 14px;
-  }
-  
   .menu {
     gap: 5px;
   }
@@ -215,11 +209,7 @@
   .menu-section {
     margin-bottom: 20px;
   }
-  
-  .menu-section h3 {
-    font-size: 13px;
-  }
-  
+
   .menu {
     gap: 4px;
   }
