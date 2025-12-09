@@ -10,7 +10,7 @@
         <h2 class="tag-title">관심 태그 선택</h2>
         <p class="tag-subtitle">관심있는 분야를 선택해주세요 (최대 5개)</p>
 
-        <form id="tagForm">
+        <form id="tagForm" action="${pageContext.request.contextPath}/user/interest">
             <input type="hidden" id="tag_user_id" name="user_id">
             
             <div class="tag-grid">
