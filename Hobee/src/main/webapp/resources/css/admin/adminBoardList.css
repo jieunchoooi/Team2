@@ -4,8 +4,9 @@
    📌 메인 콘텐츠 
 =========================== */
 .main-content {
-    margin-left: 260px !important;
-    padding: 45px 50px 60px 50px !important;
+    margin-left: 240px !important;
+    padding-top:50px;
+    
 }
 
 /* ===========================
@@ -25,13 +26,13 @@
 .card-box {
     background: #fff;
     padding: 30px;
+    width:1400px;
     border-radius: 16px;
 
     /* 유튜브 느낌 테두리 + 미세 그림자 */
     border: 1px solid #e3e6ec;
     box-shadow: 0 3px 12px rgba(0,0,0,0.05);
 
-    max-width: 1150px;
     margin: 0 auto;
 
     transition: all 0.25s ease;

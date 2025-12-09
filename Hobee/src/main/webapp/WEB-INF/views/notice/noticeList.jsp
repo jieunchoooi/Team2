@@ -6,11 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 | Hobee</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user/notice.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user/noticeList.css">
 </head>
 
 <body>
 
+<!-- 공통 헤더 -->
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
 
 <div class="notice-container">
@@ -29,11 +30,13 @@
 
         <tbody>
         <c:forEach var="n" items="${noticeList}">
-            <tr>
+            <tr onclick="location.href='${pageContext.request.contextPath}/notice/detail?notice_id=${n.notice_id}'">
+
                 <td>${n.notice_id}</td>
 
-                <td>
-                    <a href="${pageContext.request.contextPath}/notice/detail?notice_id=${n.notice_id}">
+                <td class="title">
+                    <a class="title-link"
+                       href="${pageContext.request.contextPath}/notice/detail?notice_id=${n.notice_id}">
                         <c:if test="${n.is_pinned == 1}">
                             📌
                         </c:if>
@@ -53,6 +56,7 @@
                         </c:choose>
                     </span>
                 </td>
+
             </tr>
         </c:forEach>
         </tbody>
@@ -60,6 +64,7 @@
 
 </div>
 
+<!-- 공통 푸터 -->
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
 
 </body>

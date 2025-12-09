@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>${notice.title} | Hobee</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user/notice.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/user/noticeDetail.css">
 </head>
 
 <body>

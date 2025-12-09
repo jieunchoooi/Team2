@@ -25,9 +25,7 @@
     </script>
 </c:if>
 
-    <!-- 🔵 최상단 큰 제목 -->
-    <div class="page-title">머리말 편집</div>
-    <p class="page-desc">커뮤니티 글 작성 시 사용하는 머리말의 이름, 설명, 사용 여부를 관리합니다.</p>
+    
 
     <!-- 🔵 머리말 추가 -->
     <div class="card-box">

@@ -22,11 +22,7 @@ public interface AdminPostMapper {
             @Param("type") String type,
             @Param("keyword") String keyword);
 
-    // 기존 목록
-    List<AdminPostVO> getPostListPaging(
-            @Param("start") int start,
-            @Param("amount") int amount);
-
+   
     int getTotalCount();
 
     AdminPostVO getPostDetail(int post_id);

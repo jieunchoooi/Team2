@@ -790,67 +790,70 @@ $(document).ready(function () {
 ======================================================= */
  $(document).on("click", "#openLoginLog", function () {
 
-	    $.ajax({
-	        url: contextPath + "/user/loginInfo",
-	        method: "GET",
-	        dataType: "json",
+	  $.ajax({
+	      url: contextPath + "/user/loginInfo",
+	      method: "GET",
+	      dataType: "json",
 
-	        success: function (res) {
+	      success: function (res) {
 
-	            console.log("로그인 상세 응답:", res);
+	          console.log("로그인 상세 응답:", res);
 
-	            let userName = res.user_name || "정보 없음";
-	            let lastLogin = res.last_login_at || "첫 로그인";
-	            let currentLocation = res.current_location || "정보 없음";
-	            let lastLocation = res.last_location || "기록 없음";
+	          let userName = res.user_name || "정보 없음";
+	          let lastLogin = res.last_login_at || "첫 로그인";
+	          let currentLocation = res.current_location || "정보 없음";
+	          let lastLocation = res.last_location || "기록 없음";
 
-	            let deviceList = "";
-	            if (res.recent_devices && res.recent_devices.length > 0) {
-	                res.recent_devices.forEach(d => {
-	                    deviceList += `<li>${d}</li>`;
-	                });
-	            } else {
-	                deviceList = "<li>기록 없음</li>";
-	            }
+	          /* ================================
+	             📌 최근 로그인 기기 리스트 구성
+	          ================================ */
+	          let deviceList = "";
+	          if (res.recent_devices && res.recent_devices.length > 0) {
 
-	            Swal.fire({
-	                title: "로그인 상세 정보 🔍",
-	                html: `
-	                    <div style="
-	                        text-align:left;
-	                        font-size:15px;
-	                        line-height:1.6;
-	                        color:#333 !important;
-	                    ">
-	                        <b style="color:#111 !important;">✔ 사용자:</b> \${userName}<br>
-	                        <b style="color:#111 !important;">✔ 마지막 로그인:</b> \${lastLogin}<br>
-	                        <b style="color:#111 !important;">✔ 현재 접속 지역:</b> \${currentLocation}<br>
-	                        <b style="color:#111 !important;">✔ 이전 접속 지역:</b> \${lastLocation}<br>
-	                        <b style="color:#111 !important;">✔ 최근 로그인 기기:</b>
-	                        <ul style="padding-left:18px; margin-top:6px; color:#333 !important;">
-	                            \${deviceList}
-	                        </ul>
-	                    </div>
-	                `,
-	                width: "450px",
-	                confirmButtonText: "닫기",
-	                confirmButtonColor: "#4a74ff",
-	                didOpen: () => {
-	                    const swalEl = document.querySelector('.swal2-html-container');
-	                    if (swalEl) {
-	                        swalEl.style.color = '#333';
-	                    }
-	                }
-	            });
-	        },
+	              res.recent_devices.forEach(d => {
+	                  deviceList +=
+	                      "<li>" +
+	                      d.login_time + " | " +
+	                      d.device + " | " +
+	                      d.location +
+	                      "</li>";
+	              });
 
-	        error: function (xhr, status, err) {
-	            console.error("loginInfo 호출 실패:", status, err);
-	        }
-	    });
+	          } else {
+	              deviceList = "<li>기록 없음</li>";
+	          }
 
-	}); // 이름 클릭 이벤트 끝
+	          /* ================================
+	             📌 SweetAlert HTML 문자열 조립
+	             (백틱 X → JSP EL 충돌 제거)
+	          ================================ */
+	          let htmlContent =
+	              "<div style='text-align:left; font-size:15px; line-height:1.6; color:#333;'>" +
+	              "<b>✔ 사용자:</b> " + userName + "<br>" +
+	              "<b>✔ 마지막 로그인:</b> " + lastLogin + "<br>" +
+	              "<b>✔ 현재 접속 지역:</b> " + currentLocation + "<br>" +
+	              "<b>✔ 이전 접속 지역:</b> " + lastLocation + "<br>" +
+	              "<b>✔ 최근 로그인 기기:</b>" +
+	              "<ul style='padding-left:18px; margin-top:6px;'>" +
+	                  deviceList +
+	              "</ul>" +
+	              "</div>";
 
+	          Swal.fire({
+	              title: "로그인 상세 정보 🔍",
+	              html: htmlContent,
+	              width: "450px",
+	              confirmButtonText: "닫기",
+	              confirmButtonColor: "#4a74ff"
+	          });
+	      },
+
+	      error: function () {
+	          Swal.fire("오류", "로그인 기록을 불러올 수 없습니다.", "error");
+	      }
+	  });
+
+	});
 
 }); // document.ready 끝
 </script>

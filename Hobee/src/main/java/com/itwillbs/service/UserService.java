@@ -18,9 +18,9 @@ public class UserService {
     private LoginHistoryMapper loginHistoryMapper;
 
 
-    // ==========================================================
-    // 🚀 로그인 기록 저장 (중복 기기 제외)
-    // ==========================================================
+    /* ==========================================================
+       🚀 로그인 기록 저장 (중복 기기 제외, 올바른 Mapper로 통합)
+    ========================================================== */
     public void insertLoginHistory(String user_id, String device_info, String location) {
 
         if (user_id == null || device_info == null) {
@@ -28,23 +28,39 @@ public class UserService {
             return;
         }
 
-        // DB에서 마지막 로그인 기기 가져오기
+        // 마지막 기기 정보 조회
         String lastDevice = loginHistoryMapper.getLastDevice(user_id);
 
+        // 같은 기기면 저장 생략
         if (lastDevice != null && lastDevice.equals(device_info)) {
             System.out.println("⚠ 동일 기기 감지 → 로그인 기록 저장 생략");
             return;
         }
 
-        // 새 기기 → 저장
+        // 새 기기이면 저장
         loginHistoryMapper.insertLoginHistory(user_id, device_info, location);
         System.out.println("✅ 새 로그인 기록 저장됨 → " + device_info + " @ " + location);
     }
 
 
-    // ==========================================================
-    // 🔹 기본 User CRUD + 로그인 로직
-    // ==========================================================
+    /* ==========================================================
+       🔎 로그인 기록 조회 기능
+    ========================================================== */
+
+    // 최근 로그인 기기 5개
+    public List<String> getRecentDevices(String userId) {
+        return loginHistoryMapper.getRecentDevices(userId);
+    }
+
+    // 바로 이전 접속 지역
+    public String getLastLocation(String userId) {
+        return loginHistoryMapper.getLastLocation(userId);
+    }
+
+
+    /* ==========================================================
+       🔹 기본 User CRUD + 로그인 로직
+    ========================================================== */
 
     public void insertUser(UserVO userVO) {
         userMapper.insertUser(userVO);
@@ -98,22 +114,4 @@ public class UserService {
         userMapper.updatePasswordUpdatedAt(user_id);
     }
 
-
-    // ==========================================================
-    // 🟦 로그인 로그 조회
-    // ==========================================================
-
-    // 최근 5개 기기 목록
-    public List<String> getRecentLoginDevices(String user_id) {
-        return loginHistoryMapper.getRecentLoginDevices(user_id);
-    }
-    
-    public void insertLoginHistoryIfNotDuplicate(String user_id, String device_info, String location) {
-        loginHistoryMapper.insertLoginHistoryIfNotDuplicate(user_id, device_info, location);
-    }
-
-    // 가장 최근 접속 지역
-    public String getLastLocation(String user_id) {
-        return loginHistoryMapper.getLastLocation(user_id);
-    }
 }

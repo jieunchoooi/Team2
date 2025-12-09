@@ -29,9 +29,7 @@
 <!-- ⭐ 메인 콘텐츠 영역 -->
 <main class="main-content">
 
-    <div class="main-header">
-        <h1>신고 관리</h1>
-    </div>
+
 
     <div class="center-wrapper">
 

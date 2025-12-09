@@ -23,10 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.GradeVO;
+import com.itwillbs.domain.LoginLogVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.GradeService;
+import com.itwillbs.service.LoginLogService;
 import com.itwillbs.service.PaymentService;
 import com.itwillbs.service.UserService;
+import com.itwillbs.util.LocationUtils;
+import com.itwillbs.util.UserAgentUtils;
 
 @Controller
 @RequestMapping("/user/*")
@@ -36,7 +40,9 @@ public class UserController {
     @Inject private GradeService gradeService;
     @Inject private JavaMailSender mailSender;
     @Inject private PaymentService paymentService; 
-
+    @Inject private LoginLogService loginLogService; 
+    
+    
     /* ==========================================================
        1. insert.jsp 접근 차단 
     ========================================================== */
@@ -163,9 +169,19 @@ public class UserController {
         userService.resetFailCount(dbUser.getUser_id());
         userService.updateLastLoginTime(dbUser.getUser_id());
 
-        /* =======================================================
-           🔥 로그인 기록 저장 기능 완전 제거됨
-        ======================================================= */
+        // 로그인 성공 → 실패 횟수 리셋
+        userService.resetFailCount(dbUser.getUser_id());
+        userService.updateLastLoginTime(dbUser.getUser_id());
+
+     // 🔥 로그인 기록 저장
+        String userAgent = request.getHeader("User-Agent");
+        String device = UserAgentUtils.parse(userAgent);
+
+        String ip = request.getRemoteAddr();
+        String location = LocationUtils.getLocation(ip);
+        
+     // 로그인 기록 저장
+        loginLogService.insertLog(userVO.getUser_id(), ip, device, location);
 
         // 세션 저장
         GradeVO gradeVO = gradeService.getGradeByUser(dbUser.getUser_num());
@@ -189,27 +205,45 @@ public class UserController {
         return result;
     }
 
+@GetMapping("/loginInfo")
+@ResponseBody
+public Map<String, Object> loginInfo(HttpSession session) {
 
-    /* ==========================================================
-       로그인 상세 정보 API (기기/위치 제거 버전)
-    ========================================================== */
-    @GetMapping("/loginInfo")
-    @ResponseBody
-    public Map<String, Object> loginInfo(HttpSession session) {
+    Map<String, Object> map = new HashMap<>();
 
-        Map<String, Object> map = new HashMap<>();
-
-        UserVO user = (UserVO) session.getAttribute("userVO");
-        if (user == null) {
-            map.put("error", "not_login");
-            return map;
-        }
-
-        map.put("user_name", user.getUser_name());
-        map.put("last_login_at", user.getLast_login_at());
-
+    UserVO user = (UserVO) session.getAttribute("userVO");
+    if (user == null) {
+        map.put("error", "not_login");
         return map;
     }
+
+    // 최근 로그인 기록 5개 가져오기
+    List<LoginLogVO> logs = loginLogService.getRecentLogs(user.getUser_id());
+
+    // 현재 로그인 정보
+    if (logs.size() > 0) {
+        map.put("last_login_at", logs.get(0).getLogin_time());
+        map.put("current_location", logs.get(0).getLocation());
+    } else {
+        map.put("last_login_at", "기록 없음");
+        map.put("current_location", "기록 없음");
+    }
+
+    // 이전 로그인 지역
+    if (logs.size() >= 2) {
+        map.put("last_location", logs.get(1).getLocation());
+    } else {
+        map.put("last_location", "기록 없음");
+    }
+
+    // 사용자 이름
+    map.put("user_name", user.getUser_name());
+
+    // 최근 로그인 기기 리스트 전체 전달
+    map.put("recent_devices", logs);
+
+    return map;
+}
 
 
     /* ==========================================================
