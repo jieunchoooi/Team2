@@ -22,6 +22,7 @@
     margin-right: auto;
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 60px;
 }
 
@@ -62,42 +63,40 @@
     margin-top: 12px;
 }
 
-/* 오른쪽: FAQ & 공지사항 링크 */
-.footer-links {
+/* 오른쪽: FAQ & 공지사항 버튼 */
+.footer-buttons {
     display: flex;
-    gap: 40px;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.footer-section {
-    min-width: 120px;
-}
-
-.footer-section-title {
-    font-weight: 700;
+.footer-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    padding: 12px 24px;
+    background-color: #fff;
     color: #333;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 0.85rem;
-    margin-bottom: 12px;
-}
-
-.footer-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-section li {
-    margin-bottom: 8px;
-}
-
-.footer-section a {
-    color: #666;
+    font-weight: 500;
     text-decoration: none;
-    font-size: 0.75rem;
-    transition: color 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.footer-section a:hover {
-    color: #2573ff;
+.footer-btn:hover {
+    background-color: #2573ff;
+    color: #fff;
+    border-color: #2573ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(37, 115, 255, 0.2);
+}
+
+.footer-btn i {
+    margin-right: 8px;
 }
 
 /* 반응형 */
@@ -107,8 +106,9 @@
         gap: 30px;
     }
     
-    .footer-links {
-        gap: 30px;
+    .footer-buttons {
+        flex-direction: row;
+        gap: 12px;
     }
 }
 
@@ -120,11 +120,6 @@
     .footer-container {
         margin-left: calc(200px + (100vw - 1200px - 200px) / 2);
     }
-    
-    .footer-links {
-        flex-direction: column;
-        gap: 20px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -134,6 +129,15 @@
     
     .footer-container {
         margin-left: calc(180px + (100vw - 1200px - 180px) / 2);
+    }
+    
+    .footer-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .footer-btn {
+        width: 100%;
     }
 }
 </style>
@@ -158,26 +162,14 @@
             </div>
         </div>
         
-        <!-- 오른쪽: FAQ & 공지사항 -->
-        <div class="footer-links">
-            <div class="footer-section">
-                <div class="footer-section-title">고객지원</div>
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/support/faq">FAQ</a></li>
-                    <li><a href="${pageContext.request.contextPath}/support/notice">공지사항</a></li>
-                    <li><a href="${pageContext.request.contextPath}/support/qna">1:1 문의</a></li>
-                    <li><a href="${pageContext.request.contextPath}/support/contact">고객센터</a></li>
-                </ul>
-            </div>
-            
-<!--             <div class="footer-section"> -->
-<!--                 <div class="footer-section-title">정보</div> -->
-<!--                 <ul> -->
-<%--                     <li><a href="${pageContext.request.contextPath}/info/about">회사소개</a></li> --%>
-<%--                     <li><a href="${pageContext.request.contextPath}/info/terms">이용약관</a></li> --%>
-<%--                     <li><a href="${pageContext.request.contextPath}/info/privacy">개인정보처리방침</a></li> --%>
-<!--                 </ul> -->
-<!--             </div> -->
+        <!-- 오른쪽: FAQ & 공지사항 버튼 -->
+        <div class="footer-buttons">
+            <a href="${pageContext.request.contextPath}/support/faq" class="footer-btn">
+                FAQ
+            </a>
+            <a href="${pageContext.request.contextPath}/support/notice" class="footer-btn">
+                공지사항
+            </a>
         </div>
     </div>
 </footer>
