@@ -110,30 +110,24 @@
   </div>
 </div>
 
-
-
 <script type="text/javascript">
-
 let currentReviewNum = null;
 let currentBtn = null;
 let selectedScore = 0;
 
 // 리뷰 모달 열기
 function editReview(review_num, btn) {
-
     currentReviewNum = review_num;
     currentBtn = btn;
 
     let tr = $(btn).closest("tr");
-
     let content = tr.find("td").eq(2).text().trim();
-    let score = tr.find(".score-text").text().trim();
+    let score = parseFloat(tr.find(".score-text").text().trim());
 
     $("#editContent").val(content);
-    selectedScore = parseInt(score);
+    selectedScore = score;
 
     updateStarUI(selectedScore);
-
     $("#editModal").show();
 }
 
@@ -141,27 +135,62 @@ function editReview(review_num, btn) {
 function updateStarUI(score) {
     $(".edit-star").each(function(){
         let value = $(this).data("value");
-        $(this).toggleClass("selected", value <= score);
+        $(this).removeClass("selected half-selected");
+        
+        if (value <= Math.floor(score)) {
+            $(this).addClass("selected");
+        } else if (value === Math.ceil(score) && score % 1 !== 0) {
+            $(this).addClass("half-selected");
+        }
     });
 }
 
-// 별 클릭 이벤트
-$(document).on("click", ".edit-star", function () {
-    selectedScore = $(this).data("value");
+// 별 클릭 이벤트 (0.5 단위)
+$(document).on("click", ".edit-star", function(e) {
+    let star = $(this);
+    let value = star.data("value");
+    let rect = star[0].getBoundingClientRect();
+    let clickX = e.clientX - rect.left;
+    let starWidth = rect.width;
+    
+    // 별의 왼쪽 절반 클릭 시 0.5, 오른쪽 절반 클릭 시 1.0
+    if (clickX < starWidth / 2) {
+        selectedScore = value - 0.5;
+    } else {
+        selectedScore = value;
+    }
+    
     updateStarUI(selectedScore);
 });
 
-// 별 hover 효과
-$(document).on("mouseenter", ".edit-star", function () {
-    let value = $(this).data("value");
+// 별 hover 효과 (0.5 단위)
+$(document).on("mousemove", ".edit-star", function(e) {
+    let star = $(this);
+    let value = star.data("value");
+    let rect = star[0].getBoundingClientRect();
+    let mouseX = e.clientX - rect.left;
+    let starWidth = rect.width;
+    
+    $(".edit-star").removeClass("hover half-hover");
+    
     $(".edit-star").each(function(){
-        $(this).toggleClass("hover", $(this).data("value") <= value);
+        let currentValue = $(this).data("value");
+        
+        if (currentValue < value) {
+            $(this).addClass("hover");
+        } else if (currentValue === value) {
+            if (mouseX < starWidth / 2) {
+                $(this).addClass("half-hover");
+            } else {
+                $(this).addClass("hover");
+            }
+        }
     });
 });
 
 // hover 빠져나가면 원래대로
-$(document).on("mouseleave", ".edit-stars", function () {
-    $(".edit-star").removeClass("hover");
+$(document).on("mouseleave", ".edit-stars", function() {
+    $(".edit-star").removeClass("hover half-hover");
     updateStarUI(selectedScore);
 });
 
@@ -194,14 +223,11 @@ function saveEdit() {
         },
         success: function(result){
             if(result.success){
-
-                // 화면 업데이트 (별 + 내용)
                 let tr = $(currentBtn).closest("tr");
-
-                tr.find("td").eq(2).text(newContent); // 내용 갱신
-                tr.find(".score-text").text(selectedScore.toFixed(1)); // 점수 갱신
-                tr.find(".filled").css("width", (selectedScore * 20) + "%");
-
+                tr.find("td").eq(2).text(newContent);
+                tr.find(".score-text").text(selectedScore.toFixed(1));
+                tr.find(".stars").css("--rating", selectedScore);
+                
                 closeModal();
                 alert("리뷰가 수정되었습니다.");
             } else {
@@ -214,15 +240,12 @@ function saveEdit() {
     });
 }
 
-
-
-//리뷰 삭제
+// 리뷰 삭제
 function deleteReview(review_num, btn){
-	
-	 if(!confirm("정말 삭제하시겠습니까?")) {
-	        return; 
-	    }
-	 
+    if(!confirm("정말 삭제하시겠습니까?")) {
+        return; 
+    }
+ 
     $.ajax({
         url: '${pageContext.request.contextPath}/member/deleteReview',
         method: 'POST',
@@ -240,10 +263,8 @@ function deleteReview(review_num, btn){
     });
 }
 
-
-
-
 </script>
+
 
 </body>
 </html>
