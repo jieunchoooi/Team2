@@ -5,7 +5,6 @@
     background: #f8f9fa;
     border-top: 1px solid #e9ecef;
     padding: 40px 0 30px;
-/*     margin-top: 60px; */
     font-size: 0.75rem;
     color: #666;
     
@@ -15,15 +14,21 @@
     left: 0%; 
     z-index: 90;
 }
-.footer-bottm{
-	text-align = left;
-}
 
 .footer-container {
     max-width: 1200px;
     padding: 0 20px;
-    margin-left: auto;  /* 사이드바 공간 확보 */
+    margin-left: auto;
     margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+/* 왼쪽: 회사 정보 */
+.footer-bottom {
+    flex: 1;
+    max-width: 600px;
 }
 
 .footer-company-name {
@@ -56,16 +61,53 @@
     margin-top: 12px;
 }
 
+/* 오른쪽: FAQ & 공지사항 링크 */
+.footer-links {
+    display: flex;
+    gap: 40px;
+}
+
+.footer-section {
+    min-width: 120px;
+}
+
+.footer-section-title {
+    font-weight: 700;
+    color: #333;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin-bottom: 8px;
+}
+
+.footer-section a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: color 0.2s;
+}
+
+.footer-section a:hover {
+    color: #2573ff;
+}
+
 /* 반응형 */
 @media (max-width: 992px) {
-    .footer-top {
-        grid-template-columns: 1fr;
+    .footer-container {
+        flex-direction: column;
         gap: 30px;
     }
     
-    .footer-links-wrapper {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px 20px;
+    .footer-links {
+        gap: 30px;
     }
 }
 
@@ -77,6 +119,11 @@
     .footer-container {
         margin-left: calc(200px + (100vw - 1200px - 200px) / 2);
     }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 20px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -87,16 +134,12 @@
     .footer-container {
         margin-left: calc(180px + (100vw - 1200px - 180px) / 2);
     }
-    
-    .footer-links-wrapper {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
 }
 </style>
 
 <footer class="site-footer">
     <div class="footer-container">
+        <!-- 왼쪽: 회사 정보 -->
         <div class="footer-bottom">
             <div class="footer-company-name">(주)Hobee</div>
             <div class="footer-info-text">
@@ -112,6 +155,28 @@
             <div class="footer-notice">
                 Hobee는 통신판매중개자로서 중개하는 크리에이터가 제공하는 상품정보 및 거래 등에 대해서는 책임을 부담하지 않습니다.
             </div>
+        </div>
+        
+        <!-- 오른쪽: FAQ & 공지사항 -->
+        <div class="footer-links">
+            <div class="footer-section">
+                <div class="footer-section-title">고객지원</div>
+                <ul>
+                    <li><a href="${pageContext.request.contextPath}/support/faq">FAQ</a></li>
+                    <li><a href="${pageContext.request.contextPath}/support/notice">공지사항</a></li>
+                    <li><a href="${pageContext.request.contextPath}/support/qna">1:1 문의</a></li>
+                    <li><a href="${pageContext.request.contextPath}/support/contact">고객센터</a></li>
+                </ul>
+            </div>
+            
+<!--             <div class="footer-section"> -->
+<!--                 <div class="footer-section-title">정보</div> -->
+<!--                 <ul> -->
+<%--                     <li><a href="${pageContext.request.contextPath}/info/about">회사소개</a></li> --%>
+<%--                     <li><a href="${pageContext.request.contextPath}/info/terms">이용약관</a></li> --%>
+<%--                     <li><a href="${pageContext.request.contextPath}/info/privacy">개인정보처리방침</a></li> --%>
+<!--                 </ul> -->
+<!--             </div> -->
         </div>
     </div>
 </footer>
