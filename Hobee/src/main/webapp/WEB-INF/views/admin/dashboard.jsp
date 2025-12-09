@@ -59,7 +59,7 @@
 			
 			    <!-- Pending Requests Card -->
 			    <div class="col-xl-3 col-md-6 mb-4">
-			        <div class="card border-left-warning shadow h-100 py-2">
+			        <div class="card border-left-warning shadow h-100 py-2 class3">
 			            <div class="card-body">
 			                <div class="row no-gutters align-items-center">
 			                    <div class="col mr-2">
@@ -295,6 +295,7 @@ let color5 = document.querySelector(".color5");
 let color6 = document.querySelector(".color6");
 let class1 = document.querySelector(".class1");
 let class2 = document.querySelector(".class2");
+let class3 = document.querySelector(".class3");
 
 // 총 강의수 
 color1.onclick = function(){
@@ -327,6 +328,10 @@ class1.onclick = function(){
 // 이번달 신규가입자
 class2.onclick = function(){
 	location.href = "${pageContext.request.contextPath}/admin/adminMemberList";
+}
+// 신고관리
+class3.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminReportList";
 }
 
 
