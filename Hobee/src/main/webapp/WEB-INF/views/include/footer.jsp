@@ -10,7 +10,7 @@
     
     /* ✅ 사이드바 위로 올리기 */
     position: relative;
-    width: 100vw;
+    width: 100%;
     left: 0%; 
     z-index: 90;
 }
