@@ -42,7 +42,6 @@
 
 .footer-info-text a {
     color: #999;
-    text-decoration: underline;
     margin-left: 6px;
 }
 
