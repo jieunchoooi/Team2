@@ -16,6 +16,7 @@
 
 body { 
      overflow-y: hidden !important;  
+     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 } 
 
 .main-content {
