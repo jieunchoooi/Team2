@@ -69,7 +69,7 @@ if (grade == null) {
 
 						<%-- 스크랩 데이터 반복 출력 --%>
 						<c:forEach var="lecture" items="${scrapList}">
-							<div class="cart-item" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
+							<div class="cart-item">
 								
 								<input type="checkbox" name="selectItem"
 									value="${lecture.lecture_num}"
@@ -77,7 +77,7 @@ if (grade == null) {
 									src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}"
 									alt="썸네일">
 
-								<div class="info">
+								<div class="info" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
 									<p class="title">${lecture.lecture_title}</p>
 									<p class="teacher">${lecture.lecture_author}</p>
 								</div>
@@ -135,16 +135,15 @@ if (grade == null) {
 
 					</div>
 
-					<div class="summary-line">
-						<span>적립 예정 포인트</span> <strong id="rewardPoints">+0 P</strong>
-					</div>
-
 					<hr>
 
 					<div class="summary-total">
 						<span>최종 결제 금액</span> <strong id="finalPrice">₩0</strong>
 					</div>
-
+						<div class="summary-line">
+						<span>적립 예정 (<%=grade.getReward_rate()%>%)</span> <strong id="rewardPoints">+0 P</strong>
+					</div>
+					
 					<button class="btn-primary" type="button"
 						onclick="requestPayment()">결제하기</button>
 				</div>

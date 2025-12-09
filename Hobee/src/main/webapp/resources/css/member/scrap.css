@@ -87,7 +87,7 @@ body {
     gap:16px;
     padding:16px 0;
     border-bottom:1px solid #f0f0f0;
-    cursor: pointer;
+    
 }
 
 .cart-item img {
@@ -97,7 +97,9 @@ body {
     object-fit:cover;
 }
 
-.cart-item .info {flex:1;}
+.cart-item .info {flex:1;
+cursor: pointer;	
+}
 
 .cart-item .title {
     font-weight:600;

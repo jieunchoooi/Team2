@@ -216,7 +216,7 @@ public class UserController {
         result.put("result", "success");
         result.put("user_name", dbUser.getUser_name());
         result.put("last_login_at", dbUser.getLast_login_at());
-        result.put("redirect", "/main/main");
+//        result.put("redirect", "/main/main");
 
         return result;
     }
@@ -330,6 +330,7 @@ public Map<String, Object> loginInfo(HttpSession session) {
         result.put("msg", "임시 비밀번호가 이메일로 전송되었습니다.");
         return result;
     }
+    
 
     /* ==========================================================
        임시 비밀번호 이메일 전송
