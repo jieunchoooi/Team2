@@ -324,24 +324,40 @@
 		     hasPurchased > 0  → 이미 수강 중
 		     hasPurchased == 0 → 결제 가능
 		============================================= --%>
-		
 		<c:choose>
-		    <%-- 이미 수강 중인 경우: 비활성 상태로 표시 --%>
-		    <c:when test="${hasPurchased > 0}">
-		        <button class="btn-purchase purchased" disabled>
-		            수강중
-		        </button>
-		    </c:when>
-		
-		    <%-- 아직 결제하지 않은 경우: 결제 모달 오픈 --%>
-		    <c:otherwise>
-		        <button class="btn-purchase"
-		                onclick="openPaymentModal('${lectureVO.lecture_num}', '${lectureVO.lecture_price}')">
-		            결제하기
-		        </button>
-		    </c:otherwise>
-		</c:choose>
-        
+
+    <%-- 1) 이미 수강 중인 경우 --%>
+    <c:when test="${hasPurchased > 0}">
+        <button class="btn-purchase purchased" disabled>
+            수강중
+        </button>
+    </c:when>
+
+    <%-- 2) 수강 중이 아님 → 로그인 여부에 따라 다시 분기 --%>
+    <c:otherwise>
+    
+        <c:choose>
+            <%-- 2-1) 비로그인 → 결제 대신 로그인 모달 오픈 --%>
+            <c:when test="${empty sessionScope.userVO}">
+                <button class="btn-purchase"
+                        onclick="openLoginModal()">
+                    로그인 후 결제하기
+                </button>
+            </c:when>
+
+            <%-- 2-2) 로그인됨 → 정상 결제 모달 오픈 --%>
+            <c:otherwise>
+                <button class="btn-purchase"
+                        onclick="openPaymentModal('${lectureVO.lecture_num}', '${lectureVO.lecture_price}')">
+                    결제하기
+                </button>
+            </c:otherwise>
+        </c:choose>
+
+    </c:otherwise>
+
+</c:choose>
+
         <div class="action-icons">
           <div class="action-icon" onclick="shareKakao()">
           	<i class="far fa-share-square"></i><span>공유</span>
@@ -523,12 +539,18 @@
   Kakao.init('7f21ec1e9b0371f46cf7190c8d91f522');
 	
   function shareKakao() {
+	  
+     // 강의 정보 동적으로 가져오기
+	 const lectureTitle = "${lectureVO.lecture_title}";
+	 const lectureDetail = "${fn:substring(lectureVO.lecture_detail, 0, 100)}...";
+	 const lectureImg = "${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}";  
+	  
 	 Kakao.Share.sendDefault({
 	    objectType: 'feed',
 	    content: {
-	      title: '강의 제목',
-	      description: '강의 설명',
-	      imageUrl: '이미지 URL',
+	      title: lectureTitle,
+	      description: lectureDetail,
+	      imageUrl: lectureImg,
 	      link: {
 	        mobileWebUrl: window.location.href,
 	        webUrl: window.location.href
@@ -900,7 +922,21 @@ let selectedLectureDiscountedPrice = 0;  // 등급 할인 적용 가격
 /* ======================================================
 ⬛ 결제 모달 열기
 ====================================================== */
+const isLogin = "${sessionScope.userVO != null ? 'true' : 'false'}";
 function openPaymentModal(lectureNum, price) {
+	// 로그인 체크
+    if (isLogin !== "true") {
+        if (typeof openLoginModal === "function") {
+            openLoginModal();   // 로그인 모달 열기
+        } else {
+            alert("로그인이 필요한 서비스입니다.");
+        }
+        return;
+    }
+
+    // ----------------------------
+    // ⬇️ 아래부터는 로그인된 경우만 실행됨
+    // ----------------------------
 
     selectedLectureNum = Number(lectureNum);
     selectedLectureOriginalPrice = Number(price);

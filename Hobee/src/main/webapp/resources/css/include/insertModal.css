@@ -55,8 +55,8 @@
 =========================== */
 .insert-close {
   position: absolute;
-  top: 16px;
-  right: 22px;
+  top: 5px;
+  right: 10px;
   font-size: 26px;
   cursor: pointer;
   color: #333;
@@ -113,12 +113,10 @@ label {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
 }
 
 .input-row .insert-input {
   flex: 1;
-  margin-bottom: 0 !important;
 }
 
 .check-btn {
@@ -133,6 +131,7 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 16px;
 }
 .check-btn:hover {
   background: #255dff !important;
@@ -440,9 +439,7 @@ label {
 }
 
 #phoneMsg {
-    margin-top: 5px;
     font-size: 13px;
-    font-weight: 600;
 }
 
 
@@ -558,6 +555,8 @@ label {
     font-weight: 600;
     font-size: 15px;
     transition: 0.2s;
+    border: 0;
+    border-radius: 6px;
 }
 
 .signup-role-tab.active {
@@ -572,70 +571,12 @@ label {
     margin-bottom: 10px;
 }
 
-.signup-role-tab {
-    padding: 7px 18px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    background: #f1f1f1;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.signup-role-tab.active {
-    background: #4a74ff;
-    color: white;
-    border-color: #4a74ff;
-}
-
 /* 회원구분 탭 전체 영역 */
 .signup-role-box {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-bottom: 25px;
-}
-
-/* 기본 탭 버튼 스타일 */
-.signup-role-tab {
-    flex: 1;
-    padding: 12px 0;
-    border-radius: 28px;
-
-    /* 기존보다 강한 라인 */
-    border: 2px solid #d6d6d6;
-
-    background: #fafafa;
-    font-size: 15px;
-    font-weight: 600;
-    color: #555;
-
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-/* hover 효과 - 부드러운 강조 */
-.signup-role-tab:hover {
-    background: #eef3ff;
-    border-color: #8da9ff;
-    color: #4a74ff;
-    transform: translateY(-2px);
-}
-
-/* 선택(active) 스타일 */
-.signup-role-tab.active {
-    background: linear-gradient(135deg, #4a74ff, #6f8cff);
-    border-color: #4a74ff;
-    color: #fff;
-
-    /* 입체 그림자 효과 */
-    box-shadow: 0 4px 14px rgba(74, 116, 255, 0.35);
-    transform: translateY(-2px);
-}
-
-/* 클릭(눌렀을 때) 효과 */
-.signup-role-tab:active {
-    transform: scale(0.97);
-    box-shadow: 0 2px 8px rgba(74, 116, 255, 0.25);
 }
 
 .insert-modal-content {

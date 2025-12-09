@@ -699,15 +699,15 @@
     ====================================================== -->
     <select id="checkAlreadyReported" resultType="int">
         SELECT COUNT(*)
-        FROM community_report
-        WHERE reporter_id = #{user_num}
+        FROM report
+        WHERE user_num = #{user_num}
           AND post_id = #{post_id}
     </select>
 
     <select id="checkAlreadyReportedComment" resultType="int">
         SELECT COUNT(*)
-        FROM community_report
-        WHERE reporter_id = #{user_num}
+        FROM report
+        WHERE user_num = #{user_num}
           AND comment_id = #{comment_id}
     </select>
 
@@ -718,7 +718,7 @@
     ====================================================== -->
 
 	<insert id="insertReport" parameterType="com.itwillbs.domain.CommunityReportVO">
-		INSERT INTO community_report
+		INSERT INTO report
 		(user_num, post_id, comment_id, reason, created_at, is_done)
 		VALUES
 		(#{user_num}, #{post_id}, #{comment_id}, #{reason}, NOW(), 0)
