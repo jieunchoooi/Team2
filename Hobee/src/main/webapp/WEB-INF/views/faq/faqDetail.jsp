@@ -22,7 +22,7 @@
     <div class="q">${faq.question}</div>
     <div class="a">${faq.answer}</div>
 
-    <button onclick="location.href='${pageContext.request.contextPath}/faq/list'">
+    <button onclick="location.href='${pageContext.request.contextPath}/faq/faqList'">
         목록으로
     </button>
 </div>

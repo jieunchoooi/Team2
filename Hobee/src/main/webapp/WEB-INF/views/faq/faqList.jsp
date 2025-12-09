@@ -35,7 +35,7 @@
     <h1 class="faq-title">FAQ</h1>
 
     <!-- ⭐ 카테고리 선택 -->
-    <form method="get" action="${pageContext.request.contextPath}/faq/list" class="faq-category-box">
+    <form method="get" action="${pageContext.request.contextPath}/faq/faqList" class="faq-category-box">
         <select name="category" onchange="this.form.submit()">
             <option value="">전체</option>
             <option value="계정" ${param.category == '계정' ? 'selected' : ''}>계정</option>

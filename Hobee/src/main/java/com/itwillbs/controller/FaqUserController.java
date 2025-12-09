@@ -22,7 +22,7 @@ public class FaqUserController {
      *  - 카테고리 필터 적용
      *  - 공개된 FAQ만 노출 (is_visible = 1)
      * ======================================================= */
-    @GetMapping("list")
+    @GetMapping("faqList")
     public String faqList(@RequestParam(required = false) String category,
                           Model model) {
 
@@ -44,7 +44,7 @@ public class FaqUserController {
      *  사용자 FAQ 상세
      *  - 숨김 FAQ 접근 차단
      * ======================================================= */
-    @GetMapping("detail")
+    @GetMapping("faqDetail")
     public String faqDetail(@RequestParam("faq_id") int faqId, Model model) {
 
         AdminFaqVO faq = faqService.getFaqDetail(faqId);
