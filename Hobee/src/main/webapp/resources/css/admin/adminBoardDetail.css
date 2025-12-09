@@ -371,22 +371,6 @@
 .stats-card.delay-3 { transition-delay: 0.25s; }
 .stats-card.delay-4 { transition-delay: 0.35s; }
 
-.desc-ellipsis {
-    display: inline-block;
-    max-width: 420px;       /* 박스 너비에 맞게 조절 */
-    white-space: nowrap;    /* 줄바꿈 금지 */
-    overflow: hidden;
-    text-overflow: ellipsis; /* ... 처리 */
-    vertical-align: middle;
-    cursor: help;
-}
-
-/* 마우스 오버 시 강조 효과 (선택 사항) */
-.desc-ellipsis:hover {
-    color: #4a68ff;
-}
-
-
 
 
 

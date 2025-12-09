@@ -40,11 +40,7 @@
 
                 <div class="info-item">
                     <strong>머리말 설명</strong>
-                    <span class="desc-ellipsis"
-     	 				  title="${board.board_desc}">
-    					  ${board.board_desc}
-					</span>
-
+                    <span>${board.board_desc}</span>
                 </div>
 
                 <div class="info-item">
