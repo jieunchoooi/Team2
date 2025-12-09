@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <aside class="sidebar">
-	<h2>관리 메뉴</h2>
 	<div class="sidebar-content">
 		<div class="menu-section">
 			<div class="menu ${page eq 'dashboard' ? 'active' : ''}"
