@@ -523,12 +523,18 @@
   Kakao.init('7f21ec1e9b0371f46cf7190c8d91f522');
 	
   function shareKakao() {
+	  
+     // 강의 정보 동적으로 가져오기
+	 const lectureTitle = "${lectureVO.lecture_title}";
+	 const lectureDetail = "${fn:substring(lectureVO.lecture_detail, 0, 100)}...";
+	 const lectureImg = "${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}";  
+	  
 	 Kakao.Share.sendDefault({
 	    objectType: 'feed',
 	    content: {
-	      title: '강의 제목',
-	      description: '강의 설명',
-	      imageUrl: '이미지 URL',
+	      title: lectureTitle,
+	      description: lectureDetail,
+	      imageUrl: lectureImg,
 	      link: {
 	        mobileWebUrl: window.location.href,
 	        webUrl: window.location.href
