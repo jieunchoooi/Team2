@@ -184,7 +184,7 @@ public class UserController {
         result.put("result", "success");
         result.put("user_name", dbUser.getUser_name());
         result.put("last_login_at", dbUser.getLast_login_at());
-        result.put("redirect", "/main/main");
+//        result.put("redirect", "/main/main");
 
         return result;
     }

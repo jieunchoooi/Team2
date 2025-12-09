@@ -398,12 +398,12 @@ main{
 .detail-like-box {
     margin-top: 18px;
     text-align: center;
+      position: relative;
+      height: 50px;
 }
 
 .like-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    position: absolute;
     padding: 10px 18px;
     font-size: 1.05rem;
     border-radius: 25px;
@@ -412,6 +412,8 @@ main{
     background-color: #f5f5f5;
     color: #777;
     transition: all 0.15s ease;
+     top:0;
+    transform: translateX(-50%);   /* 🔥 수평 정확히 중앙 */
 }
 
 .like-btn:hover {
@@ -1004,6 +1006,66 @@ main{
     margin-bottom: 40px;
 }
 
+/* ===========================
+   🔥 Hobee 신고 버튼 스타일
+   =========================== */
+.report-btn  {
+   
+    gap: 6px;
+
+   
+    color: #d6455f;
+/* 	border-radius: 8px; */
+/*     border: 1px solid #e1e5f0; */
+    padding: 6px 12px;
+   
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+	position: absolute;
+	right:0;
+	 top: 50%;
+    transform: translateY(-50%);   /* 수직 가운데 */
+    transition: 0.2s ease;
+}
+.comment-report-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+   background: #f6f7fb;
+    color: #d6455f;
+    
+	
+	padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid #e1e5f0;
+	
+	
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+.report-btn:hover {
+    background: #ffd6da;
+    border-color: #ffb6be;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 150, 160, 0.25);
+}
+
+.report-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* 아이콘 (이모지) 부분만 약간 더 진하게 */
+.report-btn .icon {
+    font-size: 1rem;
+    display: inline-block;
+}
 
 
 /* =========================================================

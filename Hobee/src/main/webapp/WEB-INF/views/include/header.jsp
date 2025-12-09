@@ -290,9 +290,12 @@ $(document).ready(function () {
                         $("#loginModal").fadeOut();
 
                         if (res.redirect) {
-                            location.href = contextPath + res.redirect;
-                        } else {
-                            location.href = contextPath + "/main/main";
+//                             location.href = contextPath + res.redirect;
+                            location.reload(); // 🔥 로그인 상태 반영 위해 새로고침 (선택)
+                        } 
+                        else {
+//                             location.href = contextPath + "/main/main";
+                        	 location.reload();
                         }
                     }, 1500);
 

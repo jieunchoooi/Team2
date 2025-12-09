@@ -190,10 +190,11 @@
 				<section class="detail-card">
 
 					<!-- 제목 -->
+					
 					<h1 class="detail-title">
 						<c:out value="${dto.post.title}" />
 					</h1>
-
+					
 					<!-- 작성자 영역 -->
 					<div class="detail-writer-box">
 
@@ -215,7 +216,8 @@
 									value="${dto.post.created_at}" pattern="yyyy-MM-dd HH:mm" />
 							</span>
 						</div>
-
+							
+						
 						<div class="detail-meta">
 							👁 ${dto.post.views} &nbsp;&nbsp;|&nbsp;&nbsp; ❤️ <span
 								id="topLikeCount">${dto.post.like_count}</span>
@@ -251,13 +253,13 @@
 							<span class="like-count">${dto.post.like_count}</span> <span
 								class="like-icon">❤️</span>
 						</button>
-						
 						<div class="report">
-                            <button type="button"
-                                    id="reportPostBtn"
+                            <span type="button"
+                                    id="report-Btn"
+                                    class="report-btn"
                                     data-post="${dto.post.post_id}">
                                 🚨 신고하기
-                            </button>
+                            </span>
                         </div>
 
 					</div>
@@ -315,7 +317,7 @@
 													value="${cmt.created_at}" pattern="yyyy-MM-dd HH:mm" />
 											</span>
 										</div>
-
+											
 										<div class="comment-content">
 											<c:out value="${cmt.content}" />
 										</div>
@@ -418,7 +420,6 @@
 															</c:if>
 																	
 															<div class="report-comment">
-<!-- 						신고하기  ajax로 실시간 내가 이미 신고했으면 버튼 비활성  -->
 							
 																	</div>	
 														</div>
@@ -913,25 +914,26 @@ $(document).on("click", ".reply-submit", function() {
  });
 
  $(document).ready(function(){
-
+		
      // ================================================
      // 🔍 1) 신고 여부 체크 (페이지 로딩 시 자동 실행)
      // ================================================
-     const postId = $("#reportPostBtn").data("post");
-
+       const postId = ${dto.post.post_id};
+     console.log(postId);
      $.post("${pageContext.request.contextPath}/community/report/check", {
          targetType: "post",
          targetId: postId
+        
      }, function(res){
 
          if (!res.loggedIn) return;
 
          if (res.already) {
-             $("#reportPostBtn")
+             $("#report-Btn")
                  .prop("disabled", true)
-                 .text("이미 신고했어요")
+                 .text("신고완료")
                  .css({
-                     "background": "#d1d1d1",
+                     
                      "cursor": "not-allowed"
                  });
          }
@@ -941,7 +943,7 @@ $(document).on("click", ".reply-submit", function() {
      // ================================================
      // 🚨 2) 신고 보내기 (버튼 클릭 시 실행)
      // ================================================
-     $("#reportPostBtn").click(function(){
+     $("#report-Btn").click(function(){
 
          const postId = $(this).data("post");
 
@@ -987,7 +989,6 @@ $(document).on("click", ".reply-submit", function() {
                      .prop("disabled", true)
                      .text("신고완료")
                      .css({
-                         background: "#ccc",
                          cursor: "not-allowed"
                      });
              }
@@ -1006,7 +1007,7 @@ $(".comment-report-btn").each(function(){
     }, function(res){
 
         if (res.already) {
-            btn.text("이미 신고함")
+            btn.text("신고완료")
                .prop("disabled", true)
                .css({
                    background: "#ccc",
