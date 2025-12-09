@@ -18,9 +18,9 @@
 	<jsp:include page="../include/header.jsp"></jsp:include>
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
-		<div class="main-header">
-			<h1>강의 상세 정보</h1>
-		</div>
+<!-- 		<div class="main-header"> -->
+<!-- 			<h1>강의 상세 정보</h1> -->
+<!-- 		</div> -->
 
 		<form id="classAddForm" class="form-container"
 			action="${pageContext.request.contextPath}/admin/adminClassUpdate"

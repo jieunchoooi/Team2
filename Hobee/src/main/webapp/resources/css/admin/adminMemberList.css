@@ -17,7 +17,7 @@ body {
 .main-content {
     margin-left: 240px; /* 사이드바 폭만큼 밀기 */
     margin-top: 0;
-    padding: 15px 30px 30px 30px;
+    padding: 30px 30px 30px 30px;
     width: calc(100% - 240px);
     background-color: #f9fafb;
     min-height: 100vh;

@@ -458,6 +458,16 @@ public class AdminService {
 		System.out.println("AdminService declaration()");
 		return adminMapper.declaration();
 	}
+
+	public int askClassCount1() {
+		System.out.println("AdminService askClassCount1()");
+		return adminMapper.askClassCount1();
+	}
+
+	public int newPerson() {
+		System.out.println("AdminService newPerson()");
+		return adminMapper.newPerson();
+	}
 	
 	
 	

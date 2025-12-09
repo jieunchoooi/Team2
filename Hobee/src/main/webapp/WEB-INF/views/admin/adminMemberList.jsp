@@ -20,10 +20,10 @@
 	<jsp:include page="../include/header.jsp"></jsp:include>
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
-		<div class="filter-container"></div>
-		<div class="main-header">
-			<h1>회원 목록</h1>
-		</div>
+<!-- 		<div class="filter-container"></div> -->
+<!-- 		<div class="main-header"> -->
+<!-- 			<h1>회원 목록</h1> -->
+<!-- 		</div> -->
 
 		
 		<div class="stats-container">

@@ -25,7 +25,7 @@
 	<form action="${ pageContext.request.contextPath }/admin/managementPro" method="post">
 	<input type="hidden" name="user_num" value="${user.user_num}">
 	<main class="main-content">
-		<h1>회원 관리</h1>
+<!-- 		<h1>회원 관리</h1> -->
 		<div class="content-wrapper">
 			
 			<div class="form-container">

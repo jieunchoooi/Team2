@@ -14,6 +14,10 @@
     box-sizing: border-box;
 }
 
+body {
+    overflow-y: hidden !important; 
+}
+
 .main-content {
     margin-left: 240px;
     margin-top: 0;
@@ -31,6 +35,7 @@
     margin: 0 auto;
     background: #fff;
     border: 1px solid #ddd;
+    margin-top: 50px;
 }
 
 .category-management h2 {
@@ -191,7 +196,7 @@
     
     <main class="main-content">
         <div class="category-management">
-            <h2>카테고리 관리</h2>
+<!--             <h2>카테고리 관리</h2> -->
             
             <!-- 카테고리 관리 -->
             <div class="category-section">

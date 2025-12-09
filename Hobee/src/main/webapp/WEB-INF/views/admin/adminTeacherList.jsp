@@ -21,9 +21,9 @@
 	<jsp:include page="../include/header.jsp"></jsp:include>
 	<jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 	<main class="main-content">
-		<div class="main-header">
-			<h1>강사 목록</h1>
-		</div>
+<!-- 		<div class="main-header"> -->
+<!-- 			<h1>강사 목록</h1> -->
+<!-- 		</div> -->
 		
 		<div class="stats-container">
 			<div class="stat-card ${filter == 'all' ? 'active' : ''}" onclick="location.href='${pageContext.request.contextPath}/admin/adminTeacherList?filter=all'">

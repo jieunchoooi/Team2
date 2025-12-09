@@ -34,7 +34,7 @@ html {
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     position: relative;
-    min-height: 100%;
+/*     min-height: auto; */
 }
 
 /* ⭐ body는 padding 없이 */
@@ -46,7 +46,8 @@ body {
     line-height: 1.5;
     text-align: left;
     background-color: #f8f9fc;
-    height: 100%;
+    height: auto;
+    overflow-y: hidden !important; 
 }
 
 /* Typography */
@@ -200,6 +201,14 @@ a:hover {
     color: #FF4C4C !important;
 }
 
+.text-class {
+    color: #f7b100 !important;
+}
+.text-person {
+    color: #00a063 !important;
+}
+.class1{cursor: pointer;}
+
 .text-gray-300 {
     color: #dddfeb !important;
 }
@@ -225,9 +234,27 @@ a:hover {
 .text-xs {
     font-size: .7rem;
 }
+.text-danger {
+    color: #e74a3b !important;
+}
 
+.text-secondary {
+    color: #858796 !important;
+}
+
+.text-dark {
+    color: #5a5c69 !important;
+}
 .red{
     color: #ff4c4c; 
+    font-weight: 700;
+}
+.yellow{
+    color: #f6c23e; 
+    font-weight: 700;
+}
+.green{
+    color: #00a063; 
     font-weight: 700;
 }
 
@@ -412,7 +439,7 @@ a:hover {
 #wrapper {
     margin-left: 240px;
     margin-top: 0;
-    min-height: calc(100vh - 81px);
+/*     min-height: c	alc(100vh - 81px); */
 }
 
 #wrapper #content-wrapper {
@@ -433,7 +460,7 @@ a:hover {
 
 .box {
     background-color: #f9fafb;
-    min-height: 100vh;
+/*     min-height: 100vh; */
 }
 
 /* Progress Bar */
