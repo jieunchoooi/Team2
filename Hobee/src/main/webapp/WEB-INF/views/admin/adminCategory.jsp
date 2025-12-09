@@ -14,9 +14,9 @@
     box-sizing: border-box;
 }
 
-body {
-    overflow-y: hidden !important; 
-}
+body { 
+     overflow-y: hidden !important;  
+} 
 
 .main-content {
     margin-left: 240px;
