@@ -64,4 +64,6 @@ public interface AdminBoardMapper {
 
     // ✔ 사용자에게 노출될 활성 머리말 목록
     List<AdminBoardVO> getActiveBoardList();
+    
+    
 }

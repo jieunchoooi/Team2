@@ -59,26 +59,26 @@
 			<h3> 커뮤니티 관리</h3>
 			<div class="menu">
 				 <!-- 기존: 게시판 목록 -->
-				<div class="menu-item ${page eq 'boardList' ? 'active' : ''}"
-					onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'">
-					📋 <span>머리말 편집</span>
-				</div>
-				<!-- ⭐ 필수: 게시글 관리 -->
-                <div class="menu-item ${page eq 'postList' ? 'active' : ''}"
-                    onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'">
-                    📝 <span>게시글 관리</span>
-                </div>
+<%-- 				<div class="menu-item ${page eq 'boardList' ? 'active' : ''}" --%>
+<%-- 					onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'"> --%>
+<!-- 					📋 <span>머리말 편집</span> -->
+<!-- 				</div> -->
+<!-- 				⭐ 필수: 게시글 관리 -->
+<%--                 <div class="menu-item ${page eq 'postList' ? 'active' : ''}" --%>
+<%--                     onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'"> --%>
+<!--                     📝 <span>게시글 관리</span> -->
+<!--                 </div> -->
                 
-                <div class="menu-item ${page eq 'deletedPostList' ? 'active' : ''}"
-            		onclick="location.href='${pageContext.request.contextPath}/admin/adminPostDeletedList'">
-           			 🗑️ <span>삭제된 게시글(휴지통)</span>
-        		</div>
+<%--                 <div class="menu-item ${page eq 'deletedPostList' ? 'active' : ''}" --%>
+<%--             		onclick="location.href='${pageContext.request.contextPath}/admin/adminPostDeletedList'"> --%>
+<!--            			 🗑️ <span>삭제된 게시글(휴지통)</span> -->
+<!--         		</div> -->
                 
-                <!-- ⭐ 필수: 댓글 관리 -->
-                <div class="menu-item ${page eq 'commentList' ? 'active' : ''}"
-                    onclick="location.href='${pageContext.request.contextPath}/admin/adminCommentList'">
-                    💬 <span>댓글 관리</span>
-                </div>
+<!--                 ⭐ 필수: 댓글 관리 -->
+<%--                 <div class="menu-item ${page eq 'commentList' ? 'active' : ''}" --%>
+<%--                     onclick="location.href='${pageContext.request.contextPath}/admin/adminCommentList'"> --%>
+<!--                     💬 <span>댓글 관리</span> -->
+<!--                 </div> -->
 
                 <!-- ⭐ 필수: 신고 관리 -->
                 <div class="menu-item ${page eq 'reportList' ? 'active' : ''}"
@@ -86,10 +86,10 @@
                     🚨 <span>신고 관리</span>
                 </div>
                 
-                <div class="menu-item ${page eq 'postStats' ? 'active' : ''}"
-            		onclick="location.href='${pageContext.request.contextPath}/admin/adminPostStats'">
-        	    	📊 <span>게시글 통계</span>
-       		   </div>
+<%--                 <div class="menu-item ${page eq 'postStats' ? 'active' : ''}" --%>
+<%--             		onclick="location.href='${pageContext.request.contextPath}/admin/adminPostStats'"> --%>
+<!--         	    	📊 <span>게시글 통계</span> -->
+<!--        		   </div> -->
 
                 <!-- 옵션: 공지사항 -->
                 <div class="menu-item ${page eq 'noticeList' ? 'active' : ''}"

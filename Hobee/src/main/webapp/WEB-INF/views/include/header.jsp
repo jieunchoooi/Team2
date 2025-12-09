@@ -100,6 +100,9 @@
 <!-- 회원가입 모달 include -->
 <jsp:include page="/WEB-INF/views/include/insertModal.jsp"/>
 
+<!-- 태그 선택 모달 include -->
+<jsp:include page="/WEB-INF/views/include/tagSelectionModal.jsp"/>
+
 <!-- ===========================
      🔵 회원가입 Progress 전역 함수
 =========================== -->
@@ -328,14 +331,14 @@ $(document).ready(function () {
     /* --------------------------------------------------
        3-1) 로그인 비밀번호 보기 / 숨기기
     -------------------------------------------------- */
-    $(document).on("click", "#togglePw", function () {
-        const $pw = $("#login_pw");
-        const nowType = $pw.attr("type");
-        const newType = nowType === "password" ? "text" : "password";
+//     $(document).on("click", "#togglePw", function () {
+//         const $pw = $("#login_pw");
+//         const nowType = $pw.attr("type");
+//         const newType = nowType === "password" ? "text" : "password";
 
-        $pw.attr("type", newType);
-        $(this).text(newType === "text" ? "🙈" : "👁");
-    });
+//         $pw.attr("type", newType);
+//         $(this).text(newType === "text" ? "🙈" : "👁");
+//     });
 
     /* --------------------------------------------------
        4) 회원가입 — 아이디 중복 체크
@@ -356,8 +359,8 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: contextPath + "/user/checkId",
-            type: "GET",
+            url: contextPath + "/user/checkId",  // ← URL 변경
+            type: "POST",
             data: { user_id: id },
             success: function (res) {
                 if (res === "available") {
@@ -470,9 +473,9 @@ $(document).ready(function () {
         }
 
         if (pw === pw2) {
-            $("#pwCheckMsg").text("비밀번호가 일치합니다 😊").css("color", "#2e7d32");
+            $("#pwCheckMsg").text("비밀번호가 일치합니다.").css("color", "#2e7d32");
         } else {
-            $("#pwCheckMsg").text("비밀번호가 일치하지 않습니다 ❌").css("color", "#d9534f");
+            $("#pwCheckMsg").text("비밀번호가 일치하지 않습니다.").css("color", "#d9534f");
         }
     });
 
@@ -509,8 +512,8 @@ $(document).ready(function () {
                 .css("color", "#e74c3c");
         } else {
             $("#phoneMsg")
-                .text("사용 가능한 전화번호입니다 ✔")
-                .css("color", "#2ecc71");
+                .text("사용 가능한 전화번호입니다.")
+                .css("color", "#008000");
         }
 
         updateSignupProgress();
@@ -597,6 +600,7 @@ $(document).ready(function () {
 
             success: function (res) {
                 if (res.result === "success") {
+                	// 회원가입 성공 팝업
                     $("#joinSuccessPopup").fadeIn(200);
 
                     confetti({
@@ -605,13 +609,18 @@ $(document).ready(function () {
                         origin: { y: 0.6 }
                     });
 
+                    // 1.5초후 태그 선택 모달로 화면전환
                     setTimeout(() => {
                         $("#joinSuccessPopup").fadeOut(300);
                         $("#insertModal").fadeOut(200);
-                        $("#loginModal").fadeIn().css("display", "flex");
-
+                        
+                        // 태그 선택 모달 열기
+                        $("#tagSelectionModal").fadeIn().css("display", "flex");
+                        // user_id를 태그 모달에 전달
+                        $("#tag_user_id").val(res.user_id);
+                        
                         $(".checkmark").removeClass("draw");
-                    }, 1200);
+                    }, 1500);
 
                     $(".checkmark").addClass("draw");
 
@@ -793,67 +802,70 @@ $(document).ready(function () {
 ======================================================= */
  $(document).on("click", "#openLoginLog", function () {
 
-	    $.ajax({
-	        url: contextPath + "/user/loginInfo",
-	        method: "GET",
-	        dataType: "json",
+	  $.ajax({
+	      url: contextPath + "/user/loginInfo",
+	      method: "GET",
+	      dataType: "json",
 
-	        success: function (res) {
+	      success: function (res) {
 
-	            console.log("로그인 상세 응답:", res);
+	          console.log("로그인 상세 응답:", res);
 
-	            let userName = res.user_name || "정보 없음";
-	            let lastLogin = res.last_login_at || "첫 로그인";
-	            let currentLocation = res.current_location || "정보 없음";
-	            let lastLocation = res.last_location || "기록 없음";
+	          let userName = res.user_name || "정보 없음";
+	          let lastLogin = res.last_login_at || "첫 로그인";
+	          let currentLocation = res.current_location || "정보 없음";
+	          let lastLocation = res.last_location || "기록 없음";
 
-	            let deviceList = "";
-	            if (res.recent_devices && res.recent_devices.length > 0) {
-	                res.recent_devices.forEach(d => {
-	                    deviceList += `<li>${d}</li>`;
-	                });
-	            } else {
-	                deviceList = "<li>기록 없음</li>";
-	            }
+	          /* ================================
+	             📌 최근 로그인 기기 리스트 구성
+	          ================================ */
+	          let deviceList = "";
+	          if (res.recent_devices && res.recent_devices.length > 0) {
 
-	            Swal.fire({
-	                title: "로그인 상세 정보 🔍",
-	                html: `
-	                    <div style="
-	                        text-align:left;
-	                        font-size:15px;
-	                        line-height:1.6;
-	                        color:#333 !important;
-	                    ">
-	                        <b style="color:#111 !important;">✔ 사용자:</b> \${userName}<br>
-	                        <b style="color:#111 !important;">✔ 마지막 로그인:</b> \${lastLogin}<br>
-	                        <b style="color:#111 !important;">✔ 현재 접속 지역:</b> \${currentLocation}<br>
-	                        <b style="color:#111 !important;">✔ 이전 접속 지역:</b> \${lastLocation}<br>
-	                        <b style="color:#111 !important;">✔ 최근 로그인 기기:</b>
-	                        <ul style="padding-left:18px; margin-top:6px; color:#333 !important;">
-	                            \${deviceList}
-	                        </ul>
-	                    </div>
-	                `,
-	                width: "450px",
-	                confirmButtonText: "닫기",
-	                confirmButtonColor: "#4a74ff",
-	                didOpen: () => {
-	                    const swalEl = document.querySelector('.swal2-html-container');
-	                    if (swalEl) {
-	                        swalEl.style.color = '#333';
-	                    }
-	                }
-	            });
-	        },
+	              res.recent_devices.forEach(d => {
+	                  deviceList +=
+	                      "<li>" +
+	                      d.login_time + " | " +
+	                      d.device + " | " +
+	                      d.location +
+	                      "</li>";
+	              });
 
-	        error: function (xhr, status, err) {
-	            console.error("loginInfo 호출 실패:", status, err);
-	        }
-	    });
+	          } else {
+	              deviceList = "<li>기록 없음</li>";
+	          }
 
-	}); // 이름 클릭 이벤트 끝
+	          /* ================================
+	             📌 SweetAlert HTML 문자열 조립
+	             (백틱 X → JSP EL 충돌 제거)
+	          ================================ */
+	          let htmlContent =
+	              "<div style='text-align:left; font-size:15px; line-height:1.6; color:#333;'>" +
+	              "<b>✔ 사용자:</b> " + userName + "<br>" +
+	              "<b>✔ 마지막 로그인:</b> " + lastLogin + "<br>" +
+	              "<b>✔ 현재 접속 지역:</b> " + currentLocation + "<br>" +
+	              "<b>✔ 이전 접속 지역:</b> " + lastLocation + "<br>" +
+	              "<b>✔ 최근 로그인 기기:</b>" +
+	              "<ul style='padding-left:18px; margin-top:6px;'>" +
+	                  deviceList +
+	              "</ul>" +
+	              "</div>";
 
+	          Swal.fire({
+	              title: "로그인 상세 정보 🔍",
+	              html: htmlContent,
+	              width: "450px",
+	              confirmButtonText: "닫기",
+	              confirmButtonColor: "#4a74ff"
+	          });
+	      },
+
+	      error: function () {
+	          Swal.fire("오류", "로그인 기록을 불러올 수 없습니다.", "error");
+	      }
+	  });
+
+	});
 
 }); // document.ready 끝
 </script>
