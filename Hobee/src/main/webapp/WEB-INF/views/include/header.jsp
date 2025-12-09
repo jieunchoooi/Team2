@@ -92,6 +92,7 @@
         </div>
     </nav>
 
+	<button type="button" class="modal1">모달</button>
 </header>
 
 <!-- 로그인 모달 include -->
@@ -107,6 +108,17 @@
      🔵 회원가입 Progress 전역 함수
 =========================== -->
 <script>
+//스크립트 마지막 부분 (document.ready 안쪽)에 추가
+
+/* ===============================
+   테스트용 모달 버튼
+================================ */
+$(".modal1").click(function() {
+    $("#tagSelectionModal").fadeIn().css("display", "flex");
+});
+
+
+
 function updateSignupProgress() {
     let progress = 0;
 
@@ -322,6 +334,12 @@ $(document).ready(function () {
                     .text("서버 오류가 발생했습니다.")
                     .fadeIn(200);
             }
+            
+            
+            // 테스트 모달
+            $(".modal1").click(function() {
+                $("#tagSelectionModal").fadeIn().css("display", "flex");
+            });
         });
     }
 

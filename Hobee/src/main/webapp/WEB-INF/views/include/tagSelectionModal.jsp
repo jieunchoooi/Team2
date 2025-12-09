@@ -5,34 +5,35 @@
     <div class="modal-overlay"></div>
 
     <div class="tag-modal-content">
-        <span class="tag-close">×</span>
-
+    	<div style="text-align: right;">
+        	<span class="tag-close">×</span>	
+		</div>
         <h2 class="tag-title">관심 태그 선택</h2>
         <p class="tag-subtitle">관심있는 분야를 선택해주세요 (최대 5개)</p>
 
-        <form id="tagForm" action="${pageContext.request.contextPath}/user/interest">
+        <form id="tagForm" action="${pageContext.request.contextPath}/gpt/interest">
             <input type="hidden" id="tag_user_id" name="user_id">
             
             <div class="tag-grid">
                 <label class="tag-item">
                     <input type="checkbox" name="tags" value="운동">
-                    <span>🏃 운동</span>
+                    <span>운동</span>
                 </label>
                 <label class="tag-item">
                     <input type="checkbox" name="tags" value="요리">
-                    <span>🍳 요리</span>
+                    <span>요리</span>
                 </label>
                 <label class="tag-item">
                     <input type="checkbox" name="tags" value="음악">
-                    <span>🎵 음악</span>
+                    <span>음악</span>
                 </label>
                 <label class="tag-item">
                     <input type="checkbox" name="tags" value="미술">
-                    <span>🎨 미술</span>
+                    <span>미술</span>
                 </label>
                 <label class="tag-item">
                     <input type="checkbox" name="tags" value="댄스">
-                    <span>💃 댄스</span>
+                    <span>댄스</span>
                 </label>
                 <!-- 더 많은 태그 추가 -->
             </div>
@@ -48,12 +49,31 @@
 </div>
 
 <style>
+.tag-close{
+	font-size: 30px;
+	cursor: pointer;
+}
+
 .tag-modal-content {
     background: white;
     padding: 40px;
     border-radius: 16px;
     max-width: 600px;
     width: 90%;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* 흐림 효과 */
+    background: rgba(0, 0, 0, 0.3); /* 반투명 어둡게 */
+    z-index: 999;
 }
 
 .tag-grid {
@@ -115,7 +135,7 @@
 // 태그 모달 닫기
 $(".tag-close, #skipTagBtn").click(function() {
     $("#tagSelectionModal").fadeOut();
-    $("#loginModal").fadeIn().css("display", "flex");
+//     $("#loginModal").fadeIn().css("display", "flex");
 });
 
 // 태그 저장
@@ -145,7 +165,7 @@ $("#saveTagBtn").click(function() {
         traditional: true,
         success: function() {
             $("#tagSelectionModal").fadeOut();
-            $("#loginModal").fadeIn().css("display", "flex");
+//             $("#loginModal").fadeIn().css("display", "flex");
         }
     });
 });
