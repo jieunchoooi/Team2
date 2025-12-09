@@ -219,5 +219,43 @@
         WHERE is_active = 1
         ORDER BY board_order ASC
     </select>
+    
+    <!-- ============================= -->
+<!-- 게시판 숨기기 -->
+<!-- ============================= -->
+<update id="disableBoard">
+    UPDATE board_category
+    SET is_active = 0
+    WHERE board_id = #{board_id}
+</update>
+
+<!-- ============================= -->
+<!-- 게시판 표시 -->
+<!-- ============================= -->
+<update id="enableBoard">
+    UPDATE board_category
+    SET is_active = 1
+    WHERE board_id = #{board_id}
+</update>
+
+<!-- ========================================================= -->
+<!-- 9) 게시판 수정 (UPDATE)                                     -->
+<!-- ========================================================= -->
+<update id="updateBoard" parameterType="com.itwillbs.domain.AdminBoardVO">
+    UPDATE board_category
+    SET
+        board_name       = #{board_name},
+        board_desc       = #{board_desc},
+        is_active        = #{is_active},
+        allow_comment    = #{allow_comment},
+        allow_image      = #{allow_image},
+        allow_file       = #{allow_file},
+        write_role       = #{write_role},
+        banned_words     = #{banned_words},
+        require_approval = #{require_approval}
+    WHERE board_id = #{board_id}
+</update>
+
+    
 
 </mapper>
