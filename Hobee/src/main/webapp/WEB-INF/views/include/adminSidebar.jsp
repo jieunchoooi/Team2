@@ -5,12 +5,12 @@
 		<div class="menu-section">
 			<div class="menu ${page eq 'dashboard' ? 'active' : ''}"
 				onclick="location.href='${pageContext.request.contextPath}/admin/dashboard'" style="cursor: pointer;">
-				<h3>📊 <span>대시보드</span></h3>
+				<h3> 대시보드</h3>
 			</div>
 		</div>	
 		<!-- 클래스 관리 -->
 		<div class="menu-section">
-			<h3>📚 강의 관리</h3>
+			<h3> 강의 관리</h3>
 			<div class="menu">
 				<div class="menu-item ${page eq 'category' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminCategory'">
@@ -26,7 +26,7 @@
 
 		<!-- 회원 관리 -->
 		<div class="menu-section">
-			<h3>👥 회원 관리</h3>
+			<h3> 회원 관리</h3>
 			<div class="menu">
 				<div class="menu-item ${page eq 'memberList' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminMemberList'">
@@ -45,7 +45,7 @@
 
 		<!-- 결제 관리 -->
 		<div class="menu-section">
-			<h3>💳 결제 관리</h3>
+			<h3> 결제 관리</h3>
 			<div class="menu">
 				<div class="menu-item ${page eq 'paymentList' ? 'active' : ''}"
 					onclick="location.href='${pageContext.request.contextPath}/admin/adminPaymentList'">
@@ -56,7 +56,7 @@
 
 		<!-- 커뮤니티 관리 -->
 		<div class="menu-section">
-			<h3>🗨️ 커뮤니티 관리</h3>
+			<h3> 커뮤니티 관리</h3>
 			<div class="menu">
 				 <!-- 기존: 게시판 목록 -->
 				<div class="menu-item ${page eq 'boardList' ? 'active' : ''}"
