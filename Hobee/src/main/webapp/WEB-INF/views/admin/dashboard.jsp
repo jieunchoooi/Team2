@@ -30,7 +30,7 @@
     <jsp:include page="../include/adminSidebar.jsp"></jsp:include>
     
     <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div id="dash-wrapper">
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <div class="box" >
@@ -94,7 +94,7 @@
 			    </div>
 			    
 			    <div class="col-xl-3 col-md-6 mb-4">
-			        <div class="card border-left-warning shadow h-100 py-2">
+			        <div class="card border-left-warning shadow h-100 py-2 class2">
 			            <div class="card-body">
 			                <div class="row no-gutters align-items-center">
 			                    <div class="col mr-2">
@@ -118,7 +118,7 @@
 			    <div class="col-xl-6 col-lg-6" style="padding-right: 0;">
 			        <div class="card shadow mb-4 h-100" id="mb">
 			            <div class="card-header py-3">
-			                <h6 class="m-0 font-weight-bold text-primary">월별 매출 통계
+			                <h6 class="m-0 font-weight-bold text-primary dash6">월별 매출 통계
 			                <span style="font-size: 0.75rem; font-weight: normal; color: #858796;">&nbsp;(단위: 만원)</span></h6>
 			            </div>
 			            <div class="card-body">
@@ -135,7 +135,7 @@
 			    <div class="col-xl-3 col-lg-3">
 			        <div class="card shadow mb-4 h-100">
 			            <div class="card-header py-3">
-			                <h6 class="m-0 font-weight-bold text-primary">카테고리별 결제 통계 (전월)</h6>
+			                <h6 class="m-0 font-weight-bold text-primary dash6">카테고리별 결제 통계 (전월)</h6>
 			            </div>
 			            <div class="card-body">
 			                <div class="chart-pie pt-2 pb-2">
@@ -178,7 +178,7 @@
 			    <div class="col-xl-3 col-lg-3" style="margin-bottom: 0;">
 			        <div class="card shadow h-100">
 			            <div class="card-header py-3">
-			                <h6 class="m-0 font-weight-bold text-primary">인기 강의 TOP 10</h6>
+			                <h6 class="m-0 font-weight-bold text-primary dash6">인기 강의 TOP 10</h6>
 			            </div>
 			            <div class="card-body" style="padding: 0.5rem;">
 			                <div class="popular-lectures-full">
@@ -294,6 +294,7 @@ let color4 = document.querySelector(".color4");
 let color5 = document.querySelector(".color5");
 let color6 = document.querySelector(".color6");
 let class1 = document.querySelector(".class1");
+let class2 = document.querySelector(".class2");
 
 // 총 강의수 
 color1.onclick = function(){
@@ -322,6 +323,10 @@ color6.onclick = function(){
 // 요청된 강의수
 class1.onclick = function(){
 	location.href = "${pageContext.request.contextPath}/admin/adminClassList?filter=ask";
+}
+// 이번달 신규가입자
+class2.onclick = function(){
+	location.href = "${pageContext.request.contextPath}/admin/adminMemberList";
 }
 
 
