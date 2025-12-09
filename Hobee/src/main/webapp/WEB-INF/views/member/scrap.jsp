@@ -69,8 +69,8 @@ if (grade == null) {
 
 						<%-- 스크랩 데이터 반복 출력 --%>
 						<c:forEach var="lecture" items="${scrapList}">
-							<div class="cart-item">
-
+							<div class="cart-item" onclick="location.href='${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}'">
+								
 								<input type="checkbox" name="selectItem"
 									value="${lecture.lecture_num}"
 									data-price="${lecture.lecture_price}" /> <img

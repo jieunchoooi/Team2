@@ -14,10 +14,15 @@ body {
 /* 메인 */
 .main-content {
     margin-left: 240px;
-    padding: 30px;
     background-color: #f9fafb;
+    margin-bottom: 30px;
 }
-
+.content-wrapper{
+	width:1400px;
+	margin: 0 auto;
+	    padding: 30px;
+	    min-height: 100vh;
+}
 /* 통계 카드 */
 .stats-container {
     display: grid;
