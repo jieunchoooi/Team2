@@ -43,21 +43,23 @@
 					<label for="user_num">번호</label> <span class="form-value">${user.user_num}</span>
 				</div>
 				<div class="form-group">
-<!--     		    	<label>권한</label> -->
-<!--       				<select name="user_role" id="category" required> -->
-<%--         				<option value="user" ${user.user_role == 'user' ? 'selected' : ''}>유저</option> --%>
-<%--         				<option value="instructor" ${user.user_role == 'instructor' ? 'selected' : ''}>강사</option> --%>
-<%--         				<c:if test="${userVO.user_role == 'super_admin'}"> --%>
-<%-- 	        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option> --%>
-<%--         				</c:if> --%>
-        				
-<!--       				</select> -->
 					<label for="user_role">권한</label> 
+					
 					<c:if test="${user.user_role == 'user'}">
 						<span class="form-value">유저</span>
 					</c:if>
 					<c:if test="${user.user_role == 'instructor'}">
 						<span class="form-value">강사</span>
+					</c:if>
+					<c:if test="${user.user_role == 'admin'}">
+						<span class="form-value">관리자</span>
+					</c:if>
+					<c:if test="${user1.user_role == 'super_admin'}">
+						<select name="user_role" id="category" required>
+	        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option>
+	        				<option value="user" ${user.user_role == 'user' ? 'selected' : ''}>유저</option>
+						</select>
+						<button type="submit" class="user_role_btn" onclick="submitForm()">수정</button>
 					</c:if>
 				</div>
    			    
@@ -65,9 +67,9 @@
 					<label for="userId">아이디</label> <span class="form-value">${user.user_id}</span>
 				</div>
 
-				<div class="form-group">
-					<label for="password">비밀번호</label> <span class="form-value">${user.user_password}</span>
-				</div>
+<!-- 				<div class="form-group"> -->
+<%-- 					<label for="password">비밀번호</label> <span class="form-value">${user.user_password}</span> --%>
+<!-- 				</div> -->
 				<div class="form-group">
 					<label for="adress">주소</label> <span class="form-value">${user.user_address1}, ${user.user_address2}</span>
 				</div>
@@ -110,7 +112,6 @@ function submitForm() {
     let selectedText = selectBox.options[selectBox.selectedIndex].text;
     
     if(confirm("회원 권한을 '" + selectedText + "'(으)로 변경하시겠습니까?")) {
-        alert("회원 권한이 변경됩니다.");
         return true; // 폼 제출 허용
     }
     

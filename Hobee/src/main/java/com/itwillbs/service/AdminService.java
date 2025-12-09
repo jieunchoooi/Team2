@@ -71,9 +71,9 @@ public class AdminService {
 		return adminMapper.insertMember(user_num);
 	}
 
-	public void adminUserUpdate(UserVO userVO) {
+	public int adminUserUpdate(UserVO userVO) {
 		System.out.println("AdminService adminUserUpdate()");
-		adminMapper.adminUserUpdate(userVO);
+		return adminMapper.adminUserUpdate(userVO);
 	}
 
 	public LectureVO classEdit(int lecture_num) {
@@ -467,6 +467,11 @@ public class AdminService {
 	public int newPerson() {
 		System.out.println("AdminService newPerson()");
 		return adminMapper.newPerson();
+	}
+
+	public UserVO insertMember1(String user_id) {
+		System.out.println("AdminService insertMember1()");
+		return adminMapper.insertMember1(user_id);
 	}
 	
 	

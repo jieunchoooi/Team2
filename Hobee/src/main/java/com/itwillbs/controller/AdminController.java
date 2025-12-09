@@ -332,12 +332,16 @@ public class AdminController {
    }
 
    @PostMapping("/MemberManagement")
-   public String MemberManagement(Model model, @RequestParam("user_num") int user_num) {
-      System.out.println("AdminController MemberManagement()");
-      UserVO user = adminService.insertMember(user_num);
-
-      model.addAttribute("user", user);
-      return "admin/MemberManagement";
+   public String MemberManagement(Model model, @RequestParam("user_num") int user_num, HttpSession session) {
+       System.out.println("AdminController MemberManagement()");
+       String user_id = (String) session.getAttribute("user_id");
+       
+       UserVO user = adminService.insertMember(user_num);
+       UserVO user1 = adminService.insertMember1(user_id);
+       
+       model.addAttribute("user1", user1);
+       model.addAttribute("user", user);
+       return "admin/MemberManagement";
    }
    
    // 회원 강제 탈퇴
@@ -386,19 +390,21 @@ public class AdminController {
    // 회원 권한 등록
    @PostMapping("/managementPro")
    public String managementPro(@RequestParam("user_role") String user_role, @RequestParam("user_num") int user_num) {
-      System.out.println("AdminController managementPro()");
-      UserVO userVO = new UserVO();
-
-      if (user_role != "" && !user_role.isEmpty()) {
-         userVO.setUser_role(user_role);
-      }
-      userVO.setUser_num(user_num);
-
-      System.out.println(userVO);
-      adminService.adminUserUpdate(userVO);
-      return "redirect:/admin/adminMemberList";
+       System.out.println("AdminController managementPro()");
+       System.out.println("user_role: " + user_role);
+       System.out.println("user_num: " + user_num);
+       
+       UserVO userVO = new UserVO();
+       userVO.setUser_role(user_role);
+       userVO.setUser_num(user_num);
+       
+       System.out.println("Before update: " + userVO);
+       int result = adminService.adminUserUpdate(userVO);
+       System.out.println("Update result: " + result);
+       
+       return "redirect:/admin/adminMemberList";
    }
-
+   
    // 강사정보 조회
    @GetMapping("/adminTeacherList")
    public String adminTeacherList(Model model, HttpServletRequest request,

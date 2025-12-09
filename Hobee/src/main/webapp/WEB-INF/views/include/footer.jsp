@@ -166,6 +166,7 @@
             <a href="${pageContext.request.contextPath}/faq/faqList" class="footer-btn">
                 FAQ
             </a>
+
             <a href="${pageContext.request.contextPath}/notice/list" class="footer-btn">
                 공지사항
             </a>

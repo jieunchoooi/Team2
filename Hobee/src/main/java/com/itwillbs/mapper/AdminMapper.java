@@ -28,7 +28,7 @@ public interface AdminMapper {
 
 	public UserVO insertMember(int user_num);
 
-	public void adminUserUpdate(UserVO userVO);
+	public int adminUserUpdate(UserVO userVO);
 
 	public LectureVO classEdit(int lecture_num);
 
@@ -171,6 +171,8 @@ public interface AdminMapper {
 	public int askClassCount1();
 
 	public int newPerson();
+
+	public UserVO insertMember1(String user_id);
 
 
 

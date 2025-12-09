@@ -14,9 +14,10 @@
     box-sizing: border-box;
 }
 
-body {
-    overflow-y: hidden !important; 
-}
+body { 
+     overflow-y: hidden !important;  
+     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+} 
 
 .main-content {
     margin-left: 240px;
