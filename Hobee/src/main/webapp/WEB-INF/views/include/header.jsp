@@ -100,6 +100,9 @@
 <!-- 회원가입 모달 include -->
 <jsp:include page="/WEB-INF/views/include/insertModal.jsp"/>
 
+<!-- 태그 선택 모달 include -->
+<jsp:include page="/WEB-INF/views/include/tagSelectionModal.jsp"/>
+
 <!-- ===========================
      🔵 회원가입 Progress 전역 함수
 =========================== -->
@@ -325,14 +328,14 @@ $(document).ready(function () {
     /* --------------------------------------------------
        3-1) 로그인 비밀번호 보기 / 숨기기
     -------------------------------------------------- */
-    $(document).on("click", "#togglePw", function () {
-        const $pw = $("#login_pw");
-        const nowType = $pw.attr("type");
-        const newType = nowType === "password" ? "text" : "password";
+//     $(document).on("click", "#togglePw", function () {
+//         const $pw = $("#login_pw");
+//         const nowType = $pw.attr("type");
+//         const newType = nowType === "password" ? "text" : "password";
 
-        $pw.attr("type", newType);
-        $(this).text(newType === "text" ? "🙈" : "👁");
-    });
+//         $pw.attr("type", newType);
+//         $(this).text(newType === "text" ? "🙈" : "👁");
+//     });
 
     /* --------------------------------------------------
        4) 회원가입 — 아이디 중복 체크
@@ -467,9 +470,9 @@ $(document).ready(function () {
         }
 
         if (pw === pw2) {
-            $("#pwCheckMsg").text("비밀번호가 일치합니다 😊").css("color", "#2e7d32");
+            $("#pwCheckMsg").text("비밀번호가 일치합니다.").css("color", "#2e7d32");
         } else {
-            $("#pwCheckMsg").text("비밀번호가 일치하지 않습니다 ❌").css("color", "#d9534f");
+            $("#pwCheckMsg").text("비밀번호가 일치하지 않습니다.").css("color", "#d9534f");
         }
     });
 
@@ -506,8 +509,8 @@ $(document).ready(function () {
                 .css("color", "#e74c3c");
         } else {
             $("#phoneMsg")
-                .text("사용 가능한 전화번호입니다 ✔")
-                .css("color", "#2ecc71");
+                .text("사용 가능한 전화번호입니다.")
+                .css("color", "#008000");
         }
 
         updateSignupProgress();
@@ -594,6 +597,7 @@ $(document).ready(function () {
 
             success: function (res) {
                 if (res.result === "success") {
+                	// 회원가입 성공 팝업
                     $("#joinSuccessPopup").fadeIn(200);
 
                     confetti({
@@ -602,13 +606,18 @@ $(document).ready(function () {
                         origin: { y: 0.6 }
                     });
 
+                    // 1.5초후 태그 선택 모달로 화면전환
                     setTimeout(() => {
                         $("#joinSuccessPopup").fadeOut(300);
                         $("#insertModal").fadeOut(200);
-                        $("#loginModal").fadeIn().css("display", "flex");
-
+                        
+                        // 태그 선택 모달 열기
+                        $("#tagSelectionModal").fadeIn().css("display", "flex");
+                        // user_id를 태그 모달에 전달
+                        $("#tag_user_id").val(res.user_id);
+                        
                         $(".checkmark").removeClass("draw");
-                    }, 1200);
+                    }, 1500);
 
                     $(".checkmark").addClass("draw");
 

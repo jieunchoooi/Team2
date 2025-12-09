@@ -53,23 +53,6 @@
                    class="insert-input" placeholder="영문/숫자/특수문자 포함 8~12자" />
             <div id="pwStrengthMsg" class="msg"></div>
 
-<!--             <div id="capsLockMsg" class="caps-msg"></div> -->
-
-            <!-- 비밀번호 강도 게이지 -->
-<!--             <div class="pw-meter"> -->
-<!--                 <div class="pw-meter-bar" id="pwMeterBar"></div> -->
-<!--             </div> -->
-<!--             <div id="pwStrengthText" class="pw-strength-text"></div> -->
-
-            <!-- 🔥 비밀번호 체크리스트 추가  -->
-<!--             <div id="pwCheckList" class="pw-check-list"> -->
-<!--                 <div class="pw-rule" id="ruleLength">● 8~12자</div> -->
-<!--                 <div class="pw-rule" id="ruleLetter">● 영문 포함</div> -->
-<!--                 <div class="pw-rule" id="ruleNumber">● 숫자 포함</div> -->
-<!--                 <div class="pw-rule" id="ruleSpecial">● 특수문자 포함</div> -->
-<!--                 <div class="pw-rule" id="ruleStart">● 숫자로 시작 금지</div> -->
-<!--             </div> -->
-
             <!-- 비밀번호 확인 -->
             <label>비밀번호 확인</label>
             <input type="password" id="ins_user_password2" class="insert-input"
