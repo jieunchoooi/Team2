@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.domain.InterestVO;
 import com.itwillbs.domain.UserVO;
 
 @Mapper
@@ -56,5 +57,8 @@ public interface UserMapper {
     void updateLastLoginTime(@Param("user_id") String user_id);
 
     void updatePasswordUpdatedAt(@Param("user_id") String user_id);
+
+    List<String> getinterestList();
+
 
 }

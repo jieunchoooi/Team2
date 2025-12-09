@@ -184,4 +184,10 @@
         WHERE user_id = #{user_id}
     </update>
 
+<!-- interestModal 페이지 관심분야 조회 -->
+	<select id="getinterestList" resultType="string">
+	    SELECT interest_name
+	    FROM interest 
+	</select>
+
 </mapper>

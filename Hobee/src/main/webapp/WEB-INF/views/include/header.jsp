@@ -92,7 +92,6 @@
         </div>
     </nav>
 
-<!-- 	<button type="button" class="modal1">모달</button> -->
 </header>
 
 <!-- 로그인 모달 include -->
@@ -102,73 +101,63 @@
 <jsp:include page="/WEB-INF/views/include/insertModal.jsp"/>
 
 <!-- 태그 선택 모달 include -->
-<%-- <jsp:include page="/WEB-INF/views/include/tagSelectionModal.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/include/interestModal.jsp"/>
 
 <!-- ===========================
      🔵 회원가입 Progress 전역 함수
 =========================== -->
 <script>
-/*스크립트 마지막 부분 (document.ready 안쪽)에 추가
 
-/* ===============================
-   테스트용 모달 버튼
-================================ */
-// $(".modal1").click(function() {
-//     $("#tagSelectionModal").fadeIn().css("display", "flex");
-// });
+function updateSignupProgress() {
+    let progress = 0;
 
+    const id = $("#ins_user_id").val().trim();
+    const idValid = /^[a-z][a-z0-9]{5,7}$/.test(id);
+    if (idValid) {
+        $("#stepId").removeClass().addClass("step-item complete");
+        progress += 20;
+    } else {
+        $("#stepId").removeClass().addClass("step-item active");
+    }
 
+    const pw = $("#ins_user_password").val();
+    const pwValid = pw.length >= 8;
+    if (pwValid) {
+        $("#stepPw").removeClass().addClass("step-item complete");
+        progress += 20;
+    } else {
+        $("#stepPw").removeClass().addClass("step-item active");
+    }
 
-// function updateSignupProgress() {
-//     let progress = 0;
+    const phone = $("#ins_user_phone").val();
+    const phoneValid = /^010-\d{4}-\d{4}$/.test(phone);
+    if (phoneValid) {
+        $("#stepPhone").removeClass().addClass("step-item complete");
+        progress += 20;
+    } else {
+        $("#stepPhone").removeClass().addClass("step-item active");
+    }
 
-//     const id = $("#ins_user_id").val().trim();
-//     const idValid = /^[a-z][a-z0-9]{5,7}$/.test(id);
-//     if (idValid) {
-//         $("#stepId").removeClass().addClass("step-item complete");
-//         progress += 20;
-//     } else {
-//         $("#stepId").removeClass().addClass("step-item active");
-//     }
+    const addr = $("#ins_user_address1").val();
+    const addrValid = addr.trim() !== "";
+    if (addrValid) {
+        $("#stepAddress").removeClass().addClass("step-item complete");
+        progress += 20;
+    } else {
+        $("#stepAddress").removeClass().addClass("step-item active");
+    }
 
-//     const pw = $("#ins_user_password").val();
-//     const pwValid = pw.length >= 8;
-//     if (pwValid) {
-//         $("#stepPw").removeClass().addClass("step-item complete");
-//         progress += 20;
-//     } else {
-//         $("#stepPw").removeClass().addClass("step-item active");
-//     }
+    const agreeValid = $(".ins-agree-item:checked").length === $(".ins-agree-item").length;
+    if (agreeValid) {
+        $("#stepAgree").removeClass().addClass("step-item complete");
+        progress += 20;
+    } else {
+        $("#stepAgree").removeClass().addClass("step-item active");
+    }
 
-//     const phone = $("#ins_user_phone").val();
-//     const phoneValid = /^010-\d{4}-\d{4}$/.test(phone);
-//     if (phoneValid) {
-//         $("#stepPhone").removeClass().addClass("step-item complete");
-//         progress += 20;
-//     } else {
-//         $("#stepPhone").removeClass().addClass("step-item active");
-//     }
-
-//     const addr = $("#ins_user_address1").val();
-//     const addrValid = addr.trim() !== "";
-//     if (addrValid) {
-//         $("#stepAddress").removeClass().addClass("step-item complete");
-//         progress += 20;
-//     } else {
-//         $("#stepAddress").removeClass().addClass("step-item active");
-//     }
-
-//     const agreeValid = $(".ins-agree-item:checked").length === $(".ins-agree-item").length;
-//     if (agreeValid) {
-//         $("#stepAgree").removeClass().addClass("step-item complete");
-//         progress += 20;
-//     } else {
-//         $("#stepAgree").removeClass().addClass("step-item active");
-//     }
-
-//     $("#progressFill").css("width", progress + "%");
-//     $("#progressPercent").text(progress + "%");
-// }
+    $("#progressFill").css("width", progress + "%");
+    $("#progressPercent").text(progress + "%");
+}
 </script>
 
 <!-- ===========================================
@@ -557,102 +546,201 @@ $(document).ready(function () {
         });
     });
 
-    /* --------------------------------------------------
-       10) 회원가입 실행
-    -------------------------------------------------- */
-    $("#insertBtn").click(function () {
+//     /* --------------------------------------------------
+//        10) 회원가입 실행 및 관심사 모달창 연결
+//     -------------------------------------------------- */
+//     $("#insertBtn").click(function () { //여기
 
-        $("#insertError").text("");
+//         $("#insertError").text("");
 
-        if (!insIdOk) {
-            $("#insertError").text("아이디 중복확인을 해주세요.");
-            return;
-        }
+//         if (!insIdOk) {
+//             $("#insertError").text("아이디 중복확인을 해주세요.");
+//             return;
+//         }
 
-        if (!insEmailOk) {
-            $("#insertError").text("이메일 중복확인을 해주세요.");
-            return;
-        }
+//         if (!insEmailOk) {
+//             $("#insertError").text("이메일 중복확인을 해주세요.");
+//             return;
+//         }
 
-        const pw = $("#ins_user_password").val();
-        const pw2 = $("#ins_user_password2").val();
+//         const pw = $("#ins_user_password").val();
+//         const pw2 = $("#ins_user_password2").val();
 
-        const regex = /^(?![0-9])(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
+//         const regex = /^(?![0-9])(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
 
-        if (!regex.test(pw)) {
-            $("#insertError").text("비밀번호는 숫자로 시작할 수 없으며, 영문/숫자/특수문자 포함 8~12자여야 합니다.");
-            return;
-        }
+//         if (!regex.test(pw)) {
+//             $("#insertError").text("비밀번호는 숫자로 시작할 수 없으며, 영문/숫자/특수문자 포함 8~12자여야 합니다.");
+//             return;
+//         }
 
-        if (pw !== pw2) {
-            $("#insertError").text("비밀번호가 일치하지 않습니다.");
-            return;
-        }
+//         if (pw !== pw2) {
+//             $("#insertError").text("비밀번호가 일치하지 않습니다.");
+//             return;
+//         }
 
-        if (!$("#ins_user_zipcode").val().trim()) {
-            $("#insertError").text("우편번호를 입력해주세요.");
-            return;
-        }
+//         if (!$("#ins_user_zipcode").val().trim()) {
+//             $("#insertError").text("우편번호를 입력해주세요.");
+//             return;
+//         }
 
-        if (!$("#ins_user_address1").val().trim()) {
-            $("#insertError").text("주소를 입력해주세요.");
-            return;
-        }
+//         if (!$("#ins_user_address1").val().trim()) {
+//             $("#insertError").text("주소를 입력해주세요.");
+//             return;
+//         }
 
-        if (!$("#ins_user_address2").val().trim()) {
-            $("#insertError").text("상세주소를 입력해주세요.");
-            return;
-        }
+//         if (!$("#ins_user_address2").val().trim()) {
+//             $("#insertError").text("상세주소를 입력해주세요.");
+//             return;
+//         }
 
-        const phonePattern = /^010-\d{4}-\d{4}$/;
+//         const phonePattern = /^010-\d{4}-\d{4}$/;
 
-        if (!phonePattern.test($("#ins_user_phone").val())) {
-            $("#insertError").text("전화번호를 정확히 입력해주세요. (예: 010-1234-5678)");
-            return;
-        }
+//         if (!phonePattern.test($("#ins_user_phone").val())) {
+//             $("#insertError").text("전화번호를 정확히 입력해주세요. (예: 010-1234-5678)");
+//             return;
+//         }
 
-        $.ajax({
-            type: "POST",
-            url: contextPath + "/user/insertAjax",
-            data: $("#insertForm").serialize(),
-            dataType: "json",
+//         $.ajax({
+//             type: "POST",
+//             url: contextPath + "/user/insertAjax",
+//             data: $("#insertForm").serialize(),
+//             dataType: "json",
 
-            success: function (res) {
-                if (res.result === "success") {
-                	// 회원가입 성공 팝업
-                    $("#joinSuccessPopup").fadeIn(200);
+//             success: function (res) {
+//                 if (res.result === "success") {
+//                 	// 회원가입 성공 팝업
+//                     $("#joinSuccessPopup").fadeIn(200);
 
-                    confetti({
-                        particleCount: 120,
-                        spread: 90,
-                        origin: { y: 0.6 }
-                    });
+//                     confetti({
+//                         particleCount: 120,
+//                         spread: 90,
+//                         origin: { y: 0.6 }
+//                     });
 
-                    // 1.5초후 태그 선택 모달로 화면전환
-                    setTimeout(() => {
-                        $("#joinSuccessPopup").fadeOut(300);
-                        $("#insertModal").fadeOut(200);
+//                     // 1.5초후 태그 선택 모달로 화면전환
+//                     setTimeout(() => {
+//                         $("#joinSuccessPopup").fadeOut(300);
+//                         $("#insertModal").fadeOut(200);
                         
-                        // 태그 선택 모달 열기
-                        $("#tagSelectionModal").fadeIn().css("display", "flex");
-                        // user_id를 태그 모달에 전달
-                        $("#tag_user_id").val(res.user_id);
+//                         // 태그 선택 모달 열기
+//                         $("#tagSelectionModal").fadeIn().css("display", "flex");
+//                         // user_id를 태그 모달에 전달
+//                         $("#tag_user_id").val(res.user_id);
                         
-                        $(".checkmark").removeClass("draw");
-                    }, 1500);
+//                         $(".checkmark").removeClass("draw");
+                        
+//                         openTagModal(res.user_id);
+//                     }, 1500);
 
-                    $(".checkmark").addClass("draw");
+//                     $(".checkmark").addClass("draw");
 
-                } else {
-                    $("#insertError").text(res.message);
-                }
-            },
+//                 } else {
+//                     $("#insertError").text(res.message);
+//                 }
+//             },
 
-            error: function () {
-                $("#insertError").text("회원가입 중 오류가 발생했습니다.");
+//             error: function () {
+//                 $("#insertError").text("회원가입 중 오류가 발생했습니다.");
+//             }
+//         });
+//     });
+
+/* --------------------------------------------------
+   10) 회원가입 실행 및 관심사 모달창 연결
+-------------------------------------------------- */
+$("#insertBtn").click(function () {
+
+    $("#insertError").text("");
+
+    if (!insIdOk) {
+        $("#insertError").text("아이디 중복확인을 해주세요.");
+        return;
+    }
+
+    if (!insEmailOk) {
+        $("#insertError").text("이메일 중복확인을 해주세요.");
+        return;
+    }
+
+    const pw = $("#ins_user_password").val();
+    const pw2 = $("#ins_user_password2").val();
+
+    const regex = /^(?![0-9])(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^*])[A-Za-z\d!@#$%^*]{8,12}$/;
+
+    if (!regex.test(pw)) {
+        $("#insertError").text("비밀번호는 숫자로 시작할 수 없으며, 영문/숫자/특수문자 포함 8~12자여야 합니다.");
+        return;
+    }
+
+    if (pw !== pw2) {
+        $("#insertError").text("비밀번호가 일치하지 않습니다.");
+        return;
+    }
+
+    if (!$("#ins_user_zipcode").val().trim()) {
+        $("#insertError").text("우편번호를 입력해주세요.");
+        return;
+    }
+
+    if (!$("#ins_user_address1").val().trim()) {
+        $("#insertError").text("주소를 입력해주세요.");
+        return;
+    }
+
+    if (!$("#ins_user_address2").val().trim()) {
+        $("#insertError").text("상세주소를 입력해주세요.");
+        return;
+    }
+
+    const phonePattern = /^010-\d{4}-\d{4}$/;
+
+    if (!phonePattern.test($("#ins_user_phone").val())) {
+        $("#insertError").text("전화번호를 정확히 입력해주세요. (예: 010-1234-5678)");
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: contextPath + "/user/insertAjax",
+        data: $("#insertForm").serialize(),
+        dataType: "json",
+
+        success: function (res) {
+            if (res.result === "success") {
+                // 회원가입 성공 팝업
+                $("#joinSuccessPopup").fadeIn(200);
+
+                confetti({
+                    particleCount: 120,
+                    spread: 90,
+                    origin: { y: 0.6 }
+                });
+
+                $(".checkmark").addClass("draw");
+
+                // 1.5초 후 팝업 닫고 관심사 모달 열기
+                setTimeout(() => {
+                    $("#joinSuccessPopup").fadeOut(300);
+                    $("#insertModal").fadeOut(200);
+
+                    // ✅ 기존 tagSelectionModal.jsp의 openTagModal() 호출
+                    openTagModal(res.user_id);
+
+                    $(".checkmark").removeClass("draw");
+
+                }, 1500);
+
+            } else {
+                $("#insertError").text(res.message);
             }
-        });
+        },
+
+        error: function () {
+            $("#insertError").text("회원가입 중 오류가 발생했습니다.");
+        }
     });
+});
+
 
     /* --------------------------------------------------
        11) 약관 펼치기 / 접기

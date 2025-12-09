@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.GradeVO;
+import com.itwillbs.domain.InterestVO;
 import com.itwillbs.domain.LoginLogVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.GradeService;
@@ -361,4 +363,25 @@ public Map<String, Object> loginInfo(HttpSession session) {
             e.printStackTrace();
         }
     }
+    
+    @GetMapping("/user/getInterests")
+    @ResponseBody
+    public List<String> getInterests() {
+        // interest_name 컬럼만 가져와서 리스트로 반환
+        List<String> interestList = userService.getinterestList(); 
+        return interestList; // Spring이 자동으로 JSON으로 변환
+    }
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

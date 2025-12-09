@@ -1,5 +1,6 @@
 package com.itwillbs.service;
 
+import com.itwillbs.domain.InterestVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.mapper.LoginHistoryMapper;
 import com.itwillbs.mapper.UserMapper;
@@ -113,5 +114,13 @@ public class UserService {
     public void updatePasswordUpdatedAt(String user_id) {
         userMapper.updatePasswordUpdatedAt(user_id);
     }
+
+
+	public List<String> getinterestList() {
+		return userMapper.getinterestList();
+	}
+
+
+	
 
 }
