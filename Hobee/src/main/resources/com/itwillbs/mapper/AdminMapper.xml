@@ -55,7 +55,7 @@
 <!-- 활동 회원 -->
 	<select id="memberCount" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status = 'active' and user_role = 'user'
+		WHERE user_status = 'active' and user_role = 'user' or user_status = 'admin'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (user_name LIKE CONCAT('%', #{search}, '%')
@@ -119,7 +119,7 @@
 
 	<select id="deletecountMemberList" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status != 'active' and user_role = 'user'
+		WHERE user_status != 'active' and user_role = 'user' or user_role = 'admin' 
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				AND (user_name LIKE CONCAT('%', #{search}, '%')
@@ -448,7 +448,7 @@
 	<!-- 회원 목록 -->
 	<select id="MemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user'
+		WHERE user_role = 'user' or user_role = 'admin'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (user_name LIKE CONCAT('%', #{search}, '%')
@@ -495,7 +495,7 @@
 	
 	<select id="activeMemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user' and user_status = 'active'
+		WHERE user_role = 'user' and user_status = 'active' or user_role = 'admin'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (user_name LIKE CONCAT('%', #{search}, '%')
@@ -543,7 +543,7 @@
 <!-- 회원목록에서 탈퇴회원 조회 -->
 	<select id="inactiveMemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user' and user_status != 'active'
+		WHERE user_role = 'user' and user_status != 'active' or user_role = 'admin'
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (user_name LIKE CONCAT('%', #{search}, '%')
@@ -990,7 +990,7 @@
 <!-- 	탈퇴회원 대시보드용 -->
 	<select id="inactiveMemberCount1" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_role = 'user' and user_status != 'active'
+		WHERE user_role = 'user' or user_role = 'admin' and user_status != 'active'
 	</select>
 	
 <!-- 	총 강사수 대시보드용 -->

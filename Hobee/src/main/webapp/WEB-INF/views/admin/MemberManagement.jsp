@@ -49,15 +49,23 @@
 <%--         				<option value="instructor" ${user.user_role == 'instructor' ? 'selected' : ''}>강사</option> --%>
 <%--         				<c:if test="${userVO.user_role == 'super_admin'}"> --%>
 <%-- 	        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option> --%>
-<%--         				</c:if> --%>
-        				
 <!--       				</select> -->
 					<label for="user_role">권한</label> 
+					
 					<c:if test="${user.user_role == 'user'}">
 						<span class="form-value">유저</span>
 					</c:if>
 					<c:if test="${user.user_role == 'instructor'}">
 						<span class="form-value">강사</span>
+					</c:if>
+					<c:if test="${user.user_role == 'admin'}">
+						<span class="form-value">관리자</span>
+					</c:if>
+					<c:if test="${user.user_role == 'super_admin'}">
+						<select name="user_role" id="category" required>
+	        				<option value="admin" ${user.user_role == 'admin' ? 'selected' : ''}>관리자</option>
+	        				<option value="user" ${user.user_role == 'user' ? 'selected' : ''}>유저</option>
+						</select>
 					</c:if>
 				</div>
    			    
