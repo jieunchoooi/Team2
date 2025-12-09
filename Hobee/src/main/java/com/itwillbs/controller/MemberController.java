@@ -270,7 +270,7 @@ public class MemberController {
 	public String scrapList(HttpSession session, Model model) {
 	    UserVO userVO = (UserVO) session.getAttribute("userVO");
 
-	    if (userVO == null) return "redirect:/member/login";
+	    if (userVO == null) return "redirect:/main/main";
 
 	    List<ScrapVO> scrapList = scrapService.getScrapList(userVO.getUser_num());
 	    model.addAttribute("scrapList", scrapList);

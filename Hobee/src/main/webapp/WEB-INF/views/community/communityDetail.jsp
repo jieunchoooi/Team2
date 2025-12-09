@@ -943,8 +943,13 @@ $(document).on("click", ".reply-submit", function() {
      // ================================================
      // 🚨 2) 신고 보내기 (버튼 클릭 시 실행)
      // ================================================
+    	   const isLoggedIn = ${sessionScope.userVO == null ? 'false' : 'true'};
      $("#report-Btn").click(function(){
 
+    	    if (!isLoggedIn) {
+    	        openLoginModal();
+    	        return;
+    	    }
          const postId = $(this).data("post");
 
          $.post("${pageContext.request.contextPath}/community/report", {
@@ -971,6 +976,10 @@ $(document).on("click", ".reply-submit", function() {
      // 🚨 댓글 신고
      $(document).on("click", ".comment-report-btn", function(){
 
+    	    if (!isLoggedIn) {
+    	        openLoginModal();
+    	        return;
+    	    }
          const commentId = $(this).data("comment");
 
          // 기본 사유 (나중에 모달 적용 가능)
