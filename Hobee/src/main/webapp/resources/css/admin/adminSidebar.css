@@ -42,7 +42,7 @@
   width: calc(100% - 28px);
   height: 2px;
   background: #2563eb33; 
-  border-radius: 3px;	
+  border-radius: 3px;   
 }
 /* ===============================
    ✅ 사이드바 타이틀
@@ -78,7 +78,7 @@
 }
 
 .menu-section {
-	margin-bottom: 16px;
+   margin-bottom: 16px;
 }
 
 /* ===============================
