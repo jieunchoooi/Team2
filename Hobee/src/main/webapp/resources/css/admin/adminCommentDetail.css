@@ -10,21 +10,12 @@
     background: #f6f7fb;
     min-height: 100vh;
 }
-
-.main-header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #333;
-}
-
 /* ===========================
    상세 카드
 =========================== */
 .detail-card {
     background: #fff;
-    width: 100%;
-    max-width: 900px;
+    width: 1400px;
     margin: 0 auto;
     padding: 35px;
     border-radius: 14px;

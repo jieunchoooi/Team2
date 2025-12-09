@@ -19,22 +19,12 @@ body, button, input, select {
     min-height: 100vh;
 }
 
-/* ============================
-   페이지 제목
-============================ */
-.page-title {
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 28px;
-    color: #111;
-}
 
 /* ============================
    카드 박스
 ============================ */
 .card-box {
-    width: 100%;
-    max-width: 1200px;
+    width: 1400px;
     margin: 0 auto;
     background: #ffffff;
     padding: 35px 40px;

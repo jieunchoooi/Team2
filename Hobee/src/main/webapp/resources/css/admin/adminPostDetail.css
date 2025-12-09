@@ -9,34 +9,12 @@
     margin-left: 220px;             /* sidebar 만큼 오른쪽 이동 */
 }
 
-/* ==========================
-   페이지 제목
-========================== */
-/* ==========================
-   페이지 제목 (왼쪽 정렬)
-========================== */
-.page-title {
-    font-size: 32px;
-    font-weight: 800;
-    color: #111;
-
-    /* 위치 */
-    margin-top: -20px;   /* 필요 없으면 0으로 조절 가능 */
-    margin-bottom: 28px;
-    margin-left: 5px;    /* main-content 안에서 살짝만 들여쓰기 */
-
-    /* 가운데 정렬용 설정 삭제 */
-    width: auto;
-    max-width: none;
-}
-
 
 /* ==========================
    카드 박스
 ========================== */
 .detail-card {
-    width: 100%;
-    max-width: 1200px;
+    width: 1400px;
     background: #fff;
     padding: 35px 40px;
     border-radius: 18px;

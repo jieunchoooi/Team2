@@ -6,8 +6,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>머리말 상세 | Hobee Admin</title>
-
+    
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
     <link rel="stylesheet"
@@ -20,9 +19,6 @@
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
 <main class="main-content">
-
-    <!-- 제목 -->
-    <div class="page-title">머리말 상세</div>
 
     <div class="detail-wrapper">
 

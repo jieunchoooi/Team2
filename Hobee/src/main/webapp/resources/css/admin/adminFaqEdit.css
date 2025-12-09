@@ -14,20 +14,11 @@
     min-height: 100vh;
 }
 
-.main-header h1 {
-    margin-bottom: 28px;
-    padding-bottom: 12px;
-    font-weight: 800;
-    border-bottom: none !important;   /* 🔥 밑줄 제거 */
-    color: #1f2937;
-}
-
 /* ================================
    카드 박스
 ================================ */
 .write-card {
-    width: 100%;
-    max-width: 800px;
+    width: 1300px;
     margin: 40px auto 0 auto;
     background: #ffffff;
     padding: 40px 45px;

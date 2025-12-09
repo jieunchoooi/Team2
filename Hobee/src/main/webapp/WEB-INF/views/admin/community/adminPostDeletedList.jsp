@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>삭제된 게시글 (휴지통) | Hobee Admin</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminPostDeletedList.css?v=5">
@@ -23,8 +22,6 @@
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
 <main class="main-content">
-
-    <div class="page-title">삭제된 게시글 (휴지통)</div>
 
     <div class="card-box">
 

@@ -7,7 +7,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>댓글 상세보기 | Hobee Admin</title>
 
     <!-- 공통 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
@@ -80,10 +79,6 @@
 
 <!-- 메인 콘텐츠 -->
 <main class="main-content">
-
-    <div class="main-header">
-        <h1>댓글 상세보기</h1>
-    </div>
 
     <div class="detail-card">
 

@@ -7,7 +7,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>FAQ 수정 | Hobee Admin</title>
 
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
@@ -26,8 +25,6 @@
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
 <main class="main-content">
-
-    <div class="main-header"><h1>FAQ 수정</h1></div>
 
     <div class="write-card">
         <form action="${pageContext.request.contextPath}/admin/adminFaqEditPro" method="post">

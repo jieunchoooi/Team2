@@ -1,330 +1,201 @@
 @charset "UTF-8";
 
-/* ================================
-      메인 레이아웃
-================================ */
+/* ===========================================================
+   🔵 전체 레이아웃 (1400px 고정폭, 중앙 정렬)
+=========================================================== */
+/* ======================================
+   🔵 메인 레이아웃
+====================================== */
 .main-content {
-    margin-left: 220px;
-    padding: 40px;
+    margin-left: 240px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     min-height: 100vh;
-    background: #f6f7fb;
+    background: #f5f7fb;
 }
 
-.main-header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #333;
+/* ======================================
+   🔵 중앙 1400px 컨테이너 (공통)
+====================================== */
+.center-wrapper {
+    width: 1400px;
+    margin: 0 auto;
+    padding: 30px;
 }
 
-/* ================================
-      🔸 검색 + 우측 버튼 묶음
-================================ */
-/* 검색 + 버튼 전체 라인 정렬 */
+.table-card {
+    width: 1400px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 30px 32px;
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    transition: 0.25s ease;
+}
+
+.table-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.16);
+}
+
+/* 상단 라벨바 (공지 리스트는 파랑 라인) */
+.table-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 5px;
+    border-radius: 20px 20px 0 0;
+    background: linear-gradient(to right, #4a74ff, #7aa9ff);
+}
+
+/* ===========================================================
+   🔍 검색 + 공지작성 + 선택삭제 정렬
+=========================================================== */
 .top-bar {
     display: flex;
-    align-items: center;   /* 전체 높이 자동 정렬 */
-    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
 }
-/* ================================
-      🔍 검색박스
-================================ */
-/* 🔥 검색 select + input + 검색버튼 묶음 */
+
+/* 검색 박스 */
 .search-box {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 0;
 }
 
-/* 🔥 모든 요소 높이 통일 */
+/* 검색 Select */
 .search-select {
-    height: 38px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 0 10px;
+    height: 42px;
+    border-radius: 10px;
+    padding: 0 12px;
+    border: 1px solid #d3d7e3;
+    background: #fff;
     font-size: 14px;
 }
+
+/* 검색 Input */
 .search-input {
-    height: 38px;
+    width: 260px;
+    height: 42px;
     padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid #d3d7e3;
+    font-size: 14px;
 }
 
-.search-box button,
-.right-area button {
-    height: 38px;
-}
-
-/* 🔥 입력창 width 살짝 줄여서 전체 균형 잡기 */
-.search-input {
-    width: 250px;
-}
-
-/* ================================
-      오른쪽 버튼 영역
-================================ */
-/* 🔥 오른쪽 버튼 2개 묶음 */
+/* 오른쪽 버튼 영역 */
 .right-area {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 0;
-    padding: 0;
 }
 
-/* ================================
-      공통 버튼 스타일
-================================ */
+/* 버튼 공통 */
 button {
-    padding: 7px 14px;
-    border-radius: 6px;
-    cursor: pointer;
+    height: 42px;
+    padding: 0 18px;
     border: none;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s ease;
 }
 
-/* 파란 버튼 */
-.btn-blue {
-    background: #397dff;
+/* 검색 버튼 */
+.btn-search {
+    background: #4a74ff;
     color: #fff;
 }
-.btn-blue:hover {
-    background: #2f67d4;
+.btn-search:hover {
+    background: #355dff;
 }
 
-/* 회색 버튼 */
-.btn-gray {
-    background: #aaa;
+/* 공지 작성 */
+.btn-write {
+    background: #22c55e;
     color: #fff;
 }
-.btn-gray:hover {
-    background: #888;
+.btn-write:hover {
+    background: #16a34a;
 }
 
-/* 빨간 버튼 */
-.btn-red {
+/* 선택 삭제 */
+.bulk-delete-btn {
     background: #e74a3b;
     color: #fff;
 }
-.btn-red:hover {
-    background: #cf2f23;
-}
-
-/* 주황 버튼 */
-.btn-orange {
-    background: #ff8c42;
-    color: #fff;
-}
-.btn-orange:hover {
-    background: #e6762d;
-}
-
-/* 일괄 삭제 버튼 */
-.bulk-delete-btn {
-    background: #ff4d4d;
-    color: #fff;
-}
 .bulk-delete-btn:hover {
-    background: #e60000;
+    background: #d13125;
 }
 
-/* ================================
-      카드 박스
-================================ */
-.table-card {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
-
-/* ================================
-      정렬 버튼
-================================ */
+/* ===========================================================
+   🔽 정렬 버튼
+=========================================================== */
 .sort-box {
-    margin: 10px 0 15px 0;
     display: flex;
     gap: 10px;
+    margin: 5px 0 15px 2px;
 }
 
 .sort-btn {
+    background: #e8ecf7;
     padding: 6px 14px;
-    border-radius: 6px;
-    background: #eee;
-    color: #333;
+    border-radius: 10px;
     font-size: 14px;
+    color: #333;
     text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.sort-btn:hover {
+    background: #d6ddf3;
 }
 
 .sort-btn.active {
-    background: #2573ff;
-    color: white;
-    font-weight: 700;
+    background: #4a74ff;
+    color: #fff;
 }
 
-/* ================================
-      테이블
-================================ */
+/* ===========================================================
+   📋 테이블 스타일
+=========================================================== */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.admin-table thead {
-    background: #e9efff;
+.admin-table thead tr {
+    background: #ecf2ff;
 }
 
-.admin-table th {
-    padding: 14px 10px;
-    text-align: center;
-    font-size: 14px;
-    color: #333;
-}
-
+.admin-table th,
 .admin-table td {
-    padding: 12px 10px;
-    text-align: center;
+    padding: 14px 10px;
     font-size: 14px;
-    border-bottom: 1px solid #ececec;
+    text-align: center;
+    border-bottom: 1px solid #e2e5ef;
 }
 
-/* 빈 테이블 텍스트 */
-.empty-text {
-    text-align: center;
-    padding: 30px;
-    font-size: 15px;
-    color: #777;
+/* Hover 효과 */
+.admin-table tbody tr:hover {
+    background: #f4f7ff;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
 }
 
 /* 제목 링크 */
 .title-link {
-    color: #397dff;
+    color: #3b82f6;
     font-weight: 600;
     text-decoration: none;
-}
-.title-link:hover {
-    text-decoration: underline;
-}
-
-/* ================================
-      페이징
-================================ */
-.pagination {
-    text-align: center;
-    margin-top: 25px;
-}
-
-.page-btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin: 0 4px;
-    border-radius: 6px;
-    background: #f5f5f5;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.page-btn.active {
-    background: #2573ff;
-    color: white;
-    font-weight: 700;
-}
-
-.page-btn:hover {
-    background: #d8e6ff;
-}
-
-/* ================================ */
-/*      신규 버튼 컬러 시스템       */
-/* ================================ */
-
-/* 🔵 검색(Search) */
-.btn-search {
-    background: #2573ff !important;
-    color: white !important;
-}
-.btn-search:hover {
-    background: #1b5fd4 !important;
-}
-
-/* 🟢 공지 작성(Add) */
-.btn-write {
-    background: #22c55e !important;
-    color: white !important;
-}
-.btn-write:hover {
-    background: #16a34a !important;
-}
-
-/* 🟣 수정(Edit) */
-.btn-edit {
-    background: #8b5cf6 !important;
-    color: white !important;
-}
-.btn-edit:hover {
-    background: #7c3aed !important;
-}
-
-/* 🔴 삭제는 기존 클래스(btn-red) 그대로 유지 */
-/* 🟠 고정은 btn-orange 그대로 유지 */
-
-/* 검색창 + 버튼 높이를 완전히 일치시키기 */
-.search-input {
-    height: 40px !important;      /* 버튼과 동일한 높이 */
-    padding: 0 12px !important;   
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-/* 검색 버튼 */
-.btn-search {
-    height: 40px !important;      /* input과 동일하게 */
-    line-height: 40px !important;
-    padding: 0 18px !important;
-}
-
-/* 공지작성 버튼 */
-.btn-write {
-    height: 40px !important;
-    line-height: 40px !important;
-    padding: 0 18px !important;
-}
-
-/* 선택삭제 버튼 */
-.btn-delete-select {
-    height: 40px !important;
-    line-height: 40px !important;
-    padding: 0 18px !important;
-}
-
-.admin-table tbody tr:hover {
-    background: #f5f9ff;
-    transition: 0.2s ease;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-}
-
-.priority-badge {
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-weight: 700;
-    color: #fff;
-    font-size: 13px;
-}
-
-.p-4 { background: #ff3333; } /* 긴급 */
-.p-3 { background: #ff6600; } /* 매우 중요 */
-.p-2 { background: #2563ff; } /* 중요 */
-.p-1 { background: #9ca3af; } /* 일반 */
-
-
-.title-link {
     position: relative;
-    text-decoration: none;
 }
 
 .title-link::after {
@@ -342,51 +213,81 @@ button {
     width: 100%;
 }
 
-.btn-orange {
-    background: #f97316 !important;   /* 더 밝은 강조색 */
+/* ===========================================================
+   🔥 중요도 배지
+=========================================================== */
+.priority-badge {
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    color: #fff;
+    font-size: 13px;
 }
 
-.btn-orange:hover {
-    background: #ea580c !important;
-}
+.p-4 { background: #ff3333; }    /* 긴급 */
+.p-3 { background: #ff7b00; }    /* 매우 중요 */
+.p-2 { background: #2563ff; }    /* 중요 */
+.p-1 { background: #9ca3af; }    /* 일반 */
 
-.admin-table th:nth-child(1),
-.admin-table td:nth-child(1) {
-    width: 40px;
-}
-
-.admin-table th:nth-child(2),
-.admin-table td:nth-child(2) {
-    min-width: 60px;
-}
-
-.admin-table th:nth-child(3),
-.admin-table td:nth-child(3) {
-    min-width: 200px;
-}
-
-.sort-btn {
-    transition: all 0.2s ease;
-}
-
-.sort-btn:hover {
-    background: #e5e7eb;
-    transform: translateY(-1px);
-}
-
-.sort-btn.active {
+/* ===========================================================
+   🔵 버튼들 (공개/고정/수정/삭제)
+=========================================================== */
+.btn-blue {
     background: #3b82f6 !important;
     color: #fff !important;
-    font-weight: 600;
-    border-color: #3b82f6 !important;
+}
+.btn-blue:hover { background: #2563eb !important; }
+
+.btn-gray {
+    background: #b8bfc7 !important;
+    color: white !important;
+}
+.btn-gray:hover { background: #9aa0a6 !important; }
+
+.btn-orange {
+    background: #f97316 !important;
+    color: #fff !important;
+}
+.btn-orange:hover { background: #ea580c !important; }
+
+.btn-edit {
+    background: #8b5cf6 !important;
+    color: white !important;
+}
+.btn-edit:hover { background: #7c3aed !important; }
+
+.btn-red {
+    background: #e74a3b !important;
+    color: #fff !important;
+}
+.btn-red:hover { background: #cf3326 !important; }
+
+/* ===========================================================
+   📌 페이징
+=========================================================== */
+.pagination {
+    text-align: center;
+    margin-top: 25px;
 }
 
-.sort-btn:hover {
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+.page-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 4px;
+    border-radius: 8px;
+    background: #eef1ff;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.25s ease;
 }
 
+.page-btn:hover {
+    background: #d9e2ff;
+}
 
-
-
-
-
+.page-btn.active {
+    background: #4a74ff;
+    color: #fff;
+    font-weight: 700;
+}

@@ -7,7 +7,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>댓글 관리 | Hobee Admin</title>
 
     <!-- 공통 관리자 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
@@ -24,8 +23,6 @@
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
 <main class="main-content">
-
-    <h1 class="page-title">댓글 관리</h1>
 
     <!-- =========================================== -->
     <!-- 🔵 카드 박스 내부에 검색 + 필터 + 테이블 포함 -->

@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>머리말 수정 | Hobee Admin</title>
 
     <!-- 공통 사이드바 / 스타일 -->
     <link rel="stylesheet"
@@ -25,10 +24,7 @@
 
 <main class="main-content">
 
-    <!-- 페이지 제목 -->
-    <div class="page-title">머리말 수정</div>
-
-
+  
     <div class="edit-wrapper">
 
         <form action="${pageContext.request.contextPath}/admin/adminBoardEditPro"

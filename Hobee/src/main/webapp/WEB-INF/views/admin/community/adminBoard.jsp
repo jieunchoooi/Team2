@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>머리말 편집 | Hobee Admin</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminBoardList.css">
@@ -25,7 +24,6 @@
     </script>
 </c:if>
 
-    
 
     <!-- 🔵 머리말 추가 -->
     <div class="card-box">

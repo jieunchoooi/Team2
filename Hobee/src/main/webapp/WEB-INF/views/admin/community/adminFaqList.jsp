@@ -6,8 +6,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>FAQ 관리 | Hobee Admin</title>
-
+   
     <!-- 공통 CSS -->
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
@@ -35,10 +34,6 @@
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
 <main class="main-content">
-
-    <div class="main-header">
-        <h1>FAQ 관리</h1>
-    </div>
 
     <div class="table-card">
 

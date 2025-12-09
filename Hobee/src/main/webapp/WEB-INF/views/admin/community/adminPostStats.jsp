@@ -7,7 +7,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>게시글 통계 | Hobee Admin</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminPostStats.css">
@@ -23,8 +22,6 @@
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
 <main class="main-content">
-
-    <div class="page-title">게시글 통계</div>
 
     <div class="stats-grid">
 

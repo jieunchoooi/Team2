@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>게시글 상세보기 | Hobee Admin</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminPostDetail.css">
@@ -18,8 +17,6 @@
 <jsp:include page="/WEB-INF/views/include/adminSidebar.jsp"/>
 
 <main class="main-content">
-
-    <div class="page-title">게시글 상세보기</div>
 
     <div class="detail-card">
 

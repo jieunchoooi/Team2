@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>공지 작성 | Hobee Admin</title>
 
     <!-- 공통 관리자 CSS -->
     <link rel="stylesheet"
@@ -27,10 +26,6 @@
 
 <!-- ⭐ 메인 -->
 <main class="main-content">
-
-    <div class="main-header">
-        <h1>공지사항 작성</h1>
-    </div>
 
     <div class="form-card">
 

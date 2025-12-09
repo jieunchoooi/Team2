@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>게시글 관리 | Hobee Admin</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminSidebar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/adminPostList.css">
@@ -19,8 +18,7 @@
 
 <main class="main-content">
 
-    <div class="page-title">게시글 관리</div>
-
+  
     <div class="card-box">
 
        <!-- 검색 영역 -->
