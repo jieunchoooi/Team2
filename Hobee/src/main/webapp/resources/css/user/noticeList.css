@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+/* 전체 레이아웃 */
+.notice-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 10px;
+}
+
+.notice-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+/* 테이블 */
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.notice-table th {
+    background: #f5f7fb;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.notice-table td {
+    padding: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+    color: #444;
+}
+
+.notice-table tr:hover {
+    background: #f9fbff;
+}
+
+/* 제목 링크 */
+.notice-title-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.notice-title-link:hover {
+    text-decoration: underline;
+}
+
+/* 중요도 배지 */
+.priority-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.p-1 { background: #9ca3af; }
+.p-2 { background: #2563eb; }
+.p-3 { background: #f59e0b; }
+.p-4 { background: #dc2626; }

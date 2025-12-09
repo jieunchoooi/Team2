@@ -163,10 +163,10 @@
         
         <!-- 오른쪽: FAQ & 공지사항 버튼 -->
         <div class="footer-buttons">
-            <a href="${pageContext.request.contextPath}/support/faq" class="footer-btn">
+            <a href="${pageContext.request.contextPath}/faq/faqDetail" class="footer-btn">
                 FAQ
             </a>
-            <a href="${pageContext.request.contextPath}/support/notice" class="footer-btn">
+            <a href="${pageContext.request.contextPath}/faq/faqList" class="footer-btn">
                 공지사항
             </a>
         </div>
