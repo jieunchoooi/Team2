@@ -8,13 +8,13 @@
 
         <span class="insert-close">×</span>
 
+        <h2 class="insert-title">회원가입</h2>
         <!-- 회원구분 -->
         <div class="signup-role-box">
             <button type="button" class="signup-role-tab active" data-role="user">일반회원</button>
             <button type="button" class="signup-role-tab" data-role="instructor">강사회원</button>
         </div>
 
-        <h2 class="insert-title">회원가입</h2>
 
         <form id="insertForm">
 
@@ -53,22 +53,22 @@
                    class="insert-input" placeholder="영문/숫자/특수문자 포함 8~12자" />
             <div id="pwStrengthMsg" class="msg"></div>
 
-            <div id="capsLockMsg" class="caps-msg"></div>
+<!--             <div id="capsLockMsg" class="caps-msg"></div> -->
 
             <!-- 비밀번호 강도 게이지 -->
-            <div class="pw-meter">
-                <div class="pw-meter-bar" id="pwMeterBar"></div>
-            </div>
-            <div id="pwStrengthText" class="pw-strength-text"></div>
+<!--             <div class="pw-meter"> -->
+<!--                 <div class="pw-meter-bar" id="pwMeterBar"></div> -->
+<!--             </div> -->
+<!--             <div id="pwStrengthText" class="pw-strength-text"></div> -->
 
             <!-- 🔥 비밀번호 체크리스트 추가  -->
-            <div id="pwCheckList" class="pw-check-list">
-                <div class="pw-rule" id="ruleLength">● 8~12자</div>
-                <div class="pw-rule" id="ruleLetter">● 영문 포함</div>
-                <div class="pw-rule" id="ruleNumber">● 숫자 포함</div>
-                <div class="pw-rule" id="ruleSpecial">● 특수문자 포함</div>
-                <div class="pw-rule" id="ruleStart">● 숫자로 시작 금지</div>
-            </div>
+<!--             <div id="pwCheckList" class="pw-check-list"> -->
+<!--                 <div class="pw-rule" id="ruleLength">● 8~12자</div> -->
+<!--                 <div class="pw-rule" id="ruleLetter">● 영문 포함</div> -->
+<!--                 <div class="pw-rule" id="ruleNumber">● 숫자 포함</div> -->
+<!--                 <div class="pw-rule" id="ruleSpecial">● 특수문자 포함</div> -->
+<!--                 <div class="pw-rule" id="ruleStart">● 숫자로 시작 금지</div> -->
+<!--             </div> -->
 
             <!-- 비밀번호 확인 -->
             <label>비밀번호 확인</label>

@@ -57,15 +57,17 @@ public class UserController {
     @PostMapping("/insertAjax")
     @ResponseBody
     public Map<String, Object> insertAjax(@ModelAttribute UserVO userVO) {
-
+    	System.out.println("1");
         Map<String, Object> result = new HashMap<>();
-
-        // 아이디 체크
-        if (userService.selectUserById(userVO.getUser_id()) != null) {
-            result.put("result", "fail");
-            result.put("message", "이미 존재하는 아이디입니다.");
-            return result;
-        }
+//
+//        // 아이디 체크
+//        if (userService.selectUserById(userVO.getUser_id()) != null) {
+//        	System.out.println("2");
+//        	System.out.println(userVO.getUser_id());
+//            result.put("result", "fail");
+//            result.put("message", "이미 존재하는 아이디입니다.");
+//            return result;
+//        }
 
         // 이메일 체크
         if (userService.checkEmail(userVO.getUser_email()) > 0) {
@@ -103,7 +105,16 @@ public class UserController {
         return result;
     }
 
-
+    @PostMapping("/checkId")
+    @ResponseBody
+    public String checkId(@RequestParam("user_id") String user_id) {
+        System.out.println("UserController checkId(): " + user_id);
+        
+        if (userService.selectUserById(user_id) != null) {
+            return "unavailable";  // 사용 불가
+        }
+        return "available";  // 사용 가능
+    }
     /* ==========================================================
        3. 로그인 Ajax
     ========================================================== */

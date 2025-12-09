@@ -353,8 +353,8 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: contextPath + "/user/checkId",
-            type: "GET",
+            url: contextPath + "/user/checkId",  // ← URL 변경
+            type: "POST",
             data: { user_id: id },
             success: function (res) {
                 if (res === "available") {
