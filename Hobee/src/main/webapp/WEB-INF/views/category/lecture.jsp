@@ -530,7 +530,7 @@
 
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
-
+const isLogin = ${sessionScope.userVO == null ? false : true};
   function alertBookmark(){
 	  alert("이미 구매한 강의입니다. 내 강의실에서 확인하세요.");
   }
@@ -641,7 +641,7 @@
 	        return;
 	    }
 		
-		const isLogin = "${not empty sessionScope.user_id}" === "true";
+// 		const isLogin = "${not empty sessionScope.user_id}" === "true";
 	     
 		if(!isLogin){
 	    	 openLoginModal();
@@ -917,17 +917,23 @@ const rewardRate   = ${sessionScope.gradeVO != null ? sessionScope.gradeVO.rewar
 let selectedLectureNum = null;
 let selectedLectureOriginalPrice = 0;    // 원가
 let selectedLectureDiscountedPrice = 0;  // 등급 할인 적용 가격
+//세션 포인트 안전 처리
+const myPoints = ${sessionScope.userVO != null ? sessionScope.userVO.points : 0};
 
+// DOM 요소 안전 핸들러
+const modalUsedPointsEl = document.getElementById("modalUsedPoints");
+const finalAmountPreviewEl = document.getElementById("finalAmountPreview");
 
 /* ======================================================
 ⬛ 결제 모달 열기
 ====================================================== */
-const isLogin = "${sessionScope.userVO != null ? 'true' : 'false'}";
+
 function openPaymentModal(lectureNum, price) {
-	// 로그인 체크
-    if (isLogin !== "true") {
+
+    // 로그인 체크 (boolean)
+    if (!isLogin) {
         if (typeof openLoginModal === "function") {
-            openLoginModal();   // 로그인 모달 열기
+            openLoginModal();
         } else {
             alert("로그인이 필요한 서비스입니다.");
         }
@@ -935,26 +941,40 @@ function openPaymentModal(lectureNum, price) {
     }
 
     // ----------------------------
-    // ⬇️ 아래부터는 로그인된 경우만 실행됨
+    // 🔽 로그인된 경우만 실행됨
     // ----------------------------
 
-    selectedLectureNum = Number(lectureNum);
-    selectedLectureOriginalPrice = Number(price);
+    selectedLectureNum = Number(lectureNum) || 0;
+    selectedLectureOriginalPrice = Number(price) || 0;
 
-    // 🔥 할인 금액 계산
+    // 🔥 할인 금액 계산 (널 안전)
     const discount = Math.floor(selectedLectureOriginalPrice * (discountRate / 100));
     selectedLectureDiscountedPrice = selectedLectureOriginalPrice - discount;
 
-    // 입력창 초기화
-    document.getElementById("modalUsedPoints").value = 0;
+    // ---------------------------------------
+    // 🔥 modalUsedPoints element Null-Safe 체크
+    // ---------------------------------------
+    const usedPointInput = document.getElementById("modalUsedPoints");
+    if (usedPointInput) {
+        usedPointInput.value = 0;
+    }
 
-    // 최종 금액 첫 표시 = 할인 금액
-    document.getElementById("finalAmountPreview").innerText =
-        selectedLectureDiscountedPrice.toLocaleString() + "원";
+    // ---------------------------------------
+    // 🔥 최종 금액 preview Null-Safe 체크
+    // ---------------------------------------
+    const preview = document.getElementById("finalAmountPreview");
+    if (preview) {
+        preview.innerText = selectedLectureDiscountedPrice.toLocaleString() + "원";
+    }
 
-    // 모달 열기
-    document.body.classList.add("modal-open");
-    document.getElementById("paymentPointModal").style.display = "flex";
+    // ---------------------------------------
+    // 🔥 결제 모달 띄우기 Null-Safe
+    // ---------------------------------------
+    const modal = document.getElementById("paymentPointModal");
+    if (modal) {
+        document.body.classList.add("modal-open");
+        modal.style.display = "flex";
+    }
 }
 
 
@@ -970,41 +990,48 @@ function closePaymentModal() {
 /* ======================================================
 ⬛ 포인트 입력 이벤트
 ====================================================== */
-document.getElementById("modalUsedPoints").addEventListener("input", function () {
+if (modalUsedPointsEl) {
+    modalUsedPointsEl.addEventListener("input", function () {
 
-    let used = parseInt(this.value) || 0;
-    const myPoints = ${sessionScope.userVO.points};
+        if (!isLogin) return;
 
-    // 유효성 검사
-    if (used < 0) used = 0;
-    if (used > myPoints) used = myPoints;
-    if (used > selectedLectureDiscountedPrice)
-        used = selectedLectureDiscountedPrice;
+        let used = parseInt(this.value) || 0;
 
-    this.value = used;
+        // 유효성 검사
+        if (used < 0) used = 0;
+        if (used > myPoints) used = myPoints;
+        if (used > selectedLectureDiscountedPrice)
+            used = selectedLectureDiscountedPrice;
 
-    // 최종 금액 계산
-    const finalAmount = selectedLectureDiscountedPrice - used;
+        this.value = used;
 
-    document.getElementById("finalAmountPreview").innerText =
-        finalAmount.toLocaleString() + "원";
-});
+        // 최종 금액 계산 (DOM Null-safe)
+        const finalAmount = selectedLectureDiscountedPrice - used;
+
+        if (finalAmountPreviewEl) {
+            finalAmountPreviewEl.innerText = finalAmount.toLocaleString() + "원";
+        }
+    });
+}
 
 
 /* ======================================================
 ⬛ 모두 사용 버튼
 ====================================================== */
 function detailUseAllPoints() {
+    if (!isLogin) return;
 
-    const myPoints = ${sessionScope.userVO.points};
     const use = Math.min(myPoints, selectedLectureDiscountedPrice);
 
-    document.getElementById("modalUsedPoints").value = use;
+    if (modalUsedPointsEl) {
+        modalUsedPointsEl.value = use;
+    }
 
     const finalAmount = selectedLectureDiscountedPrice - use;
 
-    document.getElementById("finalAmountPreview").innerText =
-        finalAmount.toLocaleString() + "원";
+    if (finalAmountPreviewEl) {
+        finalAmountPreviewEl.innerText = finalAmount.toLocaleString() + "원";
+    }
 }
 
 
@@ -1012,11 +1039,15 @@ function detailUseAllPoints() {
 ⬛ 결제 진행 (confirmPayment)
 ====================================================== */
 function confirmPayment() {
+    if (!isLogin) return;
 
-    let usedPoints = parseInt(document.getElementById("modalUsedPoints").value) || 0;
-    const myPoints = ${sessionScope.userVO.points};
+    let usedPoints = 0;
 
-    // 보정
+    if (modalUsedPointsEl) {
+        usedPoints = parseInt(modalUsedPointsEl.value) || 0;
+    }
+
+    // 유효성 검사
     if (usedPoints < 0) usedPoints = 0;
     if (usedPoints > myPoints) usedPoints = myPoints;
     if (usedPoints > selectedLectureDiscountedPrice)
@@ -1024,7 +1055,6 @@ function confirmPayment() {
 
     closePaymentModal();
 
-    // 결제 함수 호출
     requestPayment(selectedLectureNum, selectedLectureOriginalPrice, usedPoints);
 }
 
@@ -1033,6 +1063,7 @@ function confirmPayment() {
 ⬛ 최종 결제 실행
 ====================================================== */
 function requestPayment(lectureNum, originalPrice, usedPoints) {
+    if (!isLogin) return;
 
     // 1) 할인 적용
     const discount = Math.floor(originalPrice * (discountRate / 100));
@@ -1045,11 +1076,11 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
     // 3) 적립 포인트
     const savedPoints = Math.floor(finalAmount * (rewardRate / 100));
 
-    // 4) 세션 사용자 정보
-    const userName  = "<c:out value='${sessionScope.userVO.user_name}'/>";
-    const userEmail = "<c:out value='${sessionScope.userVO.user_email}'/>";
-    const userPhone = "<c:out value='${sessionScope.userVO.user_phone}'/>";
-    const userNum   = "<c:out value='${sessionScope.userVO.user_num}'/>";
+    // 4) 세션 사용자 정보 (Null-safe)
+    const userName  = "<c:out value='${sessionScope.userVO != null ? sessionScope.userVO.user_name : ""}'/>";
+    const userEmail = "<c:out value='${sessionScope.userVO != null ? sessionScope.userVO.user_email : ""}'/>";
+    const userPhone = "<c:out value='${sessionScope.userVO != null ? sessionScope.userVO.user_phone : ""}'/>";
+    const userNum   = "<c:out value='${sessionScope.userVO != null ? sessionScope.userVO.user_num : ""}'/>";
 
     if (!userNum) {
         alert("로그인이 필요한 서비스입니다.");
@@ -1067,17 +1098,16 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
         buyer_name: userName,
         buyer_tel: userPhone
     }, function (rsp) {
-
+        
         if (!rsp.success) {
             alert("❌ 결제 실패: " + rsp.error_msg);
             return;
         }
 
-        // 6) 검증
+        // 6) 서버로 검증 요청
         $.post(
             "${pageContext.request.contextPath}/payment/verify",
             { imp_uid: rsp.imp_uid },
-
             function (verifyResult) {
 
                 if (verifyResult.verify_result !== "success") {
@@ -1085,7 +1115,7 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
                     return;
                 }
 
-                // 7) 결제 완료 요청
+                // 7) 결제 완료 저장
                 $.ajax({
                     type: "POST",
                     url: "${pageContext.request.contextPath}/payment/complete",
@@ -1103,13 +1133,10 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
                     },
 
                     success: function (completeResult) {
-
                         if (completeResult.status === "success") {
-
                             if (completeResult.gradeChanged && completeResult.gradeMessage) {
                                 alert("\n" + completeResult.gradeMessage);
                             }
-
                             location.href = "${pageContext.request.contextPath}/payment/success";
                         }
 
