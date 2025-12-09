@@ -117,29 +117,10 @@ body {
     padding: 40px;
 }
 
-/* select 박스 스타일 */
-.form-group select {
-    flex: 1;
-    padding: 8px 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    color: #666;
-    background-color: #fff;
-    cursor: pointer;
-    outline: none;
-}
-
-.form-group select:focus {
-    border-color: #2573ff;
-    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
-}
-
 /* =========================== 폼 그룹 =========================== */
 .form-group {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 20px 0;
     border-bottom: 1px solid #f0f0f0;
 }
@@ -157,7 +138,6 @@ body {
 }
 
 .form-group .form-value {
-    flex: 1;
     font-size: 0.95rem;
     color: #666;
 }
@@ -166,6 +146,49 @@ body {
     color: #ccc;
 }
 
+/* =========================== 권한 영역 스타일 (수정됨) =========================== */
+.form-group select {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #666;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    min-width: 200px;
+    margin: 0 10px 0 30px;
+}
+
+.form-group select:focus {
+    border-color: #2573ff;
+    box-shadow: 0 0 0 3px rgba(37, 115, 255, 0.1);
+}
+
+.user_role_btn {
+    background-color: #2573ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.user_role_btn:hover {
+    background-color: #1f65e0;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(37, 115, 255, 0.3);
+}
+
+.user_role_btn:active {
+    transform: translateY(0);
+}
+
+/* =========================== 일반 input 스타일 =========================== */
 .form-group input {
     flex: 1;
     padding: 0;
@@ -213,9 +236,6 @@ body {
 .btn:hover{
 	background-color: #808080;
 }
-/* .btn:last-child{ */
-/*     background-color: #2573ff; */
-/* } */
 
 .btn-primary {
     background-color: #2573ff;
@@ -249,6 +269,7 @@ body {
 	text-align: center;
     margin-top: 30px;
 }
+
 /* =========================== 반응형 디자인 =========================== */
 @media (max-width: 1024px) {
     .main-content {
@@ -280,6 +301,10 @@ body {
     
     .btn {
         width: 100%;
+    }
+    
+    .form-group select {
+        min-width: 150px;
     }
 }
 

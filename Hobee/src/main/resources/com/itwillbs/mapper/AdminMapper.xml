@@ -389,6 +389,10 @@
 	<select id="insertMember" resultType="com.itwillbs.domain.UserVO">
 		select * from user where user_num = #{user_num}
 	</select>
+	
+	<select id="insertMember1" parameterType="String" resultType="com.itwillbs.domain.UserVO">
+	    select * from user where user_id = #{user_id}
+	</select>
 
 	<update id="adminUserUpdate" parameterType="com.itwillbs.domain.UserVO">
 		update user set user_role = #{user_role} where user_num = #{user_num}
