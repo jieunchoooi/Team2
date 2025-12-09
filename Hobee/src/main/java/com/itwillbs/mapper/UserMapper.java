@@ -1,5 +1,7 @@
 package com.itwillbs.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -38,13 +40,13 @@ public interface UserMapper {
     // 회원 등급 업데이트
     int updateUserGrade(UserVO userVO);
 
-    // 특정 회원 정보 조회 (로그인/세션 재로딩용) */
+    // 특정 회원 정보 조회 (로그인/세션 재로딩용)
     UserVO getUserByNum(int user_num);
 
-    // 회원 포인트 조회 */
+    // 회원 포인트 조회
     int getUserPoints(int userNum);
 
-    // 회원 포인트 업데이트 */
+    // 회원 포인트 업데이트
     int updateUserPoints(UserVO userVO);
 
     void increaseFailCount(@Param("user_id") String user_id);
