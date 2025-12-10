@@ -528,6 +528,8 @@
     </div>
 </div>
 
+
+
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
 const isLogin = ${sessionScope.userVO == null ? false : true};
@@ -542,7 +544,7 @@ const isLogin = ${sessionScope.userVO == null ? false : true};
 	  
      // 강의 정보 동적으로 가져오기
 	 const lectureTitle = "${lectureVO.lecture_title}";
-	 const lectureDetail = JSON.stringify("${fn:substring(lectureVO.lecture_detail, 0, 100)}...");
+	 const lectureDetail = `${fn:substring(lectureVO.lecture_detail, 0, 100)}...`.replace(/["']/g, "");
 	 const lectureImg = "${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}";  
 	  
 	 Kakao.Share.sendDefault({
