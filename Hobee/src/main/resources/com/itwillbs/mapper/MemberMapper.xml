@@ -130,7 +130,7 @@
 
 	<!-- 미승인 사유 -->
 	<select id="classReason" parameterType="int" resultType="com.itwillbs.domain.NotApprovedVO">
-		select * from notApproved
+		select * from not_approved
 		where lecture_num = #{lecture_num}
 		order by reason_num desc
     	limit 1
