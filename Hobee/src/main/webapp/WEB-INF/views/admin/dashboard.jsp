@@ -175,34 +175,34 @@
 			        </div>
 			    </div>
 			        <!-- 인기 강의 TOP 10 -->
-			    <div class="col-xl-3 col-lg-3" style="margin-bottom: 0;">
-			        <div class="card shadow h-100">
-			            <div class="card-header py-3">
-			                <h6 class="m-0 font-weight-bold text-primary dash6">인기 강의 TOP 10</h6>
-			            </div>
-			            <div class="card-body" style="padding: 0.5rem;">
-			                <div class="popular-lectures-full">
-			                    <c:forEach items="${bestClassTop10}" var="lecture" varStatus="status">
-			                        <div class="lecture-item-full">
-			                            <div class="lecture-rank-full">${status.index + 1}</div>
-			                            <div class="lecture-thumbnail-full">
-			                                <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
-			                                     alt="${lecture.lecture_title}">
-			                            </div>
-			                            <div class="lecture-info-full">
-			                                <div class="category_detail-full">${lecture.category_detail}</div>
-			                                <div class="lecture-title-full">${lecture.lecture_title}</div>
-			                            </div>
-			                            <div class="lecture-scrap-full">
-			                                <i class="fas fa-bookmark"></i> ${lecture.scrapCount}
-			                            </div>
+			 <div class="col-xl-3 col-lg-3" style="margin-bottom: 0;">
+			    <div class="card shadow h-100">
+			        <div class="card-header py-3">
+			            <h6 class="m-0 font-weight-bold text-primary dash6">인기 강의 TOP 10</h6>
+			        </div>
+			        <div class="card-body" style="padding: 0.5rem;">
+			            <div class="popular-lectures-full">
+			                <c:forEach items="${bestClassTop10}" var="lecture" varStatus="status">
+			                    <div class="lecture-item-full" onclick="window.open('${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}', '_blank')" style="cursor: pointer;">
+			                        <div class="lecture-rank-full">${status.index + 1}</div>
+			                        <div class="lecture-thumbnail-full">
+			                            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
+			                                 alt="${lecture.lecture_title}">
 			                        </div>
-			                    </c:forEach>
-			                </div>
+			                        <div class="lecture-info-full">
+			                            <div class="category_detail-full">${lecture.category_detail}</div>
+			                            <div class="lecture-title-full">${lecture.lecture_title}</div>
+			                        </div>
+			                        <div class="lecture-scrap-full">
+			                            <i class="fas fa-bookmark"></i> ${lecture.scrapCount}
+			                        </div>
+			                    </div>
+			                </c:forEach>
 			            </div>
 			        </div>
 			    </div>
 			</div>
+		</div>
 			
 			<!-- Content Row - 통계 카드들 -->
 			<div class="row">
