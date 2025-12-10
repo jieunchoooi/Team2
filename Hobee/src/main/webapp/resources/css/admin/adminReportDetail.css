@@ -1,10 +1,28 @@
 @charset "UTF-8";
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		sans-serif;
+}
 
-/* =======================================
-   🔵 공통 Fade-in
-======================================= */
+body {
+	background: #f4f6fa;
+	color: #222;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+main{
+	padding-bottom:30px;
+}
+/* Fade-in 효과 */
 .detail-container * {
-    animation: fadeInUp 0.35s ease-out;
+    animation: fadeInUp 0.25s ease-out;
 }
 
 @keyframes fadeInUp {
@@ -12,125 +30,126 @@
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* =======================================
-   🔵 전체 레이아웃
-======================================= */
+/* 전체 레이아웃 */
 .detail-container {
     margin-left: 240px;
-    padding: 35px 40px 80px 40px;
+    padding: 35px 0 80px 0;
     background: #f6f7fb;
     min-height: 100vh;
 }
 
-.detail-title {
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 30px;
+/* 중앙 1200px 고정 */
+.detail-wrapper {
+    width: 1400px;
+    margin: 0 auto;
+    padding: 20px 10px;
 }
 
-/* =======================================
-   🔵 카드 공통 스타일
-======================================= */
+/* 카드 공통 */
 .info-box,
 .process-card,
 .preview-box {
     background: #ffffff;
     border: 1px solid #e3e6ef;
-    padding: 22px 26px;
+    padding: 24px 28px;
     border-radius: 16px;
     margin-bottom: 26px;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
 }
 
-/* =======================================
-   🔵 Info Row
-======================================= */
+/* Row */
 .info-row {
     padding: 12px 0;
     border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 15.5px;
 }
-
-.info-row:last-child {
-    border-bottom: none;
-}
+.info-row:last-child { border-bottom: none; }
 
 .info-row strong {
     width: 150px;
     min-width: 150px;
     font-weight: 700;
+    color: #333;
 }
 
-/* =======================================
-   🔥 처리 / 반려 입력 GRID (문제 해결 핵심)
-======================================= */
+/* 처리/반려 입력 GRID */
 .process-card .action-row {
-    display: grid !important;
-    grid-template-columns: 150px 1fr 120px !important;
-    align-items: center !important;
-    gap: 14px !important;
-    padding: 16px 0 !important;
-    border-bottom: none !important;
+    display: grid;
+    grid-template-columns: 150px 1fr 120px;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
 }
 
-.process-card .action-row strong {
-    font-size: 16px;
-    margin-bottom: 0 !important;
-}
-
-/* 입력창 */
-.process-card .action-row select,
-.process-card .action-row input[type="text"] {
-    width: 100%;
+.process-card input,
+.process-card select {
     height: 42px;
-    padding: 8px 12px;
-    border: 1.3px solid #d5d7df;
+    padding: 0 12px;
+    border: 1.2px solid #d6d7df;
     border-radius: 10px;
     font-size: 15px;
 }
 
-/* 버튼 */
-.process-card .action-row button {
-    height: 42px !important;
-    padding: 0 18px !important;
-    border-radius: 10px !important;
-    font-size: 14px;
+/* 버튼 스타일 */
+.btn-blue,
+.btn-gray {
+    height: 42px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
     font-weight: 700;
-    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 20px;
 }
 
-/* =======================================
-   🔵 게시글/댓글 미리보기
-======================================= */
+.btn-blue {
+    background: #397dff;
+    color: #fff;
+}
+.btn-blue:hover { background: #2f63d2; }
+
+.btn-gray {
+    background: #9a9ea4;
+    color: #fff;
+}
+.btn-gray:hover { background: #7f8388; }
+
+/* 상태 텍스트 */
+.status.done { color: #1b8f52; font-weight: 700; }
+.status.reject { color: #b44b4b; font-weight: 700; }
+.status.wait { color: #e68a00; font-weight: 700; }
+
+/* 미리보기 */
 .preview-box h3 {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
     margin-bottom: 14px;
 }
 
 .preview-content {
     background: #f3f4f9;
-    padding: 16px 18px;
+    padding: 14px 18px;
     border-radius: 12px;
     border-left: 4px solid #ffda77;
+    font-size: 15px;
 }
 
-/* =======================================
-   🔵 뒤로가기 버튼
-======================================= */
+/* 뒤로가기 버튼 */
 .back-btn {
     background: #397dff;
     color: #fff;
     padding: 12px 26px;
     border-radius: 10px;
     border: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .back-btn:hover {
     background: #2f63d3;
+    transform: translateY(-2px);
 }

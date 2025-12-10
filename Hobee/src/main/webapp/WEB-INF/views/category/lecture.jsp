@@ -539,7 +539,7 @@ const isLogin = ${sessionScope.userVO == null ? false : true};
 
   //카카오톡 공유하기
   Kakao.init('7f21ec1e9b0371f46cf7190c8d91f522');
-	
+  
   function shareKakao() {
 	  
      // 강의 정보 동적으로 가져오기

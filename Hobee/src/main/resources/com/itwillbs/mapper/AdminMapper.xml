@@ -703,18 +703,20 @@
 	<select id="deleteClassCount" resultType="java.lang.Integer">
 	    select count(*) from lecture
 	    where status = 'delete'
-	    <choose>
-            <when test="searchList == '전체'">
-                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
-                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
-            </when>
-            <when test="searchList == '강사명'">
-                AND lecture_author LIKE CONCAT('%', #{search}, '%')
-            </when>
-            <when test="searchList == '강의명'">
-                AND lecture_title LIKE CONCAT('%', #{search}, '%')
-            </when>
-        </choose>
+	    <if test="search != null and search != ''">
+	        <choose>
+	            <when test="searchList == '전체'">
+	                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+	                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+	            </when>
+	            <when test="searchList == '강사명'">
+	                AND lecture_author LIKE CONCAT('%', #{search}, '%')
+	            </when>
+	            <when test="searchList == '강의명'">
+	                AND lecture_title LIKE CONCAT('%', #{search}, '%')
+	            </when>
+	        </choose>
+	    </if>
 	</select>
 
 	<!-- 승인 요청된 강의 갯수 카운트 -->
@@ -739,18 +741,20 @@
 	<select id="compClassCount" resultType="java.lang.Integer">
 	    select count(*) from lecture
 	    where status = 'reject'
-	    <choose>
-            <when test="searchList == '전체'">
-                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
-                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
-            </when>
-            <when test="searchList == '강사명'">
-                AND lecture_author LIKE CONCAT('%', #{search}, '%')
-            </when>
-            <when test="searchList == '강의명'">
-                AND lecture_title LIKE CONCAT('%', #{search}, '%')
-            </when>
-        </choose>
+	    <if test="search != null and search != ''">
+	        <choose>
+	            <when test="searchList == '전체'">
+	                AND (lecture_title LIKE CONCAT('%', #{search}, '%')
+	                OR lecture_author LIKE CONCAT('%', #{search}, '%'))
+	            </when>
+	            <when test="searchList == '강사명'">
+	                AND lecture_author LIKE CONCAT('%', #{search}, '%')
+	            </when>
+	            <when test="searchList == '강의명'">
+	                AND lecture_title LIKE CONCAT('%', #{search}, '%')
+	            </when>
+	        </choose>
+	    </if>
 	</select>
 
 	<update id="deleteMember" parameterType="int">
@@ -920,7 +924,7 @@
 	
 	<!-- 강의 미승인 사유 -->
 	<insert id="classNotApproval" parameterType="com.itwillbs.domain.Category_mainVO">
-		INSERT INTO notApproved (lecture_num, reason)
+		INSERT INTO not_approved (lecture_num, reason)
 		value (#{lecture_num}, #{reason})
 	</insert>
 	

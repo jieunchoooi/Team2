@@ -1,10 +1,32 @@
 @charset "UTF-8";
 
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		sans-serif;
+}
+
+body {
+	background: #f4f6fa;
+	color: #222;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+main{
+	padding-bottom:30px;
+}
+
 /* ============================================================
    📌 전체 페이지 공통 레이아웃 (list와 동일)
 ============================================================ */
 .main-content {
-    margin-left: 220px !important;
+    margin-left: 240px;
     padding: 50px 60px !important;
     background: linear-gradient(to bottom, #f7f9ff, #eef1ff);
 }
@@ -13,7 +35,7 @@
    📌 공통 Wrapper
 ============================================================ */
 .detail-wrapper {
-    max-width: 1400px;
+    width: 1400px;
     margin: 0 auto;
 }
 

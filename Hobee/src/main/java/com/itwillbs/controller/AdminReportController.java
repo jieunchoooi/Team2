@@ -72,36 +72,26 @@ public class AdminReportController {
     @PostMapping("/adminReportProcess")
     public String processReport(
             @RequestParam int report_id,
-            @RequestParam String action,  // "done" 또는 "reject"
-            @RequestParam(required = false) String done_reason,
-            @RequestParam(required = false) String reject_reason,
+            @RequestParam String action,        // ACCEPT or REJECT
+            @RequestParam String admin_reason,  // 사유 통합
             HttpSession session) {
 
         String adminId = (String) session.getAttribute("user_id");
 
-        // ======================================
-        //      처리 완료
-        // ======================================
-        if ("done".equals(action)) {
-            adminReportService.updateReportDone(report_id, done_reason);
-            adminReportService.insertActionLog(report_id, adminId, "처리완료", done_reason);
-
-            // 상세보기에 남아서 바로 확인 가능하게 유지
-            return "redirect:/admin/adminReportDetail?report_id=" + report_id;
+        // 처리 완료
+        if ("ACCEPT".equals(action)) {
+            adminReportService.updateReportDone(report_id, admin_reason);
+            adminReportService.insertActionLog(report_id, adminId, "ACCEPT", admin_reason);
         }
 
-        // ======================================
-        //      신고 반려
-        // ======================================
-        if ("reject".equals(action)) {
-            adminReportService.rejectReport(report_id, reject_reason);
-            adminReportService.insertActionLog(report_id, adminId, "반려", reject_reason);
-
-            return "redirect:/admin/adminReportDetail?report_id=" + report_id;
+        // 반려
+        else if ("REJECT".equals(action)) {
+            adminReportService.rejectReport(report_id, admin_reason);
+            adminReportService.insertActionLog(report_id, adminId, "REJECT", admin_reason);
         }
 
-        // action 값이 이상할 경우 fallback
         return "redirect:/admin/adminReportDetail?report_id=" + report_id;
     }
+
 
 }
