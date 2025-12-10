@@ -50,7 +50,11 @@ public class PaymentService {
 	 * 결제 완료 처리 (포인트 차감, 적립, 수강 등록 포함)
 	 */
 	@Transactional
-	public PaymentResultVO processPayment(PaymentVO paymentVO, List<Integer> lectureNums, GradeVO gradeVO) {
+	public PaymentResultVO processPayment(
+	        PaymentVO paymentVO,
+	        List<Integer> lectureNums,
+	        List<PaymentDetailVO> detailList,   // ⭐ 프론트 계산된 detailList 받음
+	        GradeVO gradeVO) {
 
 	    PaymentResultVO paymentResultVO = new PaymentResultVO();
 
@@ -58,286 +62,155 @@ public class PaymentService {
 	    paymentResultVO.setUserNum(userNum);
 
 	    System.out.println("🟢 [PaymentService] 결제 처리 시작");
-	    System.out.println("   🔹 요청 paymentVO  : " + paymentVO);
-	    System.out.println("   🔹 요청 lectureNums: " + lectureNums);
-	    System.out.println("   🔹 요청 gradeVO    : " + gradeVO);
+	    System.out.println("   🔹 요청 paymentVO     : " + paymentVO);
+	    System.out.println("   🔹 요청 lectureNums   : " + lectureNums);
+	    System.out.println("   🔹 detailList(프론트 계산) : " + detailList);
+	    System.out.println("   🔹 gradeVO(세션)       : " + gradeVO);
 
 	    /* ===========================================================
 	       0) imp_uid 중복 체크
 	       =========================================================== */
-	    System.out.println("   [0] imp_uid 중복 체크: " + paymentVO.getImp_uid());
 	    if (paymentMapper.checkDuplicateImpUid(paymentVO.getImp_uid()) > 0) {
-	        System.out.println("   ❌ 이미 처리된 imp_uid 입니다. 결제 중단");
 	        throw new IllegalStateException("이미 처리된 결제입니다.");
 	    }
-	    System.out.println("   ✅ imp_uid 중복 없음");
 
 	    /* ===========================================================
 	       1) 기존 유저 정보 조회
 	       =========================================================== */
 	    UserVO oldUserVO = userMapper.getUserByNum(userNum);
-	    System.out.println("   [1] 기존 회원 정보 oldUserVO : " + oldUserVO);
-
 	    paymentResultVO.setOldGradeId(oldUserVO.getGrade_id());
 	    paymentResultVO.setBeforePoints(oldUserVO.getPoints());
-
 	    int currentPoints = oldUserVO.getPoints();
-	    System.out.println("   🔹 결제 전 보유 포인트 currentPoints = " + currentPoints);
 
-	    /* 🔴 [변경1] 등급 정보는 파라미터 gradeVO 말고, DB에서 다시 조회해서 사용 */
-	    GradeVO gradeFromDb = gradeMapper.getGradeById(oldUserVO.getGrade_id());
-	    if (gradeFromDb != null) {
-	        gradeVO = gradeFromDb;
-	    }
-	    System.out.println("   🔹 실제 적용 등급 gradeVO = " + gradeVO);
+	    /* 실제 등급은 DB 기준 */
+	    gradeVO = gradeMapper.getGradeById(oldUserVO.getGrade_id());
 
 	    /* ===========================================================
-	       2) 결제 저장 (payment)
+	       2) payment INSERT
 	       =========================================================== */
 	    paymentVO.setStatus("paid");
 	    paymentMapper.insertPayment(paymentVO);
-
 	    int paymentId = paymentVO.getPayment_id();
 	    paymentResultVO.setPaymentId(paymentId);
-	    System.out.println("   [2] payment 저장 완료, paymentId = " + paymentId);
-	    System.out.println("       저장된 paymentVO : " + paymentVO);
 
 	    /* ===========================================================
-	       3) 강의별 payment_detail 저장
+	       ⭐ 3) 강의별 payment_detail INSERT (프론트 계산값 그대로 사용)
 	       =========================================================== */
-
-	    double discountRate = gradeVO.getDiscount_rate() / 100.0;
-	    double rewardRate   = gradeVO.getReward_rate()   / 100.0;
-	    System.out.println("   [3] 할인율 discountRate = " + discountRate);
-	    System.out.println("       적립율 rewardRate  = " + rewardRate);
 
 	    List<PaymentDetailVO> paymentDetailVOList = new ArrayList<>();
-
-	    int totalSaleAmount = 0;
-	    for (int lectureNum : lectureNums) {
-	        LectureVO lectureVO = lectureMapper.getLectureById(lectureNum);
-	        int lecturePrice = lectureVO.getLecture_price();
-
-	        // 🔴 [변경2] 할인 금액 소수점 처리 = 버림 (int 캐스팅)
-	        int salePrice = (int) (lecturePrice * (1 - discountRate));
-
-	        System.out.println("       - 강의번호 " + lectureNum + " 원가=" + lecturePrice + ", 할인후=" + salePrice);
-	        totalSaleAmount += salePrice;
-	    }
-	    System.out.println("   🔹 전체 할인 후 결제 금액 totalSaleAmount = " + totalSaleAmount);
-
-	    int usedPointsAccumulated = 0;
-
-	    for (int i = 0; i < lectureNums.size(); i++) {
-
-	        int lectureNum = lectureNums.get(i);
-	        LectureVO lectureVO = lectureMapper.getLectureById(lectureNum);
-	        System.out.println("\n   [3-" + (i+1) + "] 강의별 detail 생성 시작, lectureNum=" + lectureNum);
-	        System.out.println("          lectureVO : " + lectureVO);
-
-	        PaymentDetailVO paymentDetailVO = new PaymentDetailVO();
-	        paymentDetailVO.setPayment_id(paymentId);
-	        paymentDetailVO.setLecture_num(lectureNum);
-
-	        int originalPrice = lectureVO.getLecture_price();
-
-	        // 🔴 [변경2와 동일 규칙] 여기서도 할인 금액 버림
-	        int salePrice = (int) (originalPrice * (1 - discountRate));
-
-	        paymentDetailVO.setOriginal_price(originalPrice);
-	        paymentDetailVO.setSale_price(salePrice);
-
-	        System.out.println("          originalPrice = " + originalPrice + ", salePrice = " + salePrice);
-
-	        /* ----------------------
-	           포인트 사용 비율 배분
-	           ---------------------- */
-	        int dividedUsedPoints = 0;
-
-	        if (paymentVO.getUsed_points() > 0) {
-
-	            // 🔴 [변경3] 앞 강의는 비율로 버림, 마지막 강의에서 오차 보정
-	            if (i == lectureNums.size() - 1) {
-	                // 마지막 강의: 지금까지 분배된 포인트 제외하고 전부 몰아주기
-	                dividedUsedPoints = paymentVO.getUsed_points() - usedPointsAccumulated;
-	            } else {
-	                double ratio = (double) salePrice / totalSaleAmount;
-	                dividedUsedPoints = (int) (paymentVO.getUsed_points() * ratio); // 버림
-
-	                usedPointsAccumulated += dividedUsedPoints;
-	                System.out.println("          사용포인트 분배 ratio=" + ratio
-	                        + ", dividedUsedPoints=" + dividedUsedPoints
-	                        + ", usedPointsAccumulated=" + usedPointsAccumulated);
-	            }
-
-	        } else {
-	            System.out.println("          사용포인트 없음 (used_points = 0)");
-	        }
-
-	        paymentDetailVO.setUsed_points(dividedUsedPoints);
-
-	        /* ----------------------
-	           적립 포인트 계산
-	           ---------------------- */
-
-	        // 🔴 [변경4] 적립 포인트도 버림 (반올림 X)
-	        int dividedSavedPoints = (int) (salePrice * rewardRate);
-	        paymentDetailVO.setSaved_points(dividedSavedPoints);
-
-	        paymentDetailVO.setStatus("paid");
-
-	        paymentDetailMapper.insert(paymentDetailVO);  // detail_id 생성됨
-	        System.out.println("          ▶ payment_detail INSERT 완료 : " + paymentDetailVO);
-
-	        paymentDetailVOList.add(paymentDetailVO);
-	    }
-
-	    /* ===========================================================
-	       4) 강의별 포인트 사용/적립 point_history 기록
-	       =========================================================== */
-
 	    int totalUsedPoints = 0;
 	    int totalSavedPoints = 0;
 
-	    System.out.println("\n   [4] point_history 기록 시작");
-	    for (PaymentDetailVO paymentDetailVO : paymentDetailVOList) {
+	    for (PaymentDetailVO detail : detailList) {
 
-	        System.out.println("       처리 대상 paymentDetailVO : " + paymentDetailVO);
+	        System.out.println("\n   ▶ detail 처리: " + detail);
 
-	        /* --------------------------
-	           사용 포인트 기록 (USE)
-	           -------------------------- */
-	        if (paymentDetailVO.getUsed_points() > 0) {
+	        detail.setPayment_id(paymentId); // FK 설정
+	        detail.setStatus("paid");
 
-	            currentPoints -= paymentDetailVO.getUsed_points();
-	            totalUsedPoints += paymentDetailVO.getUsed_points();
+	        paymentDetailMapper.insert(detail); // DB 저장(detail_id 생성됨)
+	        paymentDetailVOList.add(detail);
 
-	            PointHistoryVO pointHistoryUseVO = new PointHistoryVO();
-	            pointHistoryUseVO.setUser_num(userNum);
-	            pointHistoryUseVO.setDetail_id(paymentDetailVO.getDetail_id());
-	            pointHistoryUseVO.setPoint_change(-paymentDetailVO.getUsed_points());
-	            pointHistoryUseVO.setType("use");
-	            pointHistoryUseVO.setDescription("클래스 결제 시 포인트 사용");
-
-	            System.out.println("       ▶ USE point_history INSERT : " + pointHistoryUseVO);
-	            System.out.println("         🔹 currentPoints (사용 후) = " + currentPoints);
-
-	            pointHistoryMapper.insertPointHistory(pointHistoryUseVO);
-	        } else {
-	            System.out.println("       사용 포인트 없음 → USE 기록 생략");
-	        }
-
-	        /* --------------------------
-	           적립 포인트 기록 (SAVE)
-	           -------------------------- */
-	        if (paymentDetailVO.getSaved_points() > 0) {
-
-	            currentPoints += paymentDetailVO.getSaved_points();
-	            totalSavedPoints += paymentDetailVO.getSaved_points();
-
-	            PointHistoryVO pointHistorySaveVO = new PointHistoryVO();
-	            pointHistorySaveVO.setUser_num(userNum);
-	            pointHistorySaveVO.setDetail_id(paymentDetailVO.getDetail_id());
-	            pointHistorySaveVO.setPoint_change(paymentDetailVO.getSaved_points());
-	            pointHistorySaveVO.setType("save");
-	            pointHistorySaveVO.setDescription("결제 적립 포인트");
-
-	            System.out.println("       ▶ SAVE point_history INSERT : " + pointHistorySaveVO);
-	            System.out.println("         🔹 currentPoints (적립 후) = " + currentPoints);
-
-	            pointHistoryMapper.insertPointHistory(pointHistorySaveVO);
-	        } else {
-	            System.out.println("       적립 포인트 없음 → SAVE 기록 생략");
-	        }
+	        // 누적값 계산
+	        totalUsedPoints += detail.getUsed_points();
+	        totalSavedPoints += detail.getSaved_points();
 	    }
-	    System.out.println("   🔹 totalUsedPoints  = " + totalUsedPoints);
-	    System.out.println("   🔹 totalSavedPoints = " + totalSavedPoints);
-	    System.out.println("   🔹 최종 currentPoints(포인트 반영 전 DB) = " + currentPoints);
 
 	    /* ===========================================================
-	       6) 유저 points 반영 (딱 한 번만!)
+	       ⭐ 4) point_history — 프론트 값 기반으로 그대로 기록
 	       =========================================================== */
-	    UserVO userPointUpdateVO = new UserVO();
-	    userPointUpdateVO.setUser_num(userNum);
-	    userPointUpdateVO.setPoints(currentPoints);
+	    for (PaymentDetailVO detail : paymentDetailVOList) {
 
-	    System.out.println("\n   [6] user points 업데이트");
-	    System.out.println("       userPointUpdateVO : " + userPointUpdateVO);
+	        /* 사용 포인트 기록 */
+	        if (detail.getUsed_points() > 0) {
 
-	    userMapper.updateUserPoints(userPointUpdateVO);
+	            currentPoints -= detail.getUsed_points();
+
+	            PointHistoryVO historyUse = new PointHistoryVO();
+	            historyUse.setUser_num(userNum);
+	            historyUse.setDetail_id(detail.getDetail_id());
+	            historyUse.setPoint_change(-detail.getUsed_points());
+	            historyUse.setType("use");
+	            historyUse.setDescription("클래스 결제 시 포인트 사용");
+
+	            pointHistoryMapper.insertPointHistory(historyUse);
+	        }
+
+	        /* 적립 포인트 기록 */
+	        if (detail.getSaved_points() > 0) {
+
+	            currentPoints += detail.getSaved_points();
+
+	            PointHistoryVO historySave = new PointHistoryVO();
+	            historySave.setUser_num(userNum);
+	            historySave.setDetail_id(detail.getDetail_id());
+	            historySave.setPoint_change(detail.getSaved_points());
+	            historySave.setType("save");
+	            historySave.setDescription("결제 적립 포인트");
+
+	            pointHistoryMapper.insertPointHistory(historySave);
+	        }
+	    }
+
+	    /* ===========================================================
+	       ⭐ 5) user 포인트 반영
+	       =========================================================== */
+	    UserVO updatePointsVO = new UserVO();
+	    updatePointsVO.setUser_num(userNum);
+	    updatePointsVO.setPoints(currentPoints);
+	    userMapper.updateUserPoints(updatePointsVO);
 
 	    paymentResultVO.setUsedPoints(totalUsedPoints);
 	    paymentResultVO.setSavedPoints(totalSavedPoints);
 
 	    /* ===========================================================
-	       7) 수강 등록 (enrollment)
+	       6) 수강 등록
 	       =========================================================== */
-	    System.out.println("\n   [7] 수강 등록(enrollment) 처리");
 	    for (int lectureNum : lectureNums) {
 
-	        EnrollmentVO enrollmentVO = new EnrollmentVO();
-	        enrollmentVO.setUser_num(userNum);
-	        enrollmentVO.setLecture_num(lectureNum);
-	        enrollmentVO.setPayment_id(paymentId);
+	        EnrollmentVO enroll = new EnrollmentVO();
+	        enroll.setUser_num(userNum);
+	        enroll.setLecture_num(lectureNum);
+	        enroll.setPayment_id(paymentId);
 
-	        int exists = enrollmentMapper.checkEnrollmentExists(enrollmentVO);
-	        System.out.println("       - lectureNum=" + lectureNum + ", 이미 등록 여부=" + exists);
-
-	        if (exists == 0) {
-	            enrollmentMapper.insertEnrollment(enrollmentVO);
-	            System.out.println("         ▶ enrollment INSERT : " + enrollmentVO);
-	        } else {
-	            System.out.println("         ▶ 이미 수강 등록된 강의, INSERT 생략");
+	        if (enrollmentMapper.checkEnrollmentExists(enroll) == 0) {
+	            enrollmentMapper.insertEnrollment(enroll);
 	        }
 	    }
 
 	    /* ===========================================================
-	       8) 스크랩 삭제
+	       7) 스크랩 삭제
 	       =========================================================== */
-	    System.out.println("\n   [8] 스크랩 삭제 처리, userNum=" + userNum + ", lectureNums=" + lectureNums);
 	    scrapMapper.deleteScrapAfterPayment(userNum, lectureNums);
-	    System.out.println("       ▶ 스크랩 삭제 완료");
 
 	    /* ===========================================================
-	       9) 등급 재조정
+	       8) 등급 재산정
 	       =========================================================== */
-	    System.out.println("\n   [9] 등급 재조정 시작");
 	    int totalPayments = paymentMapper.getUserTotalPayment(userNum);
 	    GradeVO newGradeVO = gradeMapper.getGradeByTotalPayment(totalPayments);
-
-	    System.out.println("       🔹 totalPayments = " + totalPayments);
-	    System.out.println("       🔹 oldGradeId    = " + oldUserVO.getGrade_id());
-	    System.out.println("       🔹 newGradeVO    = " + newGradeVO);
 
 	    paymentResultVO.setNewGradeId(newGradeVO.getGrade_id());
 	    paymentResultVO.setNewGradeName(newGradeVO.getGrade_name());
 
-	    if (newGradeVO.getGrade_id() != oldUserVO.getGrade_id()) {
+	    if (oldUserVO.getGrade_id() != newGradeVO.getGrade_id()) {
 
 	        paymentResultVO.setGradeChanged(true);
 	        paymentResultVO.setGradeUp(newGradeVO.getGrade_id() > oldUserVO.getGrade_id());
 
-	        UserVO userGradeUpdateVO = new UserVO();
-	        userGradeUpdateVO.setUser_num(userNum);
-	        userGradeUpdateVO.setGrade_id(newGradeVO.getGrade_id());
+	        UserVO gradeUpdateVO = new UserVO();
+	        gradeUpdateVO.setUser_num(userNum);
+	        gradeUpdateVO.setGrade_id(newGradeVO.getGrade_id());
 
-	        System.out.println("       ▶ 등급 변경 발생, userGradeUpdateVO : " + userGradeUpdateVO);
-
-	        userMapper.updateUserGrade(userGradeUpdateVO);
-	    } else {
-	        System.out.println("       ▶ 등급 변화 없음");
+	        userMapper.updateUserGrade(gradeUpdateVO);
 	    }
 
+	    /* ===========================================================
+	       9) 응답 준비
+	       =========================================================== */
 	    paymentResultVO.setAfterPoints(currentPoints);
-
-	    UserVO updatedUserVO = userMapper.getUserByNum(userNum);
-	    paymentResultVO.setUpdatedUserVO(updatedUserVO);
+	    paymentResultVO.setUpdatedUserVO(userMapper.getUserByNum(userNum));
 	    paymentResultVO.setSuccess(true);
 	    paymentResultVO.setMessage("결제가 정상 처리되었습니다.");
-
-	    System.out.println("\n✅ [PaymentService] 결제 프로세스 정상 종료");
-	    System.out.println("   ▶ 최종 paymentResultVO : " + paymentResultVO);
-	    System.out.println("   ▶ 최종 updatedUserVO   : " + updatedUserVO);
 
 	    return paymentResultVO;
 	}

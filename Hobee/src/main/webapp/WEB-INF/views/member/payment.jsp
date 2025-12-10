@@ -130,7 +130,45 @@
     </div>
 
     <div class="divider"></div>
+	<%-- ======================================
+     🔥 환불 요약 (부분 환불 시에만 표시)
+====================================== --%>
+<c:if test="${payment.status ne 'paid'}">
 
+    <div class="section-title">환불 요약</div>
+
+    <div class="receipt-row">
+        <span class="label">환불된 금액</span>
+        <span class="value minus">
+            - ₩ <fmt:formatNumber value="${refundedAmount}" type="number" />
+        </span>
+    </div>
+
+    <div class="receipt-row">
+        <span class="label">환불된 사용 포인트</span>
+        <span class="value plus">
+            + <fmt:formatNumber value="${refundedUsedPoint}" type="number" /> P
+        </span>
+    </div>
+
+    <div class="receipt-row">
+        <span class="label">회수된 적립 포인트</span>
+        <span class="value minus">
+            - <fmt:formatNumber value="${refundedSavedPoint}" type="number" /> P
+        </span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="receipt-row total">
+        <span class="label">환불 후 남은 결제금액</span>
+        <span class="value total-amount">
+            ₩ <fmt:formatNumber value="${remainingAmount}" type="number" />
+        </span>
+    </div>
+
+</c:if>
+	
     <%-- 최종 결제금액 --%>
     <div class="receipt-row total">
         <span class="label">최종 결제금액</span>

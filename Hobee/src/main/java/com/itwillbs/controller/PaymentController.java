@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.GradeVO;
 import com.itwillbs.domain.LectureVO;
@@ -181,6 +182,7 @@ public class PaymentController {
     public Map<String, Object> completePayment(
             @ModelAttribute PaymentVO paymentVO,
             @RequestParam("lectureNums") List<Integer> lectureNums,
+            @RequestParam("detailList") String detailListJson,   // ⭐ 추가된 부분
             HttpSession session) {
 
         Map<String, Object> res = new HashMap<>();
@@ -203,8 +205,28 @@ public class PaymentController {
             return res;
         }
 
+        // ===========================================================
+        // ⭐ detailListJson → List<PaymentDetailVO> 변환
+        // ===========================================================
+        ObjectMapper mapper = new ObjectMapper();
+        List<PaymentDetailVO> detailList = new ArrayList<>();
+
+        try {
+            detailList = mapper.readValue(
+                    detailListJson,
+                    new TypeReference<List<PaymentDetailVO>>() {}
+            );
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "결제 상세 정보 파싱 실패");
+            return res;
+        }
+
+        // ===========================================================
+        // 기존 결제 처리 서비스 호출 → detailList 추가 전달
+        // ===========================================================
         PaymentResultVO paymentResultVO =
-                paymentService.processPayment(paymentVO, lectureNums, gradeVO);
+                paymentService.processPayment(paymentVO, lectureNums, detailList, gradeVO);
 
         // 업데이트된 userVO 세션에 저장
         session.setAttribute("userVO", paymentResultVO.getUpdatedUserVO());
@@ -222,6 +244,7 @@ public class PaymentController {
 
         return res;
     }
+
 
 
 
