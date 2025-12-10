@@ -1,6 +1,8 @@
 package com.itwillbs.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -18,32 +20,21 @@ public class GptController {
 	
 	@Inject
 	private GptService gptService;
-	
-//	@PostMapping("/interest")
-//	@ResponseBody
-//	public boolean interest(@RequestParam("prompt") String prompt,
-//	                        @RequestParam("user_id") String user_id) {
-//	    try {
-//	        gptService.insetInterest(prompt, user_id);
-//	        return true; // 성공
-//	    } catch (Exception e) {
-//	        return false; // 실패
-//	    }
-//	}
 
 	@PostMapping("/interest")
 	@ResponseBody
 	public boolean interest(@RequestParam("user_id") String user_id,
 	                        @RequestParam("tags") List<String> tags) {
-	    try {
-	        for(String prompt : tags) {
-	            gptService.insetInterest(prompt, user_id); // 각 관심사 DB 저장
-	        }
-	        return true;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return false;
-	    }
+		   try {
+		        Map<String, Object> params = new HashMap<>();
+		        params.put("user_id", user_id);
+		        params.put("tags", tags);
+		        gptService.insetInterest(params);
+		        return true;
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        return false;
+		    }
 	}
 
 }
