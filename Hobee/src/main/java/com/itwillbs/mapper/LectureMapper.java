@@ -63,6 +63,8 @@ public interface LectureMapper {
 		    @Param("review_score") double review_score
 		);
 
+	List<LectureVO> getLecturesByIds(List<Integer> recommendLectureIds);
+
 
 
 

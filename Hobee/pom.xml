@@ -225,6 +225,14 @@
    				<version>2.15.2</version>
 			</dependency>
 			
+		  <!-- chatgpt ->json 변경 -->
+	      <!-- https://mvnrepository.com/artifact/org.json/json -->
+		  <dependency>
+		      <groupId>org.json</groupId>
+		      <artifactId>json</artifactId>
+		      <version>20240303</version>
+		  </dependency>
+				
 		<!-- 트랙잭션 처리를 위한 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
 			<dependency>

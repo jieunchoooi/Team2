@@ -19,6 +19,7 @@ import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.ScrapVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.EnrollmentService;
+import com.itwillbs.service.GptService;
 import com.itwillbs.service.LectureService;
 import com.itwillbs.service.ScrapService;
 
@@ -32,6 +33,9 @@ public class LectureController {
 	private ScrapService scrapService;
 	@Inject
 	private EnrollmentService enrollmentService;
+	@Inject
+	private GptService gptService;
+
 	
 	@RequestMapping(value="/lectureList")
 	public String lectureList(@RequestParam(required = false, defaultValue = "전체") String category_detail,
@@ -182,11 +186,24 @@ public class LectureController {
 		
 		List<LectureVO> lectureList;
 	    
-	    if (category_detail.equals("전체")) {
-	        lectureList = lectureService.getRecoLectures(userVO);
-	    } else {
-	        lectureList = lectureService.getLecturesByCategory(category_detail);
-	    }
+//	    if (category_detail.equals("전체")) {
+//	        lectureList = lectureService.getRecoLectures(userVO);
+//	    } else {
+//	        lectureList = lectureService.getLecturesByCategory(category_detail);
+//	    }
+		if (category_detail.equals("전체")) {
+			 if (userVO != null) {
+		            // 로그인 되어있으면 GPT 추천 강의
+		            List<Integer> recommendLectureIds = gptService.getRecommendLectureIds(userVO.getUser_id());
+		            lectureList = lectureService.getLecturesByIds(recommendLectureIds);
+		        } else {
+		            // 로그인 안 되어있으면 인기 강의
+		        	lectureList = lectureService.getRecoLectures(userVO);
+		        }
+
+		} else {
+		    lectureList = lectureService.getLecturesByCategory(category_detail);
+		}
 	    
 	    
 	      if(userVO != null) {

@@ -64,7 +64,7 @@
             </div>
 
             <a href="${pageContext.request.contextPath}/community/list">커뮤니티</a>
-            <a href="${pageContext.request.contextPath}/category/recommendList">맞춤 추천 강의</a>
+            <a href="${pageContext.request.contextPath}/category/recommendList">AI 추천 강의</a>
         </div>
 
         <div class="nav-right">

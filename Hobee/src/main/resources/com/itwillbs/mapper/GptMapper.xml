@@ -4,19 +4,43 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.mapper.GptMapper">
-	
-	<!-- MyBatis XML -->
-	<insert id="insetInterest">
-	    INSERT INTO user_interest (user_id, interest_id)
-	    SELECT #{user_id}, interest_id 
-	    FROM interest 
-	    WHERE interest_name IN
-	    <foreach collection="tags" item="tag" open="(" separator="," close=")">
-	        #{tag}
-	    </foreach>
-	</insert>
-	
-			
-
-
+    
+    <!-- 관심사 저장 -->
+    <insert id="insetInterest">
+        INSERT INTO user_interest (user_id, interest_id)
+        SELECT #{user_id}, interest_id 
+        FROM interest 
+        WHERE interest_name IN
+        <foreach collection="tags" item="tag" open="(" separator="," close=")">
+            #{tag}
+        </foreach>
+    </insert>
+    
+    <!-- 여러 관심사 가져오기 -->
+    <select id="getUserInterestList" parameterType="string" resultType="string">
+        SELECT i.interest_name
+        FROM user_interest ui
+        JOIN interest i ON ui.interest_id = i.interest_id
+        WHERE ui.user_id = #{user_id}
+    </select>
+    
+    <!-- 구매 강의 번호 조회 -->
+    <select id="getPurchasedLectureIds" parameterType="string" resultType="int">
+        SELECT e.lecture_num
+        FROM enrollment e
+        JOIN user u ON e.user_num = u.user_num
+        WHERE u.user_id = #{user_id}
+    </select>
+    
+    <select id="getAllLecturesInfo" resultType="map">
+	    SELECT 
+	        lecture_num,
+	        lecture_title,
+	        category_detail,
+	        lecture_tag
+	    FROM lecture
+	    WHERE status = 'approval'  <!-- approval 상태만 조회 -->
+	    ORDER BY lecture_num
+	</select>
+	    
 </mapper>

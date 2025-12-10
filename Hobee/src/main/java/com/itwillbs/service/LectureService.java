@@ -141,6 +141,11 @@ public class LectureService {
 	    return lectureMapper.updateReview(review_num, review_content, review_score);
 	}
 
+	public List<LectureVO> getLecturesByIds(List<Integer> recommendLectureIds) {
+		System.out.println("LectureService getLecturesByIds()");
+	    return lectureMapper.getLecturesByIds(recommendLectureIds);
+	}
+
 
 
 
