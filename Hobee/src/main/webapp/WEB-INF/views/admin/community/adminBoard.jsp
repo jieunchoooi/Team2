@@ -47,7 +47,6 @@
             <thead>
                 <tr>
                     <th style="width:40px;"></th> <!-- 드래그 핸들 -->
-                    <th>ID</th>
                     <th>머리말 이름</th>
                     <th>설명</th>
                     <th>게시글 수</th>
@@ -63,8 +62,7 @@
                         <!-- 드래그 아이콘 -->
                         <td class="drag-icon">≡</td>
 
-                        <td>${board.board_id}</td>
-
+                      
                         <!-- 머리말 → 상세 페이지 이동 -->
                         <td class="title-cell">
                             <a href="${pageContext.request.contextPath}/admin/adminBoardDetail?board_id=${board.board_id}">

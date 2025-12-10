@@ -1,8 +1,26 @@
 @charset "UTF-8";
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		sans-serif;
+}
 
-/* ===========================================================
-   🔵 전체 레이아웃 (1400px 고정폭, 중앙 정렬)
-=========================================================== */
+body {
+	background: #f4f6fa;
+	color: #222;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+main{
+	padding-bottom:30px;
+}
+
 /* ======================================
    🔵 메인 레이아웃
 ====================================== */
@@ -18,13 +36,13 @@
    🔵 중앙 1400px 컨테이너 (공통)
 ====================================== */
 .center-wrapper {
-    width: 1400px;
+    width: 1300px;
     margin: 0 auto;
     padding: 30px;
 }
 
 .table-card {
-    width: 1400px;
+    width: 1300px;
     margin: 0 auto;
     background: rgba(255,255,255,0.85);
     backdrop-filter: blur(12px);

@@ -8,22 +8,9 @@
     <title>FAQ | Hobee</title>
 
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/css/user/faq.css">
+          href="${pageContext.request.contextPath}/resources/css/user/faqList.css">
 
-    <style>
-        .faq-container { max-width: 900px; margin: 40px auto; }
-        .faq-title { font-size: 32px; margin-bottom: 20px; font-weight: 700; }
-
-        .faq-category-box { margin-bottom: 20px; }
-        .faq-category-box select { padding: 6px 10px; font-size: 15px; }
-
-        .faq-item { border-bottom: 1px solid #ddd; padding: 14px 0; cursor: pointer; }
-        .faq-q { font-size: 18px; font-weight: 600; display: flex; justify-content: space-between; }
-        .faq-a { display:none; margin-top:10px; padding:10px; background:#f9f9f9; border-radius:6px; }
-
-        .arrow { transition: 0.2s; }
-        .arrow.open { transform: rotate(180deg); }
-    </style>
+    
 </head>
 
 <body>

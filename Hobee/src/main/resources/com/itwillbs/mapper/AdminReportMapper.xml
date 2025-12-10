@@ -30,23 +30,19 @@
         FROM report r
         LEFT JOIN user u ON r.user_num = u.user_num
         LEFT JOIN community_content p ON r.post_id = p.post_id
-        LEFT JOIN comment c ON r.comment_id = c.comment_id
+        LEFT JOIN community_comment c ON r.comment_id = c.comment_id   <!-- ★ 수정됨 -->
         WHERE 1 = 1
 
-        <!-- 🔎 유형 필터 -->
         <if test="type == 'post'"> AND r.post_id IS NOT NULL </if>
         <if test="type == 'comment'"> AND r.comment_id IS NOT NULL </if>
 
-        <!-- 🔎 상태 필터 -->
         <if test="status == 'wait'"> AND r.is_done = 0 </if>
         <if test="status == 'done'"> AND r.is_done = 1 </if>
 
         ORDER BY r.report_id DESC
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
-
-
-    <!-- ========================================= -->
+   <!-- ========================================= -->
     <!-- 📌 신고 총 개수 (필터 동일 적용)            -->
     <!-- ========================================= -->
     <select id="getReportCount" resultType="int">
@@ -91,78 +87,59 @@
         FROM report r
         LEFT JOIN user u ON r.user_num = u.user_num
         LEFT JOIN community_content p ON r.post_id = p.post_id
-        LEFT JOIN comment c ON r.comment_id = c.comment_id
+        LEFT JOIN community_comment c ON r.comment_id = c.comment_id   <!-- ★ 수정됨 -->
         WHERE r.report_id = #{report_id}
     </select>
 
 
-    <!-- ========================================= -->
-    <!-- 📌 신고 처리                              -->
-    <!-- ========================================= -->
+    <!-- 신고 처리 -->
     <update id="updateReportDone">
         UPDATE report
         SET 
             is_done = 1,
             action = 'ACCEPT',
-            admin_reason = #{done_reason},
+            admin_reason = #{admin_reason},
             done_at = NOW()
         WHERE report_id = #{report_id}
     </update>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 신고 반려                              -->
-    <!-- ========================================= -->
+    <!-- 신고 반려 -->
     <update id="rejectReport">
         UPDATE report
         SET 
             is_done = 2,
             action = 'REJECT',
-            admin_reason = #{reason},
+            admin_reason = #{admin_reason},
             done_at = NOW()
         WHERE report_id = #{report_id}
     </update>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 상단 통계 — 필터 적용된 버전 4종        -->
-    <!-- ========================================= -->
-
-    <!-- 전체 신고 -->
+    <!-- 통계 -->
     <select id="getTotalCountFiltered" resultType="int">
         SELECT COUNT(*) FROM report
     </select>
 
-    <!-- 이번달 신고 -->
     <select id="getMonthCountFiltered" resultType="int">
         SELECT COUNT(*)
         FROM report
         WHERE DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
     </select>
 
-    <!-- 게시글 신고 -->
     <select id="getPostCountFiltered" resultType="int">
         SELECT COUNT(*) FROM report WHERE post_id IS NOT NULL
     </select>
 
-    <!-- 댓글 신고 -->
     <select id="getCommentCountFiltered" resultType="int">
         SELECT COUNT(*) FROM report WHERE comment_id IS NOT NULL
     </select>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 신고 처리 로그 기록                     -->
-    <!-- ========================================= -->
+    <!-- 로그 기록 -->
     <insert id="insertReportActionLog">
         INSERT INTO report_action_log (report_id, admin_id, action, reason)
         VALUES (#{report_id}, #{admin_id}, #{action}, #{reason})
     </insert>
 
-
-    <!-- ========================================= -->
-    <!-- 📌 신고 처리 로그 조회                     -->
-    <!-- ========================================= -->
+    <!-- 로그 조회 -->
     <select id="getReportActionLogs" 
             resultType="com.itwillbs.domain.ReportActionLogVO">
         SELECT
