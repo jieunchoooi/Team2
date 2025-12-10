@@ -612,7 +612,7 @@ public class MemberController {
 	    	
 	        System.out.println("=== 챕터 저장 완료 ===\n");
 
-	    	return "member/teacherMyPage"; 
+	    	return "redirect:/member/teacherMyPage"; 
 	    }
 	    
 	    @GetMapping("/deleteLecture")
