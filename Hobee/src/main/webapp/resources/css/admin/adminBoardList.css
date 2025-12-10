@@ -1,5 +1,25 @@
 @charset "UTF-8";
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		sans-serif;
+}
 
+body {
+	background: #f4f6fa;
+	color: #222;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+main{
+	padding-bottom:30px;
+}
 /* ===========================
    📌 메인 콘텐츠 
 =========================== */
@@ -15,7 +35,7 @@
 .card-box {
     background: #fff;
     padding: 30px;
-    width:1400px;
+    width: 1300px;
     border-radius: 16px;
 
     /* 유튜브 느낌 테두리 + 미세 그림자 */

@@ -59,10 +59,10 @@
 			<h3> 커뮤니티 관리</h3>
 			<div class="menu">
 				 <!-- 기존: 게시판 목록 -->
-<%-- 				<div class="menu-item ${page eq 'boardList' ? 'active' : ''}" --%>
-<%-- 					onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'"> --%>
-<!-- 					📋 <span>머리말 편집</span> -->
-<!-- 				</div> -->
+				<div class="menu-item ${page eq 'boardList' ? 'active' : ''}"
+					onclick="location.href='${pageContext.request.contextPath}/admin/adminBoardList'">
+					📋 <span>머리말 편집</span>
+				</div>
 <!-- 				⭐ 필수: 게시글 관리 -->
 <%--                 <div class="menu-item ${page eq 'postList' ? 'active' : ''}" --%>
 <%--                     onclick="location.href='${pageContext.request.contextPath}/admin/adminPostList'"> --%>

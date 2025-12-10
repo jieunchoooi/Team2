@@ -5,13 +5,15 @@
 
 <mapper namespace="com.itwillbs.mapper.GptMapper">
 	
+	<!-- MyBatis XML -->
 	<insert id="insetInterest">
-		
-		INSERT INTO user_interest (user_id, interest_id)
+	    INSERT INTO user_interest (user_id, interest_id)
 	    SELECT #{user_id}, interest_id 
 	    FROM interest 
-	    WHERE interest_name = #{prompt}
-	       
+	    WHERE interest_name IN
+	    <foreach collection="tags" item="tag" open="(" separator="," close=")">
+	        #{tag}
+	    </foreach>
 	</insert>
 	
 			

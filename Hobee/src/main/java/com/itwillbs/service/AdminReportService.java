@@ -44,10 +44,7 @@ public class AdminReportService {
         return adminReportMapper.getReportDetail(report_id);
     }
 
-    // 신고 처리
-    public void updateReportDone(int report_id, String done_reason) {
-        adminReportMapper.updateReportDone(report_id, done_reason);
-    }
+   
 
     // 🔥🔥 통계(상단 박스) — 리스트 조건과 동일하게 필터된 버전 사용!!!!
     public Map<String, Integer> getReportStats() {
@@ -70,7 +67,13 @@ public class AdminReportService {
     public List<ReportActionLogVO> getActionLogs(int report_id) {
         return adminReportMapper.getReportActionLogs(report_id);
     }
-
+    
+    
+    // 신고 처리
+    public void updateReportDone(int report_id, String done_reason) {
+        adminReportMapper.updateReportDone(report_id, done_reason);
+    }
+    //반려
     public void rejectReport(int report_id, String reason) {
         adminReportMapper.rejectReport(report_id, reason);
     }

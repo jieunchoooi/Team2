@@ -341,7 +341,7 @@
             <c:when test="${empty sessionScope.userVO}">
                 <button class="btn-purchase"
                         onclick="openLoginModal()">
-                    로그인 후 결제하기
+                    결제하기
                 </button>
             </c:when>
 
@@ -546,7 +546,7 @@ const isLogin = ${sessionScope.userVO == null ? false : true};
 	 const lectureTitle = "${lectureVO.lecture_title}";
 	 const lectureDetail = `${fn:substring(lectureVO.lecture_detail, 0, 100)}...`.replace(/["']/g, "");
 	 const lectureImg = "${pageContext.request.contextPath}/resources/img/lecture_picture/${lectureVO.lecture_img}";  
-	  
+	 
 	 Kakao.Share.sendDefault({
 	    objectType: 'feed',
 	    content: {
@@ -795,7 +795,6 @@ const isLogin = ${sessionScope.userVO == null ? false : true};
 
   // 전체 리뷰 리스트 모달 열기 - 수정된 버전
   function openReviewListModal(lectureNum) {
-      console.log("lectureNum :: " + lectureNum);
       $.ajax({
           url: '${pageContext.request.contextPath}/category/reviewList',
           type: 'GET',

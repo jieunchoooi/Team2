@@ -265,9 +265,9 @@ body {
   <!-- 헤더 -->
   <div class="modal-header">
     <h2 class="review-modal-title">수강생들의 리뷰</h2>
-    <button class="btn-close" onclick="window.close()">
-      <i class="fas fa-times"></i>
-    </button>
+    <button class="btn-close" onclick="closeModal()">
+	  <i class="fas fa-times"></i>
+	</button>
   </div>
 
   <!-- 리뷰 리스트 -->
@@ -329,11 +329,11 @@ body {
 <script>
 
 // ESC 키로 창 닫기
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    window.close();
-  }
-});
+// document.addEventListener('keydown', function(e) {
+//   if (e.key === 'Escape') {
+//     window.close();
+//   }
+// });
 
 // 도움돼요 버튼 클릭
 document.querySelectorAll('.review-action-btn').forEach(btn => {
@@ -350,6 +350,21 @@ document.querySelectorAll('.review-action-btn').forEach(btn => {
     }
   });
 });
+
+function closeModal() {
+	  // 부모 창의 closeReviewListModal 함수 호출
+	  if (window.opener && window.opener.closeReviewListModal) {
+	    window.opener.closeReviewListModal();
+	  } else if (window.parent && window.parent.closeReviewListModal) {
+	    window.parent.closeReviewListModal();
+	  }
+	}
+//ESC 키로 창 닫기
+	document.addEventListener('keydown', function(e) {
+	  if (e.key === 'Escape') {
+	    closeModal();
+	  }
+	});
 </script>
 
 </body>

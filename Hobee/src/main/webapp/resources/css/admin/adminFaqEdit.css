@@ -3,13 +3,32 @@
 /**********************************************
  ✨ FAQ 수정 화면 — 발표용 시각 강화 FULL SET ✨
 ***********************************************/
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		sans-serif;
+}
 
+body {
+	background: #f4f6fa;
+	color: #222;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+main{
+	padding-bottom:30px;
+}
 /* ================================
    메인 레이아웃
 ================================ */
 .main-content {
-    margin-left: 220px;
-    padding: 40px;
+    margin-left: 240px;
     background: #f6f7fb;
     min-height: 100vh;
 }
