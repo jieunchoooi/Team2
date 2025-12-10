@@ -27,6 +27,8 @@
 		<form id="updateForm"
 			action="${pageContext.request.contextPath}/member/updatePro"
 			method="post" enctype="multipart/form-data">
+			    <input type="hidden" name="returnUrl" value="/member/mypage">
+			
 			<section class="main-content">
 				<div class="main-header">
 					<div class="profile-box">

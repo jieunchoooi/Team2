@@ -127,15 +127,17 @@ public class MemberController {
 	}
 	
 	@PostMapping("/updatePro")
-	public String updatePro(HttpSession session,HttpServletRequest request, 	// 파일 없으면 null값이 됨
-			@RequestParam(value = "user_file", required = false) MultipartFile user_picture,
-            RedirectAttributes rttr) throws Exception { //) throws Exception {
+	public String updatePro(HttpSession session,
+	                       HttpServletRequest request,
+	                       @RequestParam(value = "user_file", required = false) MultipartFile user_picture,
+	                       @RequestParam(required = false) String returnUrl,  // ✅ 추가
+	                       RedirectAttributes rttr) throws Exception {
+	    
 	    System.out.println("MemberController updatePro()");
 	    
 	    String user_id = (String) session.getAttribute("user_id");
-	    // ✅ 1. 세션에서 user_id 가져오기 
 	    UserVO user = memberService.insertMember(user_id);
-	    // ✅ 2. request에서 파라미터 가져오기
+	    
 	    String password = request.getParameter("user_password");
 	    String phone = request.getParameter("user_phone");
 	    String name = request.getParameter("user_name");
@@ -147,12 +149,10 @@ public class MemberController {
 	    
 	    System.out.println("📝 받은 데이터: " + password + ", " + phone + ", " + name + ", " + email + ", " + user_zipcode + address1 + address2);
 	    
-	    // ✅ 3. UserVO 객체 생성 및 설정
 	    UserVO userVO = new UserVO();
-	    userVO.setUser_id(user_id); // WHERE 조건에 필수!
+	    userVO.setUser_id(user_id);
 	    userVO.setUser_num(user_num);
 	    
-	    // 비밀번호가 입력된 경우만 설정 	// 양쪽 공백 제거. 문자열 길이가 0인지
 	    if(password != null && !password.trim().isEmpty()) {
 	        userVO.setUser_password(password);
 	    }
@@ -165,9 +165,9 @@ public class MemberController {
 	    userVO.setUser_address2(address2);
 	    
 	    if(user_picture == null || user_picture.isEmpty()) {
-	    	userVO.setUser_file(request.getParameter("oldfile"));
-		}else {
-			UUID uuid = UUID.randomUUID();
+	        userVO.setUser_file(request.getParameter("oldfile"));
+	    } else {
+	        UUID uuid = UUID.randomUUID();
 	        String filename = uuid.toString() + "_" + user_picture.getOriginalFilename();
 	        
 	        System.out.println("📁 파일명: " + filename);
@@ -176,18 +176,28 @@ public class MemberController {
 	        
 	        userVO.setUser_file(filename);
 	        
-			File oldfile = new File(uploadPath, request.getParameter("oldfile"));
-			
-			if(oldfile.exists()) {
-				oldfile.delete();
-			}
-		}
-		
+	        File oldfile = new File(uploadPath, request.getParameter("oldfile"));
+	        
+	        if(oldfile.exists()) {
+	            oldfile.delete();
+	        }
+	    }
+	    
 	    System.out.println("✅ 저장할 데이터: " + userVO);
 	    
 	    memberService.updateProMember(userVO);
 	    
+	    // ✅ 세션 업데이트 (중요!)
+	    UserVO updatedUser = memberService.insertMember(user_id);
+	    session.setAttribute("userVO", updatedUser);
+	    session.setAttribute("user", updatedUser);
+	    
 	    rttr.addFlashAttribute("updateSuccess", "true");
+	    
+	    // ✅ returnUrl이 있으면 그곳으로, 없으면 myPage로
+	    if(returnUrl != null && !returnUrl.isEmpty()) {
+	        return "redirect:" + returnUrl;
+	    }
 	    
 	    return "redirect:/member/mypage";   
 	}
@@ -771,8 +781,7 @@ public class MemberController {
 	 	   return "redirect:/member/teacherMyPage";
 	    }
 	   	
-	   	
-	   	
+
 	   	
 	   	
 	   	

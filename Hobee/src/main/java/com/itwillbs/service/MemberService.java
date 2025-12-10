@@ -142,6 +142,16 @@ public class MemberService {
 		memberMapper.deleteCencel(lecture_num);
 	}
 
+	public void updateUser(UserVO userVO) {
+		System.out.println("MemberService updateUser()");
+		memberMapper.updateUser(userVO);
+	}
+
+	public UserVO getUserById(String user_id) {
+		System.out.println("MemberService getUserById()");
+		return memberMapper.getUserById(user_id);
+	}
+
 
 
 	

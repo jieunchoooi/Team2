@@ -143,7 +143,28 @@
     	WHERE lecture_num = #{lecture_num}
 	</update>
 
+	<!-- 사용자 정보 업데이트 -->
+    <update id="updateUser" parameterType="com.itwillbs.domain.UserVO">
+        UPDATE user
+        SET 
+            user_name = #{user_name},
+            user_email = #{user_email},
+            user_phone = #{user_phone}
+            <if test="user_file != null and user_file != ''">
+                , user_file = #{user_file}
+            </if>
+            <if test="user_pass != null and user_pass != ''">
+                , user_pass = #{user_pass}
+            </if>
+        WHERE user_id = #{user_id}
+    </update>
 
+    <!-- ID로 사용자 조회 -->
+    <select id="getUserById" parameterType="String" resultType="com.itwillbs.domain.UserVO">
+        SELECT *
+        FROM user
+        WHERE user_id = #{user_id}
+    </select>
 
 
 

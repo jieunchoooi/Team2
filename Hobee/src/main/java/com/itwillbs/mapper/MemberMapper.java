@@ -50,6 +50,10 @@ public interface MemberMapper {
 
 	public int teacherMyPageOk(Map<String, Object> params);
 
+	public void updateUser(UserVO userVO);
+
+	public UserVO getUserById(String user_id);
+
 
 
 	
