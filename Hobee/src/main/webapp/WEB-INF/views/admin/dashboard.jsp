@@ -183,20 +183,20 @@
 			        <div class="card-body" style="padding: 0.5rem;">
 			            <div class="popular-lectures-full">
 			                <c:forEach items="${bestClassTop10}" var="lecture" varStatus="status">
-			                    <div class="lecture-item-full" onclick="window.open('${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}', '_blank')" style="cursor: pointer;">
-			                        <div class="lecture-rank-full">${status.index + 1}</div>
-			                        <div class="lecture-thumbnail-full">
-			                            <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
-			                                 alt="${lecture.lecture_title}">
-			                        </div>
-			                        <div class="lecture-info-full">
-			                            <div class="category_detail-full">${lecture.category_detail}</div>
-			                            <div class="lecture-title-full">${lecture.lecture_title}</div>
-			                        </div>
-			                        <div class="lecture-scrap-full">
-			                            <i class="fas fa-bookmark"></i> ${lecture.scrapCount}
-			                        </div>
-			                    </div>
+			                  <div class="lecture-item-full" onclick="window.open('${pageContext.request.contextPath}/category/lecture?no=${lecture.lecture_num}', '_blank')" style="cursor: pointer;">
+								    <div class="lecture-rank-full">${status.index + 1}</div>
+								    <div class="lecture-thumbnail-full">
+								        <img src="${pageContext.request.contextPath}/resources/img/lecture_picture/${lecture.lecture_img}" 
+								             alt="${lecture.lecture_title}">
+								    </div>
+								    <div class="lecture-info-full">
+								        <div class="category_detail-full">${lecture.category_detail}</div>
+								        <div class="lecture-title-full">${lecture.lecture_title}</div>
+								    </div>
+								    <div class="lecture-scrap-full">
+								        <i class="fas fa-bookmark"></i> ${lecture.scrapCount}
+								    </div>
+							  </div>
 			                </c:forEach>
 			            </div>
 			        </div>

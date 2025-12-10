@@ -341,7 +341,7 @@
             <c:when test="${empty sessionScope.userVO}">
                 <button class="btn-purchase"
                         onclick="openLoginModal()">
-                    로그인 후 결제하기
+                    결제하기
                 </button>
             </c:when>
 
