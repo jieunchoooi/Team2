@@ -998,7 +998,7 @@
 <!-- 	탈퇴회원 대시보드용 -->
 	<select id="inactiveMemberCount1" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_role = 'user' or user_role = 'admin' and user_status != 'active'
+		WHERE (user_role = 'user' or user_role = 'admin') and user_status != 'active';
 	</select>
 	
 <!-- 	총 강사수 대시보드용 -->
@@ -1043,7 +1043,7 @@
 <!-- 신고관리(미처리) -->
 	<select id="declaration" resultType="java.lang.Integer">
 		SELECT COUNT(*)
-        FROM report_action_log
+        FROM report
         WHERE action = 'PENDING'
 	</select>
 	

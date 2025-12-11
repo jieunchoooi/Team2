@@ -320,7 +320,7 @@ public class PaymentService {
 	            System.out.println("       ⚠ SKIP(이미 환불된 detail) detailId=" + detailVO.getDetail_id());
 	            continue;
 	        }
-
+	        paymentDetailMapper.updateDetailStatusRefund(detailVO.getDetail_id());	
 	        totalRestoreUsed += detailVO.getUsed_points();
 	        totalRemoveSaved += detailVO.getSaved_points();
 	    }

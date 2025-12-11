@@ -233,7 +233,7 @@
 			    <div class="col-lg-2 col-md-6 mb-4">
 			        <div class="card bg-primary text-white shadow">
 			            <div class="card-body color1" id="color">
-			                총 강의 수
+			                승인된 강의 수
 			                <div class="text-white-50 small">${classCount}</div>
 			            </div>
 			        </div>
