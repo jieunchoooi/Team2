@@ -241,7 +241,11 @@ public class PaymentController {
 
             res.put("gradeMessage", msg);
         }
-
+        
+        // ✅ 구매한 강의 목록 추가
+        List<Integer> purchasedLectures = paymentService.getPurchasedLectures(userVO.getUser_num());
+        session.setAttribute("purchasedLectures", purchasedLectures);
+        
         return res;
     }
 
