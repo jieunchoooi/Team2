@@ -40,20 +40,20 @@
 <!--  서버 업로드 할 물리적 경로 
 D:\Shared\JSP\workspace_sts\SpringProject2\src\main\webapp\resources\upload
  -->
-<beans:bean id="uploadPath" class="java.lang.String">
-<beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\img\\user_picture" />
-</beans:bean>
-
-<beans:bean id="uploadPath1" class="java.lang.String">
-<beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\img\\lecture_picture" />
-</beans:bean>
-<!-- 	</beans:beans> -->
 <!-- <beans:bean id="uploadPath" class="java.lang.String"> -->
-<!-- <beans:constructor-arg value="/usr/local/tomcat/webapps/Hobee/resources/img/user_picture" /> -->
+<!-- <beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\img\\user_picture" /> -->
 <!-- </beans:bean> -->
 
 <!-- <beans:bean id="uploadPath1" class="java.lang.String"> -->
-<!-- <beans:constructor-arg value="/usr/local/tomcat/webapps/Hobee/resources/img/lecture_picture" /> -->
+<!-- <beans:constructor-arg value="D:\\workspace_git\\Team2\\Hobee\\src\\main\\webapp\\resources\\img\\lecture_picture" /> -->
 <!-- </beans:bean> -->
+
+<beans:bean id="uploadPath" class="java.lang.String">
+<beans:constructor-arg value="/usr/local/tomcat/webapps/Hobee/resources/img/user_picture" />
+</beans:bean>
+
+<beans:bean id="uploadPath1" class="java.lang.String">
+<beans:constructor-arg value="/usr/local/tomcat/webapps/Hobee/resources/img/lecture_picture" />
+</beans:bean>
    </beans:beans>
 
