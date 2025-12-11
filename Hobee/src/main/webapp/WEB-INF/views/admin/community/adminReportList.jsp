@@ -173,12 +173,12 @@
                                 </c:when>
 
                                 <c:otherwise>
-                                    <form action="${pageContext.request.contextPath}/admin/adminReportDone"
-                                          method="post"
-                                          onsubmit="return confirm('해당 신고를 처리 완료로 변경하시겠습니까?');">
-                                        <input type="hidden" name="report_id" value="${r.report_id}">
-                                        <button class="btn-red">처리</button>
-                                    </form>
+<%--                                     <form action="${pageContext.request.contextPath}/admin/adminReportProcess" --%>
+<!--                                           method="post" -->
+<!--                                           onsubmit="return confirm('해당 신고를 처리 완료로 변경하시겠습니까?');"> -->
+<%--                                         <input type="hidden" name="report_id" value="${r.report_id}"> --%>
+                                        <button class="btn-red">조치 필요</button>
+<!--                                     </form> -->
                                 </c:otherwise>
                             </c:choose>
                         </td>

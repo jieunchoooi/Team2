@@ -94,7 +94,7 @@ public class UserController {
         userService.insertUser(userVO);
 
         result.put("result", "success");
-        result.put("user_id", userVO.getUser_id());  //관심사 저장에 필요
+        result.put("user_id", userVO.getUser_id());   //관심사 저장에 필요
         result.put("next_step", "tag_selection");     //다음 단계 표시
         return result;
     }
