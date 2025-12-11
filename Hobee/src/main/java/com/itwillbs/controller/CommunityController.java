@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -262,7 +263,8 @@ public class CommunityController {
  public void writeSubmit(
          CommunityContentVO communityContentVO,
          HttpSession session,
-         HttpServletResponse response
+         HttpServletResponse response,
+         HttpServletRequest request
  ) throws Exception {
 
      UserVO loginUserVO = (UserVO) session.getAttribute("userVO");
@@ -309,7 +311,7 @@ public class CommunityController {
      // 성공 → detail 이동
      response.sendRedirect(
     		    response.encodeRedirectURL(
-    		        "/hobee/community/detail?post_id=" + postId
+    		    		 request.getContextPath() + "/community/detail?post_id=" + postId
     		    )
     		);
 
