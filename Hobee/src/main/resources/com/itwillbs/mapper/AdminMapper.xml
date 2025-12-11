@@ -43,7 +43,23 @@
 
 	<select id="countMemberList" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_role = 'user'
+		WHERE (user_role = 'user' OR user_role = 'admin')  
+		<if test="search != null and search != ''">
+			<if test="searchList == '전체'">
+				and (user_name LIKE CONCAT('%', #{search}, '%')
+				or user_id LIKE CONCAT('%', #{search}, '%')
+				or user_email LIKE CONCAT('%', #{search}, '%'))
+			</if>
+			<if test="searchList == '이름'">
+				and user_name LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '아이디'">
+				and user_id LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="searchList == '이메일'">
+				and user_email LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</if>
 	</select>
 	
 <!-- 	대시보드 전체 회원수 -->
@@ -55,7 +71,7 @@
 <!-- 활동 회원 -->
 	<select id="memberCount" resultType="java.lang.Integer">
 		select count(*) from user
-		WHERE user_status = 'active' and user_role = 'user' or user_status = 'admin'
+		WHERE (user_status = 'active' or user_status = 'admin') and user_role = 'user' 
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (user_name LIKE CONCAT('%', #{search}, '%')
@@ -327,7 +343,7 @@
 <!-- 승인요청된 강의 -->
 	<select id="askClass" resultType="com.itwillbs.domain.LectureVO">
 		select * from lecture
-		where status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete'
+		where (status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete')
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (lecture_title LIKE CONCAT('%', #{search}, '%')
@@ -452,7 +468,7 @@
 	<!-- 회원 목록 -->
 	<select id="MemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user' or user_role = 'admin'
+		WHERE (user_role = 'user' OR user_role = 'admin')
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (user_name LIKE CONCAT('%', #{search}, '%')
@@ -499,7 +515,7 @@
 	
 	<select id="activeMemberList" resultType="com.itwillbs.domain.UserVO">
 		select * from user
-		WHERE user_role = 'user' and user_status = 'active' or user_role = 'admin'
+		WHERE (user_role = 'user' or user_role = 'admin') and user_status = 'active' 
 		<if test="search != null and search != ''">
 			<if test="searchList == '전체'">
 				and (user_name LIKE CONCAT('%', #{search}, '%')
@@ -722,7 +738,7 @@
 	<!-- 승인 요청된 강의 갯수 카운트 -->
 	<select id="askClassCount" resultType="java.lang.Integer">
 		select count(*) from lecture
-		where status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete'
+		where (status = 'waiting' or status = 'deleteWaiting' or status = 'cancelDelete')
 		<choose>
             <when test="searchList == '전체'">
                 AND (lecture_title LIKE CONCAT('%', #{search}, '%')
@@ -1043,7 +1059,7 @@
 <!-- 신고관리(미처리) -->
 	<select id="declaration" resultType="java.lang.Integer">
 		SELECT COUNT(*)
-        FROM report_action_log
+        FROM report
         WHERE action = 'PENDING'
 	</select>
 	
