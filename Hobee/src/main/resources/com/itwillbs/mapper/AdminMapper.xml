@@ -1043,7 +1043,7 @@
 <!-- 신고관리(미처리) -->
 	<select id="declaration" resultType="java.lang.Integer">
 		SELECT COUNT(*)
-        FROM report_action_log
+        FROM report
         WHERE action = 'PENDING'
 	</select>
 	
