@@ -36,6 +36,8 @@ public class AdminService {
 
 	public int countMemberList(PageVO pageVO) {
 		System.out.println("AdminService countMemberList()");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
 		return adminMapper.countMemberList(pageVO);
 	}
 
@@ -193,6 +195,8 @@ public class AdminService {
 
 	public int memberCount(PageVO pageVO) {
 		System.out.println("AdminService memberCount()");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
 		return adminMapper.memberCount(pageVO);
 	}
 
@@ -339,11 +343,15 @@ public class AdminService {
 
 	public int compClassCount(PageVO pageVO) {
 		System.out.println("AdminService compClassCount()");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
 		return adminMapper.compClassCount(pageVO);
 	}
 
 	public int askClassCount(PageVO pageVO) {
 		System.out.println("AdminService askClassCount()");
+		int startRow = (pageVO.getCurrentPage() - 1) * pageVO.getPageSize();
+		pageVO.setStartRow(startRow);
 		return adminMapper.askClassCount(pageVO);
 	}
 

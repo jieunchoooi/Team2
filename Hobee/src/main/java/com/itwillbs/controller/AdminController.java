@@ -184,6 +184,8 @@ public class AdminController {
       pageVO.setSearch(search);
       pageVO.setSearchList(searchList);
       
+      int startRow = (currentPage - 1) * pageSize;
+      pageVO.setStartRow(startRow);
       // 필터에 따른 강의 목록과 카운트 조회
       List<LectureVO> lectureList;
       int count;
@@ -254,81 +256,91 @@ public class AdminController {
    }
    
    
-   // 회원정보 조회
+	// 회원정보 조회
    @GetMapping("/adminMemberList")
    public String adminMemberList(Model model, HttpServletRequest request,
-		   						 @RequestParam(value = "search", required = false) String search,
-		   						 @RequestParam(value = "searchList", required = false) String searchList) {
-      System.out.println("AdminController adminMemberList()");
-
-      String filter = request.getParameter("filter");
-      if(filter == null || filter.isEmpty()) {
-    	  filter = "all";
-      }
-      
-      String pageNum = request.getParameter("pageNum");
-      if (pageNum == null) {
-         pageNum = "1";
-      }
-      int currentPage = Integer.parseInt(pageNum);
-      int pageSize = 10;
-
-      if(search == null || search.trim().isEmpty()) {
-          search = null;
+                                @RequestParam(value = "search", required = false) String search,
+                                @RequestParam(value = "searchList", required = false) String searchList) {
+       System.out.println("AdminController adminMemberList()");
+       
+       String filter = request.getParameter("filter");
+       if(filter == null || filter.isEmpty()) {
+           filter = "all";
+       }
+       
+       String pageNum = request.getParameter("pageNum");
+       if (pageNum == null) {
+           pageNum = "1";
+       }
+       
+       int currentPage = Integer.parseInt(pageNum);
+       int pageSize = 10;
+       
+       // 검색어 정리
+       if(search == null || search.trim().isEmpty()) {
+           search = null;
        }
        
        if(searchList == null || searchList.isEmpty()) {
-          searchList = "전체";
+           searchList = "전체";
        }
        
-      PageVO pageVO = new PageVO();
-      pageVO.setPageNum(pageNum);
-      pageVO.setCurrentPage(currentPage);
-      pageVO.setPageSize(pageSize);
-      pageVO.setSearch(search);
-      pageVO.setSearchList(searchList);
-      
-      List<UserVO> memberList;
-      int count;
-      
-      if("active".equals(filter)) {
-    	  memberList = adminService.activeMemberList(pageVO);
-    	  count = adminService.memberCount(pageVO);
-      }else if("inactive".equals(filter)) {
-    	  memberList = adminService.inactiveMemberList(pageVO);
-    	  count = adminService.inactiveMemberCount(pageVO);
-      }else{
-    	  memberList = adminService.MemberList(pageVO);
-    	  count = adminService.countMemberList(pageVO);
-      }
-      
-      PageVO statPageVO = new PageVO();
-      int dcount = adminService.inactiveMemberCount(statPageVO);
-      int acount = adminService.memberCount(statPageVO);
-      int totalcount = adminService.countMemberList(statPageVO);
-      int pageBlock = 10;
-      int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
-      int endPage = startPage + (pageBlock - 1);
-      int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-      if (endPage > pageCount) {
-         endPage = pageCount;
-      }
-
-      // pageVO 담기
-      pageVO.setCount(count);
-      pageVO.setPageBlock(pageBlock);
-      pageVO.setStartPage(startPage);
-      pageVO.setEndPage(endPage);
-      pageVO.setPageCount(pageCount);
-
-      model.addAttribute("pageVO", pageVO);
-      model.addAttribute("memberList", memberList);
-      model.addAttribute("acount", acount);
-      model.addAttribute("dcount", dcount);
-      model.addAttribute("totalcount",totalcount);
-      model.addAttribute("filter",filter);
-
-      return "admin/adminMemberList";
+       // PageVO 설정
+       PageVO pageVO = new PageVO();
+       pageVO.setPageNum(pageNum);
+       pageVO.setCurrentPage(currentPage);
+       pageVO.setPageSize(pageSize);
+       pageVO.setSearch(search);
+       pageVO.setSearchList(searchList);
+       
+       int startRow = (currentPage - 1) * pageSize;
+       pageVO.setStartRow(startRow);
+       
+       List<UserVO> memberList;
+       int count;
+       
+       // 필터별 조회
+       if("active".equals(filter)) {
+           memberList = adminService.activeMemberList(pageVO);
+           count = adminService.memberCount(pageVO);
+       } else if("inactive".equals(filter)) {
+           memberList = adminService.inactiveMemberList(pageVO);
+           count = adminService.inactiveMemberCount(pageVO);
+       } else {
+           memberList = adminService.MemberList(pageVO);
+           count = adminService.countMemberList(pageVO);
+       }
+       
+       // 통계용 데이터 (검색 조건 없이)
+       PageVO statPageVO = new PageVO();
+       int dcount = adminService.inactiveMemberCount(statPageVO);
+       int acount = adminService.memberCount(statPageVO);
+       int totalcount = adminService.countMemberList(statPageVO);
+       
+       // 페이징 계산
+       int pageBlock = 10;
+       int startPage = (currentPage - 1) / pageBlock * pageBlock + 1;
+       int endPage = startPage + (pageBlock - 1);
+       int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+       
+       if (endPage > pageCount) {
+           endPage = pageCount;
+       }
+       
+       pageVO.setCount(count);
+       pageVO.setPageBlock(pageBlock);
+       pageVO.setStartPage(startPage);
+       pageVO.setEndPage(endPage);
+       pageVO.setPageCount(pageCount);
+       
+       model.addAttribute("pageVO", pageVO);
+       model.addAttribute("memberList", memberList);
+       model.addAttribute("acount", acount);
+       model.addAttribute("dcount", dcount);
+       model.addAttribute("totalcount", totalcount);
+       model.addAttribute("filter", filter);
+       
+       return "admin/adminMemberList";
    }
 
    @PostMapping("/MemberManagement")
