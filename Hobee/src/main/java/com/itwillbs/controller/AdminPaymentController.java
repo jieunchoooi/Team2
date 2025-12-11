@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +34,48 @@ public class AdminPaymentController {
 
     @GetMapping("/adminPaymentList")
     public String list(HttpServletRequest request, Model model,
-                       AdminPaymentCriteria adminPaymentCriteria,
+                       AdminPaymentCriteria adminPaymentCriteria,HttpServletResponse response,
                        PageVO pageVO) {
+    
+    	
+    	
+    	// ======================================
+    	// 🔍 기간 직접입력 NULL 검증
+    	// ======================================
+    	String begin = adminPaymentCriteria.getStartDate();
+    	String end = adminPaymentCriteria.getEndDate();
+    	// "" → null 변환 (SQL 오류 방지)
+    	if (begin != null && begin.trim().equals("")) adminPaymentCriteria.setStartDate(null);
+    	if (end != null && end.trim().equals("")) adminPaymentCriteria.setEndDate(null);
 
+    	// 다시 읽기
+    	begin = adminPaymentCriteria.getStartDate();
+    	end = adminPaymentCriteria.getEndDate();
+
+    	
+    	// 둘 중 하나라도 값이 있으면 → 직접 입력으로 판단
+    	boolean isDirectInput = 
+    	    (begin != null && !begin.equals("")) ||
+    	    (end != null && !end.equals(""));
+
+    	if (isDirectInput) {
+    	    // 그런데 둘 중 하나라도 비어 있으면 오류
+    	    if (begin == null || begin.equals("") ||
+    	        end == null || end.equals("")) {
+
+    	        try {
+    	            response.setContentType("text/html; charset=UTF-8");
+    	            response.getWriter().println("<script>");
+    	            response.getWriter().println("alert('직접 입력 시 시작일과 종료일을 모두 입력해주세요.');");
+    	            response.getWriter().println("history.back();");
+    	            response.getWriter().println("</script>");
+    	            response.getWriter().close();
+    	        } catch (Exception e) {
+    	            e.printStackTrace();
+    	        }
+    	        return null; // 컨트롤러 중단
+    	    }
+    	}	
         // 페이지 번호 기본값 설정
         if (pageVO.getPageNum() == null) {
             pageVO.setPageNum("1");
