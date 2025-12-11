@@ -1063,21 +1063,32 @@ function confirmPayment() {
 /* ======================================================
 ⬛ 최종 결제 실행
 ====================================================== */
+/* ======================================================
+⬛ 최종 결제 실행 (강의 상세 페이지 전용)
+====================================================== */
 function requestPayment(lectureNum, originalPrice, usedPoints) {
     if (!isLogin) return;
 
-    // 1) 할인 적용
+    /* ---------------------------------------
+       1) 할인 적용
+    --------------------------------------- */
     const discount = Math.floor(originalPrice * (discountRate / 100));
-    const discountedPrice = originalPrice - discount;
+    const salePrice = originalPrice - discount;   // 강의별 할인 적용 금액
 
-    // 2) 포인트 적용
-    let finalAmount = discountedPrice - usedPoints;
+    /* ---------------------------------------
+       2) 포인트 적용
+    --------------------------------------- */
+    let finalAmount = salePrice - usedPoints;
     if (finalAmount < 0) finalAmount = 0;
 
-    // 3) 적립 포인트
-    const savedPoints = Math.floor(finalAmount * (rewardRate / 100));
+    /* ---------------------------------------
+       3) 적립 포인트 계산
+    --------------------------------------- */
+    const savedPoints = Math.floor(salePrice * (rewardRate / 100));
 
-    // 4) 세션 사용자 정보 (Null-safe)
+    /* ---------------------------------------
+       4) 세션 사용자 정보 (Null-safe)
+    --------------------------------------- */
     const userName  = "<c:out value='${sessionScope.userVO != null ? sessionScope.userVO.user_name : ""}'/>";
     const userEmail = "<c:out value='${sessionScope.userVO != null ? sessionScope.userVO.user_email : ""}'/>";
     const userPhone = "<c:out value='${sessionScope.userVO != null ? sessionScope.userVO.user_phone : ""}'/>";
@@ -1088,7 +1099,23 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
         return;
     }
 
-    // 5) 포트원 결제창
+    /* ---------------------------------------
+       ⭐ 5) PaymentDetailVO JSON 준비
+    --------------------------------------- */
+    const detailList = [{
+        lecture_num: lectureNum,
+        original_price: originalPrice,
+        sale_price: salePrice,
+        used_points: usedPoints,
+        saved_points: savedPoints,
+        status: "paid"
+    }];
+
+    const detailListJson = JSON.stringify(detailList);
+
+    /* ---------------------------------------
+       6) PortOne 결제창
+    --------------------------------------- */
     IMP.request_pay({
         pg: "kakaopay.TC0ONETIME",
         pay_method: "kakaopay",
@@ -1099,13 +1126,15 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
         buyer_name: userName,
         buyer_tel: userPhone
     }, function (rsp) {
-        
+
         if (!rsp.success) {
             alert("❌ 결제 실패: " + rsp.error_msg);
             return;
         }
 
-        // 6) 서버로 검증 요청
+        /* ---------------------------------------
+           7) 서버에서 결제 검증
+        --------------------------------------- */
         $.post(
             "${pageContext.request.contextPath}/payment/verify",
             { imp_uid: rsp.imp_uid },
@@ -1116,7 +1145,9 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
                     return;
                 }
 
-                // 7) 결제 완료 저장
+                /* ---------------------------------------
+                   ⭐ 8) 결제 완료 저장 (detailListJson 포함)
+                --------------------------------------- */
                 $.ajax({
                     type: "POST",
                     url: "${pageContext.request.contextPath}/payment/complete",
@@ -1129,15 +1160,19 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
                         used_points: usedPoints,
                         saved_points: savedPoints,
                         lectureNums: [lectureNum],
+                        detailList: detailListJson,     // ⭐ 추가됨!
                         "grade.discount_rate": discountRate,
                         "grade.reward_rate": rewardRate
                     },
 
                     success: function (completeResult) {
+
                         if (completeResult.status === "success") {
+
                             if (completeResult.gradeChanged && completeResult.gradeMessage) {
                                 alert("\n" + completeResult.gradeMessage);
                             }
+
                             location.href = "${pageContext.request.contextPath}/payment/success";
                         }
 
@@ -1159,6 +1194,7 @@ function requestPayment(lectureNum, originalPrice, usedPoints) {
         );
     });
 }
+
 
 
 </script>

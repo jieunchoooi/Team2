@@ -33,6 +33,7 @@ import com.itwillbs.domain.EnrollmentViewVO;
 import com.itwillbs.domain.LectureVO;
 import com.itwillbs.domain.NotApprovedVO;
 import com.itwillbs.domain.PageVO;
+import com.itwillbs.domain.PaymentDetailVO;
 import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.domain.PointHistoryVO;
 import com.itwillbs.domain.ReviewVO;
@@ -127,15 +128,17 @@ public class MemberController {
 	}
 	
 	@PostMapping("/updatePro")
-	public String updatePro(HttpSession session,HttpServletRequest request, 	// 파일 없으면 null값이 됨
-			@RequestParam(value = "user_file", required = false) MultipartFile user_picture,
-            RedirectAttributes rttr) throws Exception { //) throws Exception {
+	public String updatePro(HttpSession session,
+	                       HttpServletRequest request,
+	                       @RequestParam(value = "user_file", required = false) MultipartFile user_picture,
+	                       @RequestParam(required = false) String returnUrl,  // ✅ 추가
+	                       RedirectAttributes rttr) throws Exception {
+	    
 	    System.out.println("MemberController updatePro()");
 	    
 	    String user_id = (String) session.getAttribute("user_id");
-	    // ✅ 1. 세션에서 user_id 가져오기 
 	    UserVO user = memberService.insertMember(user_id);
-	    // ✅ 2. request에서 파라미터 가져오기
+	    
 	    String password = request.getParameter("user_password");
 	    String phone = request.getParameter("user_phone");
 	    String name = request.getParameter("user_name");
@@ -147,12 +150,10 @@ public class MemberController {
 	    
 	    System.out.println("📝 받은 데이터: " + password + ", " + phone + ", " + name + ", " + email + ", " + user_zipcode + address1 + address2);
 	    
-	    // ✅ 3. UserVO 객체 생성 및 설정
 	    UserVO userVO = new UserVO();
-	    userVO.setUser_id(user_id); // WHERE 조건에 필수!
+	    userVO.setUser_id(user_id);
 	    userVO.setUser_num(user_num);
 	    
-	    // 비밀번호가 입력된 경우만 설정 	// 양쪽 공백 제거. 문자열 길이가 0인지
 	    if(password != null && !password.trim().isEmpty()) {
 	        userVO.setUser_password(password);
 	    }
@@ -165,9 +166,9 @@ public class MemberController {
 	    userVO.setUser_address2(address2);
 	    
 	    if(user_picture == null || user_picture.isEmpty()) {
-	    	userVO.setUser_file(request.getParameter("oldfile"));
-		}else {
-			UUID uuid = UUID.randomUUID();
+	        userVO.setUser_file(request.getParameter("oldfile"));
+	    } else {
+	        UUID uuid = UUID.randomUUID();
 	        String filename = uuid.toString() + "_" + user_picture.getOriginalFilename();
 	        
 	        System.out.println("📁 파일명: " + filename);
@@ -176,18 +177,28 @@ public class MemberController {
 	        
 	        userVO.setUser_file(filename);
 	        
-			File oldfile = new File(uploadPath, request.getParameter("oldfile"));
-			
-			if(oldfile.exists()) {
-				oldfile.delete();
-			}
-		}
-		
+	        File oldfile = new File(uploadPath, request.getParameter("oldfile"));
+	        
+	        if(oldfile.exists()) {
+	            oldfile.delete();
+	        }
+	    }
+	    
 	    System.out.println("✅ 저장할 데이터: " + userVO);
 	    
 	    memberService.updateProMember(userVO);
 	    
+	    // ✅ 세션 업데이트 (중요!)
+	    UserVO updatedUser = memberService.insertMember(user_id);
+	    session.setAttribute("userVO", updatedUser);
+	    session.setAttribute("user", updatedUser);
+	    
 	    rttr.addFlashAttribute("updateSuccess", "true");
+	    
+	    // ✅ returnUrl이 있으면 그곳으로, 없으면 myPage로
+	    if(returnUrl != null && !returnUrl.isEmpty()) {
+	        return "redirect:" + returnUrl;
+	    }
 	    
 	    return "redirect:/member/mypage";   
 	}
@@ -370,29 +381,48 @@ public class MemberController {
 //	        return "member/payment";
 //	    }
 	    
-	    @GetMapping("/payment")
-	    public String paymentDetailPage(
-	            @RequestParam("payment_id") int paymentId,
-	            HttpSession session,
-	            Model model) {
+	  @GetMapping("/payment")
+	  public String paymentDetailPage(
+	          @RequestParam("payment_id") int paymentId,
+	          HttpSession session,
+	          Model model) {
 
-	        UserVO user = (UserVO) session.getAttribute("userVO");
-	        if (user == null) {
-	            return "redirect:/member/login"; // 보호
-	        }
+	      UserVO user = (UserVO) session.getAttribute("userVO");
+	      if (user == null) {
+	          return "redirect:/member/login";
+	      }
 
-	        // 결제 상세 정보
-	        PaymentVO payment = paymentService.getPayment(paymentId);
+	      // 1) 결제 원본 + detail 전체
+	      PaymentVO payment = paymentService.getPayment(paymentId);
+	      payment.setRefundable(paymentService.isRefundable(payment.getCreated_at()));
 
-	        // 환불 가능 여부 계산
-	        payment.setRefundable(paymentService.isRefundable(payment.getCreated_at()));
+	      List<PaymentDetailVO> details = payment.getDetails();
 
-	        // JSP에서 사용하도록 모델에 담기
-	        model.addAttribute("payment", payment);
-	        System.out.println("📌 PaymentVO JSON = " + payment);
-	        // JSP 경로
-	        return "member/payment";  // /WEB-INF/views/member/payment.jsp
-	    }
+	      // 2) 환불 계산 (DTO 없이)
+	      int refundedAmount = 0;
+	      int refundedUsedPoint = 0;
+	      int refundedSavedPoint = 0;
+	      	
+	      for (PaymentDetailVO d : details) {
+	          if ("refunded".equals(d.getStatus())) {
+	              refundedAmount     += d.getSale_price();
+	              refundedUsedPoint  += d.getUsed_points();
+	              refundedSavedPoint += d.getSaved_points();
+	          }
+	      }
+	      System.out.println("환불 관련 금액 : "+refundedAmount+refundedUsedPoint+refundedSavedPoint);
+	      // 3) 남은 금액 계산
+	      int remainingAmount = payment.getAmount() - refundedAmount;
+
+	      model.addAttribute("payment", payment);
+	      model.addAttribute("refundedAmount", refundedAmount);
+	      model.addAttribute("refundedUsedPoint", refundedUsedPoint);
+	      model.addAttribute("refundedSavedPoint", refundedSavedPoint);
+	      model.addAttribute("remainingAmount", remainingAmount);
+	      
+	      return "member/payment";
+	  }
+
 
 	
 	    /** 포인트 내역 페이지 */
@@ -771,8 +801,7 @@ public class MemberController {
 	 	   return "redirect:/member/teacherMyPage";
 	    }
 	   	
-	   	
-	   	
+
 	   	
 	   	
 	   	

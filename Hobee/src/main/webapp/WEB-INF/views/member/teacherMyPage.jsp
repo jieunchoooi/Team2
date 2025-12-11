@@ -24,6 +24,7 @@
 	<div class="content-wrapper">
 		
 	<jsp:include page="../include/profileCard.jsp" />
+	
 		<!-- 통계 카드 -->
 		<div class="stats-container">
 			<div class="stat-card ${filter == 'all' ? 'approval' : ''}" onclick="location.href='${pageContext.request.contextPath}/member/teacherMyPage?filter=all'">
