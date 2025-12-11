@@ -83,9 +83,9 @@
 								</div>
 
 								<%-- 리뷰 작성 버튼 --%>
-								<div class="action-wrap">
-									<a href="#" class="review-link">리뷰 작성</a>
-								</div>
+<!-- 								<div class="action-wrap"> -->
+<!-- 									<a href="#" class="review-link">리뷰 작성</a> -->
+<!-- 								</div> -->
 
 							</div>
 						</c:forEach>
