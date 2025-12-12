@@ -34,48 +34,48 @@ public class AdminPaymentController {
 
     @GetMapping("/adminPaymentList")
     public String list(HttpServletRequest request, Model model,
-                       AdminPaymentCriteria adminPaymentCriteria,HttpServletResponse response,
+                       AdminPaymentCriteria adminPaymentCriteria,
                        PageVO pageVO) {
     
-    	
-    	
+    	 // ======================================
+        // 📊 통계 4개 (payment_detail 기반)
+        // ======================================
+        int totalRevenue = adminPaymentService.getTotalRevenue();           // 결제된 강의 가격 총합
+        int totalRefund = adminPaymentService.getTotalRefund();             // 환불된 강의 가격 총합
+        int lectureSold = adminPaymentService.getTotalLectureSold();        // 판매된 강의 수
+        int lectureRefunded = adminPaymentService.getTotalLectureRefunded();// 환불된 강의 수
+        // 📊 통계 데이터 전달
+        model.addAttribute("totalRevenue", totalRevenue);
+        model.addAttribute("totalRefund", totalRefund);
+        model.addAttribute("lectureSold", lectureSold);
+        model.addAttribute("lectureRefunded", lectureRefunded);
     	// ======================================
     	// 🔍 기간 직접입력 NULL 검증
     	// ======================================
-    	String begin = adminPaymentCriteria.getStartDate();
-    	String end = adminPaymentCriteria.getEndDate();
-    	// "" → null 변환 (SQL 오류 방지)
-    	if (begin != null && begin.trim().equals("")) adminPaymentCriteria.setStartDate(null);
-    	if (end != null && end.trim().equals("")) adminPaymentCriteria.setEndDate(null);
-
-    	// 다시 읽기
-    	begin = adminPaymentCriteria.getStartDate();
-    	end = adminPaymentCriteria.getEndDate();
+    	
 
     	
-    	// 둘 중 하나라도 값이 있으면 → 직접 입력으로 판단
-    	boolean isDirectInput = 
-    	    (begin != null && !begin.equals("")) ||
-    	    (end != null && !end.equals(""));
+    	
+        String period = adminPaymentCriteria.getPeriod();
+        String begin  = adminPaymentCriteria.getStartDate();
+        String end    = adminPaymentCriteria.getEndDate();
+     // 기간 선택 자체를 안 한 경우 → 그냥 통과
+        if (period == null || period.trim().isEmpty()) {
+            // 기간 조건 없이 전체 조회
+        }
 
-    	if (isDirectInput) {
-    	    // 그런데 둘 중 하나라도 비어 있으면 오류
-    	    if (begin == null || begin.equals("") ||
-    	        end == null || end.equals("")) {
+        // 직접 입력인 경우
+        else if ("custom".equals(period)) {
+            // 둘 중 하나라도 비어 있으면 오류
+            if (begin == null || begin.trim().isEmpty()
+                || end == null || end.trim().isEmpty()) {
 
-    	        try {
-    	            response.setContentType("text/html; charset=UTF-8");
-    	            response.getWriter().println("<script>");
-    	            response.getWriter().println("alert('직접 입력 시 시작일과 종료일을 모두 입력해주세요.');");
-    	            response.getWriter().println("history.back();");
-    	            response.getWriter().println("</script>");
-    	            response.getWriter().close();
-    	        } catch (Exception e) {
-    	            e.printStackTrace();
-    	        }
-    	        return null; // 컨트롤러 중단
-    	    }
-    	}	
+            	System.out.println("기간 미선택 검색 종료");
+    	        model.addAttribute("msg", "기간을 선택해주세요");
+    	        return "admin/adminPaymentList"; // forward
+            }
+        }    
+    	
         // 페이지 번호 기본값 설정
         if (pageVO.getPageNum() == null) {
             pageVO.setPageNum("1");
@@ -124,13 +124,7 @@ public class AdminPaymentController {
         }
         pageVO.setEndPage(endPage);
 
-        // ======================================
-        // 📊 통계 4개 (payment_detail 기반)
-        // ======================================
-        int totalRevenue = adminPaymentService.getTotalRevenue();           // 결제된 강의 가격 총합
-        int totalRefund = adminPaymentService.getTotalRefund();             // 환불된 강의 가격 총합
-        int lectureSold = adminPaymentService.getTotalLectureSold();        // 판매된 강의 수
-        int lectureRefunded = adminPaymentService.getTotalLectureRefunded();// 환불된 강의 수
+       
 
         // Model 전달
         model.addAttribute("criteria", adminPaymentCriteria);
@@ -138,11 +132,7 @@ public class AdminPaymentController {
         model.addAttribute("list", list);
         model.addAttribute("viewType", viewType);
 
-        // 📊 통계 데이터 전달
-        model.addAttribute("totalRevenue", totalRevenue);
-        model.addAttribute("totalRefund", totalRefund);
-        model.addAttribute("lectureSold", lectureSold);
-        model.addAttribute("lectureRefunded", lectureRefunded);
+       
         System.out.println(list+viewType);
         System.out.println(adminPaymentCriteria);
         System.out.println(pageVO.getPageSize());

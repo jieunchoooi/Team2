@@ -16,6 +16,7 @@
 <jsp:include page="../include/header.jsp"></jsp:include>
 <jsp:include page="../include/adminSidebar.jsp"></jsp:include>
 
+
 <main class="main-content">
 
     <div class="content-wrapper">
@@ -278,5 +279,10 @@
     </div>
 </div>
 </main>
+<c:if test="${not empty msg}">
+<script>
+    alert('${msg}');
+</script>
+</c:if>
 </body>
 </html>
