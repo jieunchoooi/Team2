@@ -254,13 +254,13 @@
 								class="like-icon">❤️</span>
 						</button>
 						<div class="report">
-                            <span type="button"
-                                    id="report-Btn"
-                                    class="report-btn"
-                                    data-post="${dto.post.post_id}">
-                                🚨 신고하기
-                            </span>
-                        </div>
+    						<button type="button"
+            						class="post-report-btn"
+            						data-post="${dto.post.post_id}">
+        						🚨 신고하기
+    						</button>
+						</div>
+
 
 					</div>
 
@@ -918,60 +918,55 @@ $(document).on("click", ".reply-submit", function() {
      // ================================================
      // 🔍 1) 신고 여부 체크 (페이지 로딩 시 자동 실행)
      // ================================================
-       const postId = ${dto.post.post_id};
-     console.log(postId);
-     $.post("${pageContext.request.contextPath}/community/report/check", {
-         targetType: "post",
-         targetId: postId
-        
-     }, function(res){
+     const postId = ${dto.post.post_id};
 
-         if (!res.loggedIn) return;
+$.post("${pageContext.request.contextPath}/community/report/check", {
+    targetType: "post",
+    targetId: postId
+}, function(res){
 
-         if (res.already) {
-             $("#report-Btn")
-                 .prop("disabled", true)
-                 .text("신고완료")
-                 .css({
-                     
-                     "cursor": "not-allowed"
-                 });
-         }
-     });
+    if (!res.loggedIn) return;
 
+    if (res.already) {
+        $(".post-report-btn")   // ✅ class로 변경
+            .prop("disabled", true)
+            .text("신고완료")
+            .css({
+                cursor: "not-allowed"
+            });
+    }
+});
 
      // ================================================
      // 🚨 2) 신고 보내기 (버튼 클릭 시 실행)
      // ================================================
-    	   const isLoggedIn = ${sessionScope.userVO == null ? 'false' : 'true'};
-     $("#report-Btn").click(function(){
+    const isLoggedIn = ${sessionScope.userVO == null ? 'false' : 'true'};
 
-    	    if (!isLoggedIn) {
-    	        openLoginModal();
-    	        return;
-    	    }
-         const postId = $(this).data("post");
+$(document).on("click", ".post-report-btn", function(){
 
-         $.post("${pageContext.request.contextPath}/community/report", {
-             targetType: "post",
-             targetId: postId,
-             reason: "부적절한 게시글"
-         }, function(res){
+    if (!isLoggedIn) {
+        openLoginModal();
+        return;
+    }
 
-             if (res.success) {
-                 $("#reportPostBtn")
-                     .prop("disabled", true)
-                     .text("신고완료")
-                     .css({
-                         "background": "#ccc",
-                         "cursor": "not-allowed"
-                     });
+    const postId = $(this).data("post");
+    const btn = $(this);
 
-             }
+    $.post("${pageContext.request.contextPath}/community/report", {
+        targetType: "post",
+        targetId: postId,
+        reason: "부적절한 게시글"
+    }, function(res){
 
-         });
-
-     });
+        if (res.success) {
+            btn.prop("disabled", true)
+               .text("신고완료")
+               .css({
+                   cursor: "not-allowed"
+               });
+        }
+    });
+});
 
      // 🚨 댓글 신고
      $(document).on("click", ".comment-report-btn", function(){
