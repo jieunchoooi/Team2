@@ -420,8 +420,13 @@
 															</c:if>
 																	
 															<div class="report-comment">
-							
-																	</div>	
+    															<button type="button"
+        																class="comment-report-btn"
+        																data-comment="${rep.comment_id}">
+        																🚨 신고
+    															</button>
+															</div>
+
 														</div>
 
 													</div>
@@ -959,6 +964,9 @@ $(document).on("click", ".post-report-btn", function(){
     }, function(res){
 
         if (res.success) {
+        	
+        	alert("게시글이 신고되었습니다.");
+        	
             btn.prop("disabled", true)
                .text("신고완료")
                .css({
@@ -969,36 +977,36 @@ $(document).on("click", ".post-report-btn", function(){
 });
 
      // 🚨 댓글 신고
-     $(document).on("click", ".comment-report-btn", function(){
+    // 🚨 댓글 & 대댓글 신고
+$(document).on("click", ".comment-report-btn", function(){
 
-    	    if (!isLoggedIn) {
-    	        openLoginModal();
-    	        return;
-    	    }
-         const commentId = $(this).data("comment");
+    if (!isLoggedIn) {
+        openLoginModal();
+        return;
+    }
 
-         // 기본 사유 (나중에 모달 적용 가능)
-         const reason = "부적절한 댓글";
+    const commentId = $(this).data("comment");
+    const btn = $(this);
 
-         $.post("${pageContext.request.contextPath}/community/report", {
-             targetType: "comment",
-             targetId: commentId,
-             reason: reason
-         }, function(res){
+    $.post("${pageContext.request.contextPath}/community/report", {
+        targetType: "comment",
+        targetId: commentId,
+        reason: "부적절한 댓글"
+    }, function(res){
 
-             if(res.success){
-                 alert("댓글이 신고되었습니다.");
+        if(res.success){
+            alert("신고가 접수되었습니다.");
 
-                 $(`.comment-report-btn[data-comment='${commentId}']`)
-                     .prop("disabled", true)
-                     .text("신고완료")
-                     .css({
-                         cursor: "not-allowed"
-                     });
-             }
-         });
-     });
-
+            btn
+                .prop("disabled", true)
+                .text("신고완료")
+                .css({
+                    cursor: "not-allowed",
+                    background: "#ccc"
+                });
+        }
+    });
+});
 
 $(".comment-report-btn").each(function(){
 
