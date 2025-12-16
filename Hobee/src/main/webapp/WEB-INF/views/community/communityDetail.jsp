@@ -945,7 +945,8 @@ $.post("${pageContext.request.contextPath}/community/report/check", {
      // ================================================
      // 🚨 2) 신고 보내기 (버튼 클릭 시 실행)
      // ================================================
-    const isLoggedIn = ${sessionScope.userVO == null ? 'false' : 'true'};
+   const isLoggedIn = ${sessionScope.userVO != null};
+
 
 $(document).on("click", ".post-report-btn", function(){
 
