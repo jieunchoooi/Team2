@@ -1009,6 +1009,8 @@ $(document).on("click", ".comment-report-btn", function(){
 });
 
 $(".comment-report-btn").each(function(){
+	
+	if (!isLoggedIn) return;
 
     const commentId = $(this).data("comment");
     const btn = $(this);
